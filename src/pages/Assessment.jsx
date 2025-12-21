@@ -214,13 +214,13 @@ export default function Assessment({onDone}){
       {step === 'B' && (
         <div style={{maxWidth:1000,margin:'12px auto'}}>
           <div style={{display:'flex',gap:20,alignItems:'flex-start'}}>
-            <div onDragOver={(e)=>e.preventDefault()} onDrop={handleDropToOptionsB} style={{width:420,display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12, position:'relative', marginLeft:0}}>
+            <div onDragOver={(e)=>e.preventDefault()} onDrop={handleDropToOptionsB} style={{width:420,display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12, position:'relative', marginLeft:0, marginRight:20}}>
               {optionsB.map(opt=> (
                 <div key={opt} draggable onDragStart={(e)=>onDragStartOptionB(e,opt)} style={{padding:'12px 14px',background:'rgba(255,255,255,0.02)',borderRadius:8,cursor:'grab',textAlign:'center',fontSize:20,fontWeight:900,color:'#111',border:'1px solid rgba(0,0,0,0.08)'}}>{opt}</div>
               ))}
             </div>
 
-            <div style={{flex:1,display:'grid',gridTemplateColumns:'1fr 1fr',gap:18, marginLeft:460}}>
+            <div style={{flex:1,display:'grid',gridTemplateColumns:'1fr 1fr',gap:18}}>
               {PART_B.map((p,i)=> (
                 <div key={i} onDragOver={(e)=>e.preventDefault()} onDrop={(e)=>handleDropB(e,i)} style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,background:'rgba(255,255,255,0.06)',padding:16,minHeight:120,borderRadius:12,border:'1px solid rgba(255,255,255,0.18)',boxSizing:'border-box',boxShadow:'0 6px 16px rgba(0,0,0,0.18)'}}>
                   <div style={{flex:1,fontSize:26,lineHeight:1.35,fontWeight:800,color:'#02122a'}}>{p.q}</div>
