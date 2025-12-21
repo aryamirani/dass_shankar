@@ -13,7 +13,7 @@ const ALL_ITEMS = [
   {id:'facemask', src:'/assets/facemask.png'}
 ]
 
-export default function Lesson({data, index, total, onBack, onNext}){
+export default function Lesson({data, index, total, onBack, onNext, onComplete}){
   const [phase, setPhase] = useState('showCondition') // showCondition -> exercise -> healed
   const [autoApplied, setAutoApplied] = useState([])
   const [dropped, setDropped] = useState([])
@@ -21,6 +21,7 @@ export default function Lesson({data, index, total, onBack, onNext}){
   const [health, setHealth] = useState(0)
   const [feedback, setFeedback] = useState(null) // {type: 'tick' or 'cross', x, y}
   const confettiRef = useRef(null)
+  const completeCalledRef = useRef(false)
 
   // scene timing: show boy -> then condition
   useEffect(()=>{
@@ -31,6 +32,7 @@ export default function Lesson({data, index, total, onBack, onNext}){
     setSuccess(false)
     setHealth(0)
     setFeedback(null)
+    completeCalledRef.current = false
   },[data])
 
   // for cold: auto-apply items then show healed then exercise
@@ -47,6 +49,11 @@ export default function Lesson({data, index, total, onBack, onNext}){
       launchConfetti()
       // show healed image
       setPhase('healed')
+      // notify parent once
+      if(onComplete && !completeCalledRef.current){
+        onComplete(data.id || data.title)
+        completeCalledRef.current = true
+      }
     }
   },[dropped, data])
 

@@ -2,124 +2,90 @@ const CONDITIONS = [
   {
     id: 'cold', img: '/assets/boysneeze.png', title: 'Cold',
     lines: [
-      'I am sneezing.',
-      'I have a cold.',
-      'My nose is runny.',
-      'I feel cold.',
-      'I want a blanket.',
-      'I should go to a doctor.'
-    ]
-    , items: ['thermometer','tissue','facemask','hotdrink']
+      'I can\'t stop sneezing and my nose keeps running — I keep wiping it.',
+      'I feel a little warm; I wish someone could tell me how hot I am.',
+      'When I cough, I want to cover my mouth so others don\'t get sick.',
+      'A warm cup would make my chest feel calmer.'
+    ], items: ['thermometer','tissue','facemask','hotdrink']
   },
   {
     id: 'fever', img: '/assets/boyfever.png', title: 'Fever',
     lines: [
-      'I have a fever.',
-      'My body feels hot.',
-      'My body is warm.',
-      'I have a headache.',
-      'My muscles hurt.',
-      'I should rest and see a doctor.'
+      'My body feels very hot and I feel really tired — I want to lie down.',
+      'I feel shaky and a small sip of something warm might make me feel better.',
+      'I wish I could know exactly how hot I am and get something to help with the pain.'
     ], items: ['thermometer','medicine','facemask','bed','hotdrink']
   },
   {
     id: 'cough', img: '/assets/boycough.png', title: 'Cough',
     lines: [
-      'I am coughing.',
-      'My throat feels itchy.',
-      'I feel uncomfortable.',
-      'I should cover my mouth.',
-      'I should drink warm water.'
+      'My chest keeps making a coughy sound and my throat feels scratchy.',
+      'A warm drink helps my throat feel softer for a little while.',
+      'When I cough I want to make sure my mouth is covered so droplets stay inside.'
     ], items: ['facemask','hotdrink','medicine']
   },
   {
     id: 'headache', img: '/assets/boyheadache.png', title: 'Headache',
     lines: [
-      'My head hurts.',
-      'I feel pain in my head.',
-      'Bright light hurts my eyes.',
-      'I want to rest.',
-      'I should tell an adult.'
+      'My head feels heavy and bright lights bother me — I want to lie down somewhere quiet.',
+      'A little rest and something gentle might take the edge off the pain.',
+      'A warm drink makes my head feel a bit calmer.'
     ], items: ['medicine','bed','hotdrink']
   },
   {
     id: 'toothache', img: '/assets/boytooth.png', title: 'Toothache',
     lines: [
-      'My tooth hurts.',
-      'My cheek hurts.',
-      'It hurts when I eat.',
-      'I feel pain in my mouth.',
-      'I should go to the dentist.'
+      'My tooth hurts and my cheek feels sore after I bite something.',
+      'I wish I had something to help soothe the pain until I see the dentist.'
     ], items: ['medicine','firstaid']
   },
   {
     id: 'earache', img: '/assets/boyear.png', title: 'Earache',
     lines: [
-      'My ear hurts.',
-      'I feel pain inside my ear.',
-      'Sounds feel loud.',
-      'I feel uncomfortable.',
-      'I should see a doctor.'
+      'Something inside my ear hurts and noises feel too loud sometimes.',
+      'I feel a bit warm too — I wonder how hot I am.'
     ], items: ['medicine','thermometer']
   },
   {
     id: 'eye', img: '/assets/boyeye.png', title: 'Eye Infection',
     lines: [
-      'My eyes are red.',
-      'My eyes feel itchy.',
-      'My eyes hurt.',
-      'I should not touch my eyes.',
-      'I should see a doctor.'
+      'My eyes are red and they sting when I blink.',
+      'I shouldn\'t rub them but a clean cloth might help gently wipe them.'
     ], items: ['medicine','wetcloth','firstaid']
   },
   {
     id: 'vomiting', img: '/assets/boyvomit.png', title: 'Vomiting',
     lines: [
-      'I feel sick.',
-      'My stomach feels bad.',
-      'I am vomiting.',
-      'I feel weak.',
-      'I should rest and drink water.'
+      'My tummy feels upset and I keep throwing up.',
+      'I feel weak and keep reaching for something to wipe my mouth.'
     ], items: ['medicine','tissue']
   },
   {
     id: 'diarrhea', img: '/assets/boypotty.png', title: 'Diarrhea',
     lines: [
-      'My stomach hurts.',
-      'I need to use the toilet.',
-      'My tummy feels upset.',
-      'I feel uncomfortable.',
-      'I should drink water and rest.'
+      'My tummy is cramping and I need to go to the toilet a lot.',
+      'Sipping water helps but I also need something to make me feel steady.'
     ], items: ['medicine','toilet','wetcloth']
   },
   {
     id: 'skin', img: '/assets/boyskin.png', title: 'Skin Allergy',
     lines: [
-      'My skin feels itchy.',
-      'I see red spots.',
-      'My skin hurts.',
-      'I am scratching.',
-      'I should tell an adult.'
+      'My skin is itchy and there are red patches that make me want to scratch.',
+      'Something cool and clean would help calm it down.'
     ], items: ['medicine','wetcloth','firstaid']
   },
   {
     id: 'stomach', img: '/assets/boystomach.png', title: 'Stomach Pain',
     lines: [
-      'My stomach hurts.',
-      'I feel pain in my tummy.',
-      'I feel uncomfortable.',
-      'I want to lie down.',
-      'I should tell someone.'
+      'My tummy hurts and I feel like curling up and resting.',
+      'A warm drink sometimes helps me feel a bit better.'
     ], items: ['medicine','bed','hotdrink']
   },
   {
     id: 'throat', img: '/assets/boythroat.png', title: 'Throat Pain',
     lines: [
-      'My throat hurts.',
-      'It hurts when I swallow.',
-      'My throat feels sore.',
-      'I should drink warm water.',
-      'I should see a doctor.'
+      'My throat is sore and it hurts when I swallow food.',
+      'Sipping something warm helps my throat feel less scratchy.'
     ], items: ['medicine','hotdrink','facemask']
   }
 ]

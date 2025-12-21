@@ -1,10 +1,28 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Landing from './pages/Landing'
 import Lesson from './pages/Lesson'
+import Assessment from './pages/Assessment'
 import CONDITIONS from './data/conditions'
 
 export default function App(){
   const [view,setView] = useState({name:'landing', index:0})
+  const [completed, setCompleted] = useState([]) // store condition ids
+
+  // load persisted completed list on mount
+  useEffect(()=>{
+    try{
+      const raw = localStorage.getItem('completedLessons')
+      if(raw){
+        const parsed = JSON.parse(raw)
+        if(Array.isArray(parsed)) setCompleted(parsed)
+      }
+    }catch(e){console.warn('Failed to load completed lessons', e)}
+  },[])
+
+  // persist when completed changes
+  useEffect(()=>{
+    try{ localStorage.setItem('completedLessons', JSON.stringify(completed)) }catch(e){console.warn('Failed to save completed lessons', e)}
+  },[completed])
 
   function goToLesson(index){
     setView({name:'lesson', index})
@@ -18,10 +36,21 @@ export default function App(){
     }
   }
 
+  function markCompleted(id){
+    setCompleted(prev => prev.includes(id) ? prev : [...prev, id])
+  }
+
+  const allDone = completed.length === CONDITIONS.length
+
+  function goToAssessment(){ setView({name:'assessment'}) }
+
   return (
     <div className="app-root">
-      {view.name === 'landing' && <Landing onStart={()=>goToLesson(0)} onSelect={(imgIndex)=>goToLesson(imgIndex)} />}
-      {view.name === 'lesson' && <Lesson data={CONDITIONS[view.index]} index={view.index} total={CONDITIONS.length} onBack={goHome} onNext={next} />}
+      {view.name === 'landing' && <Landing onStart={()=>goToLesson(0)} onSelect={(imgIndex)=>goToLesson(imgIndex)} completed={completed} allDone={allDone} onAllDone={goToAssessment} />}
+      {view.name === 'lesson' && <Lesson data={CONDITIONS[view.index]} index={view.index} total={CONDITIONS.length} onBack={goHome} onNext={next} onComplete={markCompleted} />}
+      {view.name === 'assessment' && <Assessment onDone={goHome} />}
     </div>
   )
 }
+
+

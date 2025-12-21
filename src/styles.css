@@ -25,8 +25,14 @@ body,html,#root{height:100%;margin:0;font-family:'Quicksand',system-ui,Arial;bac
 .circle-item:nth-child(12){transform:translate(-50%,-50%) rotate(330deg) translate(400px) rotate(-330deg)}
 
 /* center title inside the circle */
-.circle-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;pointer-events:none}
+.circle-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;pointer-events:auto}
 .center-title{font-size:48px;padding:20px 30px;border-radius:30px;background:linear-gradient(180deg,#fff7e6,#fff1d6);box-shadow:0 18px 40px rgba(0,0,0,0.08);margin:0;color:#223}
+
+/* completed marker on circle items */
+.circle-item{position:absolute;overflow:visible}
+.circle-item.completed{filter:grayscale(0.05) opacity(0.95)}
+.circle-item .tick{position:absolute;right:8px;bottom:8px;background:#2ecc71;color:#fff;border-radius:50%;width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:22px;box-shadow:0 6px 12px rgba(0,0,0,0.12)}
+.circle-item[disabled]{cursor:default;pointer-events:none;opacity:0.85}
 
 .title{font-size:56px;margin:6px 0}
 .subtitle{font-size:22px;margin-top:12px}
