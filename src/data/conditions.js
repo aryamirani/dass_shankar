@@ -9,7 +9,7 @@ const CONDITIONS = [
       'I want a blanket.',
       'I should go to a doctor.'
     ]
-    , items: ['thermometer','tissues','mask','tea']
+    , items: ['thermometer','tissue','facemask','hotdrink']
   },
   {
     id: 'fever', img: '/assets/boyfever.png', title: 'Fever',
@@ -20,7 +20,7 @@ const CONDITIONS = [
       'I have a headache.',
       'My muscles hurt.',
       'I should rest and see a doctor.'
-    ], items: ['thermometer','tea','item_a']
+    ], items: ['thermometer','medicine','facemask','bed','hotdrink']
   },
   {
     id: 'cough', img: '/assets/boycough.png', title: 'Cough',
@@ -30,7 +30,7 @@ const CONDITIONS = [
       'I feel uncomfortable.',
       'I should cover my mouth.',
       'I should drink warm water.'
-    ], items: ['tea','mask','item_b']
+    ], items: ['facemask','hotdrink','medicine']
   },
   {
     id: 'headache', img: '/assets/boyheadache.png', title: 'Headache',
@@ -40,7 +40,7 @@ const CONDITIONS = [
       'Bright light hurts my eyes.',
       'I want to rest.',
       'I should tell an adult.'
-    ], items: ['tea','item_c']
+    ], items: ['medicine','bed','hotdrink']
   },
   {
     id: 'toothache', img: '/assets/boytooth.png', title: 'Toothache',
@@ -50,7 +50,7 @@ const CONDITIONS = [
       'It hurts when I eat.',
       'I feel pain in my mouth.',
       'I should go to the dentist.'
-    ], items: ['item_d','item_e']
+    ], items: ['medicine','firstaid']
   },
   {
     id: 'earache', img: '/assets/boyear.png', title: 'Earache',
@@ -60,7 +60,7 @@ const CONDITIONS = [
       'Sounds feel loud.',
       'I feel uncomfortable.',
       'I should see a doctor.'
-    ], items: ['item_a','item_f']
+    ], items: ['medicine','thermometer']
   },
   {
     id: 'eye', img: '/assets/boyeye.png', title: 'Eye Infection',
@@ -70,7 +70,7 @@ const CONDITIONS = [
       'My eyes hurt.',
       'I should not touch my eyes.',
       'I should see a doctor.'
-    ], items: ['item_b','item_c']
+    ], items: ['medicine','wetcloth','firstaid']
   },
   {
     id: 'vomiting', img: '/assets/boyvomit.png', title: 'Vomiting',
@@ -80,7 +80,7 @@ const CONDITIONS = [
       'I am vomiting.',
       'I feel weak.',
       'I should rest and drink water.'
-    ], items: ['tea','item_e']
+    ], items: ['medicine','tissue']
   },
   {
     id: 'diarrhea', img: '/assets/boypotty.png', title: 'Diarrhea',
@@ -90,7 +90,7 @@ const CONDITIONS = [
       'My tummy feels upset.',
       'I feel uncomfortable.',
       'I should drink water and rest.'
-    ], items: ['item_b','item_d']
+    ], items: ['medicine','toilet','wetcloth']
   },
   {
     id: 'skin', img: '/assets/boyskin.png', title: 'Skin Allergy',
@@ -100,7 +100,7 @@ const CONDITIONS = [
       'My skin hurts.',
       'I am scratching.',
       'I should tell an adult.'
-    ], items: ['item_f','item_a']
+    ], items: ['medicine','wetcloth','firstaid']
   },
   {
     id: 'stomach', img: '/assets/boystomach.png', title: 'Stomach Pain',
@@ -110,7 +110,7 @@ const CONDITIONS = [
       'I feel uncomfortable.',
       'I want to lie down.',
       'I should tell someone.'
-    ], items: ['tea','item_c']
+    ], items: ['medicine','bed','hotdrink']
   },
   {
     id: 'throat', img: '/assets/boythroat.png', title: 'Throat Pain',
@@ -120,7 +120,7 @@ const CONDITIONS = [
       'My throat feels sore.',
       'I should drink warm water.',
       'I should see a doctor.'
-    ]
+    ], items: ['medicine','hotdrink','facemask']
   }
 ]
 

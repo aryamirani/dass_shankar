@@ -1,17 +1,25 @@
 import React, {useState, useRef, useEffect} from 'react'
 
-const COLD_ITEMS = [
-  {id:'thermometer', src:'/assets/thermometer.svg'},
-  {id:'tissues', src:'/assets/tissues.svg'},
-  {id:'mask', src:'/assets/mask.svg'},
-  {id:'tea', src:'/assets/tea.svg'}
+const ALL_ITEMS = [
+  {id:'medicine', src:'/assets/medicine.png'},
+  {id:'thermometer', src:'/assets/thermometer.png'},
+  {id:'firstaid', src:'/assets/firstaid.png'},
+  {id:'bed', src:'/assets/bed.png'},
+  {id:'hotdrink', src:'/assets/hotdrink.png'},
+  {id:'food', src:'/assets/food.png'},
+  {id:'tissue', src:'/assets/tissue.png'},
+  {id:'toilet', src:'/assets/toilet.png'},
+  {id:'wetcloth', src:'/assets/wetcloth.png'},
+  {id:'facemask', src:'/assets/facemask.png'}
 ]
 
 export default function Lesson({data, index, total, onBack, onNext}){
-  const [phase, setPhase] = useState('showCondition') // showCondition -> waitingHelp -> exercise -> healed
+  const [phase, setPhase] = useState('showCondition') // showCondition -> exercise -> healed
   const [autoApplied, setAutoApplied] = useState([])
   const [dropped, setDropped] = useState([])
   const [success, setSuccess] = useState(false)
+  const [health, setHealth] = useState(0)
+  const [feedback, setFeedback] = useState(null) // {type: 'tick' or 'cross', x, y}
   const confettiRef = useRef(null)
 
   // scene timing: show boy -> then condition
@@ -21,16 +29,20 @@ export default function Lesson({data, index, total, onBack, onNext}){
     setAutoApplied([])
     setDropped([])
     setSuccess(false)
+    setHealth(0)
+    setFeedback(null)
   },[data])
 
   // for cold: auto-apply items then show healed then exercise
-  // no auto sequence here; flow: showCondition -> waitingHelp (Help button appears) -> exercise when user presses Help
+  // no auto sequence here; flow: showCondition -> exercise when user presses Help
 
   useEffect(()=>{
     // check success for exercises where there are required items
     const required = (data.items || []).slice()
     if(required.length === 0) return
-    if(required.every(r=>dropped.includes(r))){
+    const correctDropped = dropped.filter(id => required.includes(id))
+    setHealth(correctDropped.length / required.length)
+    if(correctDropped.length === required.length){
       setSuccess(true)
       launchConfetti()
       // show healed image
@@ -44,7 +56,13 @@ export default function Lesson({data, index, total, onBack, onNext}){
   function onDrop(e){
     e.preventDefault()
     const id = e.dataTransfer.getData('text/plain')
-    if(!id) return
+    if(!id || dropped.includes(id)) return
+    const required = data.items || []
+    const isCorrect = required.includes(id)
+    // show feedback
+    const rect = e.target.getBoundingClientRect()
+    setFeedback({type: isCorrect ? 'tick' : 'cross', x: e.clientX - rect.left, y: e.clientY - rect.top})
+    setTimeout(() => setFeedback(null), 1000)
     if(!dropped.includes(id)) setDropped(prev=>[...prev,id])
   }
 
@@ -87,64 +105,42 @@ export default function Lesson({data, index, total, onBack, onNext}){
 
       <div className="scene">
         {phase === 'showCondition' && (
-          <div className="fade-enter-active" style={{display:'flex',flexDirection:'column',alignItems:'center',gap:18}}>
-            <img src={data.img} alt={data.title} style={{width:420}} />
+          <div className="fade-enter-active" style={{display:'flex', alignItems:'center', gap:18}}>
+            <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:30}}>
+              <img src={data.img} alt={data.title} style={{width:420}} />
+              <div className="controls-row">
+                <button className="action-btn" onClick={()=> setPhase('exercise')}>Help him</button>
+              </div>
+            </div>
             <div className="speech-cloud bubble-from-mouth">
               {data.lines.map((l,i)=>(<div key={i}>{l}</div>))}
-            </div>
-            <div className="controls-row">
-              <button className="action-btn secondary" onClick={()=>speak(data.lines.join(' '))}>Speak</button>
-              <button className="action-btn" onClick={()=> setPhase('waitingHelp')}>Help him</button>
-            </div>
-          </div>
-        )}
-
-        {phase === 'waitingHelp' && (
-          <div className="fade-enter-active" style={{display:'flex',flexDirection:'column',alignItems:'center',gap:18}}>
-            <img src={data.img} alt={data.title} style={{width:420}} />
-            <div className="speech-cloud">Tap Help to start the game.</div>
-            <div className="controls-row">
-              <button className="action-btn" onClick={()=> setPhase('exercise')}>Start Game</button>
             </div>
           </div>
         )}
 
         {phase === 'exercise' && (
           <div style={{width:'100%'}}>
-            <div className="sick-stage" style={{display:'flex',flexDirection:'column',alignItems:'center',gap:12}}>
-              <img src={data.img} alt="Sick" style={{width:360}} />
-              <div className="subtitle">Drag the helpful items to the child.</div>
-            </div>
-
-            <div style={{marginTop:18,display:'flex',flexDirection:'column',alignItems:'center',gap:12}}>
-              <div className="items-list" aria-label="Draggable items" style={{display:'flex',flexWrap:'wrap',gap:12,justifyContent:'center'}}>
-                {(function(){
-                  // build items: correct ones from data.items, fill with distractors to 10
-                  const pool = []
-                  const correct = (data.items||[])
-                  correct.forEach(id=> pool.push({id, src: `/assets/${id === 'thermometer' ? 'thermometer.svg' : id === 'tissues' ? 'tissues.svg' : id === 'mask' ? 'mask.svg' : id === 'tea' ? 'tea.svg' : id + '.svg'}`}))
-                  const distractors = ['item_a.svg','item_b.svg','item_c.svg','item_d.svg','item_e.svg','item_f.svg']
-                  let i = 0
-                  while(pool.length < 10){
-                    const name = distractors[i % distractors.length]
-                    pool.push({id: `d_${i}`, src: `/assets/${name}`})
-                    i++
-                  }
-                  // shuffle
-                  for(let j=pool.length-1;j>0;j--){const k=Math.floor(Math.random()*(j+1));[pool[j],pool[k]]=[pool[k],pool[j]]}
-                  return pool.map(it=> (
-                    <div key={it.id} className="draggable-item" draggable onDragStart={(e)=>onDragStart(e,it)}>
-                      <img src={it.src} alt={it.id} style={{width:96,height:96,borderRadius:12}} />
-                    </div>
-                  ))
-                })()}
+            <div style={{textAlign:'center', marginBottom:18}}>
+              <div className="subtitle" style={{fontSize:28, fontWeight:'bold', textShadow:'2px 2px 4px rgba(0,0,0,0.5)', color:'#333'}}>Drag the helpful items to the child.</div>
+              <div style={{width:400, height:30, border:'4px solid #333', borderRadius:15, margin:'0 auto', boxShadow:'0 4px 8px rgba(0,0,0,0.2)'}}>
+                <div style={{width:`${health * 100}%`, height:'100%', backgroundColor:'green', borderRadius:12, transition:'width 0.5s'}}></div>
               </div>
-
-              <div className="drop-zone" onDragOver={(e)=>e.preventDefault()} onDrop={onDrop} tabIndex={0} aria-label="Drop zone" style={{marginTop:12,minHeight:120,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}}>
-                <div>Drop items here</div>
-                <div className="dropped-list" style={{marginTop:8,display:'flex',gap:8,flexWrap:'wrap'}}>
-                  {dropped.map(id=> <div key={id} className={'dropped correct'}>{id}</div>)}
-                </div>
+            </div>
+            <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+              <div style={{position:'relative', marginLeft: '20%'}}>
+                <img src={data.img} alt="Sick" style={{width:360}} onDragOver={(e)=>e.preventDefault()} onDrop={onDrop} />
+                {feedback && (
+                  <div style={{position:'absolute', left: feedback.x - 20, top: feedback.y - 20, fontSize:40, color: feedback.type === 'tick' ? 'green' : 'red'}}>
+                    {feedback.type === 'tick' ? '✓' : '✗'}
+                  </div>
+                )}
+              </div>
+              <div className="items-list" aria-label="Draggable items" style={{display:'flex',flexWrap:'wrap',gap:16,justifyContent:'center', maxWidth:'50%'}}>
+                {ALL_ITEMS.map(it=> (
+                  <div key={it.id} className="draggable-item" draggable={!dropped.includes(it.id)} onDragStart={(e)=>onDragStart(e,it)} style={{opacity: dropped.includes(it.id) ? 0.5 : 1}}>
+                    <img src={it.src} alt={it.id} style={{width:240,height:240,borderRadius:12}} />
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -155,7 +151,7 @@ export default function Lesson({data, index, total, onBack, onNext}){
             <img src={'/assets/boy.png'} alt="Healed" style={{width:360}} />
             <div className="speech-cloud">I feel better.</div>
             <div className="controls-row">
-              <div className="subtitle">Tap another image to learn more.</div>
+              <button className="action-btn" onClick={onBack}>Go Home</button>
             </div>
           </div>
         )}
