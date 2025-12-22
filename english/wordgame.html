@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="../fonts.css">
+    <meta charset="UTF-8">
+    <title>Word Game</title>
+    <style>
+        * {
+            font-family: "Grandstander";
+        }
+
+        body {
+            background-color: rgb(65, 202, 76);
+            text-align: center;
+            padding: 20px;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            background-image: url("assets/background.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+
+        .game-container {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 30px;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 200px;
+        }
+
+        .word-card {
+            background: rgb(224, 220, 220);
+            border: 3px solid #3498db;
+            border-radius: 15px;
+            padding: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            box-shadow: 4px 4px 0px #bdc3c7;
+            user-select: none;
+        }
+
+        .word-card:hover {
+            transform: scale(1.05);
+            background-color: #eaf2f8;
+        }
+
+        /* Selected Card*/
+
+        .selected {
+            background-color: #f1c40f !important;
+            border-color: #f39c12 !important;
+            transform: scale(1.1);
+        }
+
+        /* Success Animation  */
+
+        @keyframes heal {
+            0% {
+                transform: scale(1);
+                background-color: #2ecc71;
+            }
+
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+
+        .healed {
+            animation: heal 0.8s forwards;
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-10px);
+                background-color: #e74c3c;
+                color: white;
+            }
+
+            50% {
+                transform: translateX(10px);
+            }
+
+            75% {
+                transform: translateX(-10px);
+            }
+
+            100% {
+                transform: translateX(0);
+                background-color: white;
+                color: black;
+            }
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        .healed-word {
+            display: inline-block;
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .column-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #000000;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Word Surgery</h1>
+    <p>Tap a blue word part, then tap the matching red part to connect them!</p>
+
+    <div class="game-container">
+        <div class="column" id="left-column">
+            <div class="column-title">Part 1</div>
+        </div>
+
+        <div class="column" id="right-column">
+            <div class="column-title">Part 2</div>
+        </div>
+    </div>
+
+    <script>
+        const wordPairs = {
+            "Sun": "Flower",
+            "Tooth": "Brush",
+            "Rain": "Bow",
+            "Jelly": "Fish",
+            "Head": "Ache"
+        };
+
+        let selectedLeft = null;
+        let selectedElement = null;
+
+        function initGame() {
+            const leftCol = document.getElementById('left-column');
+            const rightCol = document.getElementById('right-column');
+
+            const leftWords = Object.keys(wordPairs);
+            const rightWords = Object.values(wordPairs);
+
+            shuffle(leftWords).forEach(word => createCard(word, 'left', leftCol));
+            shuffle(rightWords).forEach(word => createCard(word, 'right', rightCol));
+        }
+
+        function createCard(text, side, container) {
+            const card = document.createElement('div');
+            card.className = 'word-card';
+            card.innerText = text;
+            card.dataset.value = text;
+            card.dataset.side = side;
+
+            if (side === 'right') card.style.borderColor = '#e74c3c';
+
+            card.onclick = () => handleCardClick(card);
+            container.appendChild(card);
+        }
+
+
+        function handleCardClick(card) {
+            console.log(card.dataset.value, card.classList.contains("healed"));
+            // Ignore if already matched (invisible)
+            if (card.classList.contains('healed')) return;
+
+            // Logic for Left Side
+            if (card.dataset.side === 'left') {
+                // Deselect previous
+                if (selectedElement) selectedElement.classList.remove('selected');
+
+                selectedElement = card;
+                selectedLeft = card.dataset.value;
+                card.classList.add('selected');
+            }
+            // Logic for Right Side
+            else if (card.dataset.side === 'right') {
+                if (!selectedLeft) {
+                    shakeCard(card);
+                    return;
+                }
+
+                const correctMatch = wordPairs[selectedLeft];
+
+                if (card.dataset.value === correctMatch) {
+                    // SUCCESS: It's a match!
+                    performSurgery(selectedElement, card, selectedLeft + card.dataset.value);
+                    selectedLeft = null;
+                    selectedElement = null;
+
+                } else {
+                    shakeCard(selectedElement);
+                    shakeCard(card);
+
+                }
+            }
+        }
+
+        function performSurgery(leftCard, rightCard, fullWord) {
+            leftCard.classList.add('healed');
+            rightCard.classList.add('healed');
+
+        }
+
+        function shakeCard(card) {
+            card.classList.remove('shake');
+            void card.offsetWidth;
+            card.classList.add('shake');
+        }
+
+        // shuffle mech
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        initGame();
+    </script>
+</body>
+
+</html>
