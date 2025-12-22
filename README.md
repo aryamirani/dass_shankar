@@ -14,4 +14,3 @@ npm run dev
 
 Notes:
 - The landing page uses a circle of 12 large PNGs. Click any image to open its lesson.
-# shankar_foundation_content_development
