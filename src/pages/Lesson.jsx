@@ -14,7 +14,7 @@ const ALL_ITEMS = [
 ]
 
 export default function Lesson({data, index, total, onBack, onNext, onComplete}){
-  const [phase, setPhase] = useState('showCondition') // showCondition -> exercise -> healed
+  const [phase, setPhase] = useState('exercise') // start directly at drag-and-drop
   const [autoApplied, setAutoApplied] = useState([])
   const [dropped, setDropped] = useState([])
   const [success, setSuccess] = useState(false)
@@ -25,8 +25,8 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
 
   // scene timing: show boy -> then condition
   useEffect(()=>{
-    // when condition changes, start by showing the condition (sick boy image) and its speech bubble
-    setPhase('showCondition')
+    // when condition changes, start directly at drag-and-drop
+    setPhase('exercise')
     setAutoApplied([])
     setDropped([])
     setSuccess(false)
@@ -110,31 +110,12 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
         <div style={{width:120}} />
       </div>
 
-      <div className="scene">
-        {phase === 'showCondition' && (
-          <div className="fade-enter-active" style={{display:'flex', alignItems:'center', gap:18}}>
-            <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:30}}>
-              <img src={data.img} alt={data.title} style={{width:420}} />
-              <div className="controls-row">
-                <button className="action-btn" onClick={()=> setPhase('exercise')}>Help him</button>
-              </div>
-            </div>
-            <div className="speech-cloud bubble-from-mouth">
-              {data.lines.map((l,i)=>(<div key={i}>{l}</div>))}
-            </div>
-          </div>
-        )}
 
+      <div className="scene">
         {phase === 'exercise' && (
           <div style={{width:'100%'}}>
-            <div style={{textAlign:'center', marginBottom:18}}>
-              <div className="subtitle" style={{fontSize:28, fontWeight:'bold', textShadow:'2px 2px 4px rgba(0,0,0,0.5)', color:'#333'}}>Drag the helpful items to the child.</div>
-              <div style={{width:400, height:30, border:'4px solid #333', borderRadius:15, margin:'0 auto', boxShadow:'0 4px 8px rgba(0,0,0,0.2)'}}>
-                <div style={{width:`${health * 100}%`, height:'100%', backgroundColor:'green', borderRadius:12, transition:'width 0.5s'}}></div>
-              </div>
-            </div>
-            <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-              <div style={{position:'relative', marginLeft: '20%'}}>
+            <div style={{display:'flex', justifyContent:'space-between', alignItems:'flex-start'}}>
+              <div style={{position:'relative', marginLeft: '10%'}}>
                 <img src={data.img} alt="Sick" style={{width:360}} onDragOver={(e)=>e.preventDefault()} onDrop={onDrop} />
                 {feedback && (
                   <div style={{position:'absolute', left: feedback.x - 20, top: feedback.y - 20, fontSize:40, color: feedback.type === 'tick' ? 'green' : 'red'}}>
@@ -142,12 +123,70 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
                   </div>
                 )}
               </div>
-              <div className="items-list" aria-label="Draggable items" style={{display:'flex',flexWrap:'wrap',gap:16,justifyContent:'center', maxWidth:'50%'}}>
-                {ALL_ITEMS.map(it=> (
-                  <div key={it.id} className="draggable-item" draggable={!dropped.includes(it.id)} onDragStart={(e)=>onDragStart(e,it)} style={{opacity: dropped.includes(it.id) ? 0.5 : 1}}>
-                    <img src={it.src} alt={it.id} style={{width:240,height:240,borderRadius:12}} />
+              <div style={{flex:1, marginLeft:40}}>
+                <div className="speech-cloud bubble-from-mouth" style={{marginBottom:18}}>
+                  <div style={{fontWeight:'bold', fontSize:22, marginBottom:8}}>What the child says:</div>
+                  <ul style={{paddingLeft:24, margin:0}}>
+                    {data.lines.map((l,i)=>{
+                      // Bold the keywords that match required items
+                      let line = l;
+                      (data.items||[]).forEach(item=>{
+                        if(item==='thermometer' && /thermometer|hot|temperature|warm/i.test(line)) line = line.replace(/(thermometer|hot|temperature|warm)/ig, '<b>$1</b>');
+                        if(item==='tissue' && /tissue|wipe|wiping|nose/i.test(line)) line = line.replace(/(tissue|wipe|wiping|nose)/ig, '<b>$1</b>');
+                        if(item==='facemask' && /mask|cover|mouth|cough/i.test(line)) line = line.replace(/(mask|cover|mouth|cough)/ig, '<b>$1</b>');
+                        if(item==='hotdrink' && /warm|drink|cup/i.test(line)) line = line.replace(/(warm|drink|cup)/ig, '<b>$1</b>');
+                        if(item==='medicine' && /medicine|pain|soothe|relief/i.test(line)) line = line.replace(/(medicine|pain|soothe|relief)/ig, '<b>$1</b>');
+                        if(item==='bed' && /bed|lie down|rest|tired|quiet/i.test(line)) line = line.replace(/(bed|lie down|rest|tired|quiet)/ig, '<b>$1</b>');
+                        if(item==='firstaid' && /first aid|soothe|cut|bandage|help/i.test(line)) line = line.replace(/(first aid|soothe|cut|bandage|help)/ig, '<b>$1</b>');
+                        if(item==='wetcloth' && /wet|cloth|wipe|clean|cool/i.test(line)) line = line.replace(/(wet|cloth|wipe|clean|cool)/ig, '<b>$1</b>');
+                        if(item==='toilet' && /toilet|poop|potty|bathroom/i.test(line)) line = line.replace(/(toilet|poop|potty|bathroom)/ig, '<b>$1</b>');
+                        if(item==='food' && /food|eat|hungry/i.test(line)) line = line.replace(/(food|eat|hungry)/ig, '<b>$1</b>');
+                      });
+                      return <li key={i} style={{marginBottom:6}} dangerouslySetInnerHTML={{__html: line}} />
+                    })}
+                  </ul>
+                </div>
+                <div style={{display:'flex', alignItems:'center', justifyContent:'center', gap:24, marginBottom:18}}>
+                  <div className="subtitle" style={{fontSize:28, fontWeight:'bold', textShadow:'2px 2px 4px rgba(0,0,0,0.5)', color:'#333', margin:0}}>Drag the helpful items to the child.</div>
+                  <div style={{width:320, height:30, border:'4px solid #333', borderRadius:15, boxShadow:'0 4px 8px rgba(0,0,0,0.2)'}}>
+                    <div style={{width:`${health * 100}%`, height:'100%', backgroundColor:'green', borderRadius:12, transition:'width 0.5s'}}></div>
                   </div>
-                ))}
+                </div>
+                <div className="items-list" aria-label="Draggable items" style={{display:'flex',flexWrap:'wrap',gap:28,justifyContent:'center', maxWidth:'100%', marginTop:24}}>
+                  {ALL_ITEMS.map(it=> {
+                    const isDropped = dropped.includes(it.id);
+                    let feedbackType = null;
+                    if (isDropped) {
+                      const required = data.items || [];
+                      feedbackType = required.includes(it.id) ? 'tick' : 'cross';
+                    }
+                    return (
+                      <div key={it.id} className="draggable-item" draggable={!isDropped} onDragStart={(e)=>onDragStart(e,it)} style={{position:'relative'}}>
+                        <img src={it.src} alt={it.id} style={{width:180,height:180,borderRadius:18, filter: isDropped ? 'grayscale(0.2) brightness(0.98)' : 'none'}} />
+                        {isDropped && (
+                          <span style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: 90,
+                            fontWeight: 900,
+                            color: feedbackType === 'tick' ? 'green' : 'red',
+                            pointerEvents: 'none',
+                            zIndex: 2,
+                            textShadow: '0 4px 16px rgba(0,0,0,0.18)'
+                          }}>
+                            {feedbackType === 'tick' ? '✓' : '✗'}
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
