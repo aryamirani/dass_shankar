@@ -1,4 +1,17 @@
 import React, {useState, useRef, useEffect} from 'react'
+// Positive feedback messages
+const POSITIVE_FEEDBACKS = [
+  'Great work!',
+  'Good job!',
+  'Wow!',
+  'Amazing!',
+  'Awesome!',
+  'You did it!',
+  'Super!',
+  'Fantastic!',
+  'Nice!',
+  'Brilliant!'
+];
 
 const ALL_ITEMS = [
   {id:'medicine', src:'/assets/medicine.png'},
@@ -20,6 +33,7 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
   const [success, setSuccess] = useState(false)
   const [health, setHealth] = useState(0)
   const [feedback, setFeedback] = useState(null) // {type: 'tick' or 'cross', x, y}
+  const [positiveMsg, setPositiveMsg] = useState(null)
   const confettiRef = useRef(null)
   const completeCalledRef = useRef(false)
 
@@ -70,6 +84,12 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
     const rect = e.target.getBoundingClientRect()
     setFeedback({type: isCorrect ? 'tick' : 'cross', x: e.clientX - rect.left, y: e.clientY - rect.top})
     setTimeout(() => setFeedback(null), 1000)
+    if(isCorrect) {
+      // Show random positive message
+      const msg = POSITIVE_FEEDBACKS[Math.floor(Math.random() * POSITIVE_FEEDBACKS.length)]
+      setPositiveMsg(msg)
+      setTimeout(() => setPositiveMsg(null), 1200)
+    }
     if(!dropped.includes(id)) setDropped(prev=>[...prev,id])
   }
 
@@ -101,6 +121,27 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
 
   return (
     <div className="lesson-root">
+      {positiveMsg && (
+        <div style={{
+          position: 'fixed',
+          top: 80,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          background: 'rgba(255,255,255,0.97)',
+          color: '#1976d2',
+          fontWeight: 'bold',
+          fontSize: 36,
+          borderRadius: 18,
+          boxShadow: '0 4px 24px #1976d2aa',
+          padding: '18px 48px',
+          zIndex: 1000,
+          border: '3px solid #1976d2',
+          textShadow: '2px 2px 8px #fff, 0 0 8px #1976d2aa',
+          animation: 'pop-in 0.2s',
+        }}>
+          {positiveMsg}
+        </div>
+      )}
       <div className="top-row">
         <button className="action-btn secondary" onClick={onBack}>Back</button>
         <div style={{textAlign:'center'}}>
@@ -116,7 +157,40 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
           <div style={{width:'100%'}}>
             <div style={{display:'flex', justifyContent:'space-between', alignItems:'flex-start'}}>
               <div style={{position:'relative', marginLeft: '10%'}}>
-                <img src={data.img} alt="Sick" style={{width:360}} onDragOver={(e)=>e.preventDefault()} onDrop={onDrop} />
+                <div style={{display:'flex', flexDirection:'column', alignItems:'center', position:'relative'}}>
+                  <div
+                    style={{
+                      marginBottom: 8,
+                      fontSize: 24,
+                      fontWeight: 'bold',
+                      color: '#1976d2',
+                      textShadow: '2px 2px 8px #fff, 0 0 8px #1976d2aa',
+                      background: 'rgba(255,255,255,0.85)',
+                      borderRadius: 12,
+                      padding: '4px 20px',
+                      border: '2px solid #1976d2',
+                      zIndex: 2,
+                      boxShadow: '0 2px 8px #1976d233',
+                    }}
+                  >
+                    Drop Here
+                  </div>
+                  <img
+                    src={data.img}
+                    alt="Sick"
+                    style={{
+                      width: 360,
+                      border: '4px dashed #1976d2',
+                      borderRadius: 32,
+                      boxShadow: '0 0 16px 2px #1976d2aa',
+                      filter: 'drop-shadow(0 0 8px #1976d2aa)',
+                      background: '#e3f2fd',
+                      transition: 'box-shadow 0.3s, border 0.3s',
+                    }}
+                    onDragOver={e => e.preventDefault()}
+                    onDrop={onDrop}
+                  />
+                </div>
                 {feedback && (
                   <div style={{position:'absolute', left: feedback.x - 20, top: feedback.y - 20, fontSize:40, color: feedback.type === 'tick' ? 'green' : 'red'}}>
                     {feedback.type === 'tick' ? '✓' : '✗'}

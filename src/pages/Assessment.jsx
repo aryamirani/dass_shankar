@@ -1,172 +1,119 @@
+// Positive feedback messages
+const POSITIVE_FEEDBACKS = [
+  'Great work!',
+  'Good job!',
+  'Wow!',
+  'Amazing!',
+  'Awesome!',
+  'You did it!',
+  'Super!',
+  'Fantastic!',
+  'Nice!',
+  'Brilliant!'
+];
 
-import React, {useState, useRef} from 'react'
+import React, { useState, useRef } from 'react'
 import CONDITIONS from '../data/conditions'
 
-// Part A mapping: use condition ids/titles and images as draggable answers
-const DIAG_OPTIONS = CONDITIONS.map(c=>({id:c.id, label:c.title, img:c.img}))
+const DIAG_OPTIONS = CONDITIONS.map(c => ({ id: c.id, label: c.title, img: c.img }))
 
-// Part A questions (from worksheet): patient statements and correct diagnosis id
 const PART_A = [
-  {q: 'My body is warm. I have headache and muscle pains.', answer: 'fever'},
-  {q: 'My nose is runny. I am sneezing.', answer: 'cold'},
-  {q: 'My eyes are red , itchy and watery.', answer: 'eye'},
-  {q: 'I am pooping watery and loose.', answer: 'diarrhea'},
-  {q: 'My skin is hot, red and itchy.', answer: 'skin'}
+  { q: 'My body is warm. I have headache and muscle pains.', answer: 'fever' },
+  { q: 'My nose is runny. I am sneezing.', answer: 'cold' },
+  { q: 'My eyes are red , itchy and watery.', answer: 'eye' },
+  { q: 'I am pooping watery and loose.', answer: 'diarrhea' },
+  { q: 'My skin is hot, red and itchy.', answer: 'skin' }
 ]
 
-// Part B options (words)
-const PARTB_OPTIONS = ['plaster','ambulance','dentist','ointment','pain relief','tablet','facemask']
+const PARTB_OPTIONS = ['plaster', 'ambulance', 'dentist', 'ointment', 'pain relief', 'tablet', 'facemask']
 
-// Part B questions and correct answers (from worksheet)
 const PART_B = [
-  {q: "I have pain in the teeth. You should go to ________", answer: 'dentist'},
-  {q: 'I have chest pain. You should call an ________', answer: 'ambulance'},
-  {q: 'I have a cut on my finger. You should put a ______ on it.', answer: 'plaster'},
-  {q: 'I have pain on my legs. You should apply pain relief ________', answer: 'ointment'},
-  {q: 'I feel tired. You should take ________', answer: 'tablet'},
-  {q: 'I have cold and cough. You should not go out. Wear ________', answer: 'facemask'}
+  { q: "I have pain in the teeth. You should go to ________", answer: 'dentist' },
+  { q: 'I have chest pain. You should call an ________', answer: 'ambulance' },
+  { q: 'I have a cut on my finger. You should put a ______ on it.', answer: 'plaster' },
+  { q: 'I have pain on my legs. You should apply pain relief ________', answer: 'ointment' },
+  { q: 'I feel tired. You should take ________', answer: 'tablet' },
+  { q: 'I have cold and cough. You should not go out. Wear ________', answer: 'facemask' }
 ]
 
-export default function Assessment({onDone}){
+export default function Assessment({ onDone }) {
   const [step, setStep] = useState('A')
-  const [a1Drops, setA1Drops] = useState(Array(PART_A.length).fill(null))
-  const [a2Drops, setA2Drops] = useState(Array(PART_B.length).fill(null))
+  const [a1Index, setA1Index] = useState(0)
+  const [a2Index, setA2Index] = useState(0)
+  const [a1Drops, setA1Drops] = useState([])
+  const [a2Drops, setA2Drops] = useState([])
   const [optionsA, setOptionsA] = useState(DIAG_OPTIONS)
   const [optionsB, setOptionsB] = useState(PARTB_OPTIONS)
   const [feedback, setFeedback] = useState(null)
+  const [positiveMsg, setPositiveMsg] = useState(null)
+  const [locked, setLocked] = useState(false)
   const confettiRef = useRef(null)
 
-  function onDragStart(e,item){ e.dataTransfer.setData('text/plain', JSON.stringify({type:'optionA', id:item.id})) }
-  function onDragStartPlacedA(e,index,id){ e.dataTransfer.setData('text/plain', JSON.stringify({type:'placedA', id, fromIndex:index})) }
-  function onDragStartOptionB(e,opt){ e.dataTransfer.setData('text/plain', JSON.stringify({type:'optionB', val:opt})) }
-  function onDragStartPlacedB(e,index,val){ e.dataTransfer.setData('text/plain', JSON.stringify({type:'placedB', val, fromIndex:index})) }
+  function onDragStartOptionB(e, opt) { e.dataTransfer.setData('text/plain', JSON.stringify({ type: 'optionB', val: opt })) }
 
-  function handleDropA(e,index){
-    e.preventDefault()
-    const raw = e.dataTransfer.getData('text/plain')
-    if(!raw) return
-    let payload
-    try{ payload = JSON.parse(raw) }catch(err){ return }
-
-    setA1Drops(prev=>{
-      const next = prev.slice()
-      if(payload.type === 'optionA'){
-        // placing from options: remove payload.id from options and if target had one, return it to options
-        const prevId = next[index]
-        next[index] = payload.id
-        setOptionsA(optPrev=>{
-          let working = optPrev.slice()
-          if(prevId){
-            // add previous back only if missing
-            if(!working.find(p=>p.id===prevId)){
-              const item = DIAG_OPTIONS.find(x=>x.id===prevId)
-              if(item) working = [...working, item]
-            }
-          }
-          // remove the placed id from options
-          working = working.filter(p=>p.id !== payload.id)
-          return working
-        })
-      } else if(payload.type === 'placedA'){
-        // move or swap between questions
-        const from = payload.fromIndex
-        if(from === index) return next
-        const sourceId = payload.id
-        const targetId = next[index]
-        // put source into target
-        next[index] = sourceId
-        // put target into source slot (could be undefined -> null)
-        next[from] = targetId || null
-      }
-      return next
-    })
-  }
-
-  function handleDropB(e,index){
-    e.preventDefault()
-    const raw = e.dataTransfer.getData('text/plain')
-    if(!raw) return
-    let payload
-    try{ payload = JSON.parse(raw) }catch(err){ payload = {type:'optionB', val: raw} }
-
-    setA2Drops(prev=>{
-      const next = prev.slice()
-      if(payload.type === 'optionB'){
-        const prevVal = next[index]
-        next[index] = payload.val
-        setOptionsB(prevB=>{
-          let working = prevB.slice()
-          if(prevVal && !working.includes(prevVal)) working = [...working, prevVal]
-          working = working.filter(x=> x !== payload.val)
-          return working
-        })
-      } else if(payload.type === 'placedB'){
-        const from = payload.fromIndex
-        if(from === index) return next
-        const sourceVal = payload.val
-        const targetVal = next[index]
-        next[index] = sourceVal
-        next[from] = targetVal || null
-      }
-      return next
-    })
-  }
-
-  // allow dropping back to options area (A)
-  function handleDropToOptionsA(e){
-    e.preventDefault()
-    const raw = e.dataTransfer.getData('text/plain')
-    if(!raw) return
-    let payload
-    try{ payload = JSON.parse(raw) }catch(err){ return }
-    if(payload.type === 'placedA'){
-      const from = payload.fromIndex
-      setA1Drops(prev=>{
-        const next = prev.slice()
-        next[from] = null
-        return next
-      })
-      setOptionsA(prev=>{
-        if(prev.find(p=>p.id===payload.id)) return prev
-        const item = DIAG_OPTIONS.find(x=>x.id===payload.id)
-        return item ? [...prev, item] : prev
-      })
+  function handleSelectA(optId) {
+    if (locked) return;
+    const answer = PART_A[a1Index].answer;
+    if (optId === answer) {
+      setLocked(true);
+      setA1Drops(prev => [...prev, optId]);
+      // Note: We don't necessarily filter optionsA if you want them all available for every question, 
+      // but keeping your logic of removal:
+      setOptionsA(prev => prev.filter(opt => opt.id !== optId));
+      const msg = POSITIVE_FEEDBACKS[Math.floor(Math.random() * POSITIVE_FEEDBACKS.length)];
+      setPositiveMsg(msg);
+      setTimeout(() => {
+        setPositiveMsg(null);
+        setA1Index(idx => idx + 1);
+        setLocked(false);
+      }, 1200);
+    } else {
+      setPositiveMsg('Try again! You can do it!');
+      setTimeout(() => setPositiveMsg(null), 1200);
     }
   }
 
-  // allow dropping back to options area (B)
-  function handleDropToOptionsB(e){
+  function handleDropB(e) {
+    if (locked) return;
     e.preventDefault()
     const raw = e.dataTransfer.getData('text/plain')
-    if(!raw) return
+    if (!raw) return
     let payload
-    try{ payload = JSON.parse(raw) }catch(err){ payload = {type:'optionB', val:raw} }
-    if(payload.type === 'placedB'){
-      const from = payload.fromIndex
-      setA2Drops(prev=>{
-        const next = prev.slice()
-        next[from] = null
-        return next
-      })
-      setOptionsB(prev=> prev.includes(payload.val) ? prev : [...prev, payload.val])
+    try { payload = JSON.parse(raw) } catch (err) { payload = { type: 'optionB', val: raw } }
+    const answer = PART_B[a2Index].answer
+    if (payload.type === 'optionB' && payload.val === answer) {
+      setLocked(true)
+      setA2Drops(prev => [...prev, payload.val])
+      setOptionsB(prev => prev.filter(opt => opt !== payload.val))
+      const msg = POSITIVE_FEEDBACKS[Math.floor(Math.random() * POSITIVE_FEEDBACKS.length)]
+      setPositiveMsg(msg)
+      setTimeout(() => {
+        setPositiveMsg(null)
+        setA2Index(idx => idx + 1)
+        setLocked(false)
+      }, 1200)
+    } else if (payload.type === 'optionB') {
+      setPositiveMsg('Try again! You can do it!')
+      setTimeout(() => setPositiveMsg(null), 1200)
     }
   }
 
-  function checkAnswers(){
-    let a1Correct = 0, a2Correct = 0
-    PART_A.forEach((q,i)=>{ if(a1Drops[i] === q.answer) a1Correct++ })
-    PART_B.forEach((q,i)=>{ if(a2Drops[i] === q.answer) a2Correct++ })
+  function checkAnswers() {
+    let a1Correct = a1Drops.length; // Simplified since they can't progress without correct answer
+    let a2Correct = a2Drops.length;
     const total = a1Correct + a2Correct
-    setFeedback({a1:a1Correct,a2:a2Correct,total})
-    if(total === PART_A.length + PART_B.length && confettiRef.current){
+    setFeedback({ a1: a1Correct, a2: a2Correct, total })
+    if (total === PART_A.length + PART_B.length && confettiRef.current) {
       const c = confettiRef.current; const ctx = c.getContext('2d'); c.width = window.innerWidth; c.height = window.innerHeight
-      for(let i=0;i<200;i++){ ctx.fillStyle = `hsl(${Math.random()*360},80%,60%)`; ctx.fillRect(Math.random()*c.width, Math.random()*c.height, 6,6) }
+      for (let i = 0; i < 200; i++) { ctx.fillStyle = `hsl(${Math.random() * 360},80%,60%)`; ctx.fillRect(Math.random() * c.width, Math.random() * c.height, 6, 6) }
     }
   }
 
-  function resetAssessment(){
-    setA1Drops(Array(PART_A.length).fill(null))
-    setA2Drops(Array(PART_B.length).fill(null))
+  function resetAssessment() {
+    setA1Index(0)
+    setA2Index(0)
+    setA1Drops([])
+    setA2Drops([])
     setOptionsA(DIAG_OPTIONS)
     setOptionsB(PARTB_OPTIONS)
     setFeedback(null)
@@ -174,84 +121,135 @@ export default function Assessment({onDone}){
   }
 
   return (
-    <div style={{padding:'0 24px 24px 24px', backgroundImage:"url('/assets/background2.jpg')", backgroundSize:'cover', backgroundPosition:'center', backgroundRepeat:'no-repeat', minHeight:'100vh'}}>
-      <h2 style={{textAlign:'center', fontSize:60, fontWeight:900, marginTop:0}}>Drag and Drop</h2>
+    <div style={{ padding: '0 24px 24px 24px', backgroundImage: "url('/assets/background2.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '100vh' }}>
+      {positiveMsg && (
+        <div style={{ position: 'fixed', top: 80, left: '50%', transform: 'translateX(-50%)', background: 'rgba(255,255,255,0.97)', color: '#1976d2', fontWeight: 'bold', fontSize: 36, borderRadius: 18, boxShadow: '0 4px 24px #1976d2aa', padding: '18px 48px', zIndex: 1000, border: '3px solid #1976d2' }}>
+          {positiveMsg}
+        </div>
+      )}
+
+      <h2 style={{ textAlign: 'center', fontSize: 60, fontWeight: 900, marginTop: 0 }}>Health Quiz</h2>
 
       {step === 'A' && (
-        <div style={{width:'100%',margin:'12px 0',paddingLeft:12,paddingRight:12}}>
-          <div style={{display:'flex',gap:20,alignItems:'flex-start'}}>
-            <div onDragOver={(e)=>e.preventDefault()} onDrop={handleDropToOptionsA} style={{width:420,display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12, position:'relative', marginLeft:0, alignSelf:'flex-start'}}>
-              {optionsA.map(opt=> (
-                <div key={opt.id} draggable onDragStart={(e)=>onDragStart(e,opt)} style={{width:'100%',height:190,background:'transparent',borderRadius:8,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',cursor:'grab'}}>
-                  <img src={opt.img} alt={opt.label} style={{width:200,height:160,objectFit:'contain',filter:'contrast(1.25) saturate(1.35) brightness(1.08)'}} />
-                  <div style={{fontSize:18,marginTop:8,textAlign:'center',fontWeight:900,color:'#111'}}>{opt.label}</div>
-                </div>
-              ))}
-            </div>
-
-            <div style={{flex:1,display:'grid',gridTemplateColumns:'1fr 1fr',gap:26, marginLeft:460}}>
-              {PART_A.map((p,i)=> (
-                <div key={i} onDragOver={(e)=>e.preventDefault()} onDrop={(e)=>handleDropA(e,i)} style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,background:'rgba(255,255,255,0.06)',padding:18,minHeight:160,borderRadius:12,border:'1px solid rgba(255,255,255,0.18)',boxSizing:'border-box',boxShadow:'0 8px 20px rgba(0,0,0,0.25)'}}>
-                  <div style={{flex:1,fontSize:30,lineHeight:1.45,fontWeight:800,color:'#02122a'}}>{p.q}</div>
-                  <div style={{width:260,height:160,display:'flex',alignItems:'center',justifyContent:'center'}}>
-                    {a1Drops[i] ? (
-                      <img draggable onDragStart={(e)=>onDragStartPlacedA(e,i,a1Drops[i])} src={DIAG_OPTIONS.find(x=>x.id===a1Drops[i]).img} alt="ans" style={{maxWidth:'100%',maxHeight:'100%',filter:'contrast(1.25) saturate(1.35) brightness(1.08)',cursor:'grab'}} />
-                    ) : <div style={{width:1}} />}
+        <div style={{ width: '100%', margin: '12px 0' }}>
+          <div style={{ maxWidth: 800, margin: '0 auto' }}>
+            {a1Index < PART_A.length ? (
+              <>
+                <div style={{ marginBottom: 24 }}>
+                  <div style={{ fontSize: 24, fontWeight: 700 }}>Part A Progress</div>
+                  <div style={{ height: 18, background: '#e3f2fd', borderRadius: 9, overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: `${(a1Index / PART_A.length) * 100}%`, background: '#1976d2', transition: 'width 0.4s' }}></div>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          <div style={{display:'flex',gap:12,justifyContent:'center',marginTop:18}}>
-            <button className="action-btn" onClick={()=>setStep('B')}>Next: Part B</button>
-            <button className="action-btn secondary" onClick={resetAssessment}>Reset</button>
-            <button className="action-btn" onClick={onDone}>Back Home</button>
+                <div style={{ fontSize: 28, fontWeight: 800, marginBottom: 24 }}>{PART_A[a1Index].q}</div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 16, marginTop: 12 }}>
+                  {optionsA.map(opt => (
+                    <button key={opt.id} disabled={locked} onClick={() => handleSelectA(opt.id)} style={{ padding: 8, background: '#fff', borderRadius: 10, border: '2px solid #1976d2', cursor: 'pointer', opacity: locked ? 0.5 : 1, minHeight: 80, minWidth: 100, fontSize: 16, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px #1976d233' }}>
+                      <img src={opt.img} alt={opt.label} style={{ width: 160, height: 160, objectFit: 'contain', marginBottom: 6 }} />
+                      <div style={{ fontWeight: 700, color: '#1976d2', fontSize: 15 }}>{opt.label}</div>
+                    </button>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: 32, marginBottom: 20 }}>Great job! Part A complete.</div>
+                <button className="action-btn" onClick={() => setStep('B')}>Next: Part B</button>
+              </div>
+            )}
           </div>
         </div>
       )}
 
       {step === 'B' && (
-        <div style={{maxWidth:1000,margin:'12px auto'}}>
-          <div style={{display:'flex',gap:20,alignItems:'flex-start'}}>
-            <div onDragOver={(e)=>e.preventDefault()} onDrop={handleDropToOptionsB} style={{width:420,display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12, position:'relative', marginLeft:0, marginRight:20}}>
-              {optionsB.map(opt=> (
-                <div key={opt} draggable onDragStart={(e)=>onDragStartOptionB(e,opt)} style={{padding:'12px 14px',background:'rgba(255,255,255,0.02)',borderRadius:8,cursor:'grab',textAlign:'center',fontSize:20,fontWeight:900,color:'#111',border:'1px solid rgba(0,0,0,0.08)'}}>{opt}</div>
-              ))}
-            </div>
-
-            <div style={{flex:1,display:'grid',gridTemplateColumns:'1fr 1fr',gap:18}}>
-              {PART_B.map((p,i)=> (
-                <div key={i} onDragOver={(e)=>e.preventDefault()} onDrop={(e)=>handleDropB(e,i)} style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,background:'rgba(255,255,255,0.06)',padding:16,minHeight:120,borderRadius:12,border:'1px solid rgba(255,255,255,0.18)',boxSizing:'border-box',boxShadow:'0 6px 16px rgba(0,0,0,0.18)'}}>
-                  <div style={{flex:1,fontSize:26,lineHeight:1.35,fontWeight:800,color:'#02122a'}}>{p.q}</div>
-                  <div style={{minWidth:220,minHeight:52,display:'flex',alignItems:'center',justifyContent:'center'}}>
-                    {a2Drops[i] ? (
-                      <div draggable onDragStart={(e)=>onDragStartPlacedB(e,i,a2Drops[i])} style={{padding:'6px 10px',borderRadius:8,fontWeight:900,cursor:'grab'}}>{a2Drops[i]}</div>
-                    ) : <div style={{width:1}} />}
+        <div style={{ width: '100%', margin: '12px 0' }}>
+          <div style={{ maxWidth: 600, margin: '0 auto' }}>
+            {a2Index < PART_B.length ? (
+              <>
+                <div style={{ marginBottom: 24 }}>
+                  <div style={{ fontSize: 24, fontWeight: 700 }}>Part B Progress</div>
+                  <div style={{ height: 18, background: '#e3f2fd', borderRadius: 9, overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: `${(a2Index / PART_B.length) * 100}%`, background: '#1976d2' }}></div>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          <div style={{display:'flex',gap:12,justifyContent:'center',marginTop:18}}>
-            <button className="action-btn" onClick={checkAnswers}>Check Answers</button>
-            <button className="action-btn secondary" onClick={()=>setStep('A')}>Back: Part A</button>
-            <button className="action-btn" onClick={resetAssessment}>Reset</button>
-            <button className="action-btn" onClick={onDone}>Back Home</button>
+                <div style={{ fontSize: 28, fontWeight: 800, marginBottom: 24 }}>
+                  {(() => {
+                    // Split question at underline (______)
+                    const q = PART_B[a2Index].q;
+                    const parts = q.split(/_{2,}/);
+                    return (
+                      <>
+                        {parts[0]}
+                        <span
+                          onDragOver={e => e.preventDefault()}
+                          onDrop={handleDropB}
+                          style={{
+                            display: 'inline-block',
+                            minWidth: 120,
+                            minHeight: 36,
+                            borderBottom: '4px solid #1976d2',
+                            background: a2Drops[a2Index] ? '#e3f2fd' : '#fff',
+                            borderRadius: 6,
+                            margin: '0 8px',
+                            textAlign: 'center',
+                            verticalAlign: 'middle',
+                            fontWeight: 900,
+                            fontSize: 24,
+                            color: '#1976d2',
+                            transition: 'background 0.2s',
+                          }}
+                        >
+                          {a2Drops[a2Index] ? a2Drops[a2Index] : <span style={{color:'#bbb', fontWeight:400, fontSize:20}}>Drop here</span>}
+                        </span>
+                        {parts[1] || ''}
+                      </>
+                    );
+                  })()}
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, marginTop: 16, justifyContent: 'center' }}>
+                  {optionsB.map(opt => (
+                            <div key={opt} draggable={!locked} onDragStart={e => onDragStartOptionB(e, opt)} style={{ padding: '16px 28px', background: '#fff', borderRadius: 14, border: '3px solid #1976d2', cursor: 'grab', opacity: locked ? 0.5 : 1, fontSize: 26, fontWeight: 800, color: '#1976d2', minWidth: 120, minHeight: 48, boxShadow: '0 3px 12px #1976d233', textAlign: 'center', marginBottom: 8 }}>{opt}</div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div style={{ textAlign: 'center' }}>
+                <button className="action-btn" onClick={checkAnswers}>Check Final Results</button>
+              </div>
+            )}
           </div>
         </div>
       )}
+
+      <div style={{
+        position: 'fixed',
+        left: 0,
+        bottom: 0,
+        width: '100%',
+        background: 'rgba(255,255,255,0.95)',
+        boxShadow: '0 -2px 12px #1976d233',
+        display: 'flex',
+        gap: 8,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '12px 0 10px 0',
+        zIndex: 100
+      }}>
+        <button className="action-btn secondary" style={{fontSize: 16, padding: '6px 18px', minWidth: 0}} onClick={resetAssessment}>Reset</button>
+        {step === 'A' && (
+          <button className="action-btn" style={{fontSize: 16, padding: '6px 18px', minWidth: 0, background:'#ffb300', color:'#222', fontWeight:700}} onClick={()=>setStep('B')}>Skip to Part B</button>
+        )}
+        <button className="action-btn" style={{fontSize: 16, padding: '6px 18px', minWidth: 0}} onClick={onDone}>Back Home</button>
+      </div>
 
       {feedback && (
-        <div style={{textAlign:'center',marginTop:18}}>
-          <div>Part A correct: {feedback.a1} / {PART_A.length}</div>
-          <div>Part B correct: {feedback.a2} / {PART_B.length}</div>
-          <div style={{marginTop:8,fontWeight:700}}>Total: {feedback.total} / {PART_A.length + PART_B.length}</div>
+        <div style={{ textAlign: 'center', marginTop: 18, background: 'white', padding: 20, borderRadius: 15 }}>
+          <h3>Results</h3>
+          <div>Total Score: {feedback.total} / {PART_A.length + PART_B.length}</div>
         </div>
       )}
 
-      <canvas ref={confettiRef} style={{position:'fixed',left:0,top:0,width:'100%',height:'100%',pointerEvents:'none'}} />
+      <canvas ref={confettiRef} style={{ position: 'fixed', left: 0, top: 0, width: '100%', height: '100%', pointerEvents: 'none' }} />
     </div>
   )
 }
