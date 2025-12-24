@@ -26,7 +26,9 @@ export default function Landing({onStart, onSelect, completed = [], allDone = fa
               >
                 <img src={c.img} alt={c.title} className="health-img" />
                 <div className="health-label">{c.title}</div>
-                {done && <span className="tick">✓</span>}
+                {done && (
+                  <span className="tick big-tick">✓</span>
+                )}
               </button>
             );
           })}

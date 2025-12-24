@@ -41,14 +41,36 @@ body, html, #root {
   width: 100%;
 }
 
-.title {
-  font-size: 56px;
-  margin: 6px 0;
+
+.tick {
+  color: #2ecc40;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-top: 8px;
+  display: inline-block;
+  vertical-align: middle;
+  transition: all 0.3s cubic-bezier(.5,1.8,.5,1);
 }
 
-.subtitle {
-  font-size: 22px;
-  margin-top: 12px;
+.big-tick {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.85);
+  color: #2ecc40;
+  font-size: 7rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 24px;
+  z-index: 10;
+  box-shadow: 0 0 0 8px #fff9e6;
+  pointer-events: none;
+  text-shadow: 0 4px 24px #2ecc4066, 0 0 8px #fff;
+  animation: popIn 0.5s cubic-bezier(.5,1.8,.5,1) both;
 }
 /* --- Health Grid Styling --- */
 .health-grid {

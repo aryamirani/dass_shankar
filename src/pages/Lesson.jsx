@@ -32,7 +32,6 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
   const [feedback, setFeedback] = useState(null)
   const [positiveMsg, setPositiveMsg] = useState(null)
   const confettiRef = useRef(null)
-  const completeCalledRef = useRef(false)
 
   useEffect(()=>{
     setPhase('exercise')
@@ -40,7 +39,7 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
     setSuccess(false)
     setHealth(0)
     setFeedback(null)
-    completeCalledRef.current = false
+    setPositiveMsg(null)
   },[data])
 
   useEffect(()=>{
@@ -48,14 +47,10 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
     if(required.length === 0) return
     const correctDropped = dropped.filter(id => required.includes(id))
     setHealth(correctDropped.length / required.length)
-    if(correctDropped.length === required.length){
+    if(correctDropped.length === required.length && required.length > 0){
       setSuccess(true)
       launchConfetti()
       setPhase('healed')
-      if(onComplete && !completeCalledRef.current){
-        onComplete(data.id || data.title)
-        completeCalledRef.current = true
-      }
     }
   },[dropped, data])
 
@@ -121,7 +116,6 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
       <div className="main-content" style={{display:'flex',flexDirection:'column',flex:1}}>
         {phase === 'exercise' && (
           <>
-            {/* Progress Bar Section - Above Everything */}
             <div style={{display:'flex',alignItems:'center',gap:20,background:'rgba(255,255,255,0.7)',padding:15,borderRadius:15,marginBottom:30,maxWidth:'1200px',width:'100%',margin:'0 auto 30px'}}>
               <span style={{fontSize:20,fontWeight:'bold',color:'#333',whiteSpace:'nowrap'}}>Drag the helpful items:</span>
               <div style={{flex:1,height:25,background:'#ddd',borderRadius:15,overflow:'hidden',border:'2px solid #333'}}>
@@ -129,11 +123,8 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
               </div>
             </div>
 
-            {/* Main Content Area */}
             <div style={{display:'flex',gap:'40px',alignItems:'flex-start',justifyContent:'center',width:'100%',maxWidth:'1200px',margin:'0 auto',flex:1}}>
-              {/* Character and Text Side by Side */}
               <div style={{display:'flex',flexDirection:'row',gap:32,flex:'0 0 700px',alignItems:'center'}}>
-                {/* Character Drop Zone */}
                 <div onDrop={onDrop} onDragOver={e=>e.preventDefault()} style={{position:'relative',width:340,height:350,border:'4px dashed #1976d2',borderRadius:25,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',background:'rgba(25,118,210,0.05)'}}>
                   <div style={{position:'absolute',top:-15,background:'white',padding:'2px 15px',border:'2px solid #1976d2',borderRadius:10,fontWeight:'bold',color:'#1976d2'}}>Drop Here</div>
                   <img src={data.img} alt="character" style={{height:'80%',objectFit:'contain'}} />
@@ -143,7 +134,6 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
                     </div>
                   )}
                 </div>
-                {/* Text Box */}
                 <div className="speech-cloud" style={{background:'#fff',padding:20,borderRadius:20,boxShadow:'0 4px 10px rgba(0,0,0,0.1)',border:'1px solid #eee',minWidth:280,maxWidth:340}}>
                   <h3 style={{marginTop:0}}>What the child says:</h3>
                   <ul style={{fontSize:18,lineHeight:'1.5'}}>
@@ -153,7 +143,6 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
                   </ul>
                 </div>
               </div>
-              {/* Right Side: Draggable Items in 2 Columns */}
               <div className="items-grid" style={{display:'grid',gridTemplateColumns:'repeat(2, 1fr)',gap:15,flex:'0 0 400px'}}>
                 {ALL_ITEMS.map((item)=>{
                   const isUsed = dropped.includes(item.id);
@@ -195,8 +184,15 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
           <div style={{display:'flex',flexDirection:'column',alignItems:'center',marginTop:50}}>
             <img src={'/assets/boy.png'} alt="happy" style={{width:300}} />
             <h2 style={{color:'#2e7d32'}}>I feel much better now!</h2>
-            <button className="action-btn" onClick={()=>{
-              if (typeof onNext === 'function') onNext();
+            <button className="action-btn" onClick={() => {
+              if (onComplete) {
+                onComplete(data.id)
+                setTimeout(() => {
+                  if (onNext) onNext()
+                }, 0)
+              } else if (onNext) {
+                onNext()
+              }
             }} style={{padding:'15px 40px',fontSize:20}}>Next</button>
           </div>
         )}
