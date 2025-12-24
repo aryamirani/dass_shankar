@@ -120,23 +120,33 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
         <div style={{width:80}}></div>
       </div>
 
-      <div className="main-content" style={{display:'flex',flexDirection:'column',alignItems:'center',flex:1}}>
+      <div className="main-content" style={{display:'flex',flexDirection:'column',flex:1}}>
         {phase === 'exercise' && (
           <>
-            <div style={{display:'flex',gap:'40px',alignItems:'center',justifyContent:'center',width:'100%',maxWidth:'1100px'}}>
-              {/* Left Side: Character */}
-              <div onDrop={onDrop} onDragOver={e=>e.preventDefault()} style={{position:'relative',width:300,height:350,border:'4px dashed #1976d2',borderRadius:25,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',background:'rgba(25,118,210,0.05)'}}>
-                <div style={{position:'absolute',top:-15,background:'white',padding:'2px 15px',border:'2px solid #1976d2',borderRadius:10,fontWeight:'bold',color:'#1976d2'}}>Drop Here</div>
-                <img src={data.img} alt="character" style={{height:'80%',objectFit:'contain'}} />
-                {feedback && (
-                  <div style={{position:'absolute',left:feedback.x,top:feedback.y,fontSize:60,fontWeight:'bold',color:feedback.type==='tick'?'green':'red',textShadow:'2px 2px 4px rgba(0,0,0,0.3)',zIndex:5}}>
-                    {feedback.type==='tick'?'✓':'✗'}
-                  </div>
-                )}
+            {/* Progress Bar Section - Above Everything */}
+            <div style={{display:'flex',alignItems:'center',gap:20,background:'rgba(255,255,255,0.7)',padding:15,borderRadius:15,marginBottom:30,maxWidth:'1200px',width:'100%',margin:'0 auto 30px'}}>
+              <span style={{fontSize:20,fontWeight:'bold',color:'#333',whiteSpace:'nowrap'}}>Drag the helpful items:</span>
+              <div style={{flex:1,height:25,background:'#ddd',borderRadius:15,overflow:'hidden',border:'2px solid #333'}}>
+                <div style={{width:`${health*100}%`,height:'100%',background:'linear-gradient(90deg, #4caf50, #8bc34a)',transition:'width 0.4s'}} />
               </div>
+            </div>
 
-              {/* Right Side: Text & Progress */}
-              <div style={{flex:1,display:'flex',flexDirection:'column',gap:20}}>
+            {/* Main Content Area */}
+            <div style={{display:'flex',gap:'40px',alignItems:'flex-start',justifyContent:'center',width:'100%',maxWidth:'1200px',margin:'0 auto',flex:1}}>
+              {/* Left Side: Character and Text */}
+              <div style={{display:'flex',flexDirection:'column',gap:20,flex:'0 0 500px'}}>
+                {/* Character Drop Zone */}
+                <div onDrop={onDrop} onDragOver={e=>e.preventDefault()} style={{position:'relative',width:'100%',height:350,border:'4px dashed #1976d2',borderRadius:25,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',background:'rgba(25,118,210,0.05)'}}>
+                  <div style={{position:'absolute',top:-15,background:'white',padding:'2px 15px',border:'2px solid #1976d2',borderRadius:10,fontWeight:'bold',color:'#1976d2'}}>Drop Here</div>
+                  <img src={data.img} alt="character" style={{height:'80%',objectFit:'contain'}} />
+                  {feedback && (
+                    <div style={{position:'absolute',left:feedback.x,top:feedback.y,fontSize:60,fontWeight:'bold',color:feedback.type==='tick'?'green':'red',textShadow:'2px 2px 4px rgba(0,0,0,0.3)',zIndex:5}}>
+                      {feedback.type==='tick'?'✓':'✗'}
+                    </div>
+                  )}
+                </div>
+
+                {/* Text Box */}
                 <div className="speech-cloud" style={{background:'#fff',padding:20,borderRadius:20,boxShadow:'0 4px 10px rgba(0,0,0,0.1)',border:'1px solid #eee'}}>
                   <h3 style={{marginTop:0}}>What the child says:</h3>
                   <ul style={{fontSize:18,lineHeight:'1.5'}}>
@@ -145,48 +155,42 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
                     ))}
                   </ul>
                 </div>
-
-                <div style={{display:'flex',alignItems:'center',gap:20,background:'rgba(255,255,255,0.7)',padding:15,borderRadius:15}}>
-                   <span style={{fontSize:20,fontWeight:'bold',color:'#333'}}>Drag the helpful items:</span>
-                   <div style={{flex:1,height:25,background:'#ddd',borderRadius:15,overflow:'hidden',border:'2px solid #333'}}>
-                      <div style={{width:`${health*100}%`,height:'100%',background:'linear-gradient(90deg, #4caf50, #8bc34a)',transition:'width 0.4s'}} />
-                   </div>
-                </div>
               </div>
-            </div>
 
-            {/* Bottom: Draggable Items Grid */}
-            <div className="items-grid" style={{display:'grid',gridTemplateColumns:'repeat(5, 1fr)',gridTemplateRows:'repeat(2, 1fr)',gap:15,marginTop:'auto',padding:'20px 0',width:'100%',maxWidth:'1000px'}}>
-              {ALL_ITEMS.map((item)=>{
-                const isUsed = dropped.includes(item.id);
-                const isCorrect = data.items.includes(item.id);
-                return (
-                  <div 
-                    key={item.id} 
-                    draggable={!isUsed} 
-                    onDragStart={e=>onDragStart(e,item)}
-                    style={{
-                      position:'relative',
-                      background:'white',
-                      padding:10,
-                      borderRadius:15,
-                      boxShadow:'0 2px 5px rgba(0,0,0,0.1)',
-                      cursor: isUsed ? 'default' : 'grab',
-                      opacity: isUsed ? 0.6 : 1,
-                      display:'flex',
-                      justifyContent:'center',
-                      alignItems:'center'
-                    }}
-                  >
-                    <img src={item.src} alt={item.id} style={{width:'80px',height:'80px',objectFit:'contain'}} />
-                    {isUsed && (
-                      <div style={{position:'absolute',fontSize:40,color:isCorrect?'green':'red',fontWeight:'bold'}}>
-                        {isCorrect?'✓':'✗'}
-                      </div>
-                    )}
-                  </div>
-                )
-              })}
+              {/* Right Side: Draggable Items in 2 Columns */}
+              <div className="items-grid" style={{display:'grid',gridTemplateColumns:'repeat(2, 1fr)',gap:15,flex:'0 0 400px'}}>
+                {ALL_ITEMS.map((item)=>{
+                  const isUsed = dropped.includes(item.id);
+                  const isCorrect = data.items.includes(item.id);
+                  return (
+                    <div 
+                      key={item.id} 
+                      draggable={!isUsed} 
+                      onDragStart={e=>onDragStart(e,item)}
+                      style={{
+                        position:'relative',
+                        background:'white',
+                        padding:15,
+                        borderRadius:15,
+                        boxShadow:'0 2px 5px rgba(0,0,0,0.1)',
+                        cursor: isUsed ? 'default' : 'grab',
+                        opacity: isUsed ? 0.6 : 1,
+                        display:'flex',
+                        justifyContent:'center',
+                        alignItems:'center',
+                        height:120
+                      }}
+                    >
+                      <img src={item.src} alt={item.id} style={{width:'190px',height:'140px',objectFit:'contain'}} />
+                      {isUsed && (
+                        <div style={{position:'absolute',fontSize:40,color:isCorrect?'green':'red',fontWeight:'bold'}}>
+                          {isCorrect?'✓':'✗'}
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
             </div>
           </>
         )}
