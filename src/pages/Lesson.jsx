@@ -133,10 +133,10 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
 
             {/* Main Content Area */}
             <div style={{display:'flex',gap:'40px',alignItems:'flex-start',justifyContent:'center',width:'100%',maxWidth:'1200px',margin:'0 auto',flex:1}}>
-              {/* Left Side: Character and Text */}
-              <div style={{display:'flex',flexDirection:'column',gap:20,flex:'0 0 500px'}}>
+              {/* Character and Text Side by Side */}
+              <div style={{display:'flex',flexDirection:'row',gap:32,flex:'0 0 700px',alignItems:'center'}}>
                 {/* Character Drop Zone */}
-                <div onDrop={onDrop} onDragOver={e=>e.preventDefault()} style={{position:'relative',width:'100%',height:350,border:'4px dashed #1976d2',borderRadius:25,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',background:'rgba(25,118,210,0.05)'}}>
+                <div onDrop={onDrop} onDragOver={e=>e.preventDefault()} style={{position:'relative',width:340,height:350,border:'4px dashed #1976d2',borderRadius:25,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',background:'rgba(25,118,210,0.05)'}}>
                   <div style={{position:'absolute',top:-15,background:'white',padding:'2px 15px',border:'2px solid #1976d2',borderRadius:10,fontWeight:'bold',color:'#1976d2'}}>Drop Here</div>
                   <img src={data.img} alt="character" style={{height:'80%',objectFit:'contain'}} />
                   {feedback && (
@@ -145,9 +145,8 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
                     </div>
                   )}
                 </div>
-
                 {/* Text Box */}
-                <div className="speech-cloud" style={{background:'#fff',padding:20,borderRadius:20,boxShadow:'0 4px 10px rgba(0,0,0,0.1)',border:'1px solid #eee'}}>
+                <div className="speech-cloud" style={{background:'#fff',padding:20,borderRadius:20,boxShadow:'0 4px 10px rgba(0,0,0,0.1)',border:'1px solid #eee',minWidth:280,maxWidth:340}}>
                   <h3 style={{marginTop:0}}>What the child says:</h3>
                   <ul style={{fontSize:18,lineHeight:'1.5'}}>
                     {data.lines.map((l,i)=>(
@@ -156,7 +155,6 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
                   </ul>
                 </div>
               </div>
-
               {/* Right Side: Draggable Items in 2 Columns */}
               <div className="items-grid" style={{display:'grid',gridTemplateColumns:'repeat(2, 1fr)',gap:15,flex:'0 0 400px'}}>
                 {ALL_ITEMS.map((item)=>{
@@ -181,7 +179,7 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
                         height:120
                       }}
                     >
-                      <img src={item.src} alt={item.id} style={{width:'190px',height:'140px',objectFit:'contain'}} />
+                      <img src={item.src} alt={item.id} style={{width:'195px',height:'145px',objectFit:'contain'}} />
                       {isUsed && (
                         <div style={{position:'absolute',fontSize:40,color:isCorrect?'green':'red',fontWeight:'bold'}}>
                           {isCorrect?'✓':'✗'}
@@ -199,7 +197,9 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
           <div style={{display:'flex',flexDirection:'column',alignItems:'center',marginTop:50}}>
             <img src={'/assets/boy.png'} alt="happy" style={{width:300}} />
             <h2 style={{color:'#2e7d32'}}>I feel much better now!</h2>
-            <button className="action-btn" onClick={onBack} style={{padding:'15px 40px',fontSize:20}}>Finish</button>
+            <button className="action-btn" onClick={()=>{
+              if (typeof onNext === 'function') onNext();
+            }} style={{padding:'15px 40px',fontSize:20}}>Next</button>
           </div>
         )}
       </div>
