@@ -6,15 +6,15 @@ const CONDITIONS = [
       'I feel a little warm; I wish someone could tell me how hot I am.',
       'When I cough, I want to cover my mouth so others don\'t get sick.',
       'A warm cup would make my chest feel calmer.'
-    ], items: ['thermometer','tissue','facemask','hotdrink']
+    ], items: ['thermometer','tissue','hotdrink']
   },
   {
     id: 'fever', img: '/assets/boyfever.png', title: 'Fever',
     lines: [
-      'My body feels very hot and I feel really tired — I want to lie down.',
+      'My body feels very hot and I feel really tired.',
       'I feel shaky and a small sip of something warm might make me feel better.',
       'I wish I could know exactly how hot I am and get something to help with the pain.'
-    ], items: ['thermometer','medicine','facemask','bed','hotdrink']
+    ], items: ['thermometer','medicine','hotdrink']
   },
   {
     id: 'cough', img: '/assets/boycough.png', title: 'Cough',
@@ -22,15 +22,15 @@ const CONDITIONS = [
       'My chest keeps making a coughy sound and my throat feels scratchy.',
       'A warm drink helps my throat feel softer for a little while.',
       'When I cough I want to make sure my mouth is covered so droplets stay inside.'
-    ], items: ['facemask','hotdrink','medicine']
+    ], items: ['hotdrink','medicine']
   },
   {
     id: 'headache', img: '/assets/boyheadache.png', title: 'Headache',
     lines: [
-      'My head feels heavy and bright lights bother me — I want to lie down somewhere quiet.',
+      'My head feels heavy and bright lights bother me.',
       'A little rest and something gentle might take the edge off the pain.',
       'A warm drink makes my head feel a bit calmer.'
-    ], items: ['medicine','bed','hotdrink']
+    ], items: ['medicine','hotdrink']
   },
   {
     id: 'toothache', img: '/assets/boytooth.png', title: 'Toothache',
@@ -77,16 +77,16 @@ const CONDITIONS = [
   {
     id: 'stomach', img: '/assets/boystomach.png', title: 'Stomach Pain',
     lines: [
-      'My tummy hurts and I feel like curling up and resting.',
+      'My tummy hurts.',
       'A warm drink sometimes helps me feel a bit better.'
-    ], items: ['medicine','bed','hotdrink']
+    ], items: ['medicine','hotdrink']
   },
   {
     id: 'throat', img: '/assets/boythroat.png', title: 'Throat Pain',
     lines: [
       'My throat is sore and it hurts when I swallow food.',
       'Sipping something warm helps my throat feel less scratchy.'
-    ], items: ['medicine','hotdrink','facemask']
+    ], items: ['medicine','hotdrink']
   }
 ]
 

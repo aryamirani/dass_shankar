@@ -17,13 +17,11 @@ const ALL_ITEMS = [
   {id:'medicine', src:'/assets/medicine.png'},
   {id:'thermometer', src:'/assets/thermometer.png'},
   {id:'firstaid', src:'/assets/firstaid.png'},
-  {id:'bed', src:'/assets/bed.png'},
   {id:'hotdrink', src:'/assets/hotdrink.png'},
   {id:'food', src:'/assets/food.png'},
   {id:'tissue', src:'/assets/tissue.png'},
   {id:'toilet', src:'/assets/toilet.png'},
-  {id:'wetcloth', src:'/assets/wetcloth.png'},
-  {id:'facemask', src:'/assets/facemask.png'}
+  {id:'wetcloth', src:'/assets/wetcloth.png'}
 ]
 
 export default function Lesson({data, index, total, onBack, onNext, onComplete}){
