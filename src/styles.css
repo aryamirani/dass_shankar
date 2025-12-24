@@ -176,12 +176,48 @@ body, html, #root {
 }
 
 /* --- Lesson & Game Area --- */
-.lesson-root { padding: 12px; background: rgba(255, 255, 255, 0.82); border-radius: 18px; }
+.lesson-root { 
+  padding: 12px; 
+  background: rgba(255, 255, 255, 0.82); 
+  border-radius: 18px; 
+  
+  /* --- Make drag-and-drop lesson view always fit in viewport --- */
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  overflow: hidden;
+}
+
 .top-row { display: flex; align-items: center; justify-content: space-between; }
 .lesson-title { font-size: 36px; margin: 0; }
 .lesson-main { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 18px; }
 .video-area { flex: 1; min-width: 320px; }
 .game-area { width: 420px; display: flex; flex-direction: column; gap: 12px; }
+
+.scene {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 0;
+  min-width: 0;
+  overflow: visible;
+}
+
+.scene > div {
+  width: 100%;
+  max-width: 1800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2vw;
+}
 
 .human-card {
   background: #fff;
@@ -202,6 +238,12 @@ body, html, #root {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
   filter: contrast(1.75) saturate(1.5) brightness(1.05);
   transition: transform 180ms ease, box-shadow 180ms ease;
+  width: 7vw !important;
+  height: 7vw !important;
+  min-width: 60px !important;
+  min-height: 60px !important;
+  max-width: 120px !important;
+  max-height: 120px !important;
 }
 
 .drop-zone {
@@ -227,6 +269,9 @@ body, html, #root {
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
   border: 6px solid rgba(255, 255, 255, 0.9);
   position: relative;
+  font-size: 1.3vw;
+  min-font-size: 16px;
+  max-width: 32vw;
 }
 
 .bubble-from-mouth::after {
@@ -261,6 +306,23 @@ body, html, #root {
   }
   .health-img { width: 60px; height: 60px; }
   .title { font-size: 44px; }
+  .scene > div {
+    flex-direction: column;
+    align-items: center;
+    gap: 2vw;
+  }
+  .speech-cloud {
+    max-width: 90vw;
+    font-size: 2.5vw;
+  }
+  .draggable-item img {
+    width: 16vw !important;
+    height: 16vw !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
+    max-width: 90px !important;
+    max-height: 90px !important;
+  }
 }
 
 @media (max-width: 700px) {
@@ -278,4 +340,21 @@ body, html, #root {
   .health-img { width: 50px; height: 50px; }
   .health-label { font-size: 0.85rem; }
   .title { font-size: 32px; }
+  .scene > div {
+    flex-direction: column;
+    align-items: center;
+    gap: 2vw;
+  }
+  .speech-cloud {
+    max-width: 98vw;
+    font-size: 3.5vw;
+  }
+  .draggable-item img {
+    width: 22vw !important;
+    height: 22vw !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    max-width: 70px !important;
+    max-height: 70px !important;
+  }
 }
