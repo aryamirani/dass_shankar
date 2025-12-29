@@ -24,7 +24,7 @@ const ALL_ITEMS = [
   {id:'wetcloth', src:'/assets/wetcloth.png'}
 ]
 
-export default function Lesson({data, index, total, onBack, onNext, onComplete}){
+export default function Lesson({data, index, total, onBack, onNext, onComplete, onBackToGrid}){
   const [phase, setPhase] = useState('exercise')
   const [dropped, setDropped] = useState([])
   const [success, setSuccess] = useState(false)
@@ -187,12 +187,15 @@ export default function Lesson({data, index, total, onBack, onNext, onComplete})
             <button className="action-btn" onClick={() => {
               if (onComplete) {
                 onComplete(data.id)
-                setTimeout(() => {
-                  if (onNext) onNext()
-                }, 0)
-              } else if (onNext) {
-                onNext()
               }
+              // prefer returning to health grid if provided, otherwise fall back to onNext
+              setTimeout(() => {
+                if (typeof onBackToGrid === 'function') {
+                  onBackToGrid()
+                } else if (onNext) {
+                  onNext()
+                }
+              }, 0)
             }} style={{padding:'15px 40px',fontSize:20}}>Next</button>
           </div>
         )}

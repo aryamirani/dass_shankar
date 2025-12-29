@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Landing from './pages/Landing'
+import HealthProblems from './pages/HealthProblems'
 import Lesson from './pages/Lesson'
 import Assessment from './pages/Assessment'
 import Vocabulary from './pages/Vocabulary'
@@ -31,6 +32,7 @@ export default function App(){
     setView({name:'lesson', index})
   }
   function goHome(){ setView({name:'landing', index:0}) }
+  function goToHealth(){ setView({name:'health'}) }
   function goToVocabulary(){ setView({name:'vocabulary'}) }
   function goToVocabularyExercise(){ setView({name:'vocabularyExercise'}) }
   function goToVocabularyThree(){ setView({name:'vocabularyThree'}) }
@@ -52,8 +54,9 @@ export default function App(){
 
   return (
     <div className="app-root">
-      {view.name === 'landing' && <Landing onStart={()=>goToLesson(0)} onSelect={(imgIndex)=>goToLesson(imgIndex)} completed={completed} allDone={allDone} onAllDone={goToAssessment} onVocabulary={goToVocabulary} />}
-      {view.name === 'lesson' && <Lesson data={CONDITIONS[view.index]} index={view.index} total={CONDITIONS.length} onBack={goHome} onNext={next} onComplete={markCompleted} />}
+      {view.name === 'landing' && <Landing onVocabulary={goToVocabulary} onHealth={goToHealth} />}
+      {view.name === 'health' && <HealthProblems onStart={()=>goToLesson(0)} onSelect={(imgIndex)=>goToLesson(imgIndex)} completed={completed} allDone={allDone} onAllDone={goToAssessment} onVocabulary={goToVocabulary} onBack={goHome} />}
+      {view.name === 'lesson' && <Lesson data={CONDITIONS[view.index]} index={view.index} total={CONDITIONS.length} onBack={goHome} onNext={next} onComplete={markCompleted} onBackToGrid={goToHealth} />}
       {view.name === 'assessment' && <Assessment onDone={goHome} />}
       {view.name === 'vocabulary' && <Vocabulary onStart={goToVocabularyExercise} onBack={goHome} />}
       {view.name === 'vocabularyExercise' && <VocabularyExercise onBack={()=> setView({name:'vocabulary'})} onNextExercise={goToVocabularyThree} />}

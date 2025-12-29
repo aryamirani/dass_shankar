@@ -9,16 +9,19 @@ const GENTLE = [
 ]
 
 export default function VocabularyExercise({onBack, onNextExercise}){
-  // sample grid items (mirrors scanned worksheet)
-  // 4x4 grid (16 items) with 5 correct 'at' targets
-  const initial = useMemo(()=>[
-    'at','an','ab','ac',
-    'at','ap','ad','an',
-    'am','at','ab','at',
-    'ad','ap','at','an'
-  ].map((w,i)=>({id:i, word:w, removed:false})),[])
+  // generate randomized 4x4 grid (16 items) with 4-6 'at' targets placed randomly
+  const initialData = useMemo(()=>{
+    const distractors = ['an','ab','ac','ap','ad','am','ag','af','ar']
+    const countAt = Math.floor(Math.random()*3) + 4 // 4..6
+    const arr = []
+    for(let i=0;i<countAt;i++) arr.push('at')
+    while(arr.length < 16) arr.push(distractors[Math.floor(Math.random()*distractors.length)])
+    // shuffle Fisher-Yates
+    for(let i=arr.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); const t = arr[i]; arr[i]=arr[j]; arr[j]=t }
+    return { items: arr.map((w,i)=>({id:i, word:w, removed:false})), countAt }
+  }, [])
 
-  const [items, setItems] = useState(initial)
+  const [items, setItems] = useState(initialData.items)
   const [message, setMessage] = useState(null)
   const [completedCount, setCompletedCount] = useState(0)
 
@@ -39,7 +42,7 @@ export default function VocabularyExercise({onBack, onNextExercise}){
     }
   }
 
-  const totalAt = useMemo(()=> initial.filter(i=>i.word==='at').length, [initial])
+  const totalAt = initialData.countAt
 
   return (
     <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',padding:20,position:'relative',backgroundImage:`linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.6)), url(/assets/alphabet.jpg)`,backgroundSize:'cover',backgroundPosition:'center'}}>
