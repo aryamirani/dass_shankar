@@ -40,6 +40,7 @@ export default function VocabularyThree({onBack}){
   const [typeIndex, setTypeIndex] = useState(0)
   const [letters, setLetters] = useState(['','',''])
   const inputRefs = useRef([])
+  const voiceRef = useRef(null)
 
   useEffect(()=>{
     if(message){
@@ -47,6 +48,44 @@ export default function VocabularyThree({onBack}){
       return ()=>clearTimeout(t)
     }
   },[message])
+
+  // pick a reasonable English voice (if available) and respond to voice list changes
+  useEffect(()=>{
+    if(typeof window === 'undefined' || !window.speechSynthesis) return
+    function chooseVoice(){
+      const voices = window.speechSynthesis.getVoices() || []
+      if(!voices.length) return
+      let v = voices.find(v=>v.lang && v.lang.toLowerCase().startsWith('en-us'))
+      v = v || voices.find(v=>v.lang && v.lang.toLowerCase().startsWith('en-gb'))
+      v = v || voices.find(v=>v.lang && v.lang.toLowerCase().startsWith('en'))
+      v = v || voices[0]
+      voiceRef.current = v
+    }
+    chooseVoice()
+    // some browsers populate voices asynchronously
+    window.speechSynthesis.onvoiceschanged = chooseVoice
+    return ()=>{ try{ window.speechSynthesis.onvoiceschanged = null }catch(e){} }
+  },[])
+
+  // speak a word using Web Speech API
+  function speak(text){
+    try{
+      if(typeof window !== 'undefined' && window.speechSynthesis){
+        window.speechSynthesis.cancel()
+        const u = new SpeechSynthesisUtterance(text)
+        // prefer a selected voice if available
+        if(voiceRef.current) u.voice = voiceRef.current
+        u.lang = (voiceRef.current && voiceRef.current.lang) ? voiceRef.current.lang : 'en-US'
+        // gentle settings to avoid very high-pitched voices
+        u.rate = 0.95
+        u.pitch = 0.8
+        u.volume = 1
+        window.speechSynthesis.speak(u)
+      }
+    }catch(e){
+      console.warn('Speech failed', e)
+    }
+  }
 
   // tab styles for header buttons
   const tabFilled = {padding:'10px 16px',borderRadius:20,background:'#1976d2',border:'none',color:'#fff',fontWeight:800,boxShadow:'0 8px 18px rgba(25,118,210,0.18)'}
@@ -111,7 +150,7 @@ export default function VocabularyThree({onBack}){
         {step === 0 && (
           <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:20,marginTop:20,alignItems:'center',justifyItems:'center'}}>
             {galleryOrder.map(w=> (
-              <div key={w.id} style={{textAlign:'center',width:240,background:'#fff',borderRadius:14,padding:14,boxShadow:'0 8px 20px rgba(0,0,0,0.06)',border:'1px solid rgba(0,0,0,0.06)'}}>
+              <div key={w.id} onClick={()=>speak(w.id)} style={{textAlign:'center',width:240,background:'#fff',borderRadius:14,padding:14,boxShadow:'0 8px 20px rgba(0,0,0,0.06)',border:'1px solid rgba(0,0,0,0.06)',cursor:'pointer'}}>
                 <div style={{height:8}} />
                 <img src={w.img} alt={w.id} style={{width:180,height:140,objectFit:'contain'}} />
                 <div style={{height:10}} />
