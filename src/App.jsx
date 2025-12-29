@@ -2,6 +2,9 @@ import React, {useState, useEffect} from 'react'
 import Landing from './pages/Landing'
 import Lesson from './pages/Lesson'
 import Assessment from './pages/Assessment'
+import Vocabulary from './pages/Vocabulary'
+import VocabularyExercise from './pages/VocabularyExercise'
+import VocabularyThree from './pages/VocabularyThree'
 import CONDITIONS from './data/conditions'
 
 export default function App(){
@@ -28,6 +31,9 @@ export default function App(){
     setView({name:'lesson', index})
   }
   function goHome(){ setView({name:'landing', index:0}) }
+  function goToVocabulary(){ setView({name:'vocabulary'}) }
+  function goToVocabularyExercise(){ setView({name:'vocabularyExercise'}) }
+  function goToVocabularyThree(){ setView({name:'vocabularyThree'}) }
   function next(){
     if(view.name === 'lesson'){
       const nextIndex = view.index + 1
@@ -46,9 +52,12 @@ export default function App(){
 
   return (
     <div className="app-root">
-      {view.name === 'landing' && <Landing onStart={()=>goToLesson(0)} onSelect={(imgIndex)=>goToLesson(imgIndex)} completed={completed} allDone={allDone} onAllDone={goToAssessment} />}
+      {view.name === 'landing' && <Landing onStart={()=>goToLesson(0)} onSelect={(imgIndex)=>goToLesson(imgIndex)} completed={completed} allDone={allDone} onAllDone={goToAssessment} onVocabulary={goToVocabulary} />}
       {view.name === 'lesson' && <Lesson data={CONDITIONS[view.index]} index={view.index} total={CONDITIONS.length} onBack={goHome} onNext={next} onComplete={markCompleted} />}
       {view.name === 'assessment' && <Assessment onDone={goHome} />}
+      {view.name === 'vocabulary' && <Vocabulary onStart={goToVocabularyExercise} onBack={goHome} />}
+      {view.name === 'vocabularyExercise' && <VocabularyExercise onBack={()=> setView({name:'vocabulary'})} onNextExercise={goToVocabularyThree} />}
+      {view.name === 'vocabularyThree' && <VocabularyThree onBack={()=> setView({name:'vocabulary'})} />}
     </div>
   )
 }

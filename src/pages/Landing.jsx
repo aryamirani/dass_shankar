@@ -2,10 +2,13 @@ import React from 'react'
 
 import CONDITIONS from '../data/conditions'
 
-export default function Landing({onStart, onSelect, completed = [], allDone = false, onAllDone}) {
+export default function Landing({onStart, onSelect, completed = [], allDone = false, onAllDone, onVocabulary}) {
   return (
     <div id="landing" className="landing-root" role="main">
       <div className="landing-inner">
+        <div style={{position:'absolute', left:20, top:20, zIndex:40}}>
+          <button className="action-btn secondary" style={{padding:'8px 14px', fontSize:16, minHeight:40}} onClick={onVocabulary}>Go to Next Section</button>
+        </div>
         <div style={{position:'absolute', right:20, top:20, zIndex:40}}>
           <button className="action-btn secondary" style={{padding:'8px 14px', fontSize:16, minHeight:40}} onClick={onAllDone || onStart}>Skip to Assessment</button>
         </div>
