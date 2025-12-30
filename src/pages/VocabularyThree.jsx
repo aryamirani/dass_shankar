@@ -205,10 +205,14 @@ export default function VocabularyThree({onBack}){
                     alignItems:'center',
                     justifyContent:'center',
                     cursor: d.used ? 'default' : 'grab',
-                    opacity: d.used ? 0.6 : 1
+                    opacity: d.used ? 0.9 : 1,
+                    position: 'relative'
                   }}
                 >
                   <div style={{fontSize:22,fontWeight:800,padding:'18px 28px',borderRadius:8,background:'transparent'}}>{d.text}</div>
+                  {d.used && (
+                    <div style={{position:'absolute',right:6,top:6,color:'#2e7d32',fontSize:36,fontWeight:900,background:'rgba(255,255,255,0.6)',borderRadius:20,padding:'2px 8px',boxShadow:'0 6px 12px rgba(0,0,0,0.06)'}}>✓</div>
+                  )}
                 </div>
               ))}
             </div>
@@ -297,7 +301,7 @@ export default function VocabularyThree({onBack}){
         )}
 
         {message && (
-          <div style={{position:'fixed',top:40,left:'50%',transform:'translateX(-50%)',padding:'10px 20px',fontSize:20,fontWeight:700,color: message.type === 'success' ? '#155724' : '#856404',background: message.type === 'success' ? 'rgba(212,237,218,0.95)' : 'rgba(255,243,205,0.95)',borderRadius:12,boxShadow:'0 6px 18px rgba(0,0,0,0.08)'}}>
+          <div style={{position:'fixed',top:40,left:'50%',transform:'translateX(-50%)',padding:'12px 26px',fontSize: message.type === 'success' ? 36 : 28,fontWeight:800,color: message.type === 'success' ? '#155724' : '#856404',background: message.type === 'success' ? 'rgba(212,237,218,0.98)' : 'rgba(255,243,205,0.95)',borderRadius:14,boxShadow:'0 8px 22px rgba(0,0,0,0.1)'}}>
             {message.text}
           </div>
         )}

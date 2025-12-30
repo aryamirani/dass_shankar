@@ -18,7 +18,7 @@ export default function VocabularyExercise({onBack, onNextExercise}){
     while(arr.length < 16) arr.push(distractors[Math.floor(Math.random()*distractors.length)])
     // shuffle Fisher-Yates
     for(let i=arr.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); const t = arr[i]; arr[i]=arr[j]; arr[j]=t }
-    return { items: arr.map((w,i)=>({id:i, word:w, removed:false})), countAt }
+    return { items: arr.map((w,i)=>({id:i, word:w, matched:false})), countAt }
   }, [])
 
   const [items, setItems] = useState(initialData.items)
@@ -34,7 +34,7 @@ export default function VocabularyExercise({onBack, onNextExercise}){
 
   function handleClick(item){
     if(item.word === 'at'){
-      setItems(prev => prev.map(p => p.id === item.id ? {...p, removed:true} : p))
+      setItems(prev => prev.map(p => p.id === item.id ? {...p, matched:true} : p))
       setMessage({type:'success', text: POSITIVE[Math.floor(Math.random()*POSITIVE.length)]})
       setCompletedCount(c => c+1)
     } else {
@@ -61,37 +61,37 @@ export default function VocabularyExercise({onBack, onNextExercise}){
 
         <div style={{display:'grid',gridTemplateColumns:'repeat(4, 1fr)',gap:24,justifyItems:'center',alignItems:'center',padding:20}}>
           {items.map(item=> (
-            item.removed ? (
-              <div key={item.id} style={{minWidth:120,minHeight:80}} />
-            ) : (
+            <div key={item.id} style={{minWidth:120,minHeight:80,position:'relative',overflow:'hidden',borderRadius:18}}>
               <button
-                key={item.id}
-                onClick={()=>handleClick(item)}
+                onClick={()=>{ if(!item.matched) handleClick(item) }}
+                disabled={item.matched}
                 style={{
-                  minWidth:120,
-                  minHeight:80,
+                  width:'100%',height:'100%',
                   fontSize:44,
                   fontWeight:800,
                   borderRadius:18,
                   border:'2px solid #333',
-                  background:'white',
-                  cursor:'pointer',
+                  background: item.matched ? 'linear-gradient(180deg,#e8f5e9,#ffffff)' : 'white',
+                  cursor: item.matched ? 'default' : 'pointer',
                   boxShadow:'0 6px 12px rgba(0,0,0,0.08)'
                 }}
               >
                 {item.word}
               </button>
-            )
+              {item.matched && (
+                <div style={{position:'absolute',right:10,top:8,pointerEvents:'none',fontSize:26,color:'#2e7d32',fontWeight:900,background:'rgba(255,255,255,0.9)',width:34,height:34,display:'flex',alignItems:'center',justifyContent:'center',borderRadius:8,boxShadow:'0 4px 8px rgba(0,0,0,0.06)'}}>✓</div>
+              )}
+            </div>
           ))}
         </div>
 
         {completedCount === totalAt && (
-          <div style={{textAlign:'center',marginTop:20,fontSize:22,fontWeight:'bold',color:'#2e7d32'}}>All done — great work!</div>
+          <div style={{textAlign:'center',marginTop:20,fontSize:34,fontWeight:'900',color:'#2e7d32'}}>All done — great work!</div>
         )}
       </div>
 
       {message && (
-        <div style={{position:'fixed',top:40,left:'50%',transform:'translateX(-50%)',padding:'10px 20px',fontSize:22,fontWeight:700,color: message.type === 'success' ? '#155724' : '#856404',background: message.type === 'success' ? 'rgba(212,237,218,0.95)' : 'rgba(255,243,205,0.95)',borderRadius:12,boxShadow:'0 6px 18px rgba(0,0,0,0.08)'}}>
+        <div style={{position:'fixed',top:40,left:'50%',transform:'translateX(-50%)',padding:'12px 26px',fontSize: message.type === 'success' ? 36 : 28,fontWeight:800,color: message.type === 'success' ? '#155724' : '#856404',background: message.type === 'success' ? 'rgba(212,237,218,0.98)' : 'rgba(255,243,205,0.95)',borderRadius:14,boxShadow:'0 8px 22px rgba(0,0,0,0.1)'}}>
           {message.text}
         </div>
       )}
