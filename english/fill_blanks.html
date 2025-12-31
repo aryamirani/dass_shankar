@@ -1,7 +1,11 @@
 <!-- This is the code for the fill in the blank game -->
 <!DOCTYPE html>
+
 <head>
     <link rel="stylesheet" href="../fonts.css">
+    <link rel="stylesheet" href="backbutton.css">
+    <link rel="stylesheet" href="feedback.css">
+
     <meta charset="UTF-8">
     <title>Phonics – Drag & Drop</title>
     <style>
@@ -21,17 +25,17 @@
             min-height: 100vh;
             color: black;
             background: #6e64dc;
-            background-image: url("assets/background.png");
+            /* background-image: url("assets/background.png"); */
             padding: 30px;
         }
 
         .game {
-            max-width: 1350px;
+            max-width: 1600px;
             margin: auto;
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 30px;
-            font-size: 28px;
+            font-size: 35px;
         }
 
         .question {
@@ -51,6 +55,7 @@
         .word-bank {
             background: rgba(255, 255, 255, 0.8);
             padding: 20px;
+            /* font-size:30px; */
             border-radius: 12px;
         }
 
@@ -60,6 +65,7 @@
             background: white;
             border-radius: 8px;
             cursor: grab;
+            /* font-size:20px; */
             text-align: center;
         }
 
@@ -86,8 +92,15 @@
 
 <body>
 
+
+    <div style="text-align: left;">
+        <a href="engboard.html" class="card" style="border-top-color: #2ecc71;">
+            <span class="icon">↩️</span>
+            <span class="subject-name">Back</span>
+        </a>
+    </div>
     <h1 style="text-align: center; font-size: 38px;">Phonics</h1>
-    <p style=" text-align: center; margin-bottom: 30px; font-size: 25px;">
+    <p style=" text-align: center; margin-bottom: 30px; font-size: 40px;">
         Drag the correct compound word into the blank</p>
 
     <div class="game">
@@ -98,7 +111,9 @@
     </div>
 
     <button onclick="checkAnswers()">Check Answers</button>
+    <div id="feedback" class="feedback hidden"></div>
 
+    <script src="feedback.js"></script>
     <script> // The main code and logic starts from here
         const data = [
             ["A vehicle with wings to fly", "airplane"],
@@ -171,6 +186,7 @@
 
                 if (user === correct) {
                     zone.classList.add("correct");
+                    showFeedback();
                 } else {
                     zone.classList.add("wrong");
                     setTimeout(() => {

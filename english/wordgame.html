@@ -3,6 +3,10 @@
 
 <head>
     <link rel="stylesheet" href="../fonts.css">
+    <link rel="stylesheet" href="feedback.css">
+    <link rel="stylesheet" href="backbutton.css">
+
+
     <meta charset="UTF-8">
     <title>Word Game</title>
     <style>
@@ -11,25 +15,15 @@
         }
 
         body {
-            background-color: rgb(65, 202, 76);
+            background-color: rgb(110, 231, 120);
             text-align: center;
             padding: 20px;
-        }
-
-        html,
-        body {
-            height: 100%;
-            margin: 0;
-        }
-
-        body {
-            background-image: url("assets/background.png");
-            background-size: cover;
-            background-position: center;
+            /* background-image: url("assets/background.png"); */
+            background-size: 150%;
+            background-position: top;
             background-repeat: no-repeat;
             background-attachment: fixed;
         }
-
 
         .game-container {
             display: flex;
@@ -42,7 +36,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            width: 200px;
+            width: 350px;
         }
 
         .word-card {
@@ -131,7 +125,7 @@
         }
 
         .column-title {
-            font-size: 20px;
+            font-size: 35px;
             margin-bottom: 10px;
             color: #000000;
             text-transform: uppercase;
@@ -141,10 +135,18 @@
 </head>
 
 <body>
+    
+    <div style="text-align: left;">
+        <a href="engboard.html" class="card" style="border-top-color: #2ecc71;">
+            <span class="icon">↩️</span>
+            <span class="subject-name">Back</span>
+        </a>
+    </div>
+    <h1 style="font-size: 50px;;">Word Surgery</h1>
+    <p style="font-size:35px;"><strong>Tap a blue word part, then tap the matching red part to connect them!</strong>
+    </p>
 
-    <h1>Word Surgery</h1>
-    <p>Tap a blue word part, then tap the matching red part to connect them!</p>
-
+    
     <div class="game-container">
         <div class="column" id="left-column">
             <div class="column-title">Part 1</div>
@@ -154,7 +156,18 @@
             <div class="column-title">Part 2</div>
         </div>
     </div>
+    <div>
+        <hr style="height:3px; background-color: #000000;">
+        <h1 style="font-size: 40px;">Healed Words </h1>
+        <div id="healed-here" style="font-size: 50px;">
 
+        </div>
+    </div>
+
+    <div id="feedback" class="feedback hidden"></div>
+
+
+    <script src="feedback.js"></script>
     <script>
         const wordPairs = {
             "Sun": "Flower",
@@ -216,7 +229,7 @@
                 const correctMatch = wordPairs[selectedLeft];
 
                 if (card.dataset.value === correctMatch) {
-                    // SUCCESS: It's a match!
+                    // SUCCESS
                     performSurgery(selectedElement, card, selectedLeft + card.dataset.value);
                     selectedLeft = null;
                     selectedElement = null;
@@ -232,6 +245,16 @@
         function performSurgery(leftCard, rightCard, fullWord) {
             leftCard.classList.add('healed');
             rightCard.classList.add('healed');
+
+            showFeedback();
+
+            const healedContainer = document.getElementById("healed-here");
+
+            const healed = document.createElement("span");
+            healed.className = "healed-here";
+            healed.textContent = fullWord + "  ";
+
+            healedContainer.appendChild(healed);
 
         }
 
