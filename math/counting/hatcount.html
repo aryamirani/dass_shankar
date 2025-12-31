@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Memory Game: ResponsiveVoice Version</title>
+    <link rel="stylesheet" href="../../fonts.css">
+    <link rel="stylesheet" href="../../english/backbutton.css">
+    <link rel="stylesheet" href="../instructions.css">
+
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=a6iB1dvu"></script>
+    <style>
+        .back_container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        body {
+            font-family: 'Grandstander';
+            background-image: url("../assets/background.png");
+            background-size: cover;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #stage-container {
+            position: relative;
+            width: 1200px;
+            height: 400px;
+            background-color: #e0e8ea;
+            border: 10px solid #8e44ad;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(193, 6, 6, 0.5);
+        }
+
+        #items-area {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            font-size: 120px;
+            user-select: none;
+        }
+
+        #curtain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: repeating-linear-gradient(90deg, #c0392b, #c0392b 40px, #a93226 40px, #a93226 80px);
+            transition: height 1s ease-in-out;
+            z-index: 10;
+        }
+
+        #controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        button {
+            background-color: #35f10f;
+            border: none;
+            padding: 15px 30px;
+            font-size: 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #2c3e50;
+            transition: transform 0.1s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        #answer-panel {
+            display: none;
+            margin-top: 15px;
+            font-size: 50px;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            font-size: 30px;
+            width: 200px;
+            text-align: center;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .bounce {
+            animation: bounce 0.5s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-20px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div style="text-align: left;">
+        <a href="countdash.html" class="card back_container" style="border-top-color: #2ecc71;">
+            <span class="icon">↩️</span>
+            <span class="subject-name">Back</span>
+        </a>
+    </div>
+
+    <div class="tooltip card" style="font-size: 40px; z-index: 1000;">Instructions
+        <div class="tooltiptext">
+            <div class="card">
+                Welcome to Hat Count, Press start to begin the game. Your Objective is to count and enter the number of
+                hats on screen
+            </div>
+        </div>
+    </div>
+    <h1 style="font-size: 50px;"> The Disappearing Act</h1>
+
+    <div id="stage-container">
+        <div id="items-area"></div>
+        <div id="curtain"></div>
+    </div>
+
+    <div id="controls">
+        <button id="start-btn" onclick="startRound()">Start Round</button>
+        <p id="status-text" style="font-size: 40px; color:black">Click Start to begin...</p>
+
+        <div id="answer-panel">
+            <input type="number" id="user-guess" placeholder="#">
+            <button onclick="checkAnswer()">Guess!</button>
+        </div>
+    </div>
+
+    <script>
+        const itemEmoji = "👒";
+        let currentCount = 0;
+
+        let speechQueue = [];
+        let justStarted = false;
+
+        function speak(text) {
+            speechQueue.push(text);
+        }
+
+        setInterval(function () {
+            if (responsiveVoice.isPlaying()) return;
+
+            if (justStarted) return;
+
+            if (speechQueue.length === 0) return;
+
+            const nextText = speechQueue.shift();
+
+            justStarted = true;
+            responsiveVoice.speak(nextText, "UK English Female", {
+                rate: 0.9,
+                onstart: function () { justStarted = false; }, // Unlock when it actually starts
+                onend: function () { justStarted = false; }  // Unlock when it finishes
+            });
+
+            setTimeout(() => { justStarted = false; }, 1000);
+
+        }, 50);
+
+
+        function startRound() {
+            if (!responsiveVoice.voiceSupport()) {
+                alert("Voice not supported!");
+                return;
+            }
+
+            speechQueue = [];
+            responsiveVoice.cancel();
+
+            document.getElementById('start-btn').disabled = true;
+            document.getElementById('answer-panel').style.display = 'none';
+            document.getElementById('user-guess').value = '';
+
+            // 1. Generate Items
+            currentCount = Math.floor(Math.random() * 5) + 1;
+            const itemsArea = document.getElementById('items-area');
+            itemsArea.innerHTML = "";
+
+            for (let i = 0; i < currentCount; i++) {
+                let span = document.createElement("span");
+                span.innerText = itemEmoji;
+                itemsArea.appendChild(span);
+            }
+
+            moveCurtain('up');
+            updateStatus("Memorize this!");
+
+            setTimeout(() => {
+                speak("Okay ..Take a good look.");
+            }, 1500);
+
+            setTimeout(() => {
+                speak("Closing in three... two... one...");
+            }, 4000);
+
+            setTimeout(() => {
+                moveCurtain('down');
+                updateStatus("How many items are hidden?");
+                document.getElementById('answer-panel').style.display = 'block';
+                document.getElementById('user-guess').focus();
+
+                speak("How many hats are behind the curtain?");
+            }, 8000);
+        }
+
+        function checkAnswer() {
+            const userVal = parseInt(document.getElementById('user-guess').value);
+            const itemsArea = document.getElementById('items-area');
+
+            document.getElementById('answer-panel').style.display = 'none';
+            moveCurtain('up');
+
+            speechQueue = [];
+            responsiveVoice.cancel();
+
+            if (userVal === currentCount) {
+                updateStatus("Correct! 🎉");
+                speak("!!Brilliant!! You are correct.. lets play again.");
+                itemsArea.classList.add('bounce');
+                setTimeout(() => itemsArea.classList.remove('bounce'), 2000);
+            } else {
+                updateStatus("Not quite...");
+
+                itemsArea.classList.add('bounce');
+                speak("There are");
+                speak(currentCount.toString());
+                speak("hats. Lets Try Again")
+            }
+
+            setTimeout(() => {
+                document.getElementById('start-btn').disabled = false;
+                document.getElementById('start-btn').innerText = "Play Again";
+            }, 5000);
+        }
+
+        function moveCurtain(direction) {
+            const curtain = document.getElementById('curtain');
+            curtain.style.height = (direction === 'down') ? '100%' : '0%';
+        }
+
+        function updateStatus(text) {
+            document.getElementById('status-text').innerText = text;
+        }
+    </script>
+</body>
+
+</html>
