@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Landing({onVocabulary, onHealth}){
+export default function Landing({onVocabulary, onHealth, onMaths}){
   return (
     <div id="landing" className="landing-root" role="main">
       <div className="landing-inner" style={{padding:40}}>
@@ -10,6 +10,7 @@ export default function Landing({onVocabulary, onHealth}){
         <div style={{display:'flex',gap:20,justifyContent:'center',marginTop:36}}>
           <button className="action-btn" onClick={onVocabulary} style={{padding:'18px 28px', fontSize:20}}>Vocabulary</button>
           <button className="action-btn" onClick={onHealth} style={{padding:'18px 28px', fontSize:20}}>Health Problems</button>
+          <button className="action-btn" onClick={onMaths} style={{padding:'18px 28px', fontSize:20}}>Maths</button>
         </div>
       </div>
     </div>

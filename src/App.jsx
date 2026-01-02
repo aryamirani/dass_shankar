@@ -6,6 +6,15 @@ import Assessment from './pages/Assessment'
 import Vocabulary from './pages/Vocabulary'
 import VocabularyExercise from './pages/VocabularyExercise'
 import VocabularyThree from './pages/VocabularyThree'
+import Maths from './pages/Maths'
+import MathsExerciseOne from './pages/MathsExerciseOne'
+import MathsExerciseTwo from './pages/MathsExerciseTwo'
+import MathsExerciseThree from './pages/MathsExerciseThree'
+import MathsExerciseFour from './pages/MathsExerciseFour'
+import MathsExerciseFive from './pages/MathsExerciseFive'
+import MathsExerciseSix from './pages/MathsExerciseSix'
+import MathsExerciseSeven from './pages/MathsExerciseSeven'
+import MathsExerciseEight from './pages/MathsExerciseEight'
 import CONDITIONS from './data/conditions'
 
 export default function App(){
@@ -36,6 +45,15 @@ export default function App(){
   function goToVocabulary(){ setView({name:'vocabulary'}) }
   function goToVocabularyExercise(){ setView({name:'vocabularyExercise'}) }
   function goToVocabularyThree(){ setView({name:'vocabularyThree'}) }
+  function goToMaths(){ setView({name:'maths'}) }
+  function goToMathsExerciseOne(){ setView({name:'mathsExerciseOne'}) }
+  function goToMathsExerciseTwo(){ setView({name:'mathsExerciseTwo'}) }
+  function goToMathsExerciseThree(){ setView({name:'mathsExerciseThree'}) }
+  function goToMathsExerciseFour(){ setView({name:'mathsExerciseFour'}) }
+  function goToMathsExerciseFive(){ setView({name:'mathsExerciseFive'}) }
+  function goToMathsExerciseSix(){ setView({name:'mathsExerciseSix'}) }
+  function goToMathsExerciseSeven(){ setView({name:'mathsExerciseSeven'}) }
+  function goToMathsExerciseEight(){ setView({name:'mathsExerciseEight'}) }
   function next(){
     if(view.name === 'lesson'){
       const nextIndex = view.index + 1
@@ -54,13 +72,22 @@ export default function App(){
 
   return (
     <div className="app-root">
-      {view.name === 'landing' && <Landing onVocabulary={goToVocabulary} onHealth={goToHealth} />}
+      {view.name === 'landing' && <Landing onVocabulary={goToVocabulary} onHealth={goToHealth} onMaths={goToMaths} />}
       {view.name === 'health' && <HealthProblems onStart={()=>goToLesson(0)} onSelect={(imgIndex)=>goToLesson(imgIndex)} completed={completed} allDone={allDone} onAllDone={goToAssessment} onVocabulary={goToVocabulary} onBack={goHome} />}
       {view.name === 'lesson' && <Lesson data={CONDITIONS[view.index]} index={view.index} total={CONDITIONS.length} onBack={goHome} onNext={next} onComplete={markCompleted} onBackToGrid={goToHealth} />}
       {view.name === 'assessment' && <Assessment onDone={goHome} />}
       {view.name === 'vocabulary' && <Vocabulary onStart={goToVocabularyExercise} onBack={goHome} />}
       {view.name === 'vocabularyExercise' && <VocabularyExercise onBack={()=> setView({name:'vocabulary'})} onNextExercise={goToVocabularyThree} />}
       {view.name === 'vocabularyThree' && <VocabularyThree onBack={()=> setView({name:'vocabulary'})} />}
+      {view.name === 'maths' && <Maths onStart={goToMathsExerciseOne} onBack={goHome} />}
+      {view.name === 'mathsExerciseOne' && <MathsExerciseOne onBack={()=> setView({name:'maths'})} onNextExercise={goToMathsExerciseTwo} />}
+      {view.name === 'mathsExerciseTwo' && <MathsExerciseTwo onBack={()=> setView({name:'mathsExerciseOne'})} onNextExercise={goToMathsExerciseThree} />}
+      {view.name === 'mathsExerciseThree' && <MathsExerciseThree onBack={()=> setView({name:'mathsExerciseTwo'})} onNextExercise={goToMathsExerciseFour} />}
+      {view.name === 'mathsExerciseFour' && <MathsExerciseFour onBack={()=> setView({name:'mathsExerciseThree'})} onNextExercise={goToMathsExerciseFive} />}
+      {view.name === 'mathsExerciseFive' && <MathsExerciseFive onBack={()=> setView({name:'mathsExerciseFour'})} onNextExercise={goToMathsExerciseSix} />}
+      {view.name === 'mathsExerciseSix' && <MathsExerciseSix onBack={()=> setView({name:'mathsExerciseFive'})} onNextExercise={goToMathsExerciseSeven} />}
+      {view.name === 'mathsExerciseSeven' && <MathsExerciseSeven onBack={()=> setView({name:'mathsExerciseSix'})} onNextExercise={goToMathsExerciseEight} />}
+      {view.name === 'mathsExerciseEight' && <MathsExerciseEight onBack={()=> setView({name:'mathsExerciseSeven'})} />}
     </div>
   )
 }
