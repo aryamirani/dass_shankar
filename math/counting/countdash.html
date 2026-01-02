@@ -6,6 +6,7 @@
 
     <link rel="stylesheet" href="../../english/fonts.css">
     <link rel="stylesheet" href="../../english/backbutton.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <title>Count Dashboard</title>
 
@@ -19,7 +20,7 @@
             min-height: 100vh;
 
             background-color: rgb(110, 231, 120);
-            background-image: url("../assets/background.png");
+            background-image: url("../assets/bg2.png");
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -27,6 +28,7 @@
 
         h1 {
             margin: 0;
+            margin-top: 30px;
             text-align: center;
             font-size: 70px;
         }
@@ -67,12 +69,12 @@
 </head>
 
 <body>
-    <h1>Counting Games</h1>
+    <h1 class="text-8xl mt-12">Counting Games</h1>
 
     <div class="container">
         <div class="subject-grid">
 
-            <a href="hatcount.html" class="card" style="border-top-color: #2ecc71;">
+            <a href="hatcount.html" class="card bg-gradient-to-r from-r-500 via-white" style="border-top-color: #2ecc71;">
                 <span class="icon">👒</span>
                 <span class="subject-name">Hat Counting</span>
             </a>
@@ -85,12 +87,18 @@
                 <span class="icon">🚰</span>
                 <span class="subject-name">Water Filling</span>
             </a>
+            <a href="addition.html" class="card" style="border-top-color: #2ecc71;">
+                <span class="icon"> 🧢</span>
+                <span class="subject-name">Addition</span>
+            </a>
+
             <div style="text-align: left;">
                 <a href="../mathdash.html" class="card" style="border-top-color: #2ecc71;">
                     <span class="icon">↩️</span>
                     <span class="subject-name">Back</span>
                 </a>
             </div>
+
 
         </div>
     </div>
