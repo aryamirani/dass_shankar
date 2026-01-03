@@ -81,8 +81,7 @@ export default function MathsExerciseSix({onBack, onNextExercise}){
   function checkAll() {
     let hasErrors = false
     setItems(prev => prev.map(item => {
-      if (item.checked && item.correct) return item
-      
+      // Always check the current state, don't skip already correct items
       const isCorrect = JSON.stringify(item.numbers) === JSON.stringify(item.correctOrder)
       if (!isCorrect) hasErrors = true
       
