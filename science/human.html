@@ -15,7 +15,8 @@
             margin: 0;
             min-height: 100vh;
             font-family: 'Grandstander';
-            background-image: url('assets/bg3.jpeg');
+            background-color: cadetblue;
+            /* background-image: url('assets/bg3.png'); */
             background-size: cover;
             text-align: center;
             display: flex;
@@ -108,7 +109,7 @@
 
     <h1 style="font-size: 60px; padding-bottom: 25px;">Human Body</h1>
     <div style="text-align: left;">
-        <a href="countdash.html" class="card back_container" style="border-top-color: #2ecc71;">
+        <a href="../dashboard.html" class="card back_container" style="border-top-color: #2ecc71;">
             <span class="icon">↩️</span>
             <span class="subject-name">Back</span>
         </a>
@@ -177,7 +178,9 @@
         ]
 
         const audio = [
-            "assets/lungs.m4a"
+            "assets/lungs.m4a",
+            "assets/heart.m4a"
+
         ]
 
         // const questionlung=[
@@ -212,14 +215,12 @@
                 .trim();
             if (words[organ] == ans) {
                 correctSound.play();
-                // console.log(audio[0]);
                 setTimeout(()=> {
-                    vol.src=audio[0];
+                    vol.src=audio[organ];
                     vol.play();
                 }, 1000);
                 document.getElementById("user-guess").value = "";
                 // showPopup("what do the lungs take in");
-
             }
             else {
                 wrongSound.play();
@@ -232,7 +233,7 @@
         }
 
         // function showPopup() {
-        //     // document.getElementById("followup-question").textContent = ;
+        //     document.getElementById("followup-question").textContent = ;
         //     document.getElementById("popup").style.display = "flex";
         // }
 

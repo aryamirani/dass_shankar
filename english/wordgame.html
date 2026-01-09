@@ -135,7 +135,11 @@
 </head>
 
 <body>
-    
+
+    <audio id="correct-sound" src="/assets/correct.wav" preload="auto"></audio>
+    <audio id="wrong-sound" src="/assets/wrong.wav" preload="auto"></audio>
+
+
     <div style="text-align: left;">
         <a href="engboard.html" class="card" style="border-top-color: #2ecc71;">
             <span class="icon">↩️</span>
@@ -146,7 +150,7 @@
     <p style="font-size:35px;"><strong>Tap a blue word part, then tap the matching red part to connect them!</strong>
     </p>
 
-    
+
     <div class="game-container">
         <div class="column" id="left-column">
             <div class="column-title">Part 1</div>
@@ -169,6 +173,9 @@
 
     <script src="feedback.js"></script>
     <script>
+
+        const correctSound = document.getElementById("correct-sound");
+        const wrongSound = document.getElementById("wrong-sound");
         const wordPairs = {
             "Sun": "Flower",
             "Tooth": "Brush",
@@ -230,13 +237,16 @@
 
                 if (card.dataset.value === correctMatch) {
                     // SUCCESS
+                    correctSound.play();
                     performSurgery(selectedElement, card, selectedLeft + card.dataset.value);
                     selectedLeft = null;
                     selectedElement = null;
 
+
                 } else {
                     shakeCard(selectedElement);
                     shakeCard(card);
+                    wrongSound.play();
 
                 }
             }
