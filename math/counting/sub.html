@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Addition</title>
+    <link rel="stylesheet" href="../../fonts.css">
+    <link rel="stylesheet" href="../../english/backbutton.css">
+    <link rel="stylesheet" href="../instructions.css">
+    <title>Human Body</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 90vh;
+            font-family: 'Grandstander';
+            background-color: aquamarine;
+            /* background-image: url('../assets/bg2.png'); */
+            background-size: cover;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-top: 40px;
+        }
+
+        #curtain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: repeating-linear-gradient(90deg, #c0392b, #c0392b 40px, #a93226 40px, #a93226 80px);
+            transition: height 1s ease-in-out;
+            z-index: 10;
+        }
+
+        #stage-container {
+            position: relative;
+            width: 1400px;
+            height: 400px;
+            background-color: #e0e8ea;
+            border: 10px solid #8e44ad;
+            border-radius: 40px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: row;
+            box-shadow: 0 10px 30px rgba(193, 6, 6, 0.5);
+        }
+
+        #items-area1 {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            font-size: 120px;
+            user-select: none;
+        }
+
+        #items-area2 {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            font-size: 120px;
+            user-select: none;
+        }
+
+        .back_container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        button {
+            background-color: #35f10f;
+            border: none;
+            padding: 15px 60px;
+            font-size: 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #2c3e50;
+            transition: transform 0.1s;
+            padding-bottom: 20px;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        input {
+            /* background-color: #35f10f; */
+            border: none;
+            padding: 15px 30px;
+            font-size: 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #2c3e50;
+            transition: transform 0.1s;
+        }
+    </style>
+
+</head>
+
+<body>
+    <audio id="correct-sound" src="../assets/correct.wav" preload="auto"></audio>
+    <audio id="wrong-sound" src="../assets/wrong.wav" preload="auto"></audio>
+
+    <h1 style="font-size: 60px; padding-bottom: 25px;"> Subtracting Caps</h1>
+    <div style="text-align: left;">
+        <a href="countdash.html" class="card back_container" style="border-top-color: #2ecc71;">
+            <span class="icon">↩️</span>
+            <span class="subject-name">Back</span>
+        </a>
+    </div>
+
+    <div class="tooltip card" style="font-size: 40px; z-index: 1000;">Instructions
+        <div class="tooltiptext">
+            <div class="card">
+                Welcome to Substraction. Your goal is to Substraction and count the number of caps
+            </div>
+        </div>
+    </div>
+
+    <div id="stage-container">
+        <div id="items-area1"></div>
+        <div style="padding-top: 150px; font-size: 100px;">-</div>
+        <div id="items-area2"></div>
+
+        <div id="curtain"></div>
+    </div>
+
+    <button onclick="startRound()" id="start">Start </button>
+    <div>
+        <input type="number" id="user-guess" placeholder="Here">
+        <button onclick="checkAnswer()" style="height:80px;">Check</button>
+    </div>
+
+    <script>
+
+        const correctSound = document.getElementById("correct-sound");
+        const wrongSound = document.getElementById("wrong-sound");
+        const itemEmoji = "🎩";
+
+        function startRound() {
+            moveCurtain('down');
+            setTimeout(() => {
+                generate();        // Change the numbers behind the curtain
+                moveCurtain('up'); 
+            }, 2000);
+            moveCurtain('down');
+        }
+
+
+        function moveCurtain(direction) {
+            const curtain = document.getElementById('curtain');
+            curtain.style.height = (direction === 'down') ? '100%' : '0%';
+        }
+
+        let currentCount1, currentCount2;
+
+        function generate() {
+
+            currentCount2 = Math.floor(Math.random() * 2) + 1;
+            itemsArea2 = document.getElementById('items-area2');
+            itemsArea2.innerHTML = "";
+
+            currentCount1 = 2+Math.floor(Math.random() * 3) + 1;
+            const itemsArea1 = document.getElementById('items-area1');
+            itemsArea1.innerHTML = "";
+
+
+            for (let i = 0; i < currentCount1; i++) {
+                let span = document.createElement("span");
+                span.innerText = itemEmoji;
+                itemsArea1.appendChild(span);
+            }
+
+            for (let i = 0; i < currentCount2; i++) {
+                let span = document.createElement("span");
+                span.innerText = itemEmoji;
+                itemsArea2.appendChild(span);
+            }
+        }
+
+        function checkAnswer() {
+            const val = parseInt(document.getElementById('user-guess').value);
+            console.log(val);
+            if (val == currentCount1 - currentCount2) {
+                correctSound.play();
+            }
+            else {
+                wrongSound.play();
+            }
+            const button = document.getElementById("start");
+            button.textContent = "Play Again";
+            //   moveCurtain('up');
+            //   startRound();
+
+        }
+    </script>
+</body>
+
+</html>
