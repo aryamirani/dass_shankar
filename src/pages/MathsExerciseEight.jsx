@@ -202,7 +202,7 @@ export default function MathsExerciseEight({ onBack, onComplete }) {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: 20, position: 'relative' }}>
       <div style={{ position: 'absolute', left: 20, top: 20 }}>
-        <button className="action-btn" onClick={onBack} style={{ padding: '8px 12px' }}>Back</button>
+        <button className="back-btn" onClick={onBack}>←</button>
       </div>
 
       <div style={{ width: '100%', maxWidth: 1200, background: 'rgba(255,255,255,0.95)', padding: 40, borderRadius: 20, boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>

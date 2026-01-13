@@ -51,7 +51,9 @@ export default function EnglishPhonics({ onBack }) {
     return (
         <div className="landing-root">
             <div className="landing-inner" style={{ maxWidth: 1200 }}>
-                <button className="action-btn secondary" onClick={onBack} style={{ position: 'absolute', left: 20, top: 20, padding: '8px 14px', fontSize: 16, minHeight: 40 }}>Back</button>
+                <div style={{ position: 'absolute', left: 20, top: 20, zIndex: 50 }}>
+                    <button className="back-btn" onClick={onBack}>←</button>
+                </div>
 
                 <h1 className="center-title" style={{ fontSize: 32, marginBottom: 20 }}>Drag the words to form compound words</h1>
 

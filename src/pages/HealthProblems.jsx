@@ -12,12 +12,7 @@ export default function HealthProblems({ onStart, onSelect, completed = [], allD
   return (
     <div id="landing" className="landing-root" role="main">
       <div className="landing-inner">
-        <div style={{ position: 'absolute', left: 20, top: 20, zIndex: 40 }}>
-          <button className="action-btn secondary" style={{ padding: '8px 14px', fontSize: 16, minHeight: 40 }} onClick={onBack}>Back</button>
-        </div>
-        <div style={{ position: 'absolute', right: 20, top: 20, zIndex: 40 }}>
-          <button className="action-btn secondary" style={{ padding: '8px 14px', fontSize: 16, minHeight: 40 }} onClick={onAllDone || onStart}>Skip to Assessment</button>
-        </div>
+        <button className="back-btn" onClick={onBack}>←</button>
         <h1 className="center-title" style={{ marginBottom: 32 }}>Health Problems</h1>
         <div className="health-grid" role="list">
           {displayedConditions.map((c, i) => {
@@ -45,23 +40,23 @@ export default function HealthProblems({ onStart, onSelect, completed = [], allD
         </div>
 
         {totalPages > 1 && (
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
-            {page < totalPages - 1 && (
-              <button
-                className="action-btn secondary"
-                style={{ borderRadius: '50%', width: 50, height: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, padding: 0 }}
-                onClick={() => setPage(p => p + 1)}
-              >
-                →
-              </button>
-            )}
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20, gap: 20 }}>
             {page > 0 && (
               <button
                 className="action-btn secondary"
-                style={{ borderRadius: '50%', width: 50, height: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, padding: 0 }}
+                style={{ borderRadius: 50, minWidth: 100, height: 60, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, padding: '0 30px' }}
                 onClick={() => setPage(p => p - 1)}
               >
                 ←
+              </button>
+            )}
+            {page < totalPages - 1 && (
+              <button
+                className="action-btn secondary"
+                style={{ borderRadius: 50, minWidth: 100, height: 60, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, padding: '0 30px' }}
+                onClick={() => setPage(p => p + 1)}
+              >
+                →
               </button>
             )}
           </div>

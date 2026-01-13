@@ -8,7 +8,9 @@ export default function ScienceOrgan({ onBack }) {
             minHeight: '100vh', color: 'white',
             display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative'
         }}>
-            <button className="action-btn secondary" onClick={onBack} style={{ position: 'absolute', left: 20, top: 20, padding: '8px 14px', fontSize: 16, minHeight: 40, zIndex: 50 }}>Back</button>
+            <div style={{ position: 'absolute', left: 20, top: 20, zIndex: 50 }}>
+                <button className="back-btn" onClick={onBack}>←</button>
+            </div>
 
             {/* Info Panel */}
             <div style={{
@@ -22,7 +24,7 @@ export default function ScienceOrgan({ onBack }) {
             </div>
 
             {/* Body Container */}
-            <div style={{ position: 'relative', width: 900, height: 1800, transform: 'scale(0.8)', transformOrigin: 'top center' }}>
+            <div style={{ position: 'relative', width: 900, height: 1800, transform: 'scale(1.5)', transformOrigin: 'top center', marginTop: 50 }}>
                 {/* Outline */}
                 <img src="/assets/science/outline.svg" alt="Human Body" width="900" style={{ pointerEvents: 'none' }} />
 

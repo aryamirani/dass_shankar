@@ -153,7 +153,7 @@ export default function Assessment({ onDone }) {
 
       {/* Back Button */}
       <div style={{ position: 'absolute', left: 20, top: 20 }}>
-        <button className="action-btn secondary" style={{ padding: '8px 12px' }} onClick={onDone}>←</button>
+        <button className="back-btn" onClick={onDone}>←</button>
       </div>
 
       <h2 style={{ textAlign: 'center', fontSize: 60, fontWeight: 900, marginTop: 40 }}>Health Quiz</h2>
@@ -163,28 +163,28 @@ export default function Assessment({ onDone }) {
 
       {step === 'A' && (
         <div style={{ width: '100%', margin: '12px 0' }}>
-          <div style={{ maxWidth: 800, margin: '0 auto' }}>
+          <div style={{ maxWidth: 1200, margin: '0 auto' }}>
             {a1Index < PART_A.length ? (
               <>
-                <div style={{ marginBottom: 24 }}>
-                  <div style={{ fontSize: 24, fontWeight: 700 }}>Part A Progress</div>
-                  <div style={{ height: 18, background: '#e3f2fd', borderRadius: 9, overflow: 'hidden' }}>
+                <div style={{ marginBottom: 30 }}>
+                  <div style={{ fontSize: 32, fontWeight: 700 }}>Part A Progress</div>
+                  <div style={{ height: 24, background: '#e3f2fd', borderRadius: 12, overflow: 'hidden' }}>
                     <div style={{ height: '100%', width: `${(a1Index / PART_A.length) * 100}%`, background: '#1976d2', transition: 'width 0.4s' }}></div>
                   </div>
                 </div>
-                <div style={{ fontSize: 28, fontWeight: 800, marginBottom: 24 }}>{PART_A[a1Index].q}</div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 16, marginTop: 12 }}>
+                <div style={{ fontSize: 42, fontWeight: 800, marginBottom: 40, lineHeight: 1.3 }}>{PART_A[a1Index].q}</div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 30, marginTop: 20 }}>
                   {optionsA.map(opt => (
-                    <button key={opt.id} disabled={locked} onClick={() => handleSelectA(opt.id)} style={{ padding: 8, background: '#fff', borderRadius: 10, border: '2px solid #1976d2', cursor: 'pointer', opacity: locked ? 0.5 : 1, minHeight: 80, minWidth: 100, fontSize: 16, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px #1976d233' }}>
-                      <img src={opt.img} alt={opt.label} style={{ width: 160, height: 160, objectFit: 'contain', marginBottom: 6 }} />
-                      <div style={{ fontWeight: 700, color: '#1976d2', fontSize: 15 }}>{opt.label}</div>
+                    <button key={opt.id} disabled={locked} onClick={() => handleSelectA(opt.id)} style={{ padding: 16, background: '#fff', borderRadius: 20, border: '4px solid #1976d2', cursor: 'pointer', opacity: locked ? 0.5 : 1, minHeight: 180, fontSize: 24, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxShadow: '0 6px 16px #1976d233' }}>
+                      <img src={opt.img} alt={opt.label} style={{ width: 170, height: 170, objectFit: 'contain', marginBottom: 12 }} />
+                      <div style={{ fontWeight: 800, color: '#1976d2', fontSize: 26 }}>{opt.label}</div>
                     </button>
                   ))}
                 </div>
               </>
             ) : (
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: 32, marginBottom: 20 }}>Great job! Part A complete.</div>
+                <div style={{ fontSize: 48, marginBottom: 30 }}>Great job! Part A complete.</div>
                 <button className="action-btn" onClick={() => setStep('B')}>Next: Part B</button>
               </div>
             )}
@@ -194,16 +194,16 @@ export default function Assessment({ onDone }) {
 
       {step === 'B' && (
         <div style={{ width: '100%', margin: '12px 0' }}>
-          <div style={{ maxWidth: 600, margin: '0 auto' }}>
+          <div style={{ maxWidth: 1000, margin: '0 auto' }}>
             {a2Index < PART_B.length ? (
               <>
-                <div style={{ marginBottom: 24 }}>
-                  <div style={{ fontSize: 24, fontWeight: 700 }}>Part B Progress</div>
-                  <div style={{ height: 18, background: '#e3f2fd', borderRadius: 9, overflow: 'hidden' }}>
+                <div style={{ marginBottom: 30 }}>
+                  <div style={{ fontSize: 32, fontWeight: 700 }}>Part B Progress</div>
+                  <div style={{ height: 24, background: '#e3f2fd', borderRadius: 12, overflow: 'hidden' }}>
                     <div style={{ height: '100%', width: `${(a2Index / PART_B.length) * 100}%`, background: '#1976d2' }}></div>
                   </div>
                 </div>
-                <div style={{ fontSize: 28, fontWeight: 800, marginBottom: 24 }}>
+                <div style={{ fontSize: 48, fontWeight: 800, marginBottom: 40, lineHeight: 1.4 }}>
                   {(() => {
                     const q = PART_B[a2Index].q;
                     const parts = q.split(/_{2,}/);
@@ -215,30 +215,31 @@ export default function Assessment({ onDone }) {
                           onDrop={handleDropB}
                           style={{
                             display: 'inline-block',
-                            minWidth: 120,
-                            minHeight: 36,
-                            borderBottom: '4px solid #1976d2',
+                            minWidth: 200,
+                            minHeight: 60,
+                            borderBottom: '6px solid #1976d2',
                             background: a2Drops[a2Index] ? '#e3f2fd' : '#fff',
-                            borderRadius: 6,
-                            margin: '0 8px',
+                            borderRadius: 12,
+                            margin: '0 12px',
                             textAlign: 'center',
                             verticalAlign: 'middle',
                             fontWeight: 900,
-                            fontSize: 24,
+                            fontSize: 42,
                             color: '#1976d2',
                             transition: 'background 0.2s',
+                            padding: '0 10px'
                           }}
                         >
-                          {a2Drops[a2Index] ? a2Drops[a2Index] : <span style={{ color: '#bbb', fontWeight: 400, fontSize: 20 }}>Drop here</span>}
+                          {a2Drops[a2Index] ? a2Drops[a2Index] : <span style={{ color: '#bbb', fontWeight: 400, fontSize: 32 }}>Drop here</span>}
                         </span>
                         {parts[1] || ''}
                       </>
                     );
                   })()}
                 </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, marginTop: 16, justifyContent: 'center' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, marginTop: 40, justifyContent: 'center' }}>
                   {optionsB.map(opt => (
-                    <div key={opt} draggable={!locked} onDragStart={e => onDragStartOptionB(e, opt)} style={{ padding: '16px 28px', background: '#fff', borderRadius: 14, border: '3px solid #1976d2', cursor: 'grab', opacity: locked ? 0.5 : 1, fontSize: 26, fontWeight: 800, color: '#1976d2', minWidth: 120, minHeight: 48, boxShadow: '0 3px 12px #1976d233', textAlign: 'center', marginBottom: 8 }}>{opt}</div>
+                    <div key={opt} draggable={!locked} onDragStart={e => onDragStartOptionB(e, opt)} style={{ padding: '24px 40px', background: '#fff', borderRadius: 20, border: '4px solid #1976d2', cursor: 'grab', opacity: locked ? 0.5 : 1, fontSize: 36, fontWeight: 800, color: '#1976d2', minWidth: 160, minHeight: 70, boxShadow: '0 4px 16px #1976d233', textAlign: 'center', marginBottom: 12 }}>{opt}</div>
                   ))}
                 </div>
               </>
@@ -254,9 +255,7 @@ export default function Assessment({ onDone }) {
       {/* Inline controls */}
       <div style={{ textAlign: 'center', marginTop: 40, paddingTop: 20, borderTop: '2px dashed #ccc' }}>
         <button className="action-btn secondary" style={{ fontSize: 16, padding: '6px 18px', marginRight: 10 }} onClick={resetAssessment}>Reset</button>
-        {step === 'A' && (
-          <button className="action-btn" style={{ fontSize: 16, padding: '6px 18px', background: '#ffb300', color: '#222', fontWeight: 700 }} onClick={() => setStep('B')}>Skip to Part B</button>
-        )}
+
       </div>
 
       {feedback && (

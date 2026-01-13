@@ -47,11 +47,9 @@ export default function VocabularyExercise({ onBack, onNextExercise }) {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: 20, position: 'relative' }}>
       <div style={{ position: 'absolute', left: 20, top: 20 }}>
-        <button className="action-btn" onClick={onBack} style={{ padding: '8px 12px' }}>Back</button>
+        <button className="back-btn" onClick={onBack}>←</button>
       </div>
-      <div style={{ position: 'absolute', right: 20, top: 20 }}>
-        <button className="action-btn secondary" onClick={onNextExercise} style={{ padding: '8px 12px' }}>Skip to next exercise</button>
-      </div>
+
 
       <div style={{ width: '100%', maxWidth: 980, background: 'rgba(255,255,255,0.0)', padding: 10 }}>
         <h2 style={{ fontSize: 36, textAlign: 'center', marginBottom: 8 }}>Find and tap only the "at" words</h2>

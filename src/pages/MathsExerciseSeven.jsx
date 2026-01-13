@@ -88,11 +88,9 @@ export default function MathsExerciseSeven({ onBack, onNextExercise }) {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: 20, position: 'relative' }}>
       <div style={{ position: 'absolute', left: 20, top: 20 }}>
-        <button className="action-btn" onClick={onBack} style={{ padding: '8px 12px' }}>Back</button>
+        <button className="back-btn" onClick={onBack}>←</button>
       </div>
-      <div style={{ position: 'absolute', right: 20, top: 20 }}>
-        <button className="action-btn secondary" onClick={onNextExercise} style={{ padding: '8px 12px' }}>Skip to next assessment</button>
-      </div>
+
 
       <div style={{ width: '100%', maxWidth: 900, background: 'rgba(255,255,255,0.95)', padding: 40, borderRadius: 20, boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>
         <h2 style={{ fontSize: 42, textAlign: 'center', marginBottom: 8, fontWeight: 900, color: '#333' }}>Value Chart</h2>

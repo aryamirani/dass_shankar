@@ -8,7 +8,7 @@ export default function HealthOverview({ onStart, onBack }) {
         @keyframes floatB { 0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)} }
       `}</style>
             <div style={{ position: 'absolute', left: 20, top: 20 }}>
-                <button className="action-btn" onClick={onBack} style={{ padding: '8px 12px' }}>Back</button>
+                <button className="back-btn" onClick={onBack}>←</button>
             </div>
             <div style={{ textAlign: 'center', background: 'rgba(255,255,255,0.0)', padding: 20 }}>
                 <h1 style={{ fontSize: 'clamp(48px, 12vw, 120px)', letterSpacing: 4, margin: 0, fontWeight: 900, display: 'inline-block', lineHeight: 1, color: 'white', textShadow: '0 4px 12px rgba(0,0,0,0.1)', animation: 'popIn 700ms cubic-bezier(.2,.9,.2,1) both' }}>

@@ -143,7 +143,7 @@ export default function VocabularyThree({ onBack }) {
   return (
     <div style={{ minHeight: '100vh', padding: 20, boxSizing: 'border-box', position: 'relative' }}>
       <div style={{ position: 'absolute', left: 20, top: 20 }}>
-        <button className="action-btn" onClick={onBack} style={{ padding: '8px 12px' }}>Back</button>
+        <button className="back-btn" onClick={onBack}>←</button>
       </div>
 
       <div style={{ maxWidth: 980, margin: '0 auto', background: 'rgba(255,255,255,0.0)', padding: 10 }}>

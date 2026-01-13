@@ -31,6 +31,7 @@ export default function Lesson({ data, index, total, onBack, onNext, onComplete,
   const [health, setHealth] = useState(0)
   const [feedback, setFeedback] = useState(null)
   const [positiveMsg, setPositiveMsg] = useState(null)
+  const [showTutorial, setShowTutorial] = useState(false)
   const confettiRef = useRef(null)
 
   useEffect(() => {
@@ -40,6 +41,17 @@ export default function Lesson({ data, index, total, onBack, onNext, onComplete,
     setHealth(0)
     setFeedback(null)
     setPositiveMsg(null)
+    setShowTutorial(false)
+
+    // Check if tutorial should be shown
+    const hasSeen = localStorage.getItem('hasSeenDragTutorial_v2')
+    if (!hasSeen) {
+      setTimeout(() => {
+        setShowTutorial(true)
+        localStorage.setItem('hasSeenDragTutorial_v2', 'true')
+      }, 500)
+      setTimeout(() => setShowTutorial(false), 4000)
+    }
   }, [data])
 
   useEffect(() => {
@@ -55,6 +67,7 @@ export default function Lesson({ data, index, total, onBack, onNext, onComplete,
   }, [dropped, data])
 
   function onDragStart(e, item) {
+    if (showTutorial) return; // Prevent drag during tutorial if needed, or just let it be
     e.dataTransfer.setData('text/plain', item.id)
   }
 
@@ -96,6 +109,10 @@ export default function Lesson({ data, index, total, onBack, onNext, onComplete,
     requestAnimationFrame(raf)
   }
 
+  // Calculate tutorial positions based on IDs
+  // We need to wait for render. We can use getBoundingClientRect in a sub-component or just blindly assume coordinates?
+  // Better: use an Overlay component that calculates positions.
+
   return (
     <div className="lesson-root" style={{ display: 'flex', flexDirection: 'column', height: '100vh', padding: '20px', boxSizing: 'border-box' }}>
       {positiveMsg && (
@@ -104,8 +121,10 @@ export default function Lesson({ data, index, total, onBack, onNext, onComplete,
         </div>
       )}
 
+      {showTutorial && <TutorialOverlay targetItems={data.items} />}
+
       <div className="top-nav" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <button className="action-btn" style={{ padding: '10px 25px', cursor: 'pointer' }} onClick={onBack}>Back</button>
+        <button className="back-btn" style={{ fontSize: 40 }} onClick={onBack}>←</button>
         <div style={{ textAlign: 'center' }}>
           <h2 style={{ margin: 0 }}>{data.title}</h2>
           <div style={{ fontSize: 14 }}>Page {index + 1} of {total}</div>
@@ -116,59 +135,60 @@ export default function Lesson({ data, index, total, onBack, onNext, onComplete,
       <div className="main-content" style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         {phase === 'exercise' && (
           <>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 20, background: 'rgba(255,255,255,0.7)', padding: 15, borderRadius: 15, marginBottom: 30, maxWidth: '1200px', width: '100%', margin: '0 auto 30px' }}>
-              <span style={{ fontSize: 20, fontWeight: 'bold', color: '#333', whiteSpace: 'nowrap' }}>Drag the helpful items:</span>
-              <div style={{ flex: 1, height: 25, background: '#ddd', borderRadius: 15, overflow: 'hidden', border: '2px solid #333' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 30, background: 'rgba(255,255,255,0.7)', padding: 20, borderRadius: 20, marginBottom: 40, maxWidth: '1600px', width: '100%', margin: '0 auto 40px' }}>
+              <span style={{ fontSize: 28, fontWeight: 'bold', color: '#333', whiteSpace: 'nowrap' }}>Drag the helpful items:</span>
+              <div style={{ flex: 1, height: 40, background: '#ddd', borderRadius: 20, overflow: 'hidden', border: '3px solid #333' }}>
                 <div style={{ width: `${health * 100}% `, height: '100%', background: 'linear-gradient(90deg, #4caf50, #8bc34a)', transition: 'width 0.4s' }} />
               </div>
             </div>
 
-            <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start', justifyContent: 'center', width: '100%', maxWidth: '1200px', margin: '0 auto', flex: 1 }}>
-              <div style={{ display: 'flex', flexDirection: 'row', gap: 32, flex: '0 0 700px', alignItems: 'center' }}>
-                <div onDrop={onDrop} onDragOver={e => e.preventDefault()} style={{ position: 'relative', width: 340, height: 350, border: '4px dashed #1976d2', borderRadius: 25, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'rgba(25,118,210,0.05)' }}>
-                  <div style={{ position: 'absolute', top: -15, background: 'white', padding: '2px 15px', border: '2px solid #1976d2', borderRadius: 10, fontWeight: 'bold', color: '#1976d2' }}>Drop Here</div>
+            <div style={{ display: 'flex', gap: '60px', alignItems: 'flex-start', justifyContent: 'center', width: '100%', maxWidth: '1600px', margin: '0 auto', flex: 1 }}>
+              <div style={{ display: 'flex', flexDirection: 'row', gap: 40, flex: '1 1 auto', alignItems: 'center', justifyContent: 'flex-end' }}>
+                <div id="drop-zone" onDrop={onDrop} onDragOver={e => e.preventDefault()} style={{ position: 'relative', width: 440, height: 500, border: '6px dashed #1976d2', borderRadius: 40, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'rgba(25,118,210,0.05)' }}>
+                  <div style={{ position: 'absolute', top: -25, background: 'white', padding: '5px 25px', border: '3px solid #1976d2', borderRadius: 15, fontWeight: 'bold', color: '#1976d2', fontSize: 24 }}>Drop Here</div>
                   <img src={data.img} alt="character" style={{ height: '80%', objectFit: 'contain' }} />
                   {feedback && (
-                    <div style={{ position: 'absolute', left: feedback.x, top: feedback.y, fontSize: 60, fontWeight: 'bold', color: feedback.type === 'tick' ? 'green' : 'red', textShadow: '2px 2px 4px rgba(0,0,0,0.3)', zIndex: 5 }}>
+                    <div style={{ position: 'absolute', left: feedback.x, top: feedback.y, fontSize: 100, fontWeight: 'bold', color: feedback.type === 'tick' ? 'green' : 'red', textShadow: '4px 4px 8px rgba(0,0,0,0.3)', zIndex: 5 }}>
                       {feedback.type === 'tick' ? '✓' : '✗'}
                     </div>
                   )}
                 </div>
-                <div className="speech-cloud" style={{ background: '#fff', padding: 20, borderRadius: 20, boxShadow: '0 4px 10px rgba(0,0,0,0.1)', border: '1px solid #eee', minWidth: 280, maxWidth: 340 }}>
-                  <h3 style={{ marginTop: 0 }}>What the child says:</h3>
-                  <ul style={{ fontSize: 18, lineHeight: '1.5' }}>
+                <div className="speech-cloud" style={{ background: '#fff', padding: 30, borderRadius: 30, boxShadow: '0 8px 24px rgba(0,0,0,0.1)', border: '2px solid #eee', minWidth: 320, maxWidth: 450 }}>
+                  <h3 style={{ marginTop: 0, fontSize: 32 }}>What the child says:</h3>
+                  <ul style={{ fontSize: 24, lineHeight: '1.6' }}>
                     {data.lines.map((l, i) => (
                       <li key={i} dangerouslySetInnerHTML={{ __html: l }} />
                     ))}
                   </ul>
                 </div>
               </div>
-              <div className="items-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 15, flex: '0 0 400px' }}>
+              <div className="items-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 24, flex: '0 0 540px' }}>
                 {ALL_ITEMS.map((item) => {
                   const isUsed = dropped.includes(item.id);
                   const isCorrect = data.items.includes(item.id);
                   return (
                     <div
                       key={item.id}
+                      id={`item-${item.id}`} // ADDED ID
                       draggable={!isUsed}
                       onDragStart={e => onDragStart(e, item)}
                       style={{
                         position: 'relative',
                         background: 'white',
-                        padding: 15,
-                        borderRadius: 15,
-                        boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+                        padding: 20,
+                        borderRadius: 24,
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                         cursor: isUsed ? 'default' : 'grab',
                         opacity: isUsed ? 0.6 : 1,
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        height: 120
+                        height: 180
                       }}
                     >
-                      <img src={item.src} alt={item.id} style={{ width: '195px', height: '145px', objectFit: 'contain' }} />
+                      <img src={item.src} alt={item.id} style={{ width: '220px', height: '160px', objectFit: 'contain' }} />
                       {isUsed && (
-                        <div style={{ position: 'absolute', fontSize: 40, color: isCorrect ? 'green' : 'red', fontWeight: 'bold' }}>
+                        <div style={{ position: 'absolute', fontSize: 60, color: isCorrect ? 'green' : 'red', fontWeight: 'bold' }}>
                           {isCorrect ? '✓' : '✗'}
                         </div>
                       )}
@@ -202,6 +222,66 @@ export default function Lesson({ data, index, total, onBack, onNext, onComplete,
       </div>
 
       {success && <canvas ref={confettiRef} style={{ position: 'fixed', top: 0, left: 0, pointerEvents: 'none', zIndex: 1500 }} />}
+    </div>
+  )
+}
+
+function TutorialOverlay({ targetItems = [] }) {
+  const [coords, setCoords] = useState(null)
+
+  useEffect(() => {
+    // try to find first valid item
+    const findCoords = () => {
+      let sourceEl = null
+      for (let id of targetItems) {
+        const el = document.getElementById(`item-${id}`)
+        if (el) {
+          sourceEl = el
+          break
+        }
+      }
+      const targetEl = document.getElementById('drop-zone')
+
+      if (sourceEl && targetEl) {
+        const sRect = sourceEl.getBoundingClientRect()
+        const tRect = targetEl.getBoundingClientRect()
+        setCoords({
+          startX: sRect.left + sRect.width / 2,
+          startY: sRect.top + sRect.height / 2,
+          endX: tRect.left + tRect.width / 2,
+          endY: tRect.top + tRect.height / 2
+        })
+      }
+    }
+
+    // slight delay to ensure render
+    setTimeout(findCoords, 100)
+    window.addEventListener('resize', findCoords)
+    return () => window.removeEventListener('resize', findCoords)
+  }, [targetItems])
+
+  if (!coords) return null
+
+  return (
+    <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 9999 }}>
+      <style>{`
+         @keyframes moveHand {
+             0% { transform: translate(${coords.startX}px, ${coords.startY}px) scale(1); opacity: 0; }
+             10% { transform: translate(${coords.startX}px, ${coords.startY}px) scale(1); opacity: 1; }
+             20% { transform: translate(${coords.startX}px, ${coords.startY}px) scale(0.9); } /* grab */
+             80% { transform: translate(${coords.endX}px, ${coords.endY}px) scale(0.9); opacity: 1; }
+             90% { transform: translate(${coords.endX}px, ${coords.endY}px) scale(1); opacity: 0; }
+             100% { transform: translate(${coords.endX}px, ${coords.endY}px) scale(1); opacity: 0; }
+         }
+       `}</style>
+      <div style={{
+        position: 'absolute',
+        left: 0, top: 0,
+        width: 50, height: 50,
+        background: 'url(\'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="2"><path d="M12 2a2 2 0 0 1 2 2v6.5a.5.5 0 0 0 1 0V4a2 2 0 0 1 4 0v9a8 8 0 1 1-16 0V7a2 2 0 0 1 4 0v3.5a.5.5 0 0 0 1 0V4a2 2 0 0 1 2-2z"/></svg>\') no-repeat center/contain',
+        filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.5))',
+        animation: 'moveHand 2s ease-in-out infinite'
+      }} />
     </div>
   )
 }
