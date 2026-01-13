@@ -1,15 +1,15 @@
 // Positive feedback messages
 const POSITIVE_FEEDBACKS = [
-  'Great work!',
-  'Good job!',
-  'Wow!',
-  'Amazing!',
-  'Awesome!',
-  'You did it!',
-  'Super!',
-  'Fantastic!',
-  'Nice!',
-  'Brilliant!'
+  '🌟 Great work!',
+  '👍 Good job!',
+  '🤩 Wow!',
+  '✨ Amazing!',
+  '🚀 Awesome!',
+  '🎉 You did it!',
+  '🦸 Super!',
+  '🪄 Fantastic!',
+  '🙂 Nice!',
+  '🧠 Brilliant!'
 ];
 
 import React, { useState, useRef } from 'react'
@@ -129,6 +129,9 @@ export default function Assessment({ onDone }) {
       )}
 
       <h2 style={{ textAlign: 'center', fontSize: 60, fontWeight: 900, marginTop: 0 }}>Health Quiz</h2>
+      <p style={{ textAlign: 'center', fontSize: 24, fontWeight: 600, color: '#333', marginTop: -10, marginBottom: 30 }}>
+        {step === 'A' ? 'Choose the correct health problem based on the symptoms.' : 'Drag the correct solution to complete the sentence.'}
+      </p>
 
       {step === 'A' && (
         <div style={{ width: '100%', margin: '12px 0' }}>
@@ -199,7 +202,7 @@ export default function Assessment({ onDone }) {
                             transition: 'background 0.2s',
                           }}
                         >
-                          {a2Drops[a2Index] ? a2Drops[a2Index] : <span style={{color:'#bbb', fontWeight:400, fontSize:20}}>Drop here</span>}
+                          {a2Drops[a2Index] ? a2Drops[a2Index] : <span style={{ color: '#bbb', fontWeight: 400, fontSize: 20 }}>Drop here</span>}
                         </span>
                         {parts[1] || ''}
                       </>
@@ -208,7 +211,7 @@ export default function Assessment({ onDone }) {
                 </div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, marginTop: 16, justifyContent: 'center' }}>
                   {optionsB.map(opt => (
-                            <div key={opt} draggable={!locked} onDragStart={e => onDragStartOptionB(e, opt)} style={{ padding: '16px 28px', background: '#fff', borderRadius: 14, border: '3px solid #1976d2', cursor: 'grab', opacity: locked ? 0.5 : 1, fontSize: 26, fontWeight: 800, color: '#1976d2', minWidth: 120, minHeight: 48, boxShadow: '0 3px 12px #1976d233', textAlign: 'center', marginBottom: 8 }}>{opt}</div>
+                    <div key={opt} draggable={!locked} onDragStart={e => onDragStartOptionB(e, opt)} style={{ padding: '16px 28px', background: '#fff', borderRadius: 14, border: '3px solid #1976d2', cursor: 'grab', opacity: locked ? 0.5 : 1, fontSize: 26, fontWeight: 800, color: '#1976d2', minWidth: 120, minHeight: 48, boxShadow: '0 3px 12px #1976d233', textAlign: 'center', marginBottom: 8 }}>{opt}</div>
                   ))}
                 </div>
               </>
@@ -235,11 +238,11 @@ export default function Assessment({ onDone }) {
         padding: '12px 0 10px 0',
         zIndex: 100
       }}>
-        <button className="action-btn secondary" style={{fontSize: 16, padding: '6px 18px', minWidth: 0}} onClick={resetAssessment}>Reset</button>
+        <button className="action-btn secondary" style={{ fontSize: 16, padding: '6px 18px', minWidth: 0 }} onClick={resetAssessment}>Reset</button>
         {step === 'A' && (
-          <button className="action-btn" style={{fontSize: 16, padding: '6px 18px', minWidth: 0, background:'#ffb300', color:'#222', fontWeight:700}} onClick={()=>setStep('B')}>Skip to Part B</button>
+          <button className="action-btn" style={{ fontSize: 16, padding: '6px 18px', minWidth: 0, background: '#ffb300', color: '#222', fontWeight: 700 }} onClick={() => setStep('B')}>Skip to Part B</button>
         )}
-        <button className="action-btn" style={{fontSize: 16, padding: '6px 18px', minWidth: 0}} onClick={onDone}>Back Home</button>
+        <button className="action-btn" style={{ fontSize: 16, padding: '6px 18px', minWidth: 0 }} onClick={onDone}>Back Home</button>
       </div>
 
       {feedback && (
