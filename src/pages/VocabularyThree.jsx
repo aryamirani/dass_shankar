@@ -18,6 +18,22 @@ export default function VocabularyThree({ onBack }) {
   const [viewIndex, setViewIndex] = useState(0)
   const [message, setMessage] = useState(null)
   const [hoveredTarget, setHoveredTarget] = useState(null)
+  const [showTutorial, setShowTutorial] = useState(false)
+
+  useEffect(() => {
+    if (step === 1) {
+      const hasSeen = localStorage.getItem('hasSeenVocabMatchTutorial')
+      if (!hasSeen) {
+        setTimeout(() => {
+          setShowTutorial(true)
+          localStorage.setItem('hasSeenVocabMatchTutorial', 'true')
+        }, 500)
+        setTimeout(() => setShowTutorial(false), 4000)
+      }
+    } else {
+      setShowTutorial(false)
+    }
+  }, [step])
 
   // --- Matching & gallery state ---
   const shuffleWords = (arr) => {
@@ -145,9 +161,10 @@ export default function VocabularyThree({ onBack }) {
       <div style={{ position: 'absolute', left: 20, top: 20 }}>
         <button className="back-btn" onClick={onBack}>←</button>
       </div>
+      {showTutorial && step === 1 && <TutorialOverlay draggables={draggables} targets={targets} />}
 
       <div style={{ maxWidth: 980, margin: '0 auto', background: 'rgba(255,255,255,0.0)', padding: 10 }}>
-        <h2 style={{ textAlign: 'center', fontSize: 28 }}>Vocabulary set: bat, cat, hat, mat, rat</h2>
+        <h2 style={{ textAlign: 'center', fontSize: 42, fontWeight: 900, color: '#fff', textShadow: '0 2px 10px rgba(0,0,0,0.2)', marginBottom: 20 }}>Vocabulary</h2>
 
         <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginTop: 18 }}>
           <button className="action-btn" onClick={() => { setStep(0); reshuffleAll() }} style={tabStyle(0)}>Visual Reference</button>
@@ -170,8 +187,8 @@ export default function VocabularyThree({ onBack }) {
               &lt;
             </button>
 
-            <div key={galleryOrder[viewIndex].id} onClick={() => speak(galleryOrder[viewIndex].id)} style={{ textAlign: 'center', width: 320, background: '#fff', borderRadius: 20, padding: 30, boxShadow: '0 10px 25px rgba(0,0,0,0.1)', border: '1px solid rgba(0,0,0,0.06)', cursor: 'pointer' }}>
-              <img src={galleryOrder[viewIndex].img} alt={galleryOrder[viewIndex].id} style={{ width: 220, height: 180, objectFit: 'contain' }} />
+            <div key={galleryOrder[viewIndex].id} onClick={() => speak(galleryOrder[viewIndex].id)} style={{ textAlign: 'center', width: 500, background: 'transparent', borderRadius: 20, padding: 30, cursor: 'pointer' }}>
+              <img src={galleryOrder[viewIndex].img} alt={galleryOrder[viewIndex].id} style={{ width: 440, height: 360, objectFit: 'contain' }} />
               <div style={{ height: 20 }} />
               <div style={{ fontSize: 36, fontWeight: 800, color: '#111' }}>{galleryOrder[viewIndex].id}</div>
               <div style={{ marginTop: 10, color: '#666', fontSize: 14 }}>Click to listen</div>
@@ -199,20 +216,21 @@ export default function VocabularyThree({ onBack }) {
                 const isHover = hoveredTarget === t.id
                 return (
                   <div key={t.id}
+                    id={`target-${t.id}`}
                     onDrop={(e) => onDropTarget(e, t)}
                     onDragOver={allowDrop}
                     onDragEnter={(e) => onDragEnterTarget(e, t)}
                     onDragLeave={(e) => onDragLeaveTarget(e, t)}
                     style={{
-                      minHeight: 160,
+                      minHeight: 220,
                       borderRadius: 14,
-                      background: t.matched ? 'linear-gradient(180deg,#e8f5e9,#ffffff)' : 'rgba(255,255,255,0.95)',
+                      background: 'transparent',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column',
-                      boxShadow: isHover ? '0 10px 20px rgba(25,118,210,0.12)' : '0 6px 12px rgba(0,0,0,0.06)',
-                      border: t.matched ? '3px solid #2e7d32' : (isHover ? '3px dashed #1976d2' : '2px dashed rgba(0,0,0,0.12)'),
+                      boxShadow: 'none',
+                      border: t.matched ? 'none' : (isHover ? '3px dashed #1976d2' : '2px dashed rgba(0,0,0,0.12)'),
                       transition: 'all 180ms ease'
                     }}>
-                    <img src={t.img} alt={t.id} style={{ width: 160, height: 120, objectFit: 'contain', opacity: t.matched ? 0.6 : 1, filter: t.matched ? 'grayscale(0.1) brightness(0.98)' : 'none' }} />
+                    <img src={t.img} alt={t.id} style={{ width: 240, height: 180, objectFit: 'contain', opacity: t.matched ? 0.6 : 1, filter: t.matched ? 'grayscale(0.1) brightness(0.98)' : 'none' }} />
                     <div style={{ height: 8 }} />
                     {t.matched ? <div style={{ color: '#2e7d32', fontWeight: 800, display: 'flex', alignItems: 'center', gap: 8 }}><span style={{ fontSize: 20 }}>✓</span>Matched</div> : <div style={{ height: 22 }} />}
                   </div>
@@ -225,6 +243,7 @@ export default function VocabularyThree({ onBack }) {
               {draggables.map(d => (
                 <div
                   key={d.id}
+                  id={`draggable-${d.id}`}
                   draggable={!d.used}
                   onDragStart={(e) => onDragStart(e, d)}
                   style={{
@@ -258,7 +277,7 @@ export default function VocabularyThree({ onBack }) {
               <div style={{ fontSize: 24, fontWeight: 800, color: '#2e7d32' }}>All done — great typing!</div>
             ) : (
               <div>
-                <img src={typeOrder[typeIndex].img} alt={typeOrder[typeIndex].id} style={{ width: 260, height: 200, objectFit: 'contain' }} />
+                <img src={typeOrder[typeIndex].img} alt={typeOrder[typeIndex].id} style={{ width: 400, height: 320, objectFit: 'contain' }} />
                 <form onSubmit={onSubmitType} style={{ marginTop: 12 }} onPaste={(e) => {
                   e.preventDefault()
                   const pasted = (e.clipboardData || window.clipboardData).getData('text').trim().slice(0, 3)
@@ -340,6 +359,87 @@ export default function VocabularyThree({ onBack }) {
         )}
 
       </div>
+
+      {/* Word List Footer */}
+      <div style={{
+        position: 'fixed', bottom: 30, left: '50%', transform: 'translateX(-50%)',
+        background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(8px)',
+        padding: '15px 40px', borderRadius: 50,
+        boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
+        border: '4px solid rgba(255,255,255,0.5)',
+        display: 'flex', gap: 30, alignItems: 'center', zIndex: 100
+      }}>
+        <span style={{ fontWeight: 800, color: '#1976d2', fontSize: 16, textTransform: 'uppercase', letterSpacing: 2 }}>Words:</span>
+        <div style={{ display: 'flex', gap: 20 }}>
+          {WORDS.map(w => (
+            <span key={w.id} style={{ fontSize: 24, fontWeight: 700, color: '#333' }}>{w.id}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function TutorialOverlay({ draggables, targets }) {
+  const [coords, setCoords] = useState(null)
+
+  useEffect(() => {
+    const findCoords = () => {
+      // Find a valid move: an unused draggable that has a corresponding unmatched target
+      let bestMove = null
+      for (let d of draggables) {
+        if (d.used) continue
+        // find target
+        const t = targets.find(tar => tar.id === d.id)
+        if (t && !t.matched) {
+          bestMove = { draggable: d, target: t }
+          break
+        }
+      }
+
+      if (bestMove) {
+        const sourceEl = document.getElementById(`draggable-${bestMove.draggable.id}`)
+        const targetEl = document.getElementById(`target-${bestMove.target.id}`)
+        if (sourceEl && targetEl) {
+          const sRect = sourceEl.getBoundingClientRect()
+          const tRect = targetEl.getBoundingClientRect()
+          setCoords({
+            startX: sRect.left + sRect.width / 2,
+            startY: sRect.top + sRect.height / 2,
+            endX: tRect.left + tRect.width / 2,
+            endY: tRect.top + tRect.height / 2
+          })
+        }
+      }
+    }
+
+    setTimeout(findCoords, 100)
+    window.addEventListener('resize', findCoords)
+    return () => window.removeEventListener('resize', findCoords)
+  }, [draggables, targets])
+
+  if (!coords) return null
+
+  return (
+    <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 9999 }}>
+      <style>{`
+         @keyframes moveHand {
+             0% { transform: translate(${coords.startX}px, ${coords.startY}px) scale(1); opacity: 0; }
+             10% { transform: translate(${coords.startX}px, ${coords.startY}px) scale(1); opacity: 1; }
+             20% { transform: translate(${coords.startX}px, ${coords.startY}px) scale(0.9); } 
+             80% { transform: translate(${coords.endX}px, ${coords.endY}px) scale(0.9); opacity: 1; }
+             90% { transform: translate(${coords.endX}px, ${coords.endY}px) scale(1); opacity: 0; }
+             100% { transform: translate(${coords.endX}px, ${coords.endY}px) scale(1); opacity: 0; }
+         }
+       `}</style>
+      <div style={{
+        position: 'absolute',
+        left: 0, top: 0,
+        width: 50, height: 50,
+        background: 'url(\'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="2"><path d="M12 2a2 2 0 0 1 2 2v6.5a.5.5 0 0 0 1 0V4a2 2 0 0 1 4 0v9a8 8 0 1 1-16 0V7a2 2 0 0 1 4 0v3.5a.5.5 0 0 0 1 0V4a2 2 0 0 1 2-2z"/></svg>\') no-repeat center/contain',
+        filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.5))',
+        animation: 'moveHand 2s ease-in-out infinite'
+      }} />
     </div>
   )
 }

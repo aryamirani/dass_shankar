@@ -12,10 +12,10 @@ export default function VocabularyExercise({ onBack, onNextExercise }) {
   // generate randomized 4x4 grid (16 items) with 4-6 'at' targets placed randomly
   const initialData = useMemo(() => {
     const distractors = ['an', 'ab', 'ac', 'ap', 'ad', 'am', 'ag', 'af', 'ar']
-    const countAt = Math.floor(Math.random() * 3) + 4 // 4..6
+    const countAt = Math.floor(Math.random() * 3) + 2 // 2..4
     const arr = []
     for (let i = 0; i < countAt; i++) arr.push('at')
-    while (arr.length < 16) arr.push(distractors[Math.floor(Math.random() * distractors.length)])
+    while (arr.length < 9) arr.push(distractors[Math.floor(Math.random() * distractors.length)])
     // shuffle Fisher-Yates
     for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = arr[i]; arr[i] = arr[j]; arr[j] = t }
     return { items: arr.map((w, i) => ({ id: i, word: w, matched: false })), countAt }
@@ -50,6 +50,32 @@ export default function VocabularyExercise({ onBack, onNextExercise }) {
         <button className="back-btn" onClick={onBack}>←</button>
       </div>
 
+      <style>{`
+        .vocab-word-btn {
+            width: 100%; height: 100%;
+            font-size: 48px;
+            font-weight: 800;
+            border-radius: 20px;
+            border: none;
+            background: white;
+            cursor: pointer;
+            box-shadow: 0 8px 0px rgba(0,0,0,0.15), 0 15px 20px rgba(0,0,0,0.1);
+            color: #444;
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            padding: 20px;
+        }
+        .vocab-word-btn:hover:not(:disabled) {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 0px rgba(0,0,0,0.15), 0 20px 30px rgba(0,0,0,0.15);
+            background: #fff;
+            color: #1976d2;
+        }
+        .vocab-word-btn:active:not(:disabled) {
+            transform: translateY(2px);
+            box-shadow: 0 4px 0px rgba(0,0,0,0.15), 0 5px 10px rgba(0,0,0,0.1);
+        }
+      `}</style>
+
 
       <div style={{ width: '100%', maxWidth: 980, background: 'rgba(255,255,255,0.0)', padding: 10 }}>
         <h2 style={{ fontSize: 36, textAlign: 'center', marginBottom: 8 }}>Find and tap only the "at" words</h2>
@@ -57,21 +83,19 @@ export default function VocabularyExercise({ onBack, onNextExercise }) {
           Correct found: {completedCount} / {totalAt}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24, justifyItems: 'center', alignItems: 'center', padding: 20 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24, justifyItems: 'center', alignItems: 'center', padding: 20 }}>
           {items.map(item => (
-            <div key={item.id} style={{ minWidth: 120, minHeight: 80, position: 'relative', overflow: 'hidden', borderRadius: 18 }}>
+            <div key={item.id} style={{ minWidth: 140, minHeight: 100, position: 'relative', borderRadius: 20 }}>
               <button
+                className="vocab-word-btn"
                 onClick={() => { if (!item.matched) handleClick(item) }}
                 disabled={item.matched}
                 style={{
-                  width: '100%', height: '100%',
-                  fontSize: 44,
-                  fontWeight: 800,
-                  borderRadius: 18,
-                  border: '2px solid #333',
-                  background: item.matched ? 'linear-gradient(180deg,#e8f5e9,#ffffff)' : 'white',
-                  cursor: item.matched ? 'default' : 'pointer',
-                  boxShadow: '0 6px 12px rgba(0,0,0,0.08)'
+                  background: item.matched ? '#dcfce7' : 'white',
+                  color: item.matched ? '#166534' : '#444',
+                  boxShadow: item.matched ? 'inset 0 4px 10px rgba(0,0,0,0.05)' : undefined,
+                  transform: item.matched ? 'scale(0.95)' : undefined,
+                  cursor: item.matched ? 'default' : 'pointer'
                 }}
               >
                 {item.word}
