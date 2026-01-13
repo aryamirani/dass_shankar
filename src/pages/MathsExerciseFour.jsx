@@ -129,7 +129,7 @@ export default function MathsExerciseFour({ onBack, onNextExercise }) {
   const allFilled = items.every(item => item.beforeDigits.some(d => d) && item.afterDigits.some(d => d))
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: 20, position: 'relative', background: 'linear-gradient(135deg, #FA8BFF 0%, #2BD2FF 90%, #2BFF88 100%)' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: 20, position: 'relative' }}>
       <div style={{ position: 'absolute', left: 20, top: 20 }}>
         <button className="action-btn" onClick={onBack} style={{ padding: '8px 12px' }}>Back</button>
       </div>

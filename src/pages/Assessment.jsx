@@ -12,7 +12,7 @@ const POSITIVE_FEEDBACKS = [
   '🧠 Brilliant!'
 ];
 
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import CONDITIONS from '../data/conditions'
 
 const DIAG_OPTIONS = CONDITIONS.map(c => ({ id: c.id, label: c.title, img: c.img }))
@@ -36,18 +36,43 @@ const PART_B = [
   { q: 'I have cold and cough. You should not go out. Wear ________', answer: 'facemask' }
 ]
 
+function shuffle(array) {
+  const newArr = [...array];
+  for (let i = newArr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+  }
+  return newArr;
+}
+
 export default function Assessment({ onDone }) {
   const [step, setStep] = useState('A')
   const [a1Index, setA1Index] = useState(0)
   const [a2Index, setA2Index] = useState(0)
   const [a1Drops, setA1Drops] = useState([])
   const [a2Drops, setA2Drops] = useState([])
-  const [optionsA, setOptionsA] = useState(DIAG_OPTIONS)
+  const [optionsA, setOptionsA] = useState([])
   const [optionsB, setOptionsB] = useState(PARTB_OPTIONS)
   const [feedback, setFeedback] = useState(null)
   const [positiveMsg, setPositiveMsg] = useState(null)
   const [locked, setLocked] = useState(false)
   const confettiRef = useRef(null)
+
+  // Update options for Part A when the question changes
+  useEffect(() => {
+    if (step === 'A' && a1Index < PART_A.length) {
+      const currentAnswerId = PART_A[a1Index].answer;
+      const currentAnswerOpt = DIAG_OPTIONS.find(o => o.id === currentAnswerId);
+      const distractors = DIAG_OPTIONS.filter(o => o.id !== currentAnswerId);
+      const shuffledDistractors = shuffle(distractors).slice(0, 5);
+      if (currentAnswerOpt) {
+        setOptionsA(shuffle([currentAnswerOpt, ...shuffledDistractors]));
+      } else {
+        // Fallback if answer id not found in conditions
+        setOptionsA(shuffle(distractors).slice(0, 6));
+      }
+    }
+  }, [a1Index, step]);
 
   function onDragStartOptionB(e, opt) { e.dataTransfer.setData('text/plain', JSON.stringify({ type: 'optionB', val: opt })) }
 
@@ -57,9 +82,7 @@ export default function Assessment({ onDone }) {
     if (optId === answer) {
       setLocked(true);
       setA1Drops(prev => [...prev, optId]);
-      // Note: We don't necessarily filter optionsA if you want them all available for every question, 
-      // but keeping your logic of removal:
-      setOptionsA(prev => prev.filter(opt => opt.id !== optId));
+      // Do not filter optionsA here anymore, as we regenerate for next question
       const msg = POSITIVE_FEEDBACKS[Math.floor(Math.random() * POSITIVE_FEEDBACKS.length)];
       setPositiveMsg(msg);
       setTimeout(() => {
@@ -99,7 +122,7 @@ export default function Assessment({ onDone }) {
   }
 
   function checkAnswers() {
-    let a1Correct = a1Drops.length; // Simplified since they can't progress without correct answer
+    let a1Correct = a1Drops.length;
     let a2Correct = a2Drops.length;
     const total = a1Correct + a2Correct
     setFeedback({ a1: a1Correct, a2: a2Correct, total })
@@ -114,21 +137,26 @@ export default function Assessment({ onDone }) {
     setA2Index(0)
     setA1Drops([])
     setA2Drops([])
-    setOptionsA(DIAG_OPTIONS)
+    // optionsA will reset via useEffect
     setOptionsB(PARTB_OPTIONS)
     setFeedback(null)
     setStep('A')
   }
 
   return (
-    <div style={{ padding: '0 24px 24px 24px', backgroundImage: "url('/assets/background2.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '100vh' }}>
+    <div style={{ padding: '0 24px 24px 24px', minHeight: '100vh', position: 'relative' }}>
       {positiveMsg && (
         <div style={{ position: 'fixed', top: 80, left: '50%', transform: 'translateX(-50%)', background: 'rgba(255,255,255,0.97)', color: '#1976d2', fontWeight: 'bold', fontSize: 36, borderRadius: 18, boxShadow: '0 4px 24px #1976d2aa', padding: '18px 48px', zIndex: 1000, border: '3px solid #1976d2' }}>
           {positiveMsg}
         </div>
       )}
 
-      <h2 style={{ textAlign: 'center', fontSize: 60, fontWeight: 900, marginTop: 0 }}>Health Quiz</h2>
+      {/* Back Button */}
+      <div style={{ position: 'absolute', left: 20, top: 20 }}>
+        <button className="action-btn secondary" style={{ padding: '8px 12px' }} onClick={onDone}>←</button>
+      </div>
+
+      <h2 style={{ textAlign: 'center', fontSize: 60, fontWeight: 900, marginTop: 40 }}>Health Quiz</h2>
       <p style={{ textAlign: 'center', fontSize: 24, fontWeight: 600, color: '#333', marginTop: -10, marginBottom: 30 }}>
         {step === 'A' ? 'Choose the correct health problem based on the symptoms.' : 'Drag the correct solution to complete the sentence.'}
       </p>
@@ -177,7 +205,6 @@ export default function Assessment({ onDone }) {
                 </div>
                 <div style={{ fontSize: 28, fontWeight: 800, marginBottom: 24 }}>
                   {(() => {
-                    // Split question at underline (______)
                     const q = PART_B[a2Index].q;
                     const parts = q.split(/_{2,}/);
                     return (
@@ -224,25 +251,12 @@ export default function Assessment({ onDone }) {
         </div>
       )}
 
-      <div style={{
-        position: 'fixed',
-        left: 0,
-        bottom: 0,
-        width: '100%',
-        background: 'rgba(255,255,255,0.95)',
-        boxShadow: '0 -2px 12px #1976d233',
-        display: 'flex',
-        gap: 8,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '12px 0 10px 0',
-        zIndex: 100
-      }}>
-        <button className="action-btn secondary" style={{ fontSize: 16, padding: '6px 18px', minWidth: 0 }} onClick={resetAssessment}>Reset</button>
+      {/* Inline controls */}
+      <div style={{ textAlign: 'center', marginTop: 40, paddingTop: 20, borderTop: '2px dashed #ccc' }}>
+        <button className="action-btn secondary" style={{ fontSize: 16, padding: '6px 18px', marginRight: 10 }} onClick={resetAssessment}>Reset</button>
         {step === 'A' && (
-          <button className="action-btn" style={{ fontSize: 16, padding: '6px 18px', minWidth: 0, background: '#ffb300', color: '#222', fontWeight: 700 }} onClick={() => setStep('B')}>Skip to Part B</button>
+          <button className="action-btn" style={{ fontSize: 16, padding: '6px 18px', background: '#ffb300', color: '#222', fontWeight: 700 }} onClick={() => setStep('B')}>Skip to Part B</button>
         )}
-        <button className="action-btn" style={{ fontSize: 16, padding: '6px 18px', minWidth: 0 }} onClick={onDone}>Back Home</button>
       </div>
 
       {feedback && (

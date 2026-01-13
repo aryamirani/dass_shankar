@@ -1,23 +1,23 @@
 import React from 'react'
 
-export default function Maths({onStart, onBack}){
+export default function Maths({ onStart, onBack }) {
   return (
-    <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',position:'relative',background:'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
       <style>{`
         @keyframes popIn { 0% { opacity: 0; transform: translateY(30px) scale(0.98); } 60% { transform: translateY(-8px) scale(1.02); opacity: 1; } 100% { transform: translateY(0) scale(1); } }
         @keyframes floatB { 0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)} }
       `}</style>
-      <div style={{position:'absolute',left:20,top:20}}>
-        <button className="action-btn" onClick={onBack} style={{padding:'8px 12px'}}>Back</button>
+      <div style={{ position: 'absolute', left: 20, top: 20 }}>
+        <button className="action-btn" onClick={onBack} style={{ padding: '8px 12px' }}>Back</button>
       </div>
-      <div style={{textAlign:'center',background:'rgba(255,255,255,0.0)',padding:20}}>
-        <h1 style={{fontSize:'clamp(48px, 12vw, 120px)',letterSpacing:4,margin:0,fontWeight:900,display:'inline-block',lineHeight:1,color:'white',textShadow:'0 10px 30px rgba(0,0,0,0.3)',animation:'popIn 700ms cubic-bezier(.2,.9,.2,1) both'}}>
+      <div style={{ textAlign: 'center', background: 'rgba(255,255,255,0.0)', padding: 20 }}>
+        <h1 style={{ fontSize: 'clamp(48px, 12vw, 120px)', letterSpacing: 4, margin: 0, fontWeight: 900, display: 'inline-block', lineHeight: 1, color: 'white', textShadow: '0 10px 30px rgba(0,0,0,0.3)', animation: 'popIn 700ms cubic-bezier(.2,.9,.2,1) both' }}>
           Maths
         </h1>
-        <div style={{height:12}} />
-        <div style={{fontSize:20,color:'white',opacity:0.95,marginTop:6,animation:'popIn 700ms cubic-bezier(.2,.9,.2,1) 120ms both'}}>Learn numbers and mathematics through fun exercises</div>
-        <div style={{height:24}} />
-        <button className="action-btn" onClick={onStart} style={{padding:'14px 30px',fontSize:20,animation:'popIn 700ms cubic-bezier(.2,.9,.2,1) 260ms both',transformOrigin:'center'}} onMouseEnter={e=>{ e.currentTarget.style.animation = 'floatB 900ms ease-in-out infinite'}} onMouseLeave={e=>{ e.currentTarget.style.animation = 'popIn 700ms cubic-bezier(.2,.9,.2,1) 260ms both'}}>
+        <div style={{ height: 12 }} />
+        <div style={{ fontSize: 20, color: 'white', opacity: 0.95, marginTop: 6, animation: 'popIn 700ms cubic-bezier(.2,.9,.2,1) 120ms both' }}>Learn numbers and mathematics through fun exercises</div>
+        <div style={{ height: 24 }} />
+        <button className="action-btn" onClick={onStart} style={{ padding: '14px 30px', fontSize: 20, animation: 'popIn 700ms cubic-bezier(.2,.9,.2,1) 260ms both', transformOrigin: 'center' }} onMouseEnter={e => { e.currentTarget.style.animation = 'floatB 900ms ease-in-out infinite' }} onMouseLeave={e => { e.currentTarget.style.animation = 'popIn 700ms cubic-bezier(.2,.9,.2,1) 260ms both' }}>
           Start now
         </button>
       </div>

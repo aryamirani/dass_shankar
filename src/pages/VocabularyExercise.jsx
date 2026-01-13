@@ -45,7 +45,7 @@ export default function VocabularyExercise({ onBack, onNextExercise }) {
   const totalAt = initialData.countAt
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: 20, position: 'relative', backgroundImage: `linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.6)), url(/assets/alphabet.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: 20, position: 'relative' }}>
       <div style={{ position: 'absolute', left: 20, top: 20 }}>
         <button className="action-btn" onClick={onBack} style={{ padding: '8px 12px' }}>Back</button>
       </div>

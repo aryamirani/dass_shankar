@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 const MENU_STRUCTURE = [
     { id: 'landing', label: 'Overview', type: 'file', icon: '🏠' },
     {
-        id: 'health-folder', label: 'Health Module', type: 'folder', icon: '❤️', children: [
-            { id: 'health', label: 'Common Problems', type: 'file', icon: '🌡️' },
+        id: 'health', label: 'Health Module', type: 'folder', icon: '❤️', children: [
+            { id: 'healthProblems', label: 'Common Problems', type: 'file', icon: '🌡️' },
             { id: 'assessment', label: 'Health Quiz', type: 'file', icon: '📝' }
         ]
     },
@@ -25,14 +25,29 @@ const MENU_STRUCTURE = [
             { id: 'mathsExerciseSeven', label: 'Place Values', type: 'file', icon: '🏘️' },
             { id: 'mathsExerciseEight', label: 'Calculator', type: 'file', icon: '🧮' }
         ]
+    },
+    {
+        id: 'english', label: 'English Module', type: 'folder', icon: '📝', children: [
+            { id: 'englishTheory', label: 'Compound Words', type: 'file', icon: '🧬' },
+            { id: 'englishWordGame', label: 'Word Surgery', type: 'file', icon: '📚' },
+            { id: 'englishPhonics', label: 'Word Match', type: 'file', icon: '📐' },
+            { id: 'englishFillBlanks', label: 'Fill Blanks', type: 'file', icon: '✍️' }
+        ]
+    },
+    {
+        id: 'science', label: 'Science Module', type: 'folder', icon: '🔬', children: [
+            { id: 'scienceOrgan', label: 'Human Anatomy', type: 'file', icon: '🫀' }
+        ]
     }
 ]
 
 export default function Sidebar({ currentView, onChangeView, completedItems = [] }) {
     const [expanded, setExpanded] = useState({
-        'health-folder': true,
+        'health': true,
         'vocabulary': true,
-        'maths': true
+        'maths': true,
+        'english': true,
+        'science': true
     })
     const [collapsed, setCollapsed] = useState(false)
     const [hovered, setHovered] = useState(null)
@@ -54,7 +69,10 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
     }
 
     const renderItem = (item, level = 0) => {
-        const isActive = currentView === item.id || (item.id === 'health-folder' && currentView === 'health') // special handling if necessary
+        const isActive = currentView === item.id ||
+            (item.id === 'health' && (currentView === 'healthProblems' || currentView === 'assessment')) ||
+            (item.id === 'science' && currentView === 'scienceOrgan') ||
+            (item.id === 'english' && currentView.startsWith('english'))
         const isFolder = item.type === 'folder'
         const isOpen = expanded[item.id]
         const isHovered = hovered === item.id
@@ -77,8 +95,8 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                         //       - Else TOGGLE.
                         if (isFolder) {
                             // If we clicked strictly on the arrow (handled by stopPropagation if we separate it), but here we handle main click
-                            // We want 'vocabulary' and 'maths' to navigate
-                            if (item.id === 'vocabulary' || item.id === 'maths') {
+                            // We want 'vocabulary' and 'maths' and 'health' to navigate
+                            if (item.id === 'vocabulary' || item.id === 'maths' || item.id === 'english' || item.id === 'science' || item.id === 'health') {
                                 onChangeView(item.id)
                             } else {
                                 toggleFolder(item.id)

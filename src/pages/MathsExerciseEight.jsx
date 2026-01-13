@@ -200,7 +200,7 @@ export default function MathsExerciseEight({ onBack, onComplete }) {
   const allFilled = items.every(item => item.userAnswer)
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: 20, position: 'relative', background: 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: 20, position: 'relative' }}>
       <div style={{ position: 'absolute', left: 20, top: 20 }}>
         <button className="action-btn" onClick={onBack} style={{ padding: '8px 12px' }}>Back</button>
       </div>

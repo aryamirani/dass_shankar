@@ -120,7 +120,7 @@ export default function MathsExerciseFive({ onBack, onNextExercise }) {
   const allFilled = items.every(item => item.middleDigits.some(d => d))
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: 20, position: 'relative', background: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: 20, position: 'relative' }}>
       <div style={{ position: 'absolute', left: 20, top: 20 }}>
         <button className="action-btn" onClick={onBack} style={{ padding: '8px 12px' }}>Back</button>
       </div>

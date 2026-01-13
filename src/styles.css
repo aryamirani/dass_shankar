@@ -3,13 +3,14 @@
   box-sizing: border-box;
 }
 
-body, html, #root {
+body,
+html,
+#root {
   height: 100%;
   margin: 0;
   font-family: 'Quicksand', system-ui, Arial;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.18)), url('/assets/background.png');
-  background-size: cover;
-  background-position: center;
+  font-family: 'Quicksand', system-ui, Arial;
+  /* background managed by .app-root */
 }
 
 .app-root {
@@ -25,14 +26,15 @@ body, html, #root {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: rgba(255, 255, 255, 0.82);
+  /* background: rgba(255, 255, 255, 0.82); removed to show global gradient */
   width: 100%;
 }
 
 .landing-inner {
   /* CHANGED: Increased max-width to match or exceed the grid width */
-  max-width: 1440px; 
-  padding: 0 20px; /* Added side padding so it doesn't touch screen edges */
+  max-width: 1440px;
+  padding: 0 20px;
+  /* Added side padding so it doesn't touch screen edges */
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -49,7 +51,7 @@ body, html, #root {
   margin-top: 8px;
   display: inline-block;
   vertical-align: middle;
-  transition: all 0.3s cubic-bezier(.5,1.8,.5,1);
+  transition: all 0.3s cubic-bezier(.5, 1.8, .5, 1);
 }
 
 .big-tick {
@@ -58,7 +60,7 @@ body, html, #root {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255,255,255,0.85);
+  background: rgba(255, 255, 255, 0.85);
   color: #2ecc40;
   font-size: 7rem;
   font-weight: 900;
@@ -70,8 +72,9 @@ body, html, #root {
   box-shadow: 0 0 0 8px #fff9e6;
   pointer-events: none;
   text-shadow: 0 4px 24px #2ecc4066, 0 0 8px #fff;
-  animation: popIn 0.5s cubic-bezier(.5,1.8,.5,1) both;
+  animation: popIn 0.5s cubic-bezier(.5, 1.8, .5, 1) both;
 }
+
 /* --- Health Grid Styling --- */
 .health-grid {
   display: grid;
@@ -79,9 +82,9 @@ body, html, #root {
   gap: 20px;
   justify-items: center;
   /* CHANGED: Ensure it takes full width of landing-inner but respects its own max-width */
-  margin: 20px auto; 
+  margin: 20px auto;
   width: 100%;
-  max-width: 1400px; 
+  max-width: 1400px;
   padding: 10px 0;
 }
 
@@ -92,27 +95,27 @@ body, html, #root {
   background: #fff;
   border-radius: 24px;
   border: 3px solid #f3f3f3;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-  
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+
   /* Sizing: Increased significantly */
   width: 100%;
-  min-width: 200px; 
+  min-width: 200px;
   max-width: 220px;
-  min-height: 240px; 
-  
+  min-height: 240px;
+
   /* Removing the "chin": Reduced bottom padding from 12px to 4px */
-  padding: 16px 12px 1px 12px; 
-  
+  padding: 16px 12px 1px 12px;
+
   cursor: pointer;
   position: relative;
   transition: all 0.2s ease-in-out;
-  animation: popIn 0.5s cubic-bezier(.5,1.8,.5,1) both;
+  animation: popIn 0.5s cubic-bezier(.5, 1.8, .5, 1) both;
 }
 
 .health-grid-item:hover {
   transform: translateY(-5px) scale(1.05);
   border-color: #FF8C42;
-  box-shadow: 0 12px 30px rgba(255,140,66,0.2);
+  box-shadow: 0 12px 30px rgba(255, 140, 66, 0.2);
 }
 
 .health-img {
@@ -122,15 +125,18 @@ body, html, #root {
   object-fit: contain;
   border-radius: 16px;
   background: #fff9e6;
-  margin-bottom: 4px; /* Tightened gap between image and text */
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+  margin-bottom: 4px;
+  /* Tightened gap between image and text */
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
 }
 
 .health-label {
-  font-size: 1.25rem; /* Slightly larger text for the larger card */
+  font-size: 1.25rem;
+  /* Slightly larger text for the larger card */
   font-weight: 700;
   color: #d85a00;
-  margin: -5; /* Removed top/bottom margins to reduce empty space */
+  margin: -5;
+  /* Removed top/bottom margins to reduce empty space */
   text-align: center;
   line-height: 1.2;
 }
@@ -140,10 +146,12 @@ body, html, #root {
   .health-grid {
     grid-template-columns: repeat(3, 1fr);
   }
+
   .health-grid-item {
     min-width: 180px;
     min-height: 220px;
   }
+
   .health-img {
     width: 120px;
     height: 120px;
@@ -155,21 +163,26 @@ body, html, #root {
     grid-template-columns: repeat(2, 1fr);
     max-width: 450px;
   }
+
   .health-grid-item {
     min-width: 160px;
     min-height: 190px;
   }
+
   .health-img {
     width: 100px;
     height: 100px;
   }
+
   .health-label {
     font-size: 1rem;
   }
 }
 
 /* --- Buttons --- */
-.cta-row { margin-top: 20px; }
+.cta-row {
+  margin-top: 20px;
+}
 
 .action-btn {
   background: linear-gradient(180deg, #70B0FF, #428CFF);
@@ -185,7 +198,9 @@ body, html, #root {
   cursor: pointer;
 }
 
-.action-btn:hover { transform: translateY(-3px); }
+.action-btn:hover {
+  transform: translateY(-3px);
+}
 
 .action-btn.secondary {
   background: linear-gradient(180deg, #DC6E9A, #AF50C4);
@@ -198,11 +213,11 @@ body, html, #root {
 }
 
 /* --- Lesson & Game Area --- */
-.lesson-root { 
-  padding: 12px; 
-  background: rgba(255, 255, 255, 0.82); 
-  border-radius: 18px; 
-  
+.lesson-root {
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 18px;
+
   /* --- Make drag-and-drop lesson view always fit in viewport --- */
   min-height: 100vh;
   min-height: 100dvh;
@@ -213,11 +228,35 @@ body, html, #root {
   overflow: hidden;
 }
 
-.top-row { display: flex; align-items: center; justify-content: space-between; }
-.lesson-title { font-size: 36px; margin: 0; }
-.lesson-main { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 18px; }
-.video-area { flex: 1; min-width: 320px; }
-.game-area { width: 420px; display: flex; flex-direction: column; gap: 12px; }
+.top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lesson-title {
+  font-size: 36px;
+  margin: 0;
+}
+
+.lesson-main {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.video-area {
+  flex: 1;
+  min-width: 320px;
+}
+
+.game-area {
+  width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 
 .scene {
   flex: 1 1 auto;
@@ -230,7 +269,7 @@ body, html, #root {
   overflow: visible;
 }
 
-.scene > div {
+.scene>div {
   width: 100%;
   max-width: 1800px;
   margin: 0 auto;
@@ -292,7 +331,7 @@ body, html, #root {
   border: 6px solid rgba(255, 255, 255, 0.9);
   position: relative;
   font-size: 1.3vw;
-  min-font-size: 16px;
+
   max-width: 32vw;
 }
 
@@ -310,9 +349,20 @@ body, html, #root {
 
 /* --- Animations & Responsive --- */
 @keyframes popIn {
-  0% { opacity: 0; transform: scale(0.7) translateY(30px); }
-  60% { opacity: 1; transform: scale(1.08) translateY(-6px); }
-  100% { opacity: 1; transform: scale(1) translateY(0); }
+  0% {
+    opacity: 0;
+    transform: scale(0.7) translateY(30px);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale(1.08) translateY(-6px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 @media (max-width: 1100px) {
@@ -320,23 +370,34 @@ body, html, #root {
     grid-template-columns: repeat(3, 1fr);
     max-width: 740px;
   }
+
   .health-grid-item {
     min-width: 110px;
     max-width: 140px;
     min-height: 140px;
     padding: 8px;
   }
-  .health-img { width: 60px; height: 60px; }
-  .title { font-size: 44px; }
-  .scene > div {
+
+  .health-img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .title {
+    font-size: 44px;
+  }
+
+  .scene>div {
     flex-direction: column;
     align-items: center;
     gap: 2vw;
   }
+
   .speech-cloud {
     max-width: 90vw;
     font-size: 2.5vw;
   }
+
   .draggable-item img {
     width: 16vw !important;
     height: 16vw !important;
@@ -353,24 +414,38 @@ body, html, #root {
     max-width: 360px;
     gap: 12px;
   }
+
   .health-grid-item {
     min-width: 140px;
     max-width: 160px;
     min-height: 160px;
     padding: 10px;
   }
-  .health-img { width: 50px; height: 50px; }
-  .health-label { font-size: 0.85rem; }
-  .title { font-size: 32px; }
-  .scene > div {
+
+  .health-img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .health-label {
+    font-size: 0.85rem;
+  }
+
+  .title {
+    font-size: 32px;
+  }
+
+  .scene>div {
     flex-direction: column;
     align-items: center;
     gap: 2vw;
   }
+
   .speech-cloud {
     max-width: 98vw;
     font-size: 3.5vw;
   }
+
   .draggable-item img {
     width: 22vw !important;
     height: 22vw !important;

@@ -119,7 +119,7 @@ export default function MathsExerciseThree({ onBack, onNextExercise }) {
   const correctEditableCount = items.filter(i => !i.preFilled && i.checked && i.correct).length
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: 20, position: 'relative', background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: 20, position: 'relative' }}>
       <div style={{ position: 'absolute', left: 20, top: 20 }}>
         <button className="action-btn" onClick={onBack} style={{ padding: '8px 12px' }}>Back</button>
       </div>
