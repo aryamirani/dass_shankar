@@ -1,5 +1,3 @@
-<!-- drag and drop style matching game  -->
-
 <!DOCTYPE html>
 <html>
 
@@ -12,26 +10,10 @@
         body {
             height: 100%;
             margin: 0;
-        }
-
-        body {
-            /* background-image: url("assets/background.png"); */
-            background-size: 150%;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-
-        * {
-            box-sizing: border-box;
             font-family: "Grandstander";
-        }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
             background-color: rgb(91, 197, 197);
             padding: 24px;
+            position: relative;
         }
 
         h1 {
@@ -43,9 +25,8 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 40px;
-            max-width: 1400px;
+            max-width: 1500px;
             margin: 40px auto;
-            /* margin-left: 400px; */
         }
 
         .left,
@@ -67,7 +48,7 @@
             background: white;
             padding: 16px;
             border-radius: 12px;
-            font-size: 22px;
+            font-size: 30px;
             text-align: center;
         }
 
@@ -81,13 +62,14 @@
             justify-content: center;
             font-size: 25px;
             background: rgba(255, 255, 255, 0.6);
+            flex-direction: column;
         }
 
         .word {
             padding: 12px 20px;
             background: rgb(235, 242, 238);
             border-radius: 10px;
-            font-size: 25px;
+            font-size: 30px;
             margin: 10px 0;
             cursor: grab;
             text-align: center;
@@ -104,11 +86,68 @@
             color: white;
             border: none;
         }
+
+        /* ===== IMAGE POPUP ===== */
+        #image-popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        #popup-img {
+            max-width: 60%;
+            max-height: 60%;
+            background: white;
+            padding: 20px;
+            border-radius: 30px;
+        }
+
+        /* ===== TUTORIAL OVERLAY ===== */
+        #tutorial-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #tutorial-text {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        #tutorial-next {
+            background-color: #f1c40f;
+            border: none;
+            padding: 15px 50px;
+            font-size: 28px;
+            border-radius: 20px;
+            cursor: pointer;
+            color: #2c3e50;
+        }
+
+        .highlight {
+            position: absolute;
+            border: 4px solid yellow;
+            border-radius: 15px;
+            pointer-events: none;
+            box-shadow: 0 0 20px yellow;
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
 
 <body>
-
 
     <div style="text-align: left;">
         <a href="engboard.html" class="card" style="border-top-color: #2ecc71;">
@@ -116,87 +155,152 @@
             <span class="subject-name">Back</span>
         </a>
     </div>
+
     <h1 style="font-size: 50px;">Drag the two correct words to form each compound word</h1>
 
     <div class="game">
         <div class="left" id="leftColumn"></div>
         <div class="right" id="wordBank"></div>
     </div>
+
     <div id="feedback" class="feedback hidden"></div>
 
-    <script src="feedback.js"></script>
+    <!-- IMAGE POPUP -->
+    <div id="image-popup">
+        <img id="popup-img">
+    </div>
+
+    <!-- TUTORIAL OVERLAY -->
+    <div id="tutorial-overlay">
+        <div id="tutorial-text"></div>
+        <button id="tutorial-next">Next</button>
+    </div>
+
     <script>
         const wordTriples = [
             ["Airplane", "Air", "Plane"],
             ["Anything", "Any", "Thing"],
             ["Basketball", "Basket", "Ball"],
             ["Cupboard", "Cup", "Board"],
-            ["Classmate", "Class", "Mate"],
-            ["Doormat", "Door", "Mat"]
+            ["Classmate", "Class", "Mate"]
         ];
 
         const leftColumn = document.getElementById("leftColumn");
         const wordBank = document.getElementById("wordBank");
+        const tutorialOverlay = document.getElementById("tutorial-overlay");
+        const tutorialText = document.getElementById("tutorial-text");
+        const tutorialNext = document.getElementById("tutorial-next");
 
         const parts = wordTriples.flatMap(t => t.slice(1));
 
-        wordTriples.forEach(([compound, p1, p2]) => {
-            const row = document.createElement("div");
-            row.className = "row";
+        // Image feedback
+        const wordImages = {
+            "Airplane": "assets/airplane.png",
+            "Anything": "assets/anything.png",
+            "Basketball": "assets/basketball.png",
+            "Cupboard": "assets/cupboard.png",
+            "Classmate": "assets/classmate.png"
+        };
 
-            const word = document.createElement("div");
-            word.className = "compound";
-            word.textContent = compound;
+        // Tutorial steps
+        const tutorialSteps = [
+            { text: "Welcome! Let's learn how to form compound words.", highlight: null },
+            { text: "This is the word bank. Drag the words from here.", highlight: wordBank },
+            { text: "Drop the correct words into the boxes next to each compound.", highlight: leftColumn },
+            { text: "When correct, an image will pop up!", highlight: null },
+            { text: "Let's start the game!", highlight: null }
+        ];
+        let tutorialIndex = 0;
 
-            const drop = document.createElement("div");
-            drop.className = "drop-zone";
+        tutorialNext.onclick = () => {
+            tutorialIndex++;
+            if (tutorialIndex >= tutorialSteps.length) {
+                tutorialOverlay.style.display = "none";
+                initGame();
+                return;
+            }
+            showTutorialStep();
+        };
 
-            drop.innerHTML = `
-                <div class="slot" data-index="0" style="font-size:23px;"> <p> part-1   |<\p></div>
-                <div class="slot" data-index="1" style="font-size:23px;"><p>| part-2<\p></div>
-                `;
+        function showTutorialStep() {
+            const step = tutorialSteps[tutorialIndex];
+            tutorialText.innerText = step.text;
 
-            drop.dataset.correct = [p1, p2].sort().join(",");
-            drop.dataset.dropped = "";
+            // Remove existing highlight
+            let existingHighlight = document.querySelector(".highlight");
+            if (existingHighlight) existingHighlight.remove();
 
-            drop.addEventListener("dragover", e => e.preventDefault());
+            if (step.highlight) {
+                const rect = step.highlight.getBoundingClientRect();
+                const highlightDiv = document.createElement("div");
+                highlightDiv.className = "highlight";
+                highlightDiv.style.top = rect.top + "px";
+                highlightDiv.style.left = rect.left + "px";
+                highlightDiv.style.width = rect.width + "px";
+                highlightDiv.style.height = rect.height + "px";
+                document.body.appendChild(highlightDiv);
+            }
+        }
 
-            drop.addEventListener("drop", e => {
-                e.preventDefault();
-                if (drop.classList.contains("correct")) return;
+        // ---------------- DRAG AND DROP GAME ----------------
+        function initGame() {
+            wordTriples.forEach(([compound, p1, p2]) => {
+                const row = document.createElement("div");
+                row.className = "row";
 
-                const w = e.dataTransfer.getData("text");
-                let dropped = drop.dataset.dropped
-                    ? drop.dataset.dropped.split(",")
-                    : [];
+                const word = document.createElement("div");
+                word.className = "compound";
+                word.textContent = compound;
 
-                if (dropped.includes(w)) return;
+                const drop = document.createElement("div");
+                drop.className = "drop-zone";
+                drop.dataset.correct = [p1, p2].sort().join(",");
+                drop.dataset.dropped = "";
+                drop.textContent = "part 1 || part 2";
 
-                dropped.push(w);
-                drop.dataset.dropped = dropped.join(",");
-                drop.textContent = dropped.join(" + ");
+                drop.addEventListener("dragover", e => e.preventDefault());
+                drop.addEventListener("drop", e => {
+                    e.preventDefault();
+                    if (drop.classList.contains("correct")) return;
 
-                if (dropped.length === 2) {
-                    check(drop, dropped);
-                }
+                    const w = e.dataTransfer.getData("text");
+                    let dropped = drop.dataset.dropped
+                        ? drop.dataset.dropped.split(",")
+                        : [];
+
+                    if (dropped.includes(w)) return;
+
+                    dropped.push(w);
+                    drop.dataset.dropped = dropped.join(",");
+                    drop.textContent = dropped.join(" + ");
+
+                    if (dropped.length === 2) check(drop, dropped, compound);
+                });
+
+                row.appendChild(word);
+                row.appendChild(drop);
+                leftColumn.appendChild(row);
             });
 
-            row.appendChild(word);
-            row.appendChild(drop);
-            leftColumn.appendChild(row);
-        });
+            // Build word bank
+            parts.sort(() => Math.random() - 0.5).forEach(word => {
+                const div = document.createElement("div");
+                div.className = "word";
+                div.textContent = word;
+                div.draggable = true;
+                div.addEventListener("dragstart", e => e.dataTransfer.setData("text", word));
+                wordBank.appendChild(div);
+            });
+        }
 
-        function check(drop, dropped) {
+        function check(drop, dropped, compound) {
             const a = dropped.sort().join(",");
             const b = drop.dataset.correct;
 
             if (a === b) {
                 drop.classList.add("correct");
                 drop.textContent = "Correct";
-
-                // feed back logic
-                showFeedback();
-
+                showFeedbackImage(compound);
             } else {
                 drop.classList.add("wrong");
                 drop.textContent = "Wrong";
@@ -210,21 +314,24 @@
             drop.textContent = "Drop here";
         }
 
-        // build word bank
-        parts.sort(() => Math.random() - 0.5).forEach(word => {
-            const div = document.createElement("div");
-            div.className = "word";
-            div.textContent = word;
-            div.draggable = true;
+        function showFeedbackImage(compound) {
+            const imgPath = wordImages[compound];
+            if (!imgPath) return;
 
-            div.addEventListener("dragstart", e => {
-                e.dataTransfer.setData("text", word);
-            });
+            const popup = document.getElementById("image-popup");
+            const img = document.getElementById("popup-img");
+            img.src = imgPath;
+            popup.style.display = "flex";
 
-            wordBank.appendChild(div);
-        });
+            setTimeout(() => {
+                popup.style.display = "none";
+                img.src = "";
+            }, 2000);
+        }
+
+        // Start tutorial
+        showTutorialStep();
     </script>
-
 </body>
 
 </html>

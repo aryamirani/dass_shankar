@@ -84,9 +84,20 @@
             display: block;
             margin: 30px auto;
             padding: 12px 30px;
-            font-size: 18px;
+            font-size: 35px;
             cursor: pointer;
         }
+
+       #next-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 50%;
+    transform: translateX(50%);
+    padding: 12px 30px;
+    font-size: 30px;
+    z-index: 1000;
+}
+
     </style>
 </head>
 
@@ -99,7 +110,7 @@
             <span class="subject-name">Back</span>
         </a>
     </div>
-    <h1 style="text-align: center; font-size: 38px;">Phonics</h1>
+    <h1 style="text-align: center; font-size: 50px;">Phonics</h1>
     <p style=" text-align: center; margin-bottom: 30px; font-size: 40px;">
         Drag the correct compound word into the blank</p>
 
@@ -114,47 +125,56 @@
     <div id="feedback" class="feedback hidden"></div>
 
     <script src="feedback.js"></script>
-    <script> // The main code and logic starts from here
-        const data = [
-            ["A vehicle with wings to fly", "airplane"],
-            ["A room where we sleep", "bedroom"],
-            ["A person who studies in the same class", "classmate"],
-            ["A container used to put trash", "dustbin"],
-            ["An ornament for ear", "earring"],
-            ["A glowing insect which flies in the night", "firefly"],
-            ["A box for the letters", "postbox"],
-            ["A tall house near sea beach is called", "lighthouse"],
-            ["A printed paper with daily news", "newspaper"],
-            ["An arch of the colors in the sky", "rainbow"],
-            ["A book issued by bank for account holder", "passbook"],
-            ["A large shop for household items", "superbazar"],
-            ["A brush we use to clean our teeth", "toothbrush"],
-            ["A cup in which we drink tea", "teacup"],
-            ["A hole on the lock is called", "keyhole"]
-        ];
+    <script>
+    const data = [
+        ["A vehicle with wings to fly", "airplane"],
+        ["A room where we sleep", "bedroom"],
+        ["A person who studies in the same class", "classmate"],
+        ["A container used to put trash", "dustbin"],
+        ["An ornament for ear", "earring"],
+        ["A glowing insect which flies in the night", "firefly"],
+        ["A box for the letters", "postbox"],
+        ["A tall house near sea beach is called", "lighthouse"],
+        ["A printed paper with daily news", "newspaper"],
+        ["An arch of the colors in the sky", "rainbow"],
+        ["A book issued by bank for account holder", "passbook"],
+        ["A large shop for household items", "superbazar"],
+        ["A brush we use to clean our teeth", "toothbrush"],
+        ["A cup in which we drink tea", "teacup"],
+        ["A hole on the lock is called", "keyhole"]
+    ];
 
-        const qDiv = document.getElementById("questions");
-        const bank = document.getElementById("bank");
+    const QUESTIONS_PER_PAGE = 5;
+    let currentPage = 0;
 
-        data.forEach(([clue, answer], i) => {
+    const qDiv = document.getElementById("questions");
+    const bank = document.getElementById("bank");
+
+    function renderPage() {
+        qDiv.innerHTML = ""; // clear previous questions
+        bank.innerHTML = "<h3>Word Bank</h3>"; // clear and reset bank
+
+        const start = currentPage * QUESTIONS_PER_PAGE;
+        const end = Math.min(start + QUESTIONS_PER_PAGE, data.length);
+        const pageData = data.slice(start, end);
+
+        pageData.forEach(([clue, answer], i) => {
             const div = document.createElement("div");
             div.className = "question";
 
             div.innerHTML = `
-      ${i + 1}. ${clue} :
-      <span class="drop-zone" 
-            data-answer="${answer}" 
-            ondragover="event.preventDefault()"
-            ondrop="dropWord(event)">
-            ________
-      </span>
-    `;
-
+                ${start + i + 1}. ${clue} :
+                <span class="drop-zone" 
+                      data-answer="${answer}" 
+                      ondragover="event.preventDefault()"
+                      ondrop="dropWord(event)">
+                      ________
+                </span>
+            `;
             qDiv.appendChild(div);
         });
 
-        // build word bank
-        shuffle([...data.map(d => d[1])]).forEach(word => {
+        shuffle([...pageData.map(d => d[1])]).forEach(word => {
             const div = document.createElement("div");
             div.className = "word";
             div.textContent = word;
@@ -162,7 +182,6 @@
 
             div.addEventListener("dragstart", e => {
                 e.dataTransfer.setData("text", word);
-                e.dataTransfer.setData("id", div);
                 e.target.classList.add("dragging");
             });
 
@@ -173,38 +192,59 @@
             bank.appendChild(div);
         });
 
-        function dropWord(e) {
-            const word = e.dataTransfer.getData("text");
-            if (e.target.classList.contains("correct")) return;
-            e.target.textContent = word;
+        const nextButton = document.querySelector("#next-btn");
+        if (!nextButton) {
+            const btn = document.createElement("button");
+            btn.id = "next-btn";
+            btn.textContent = "Next";
+            btn.style.display = end >= data.length ? "none" : "block";
+            btn.onclick = nextPage;
+            qDiv.parentNode.appendChild(btn);
+        } else {
+            nextButton.style.display = end >= data.length ? "none" : "block";
         }
+    }
 
-        function checkAnswers() {
-            document.querySelectorAll(".drop-zone").forEach(zone => {
-                const correct = zone.dataset.answer;
-                const user = zone.textContent.trim();
+    function nextPage() {
+        currentPage++;
+        renderPage();
+    }
 
-                if (user === correct) {
-                    zone.classList.add("correct");
-                    showFeedback();
-                } else {
-                    zone.classList.add("wrong");
-                    setTimeout(() => {
-                        zone.classList.remove("wrong");
-                        zone.textContent = "________";
-                    }, 800);
-                }
-            });
-        }
+    function dropWord(e) {
+        const word = e.dataTransfer.getData("text");
+        if (e.target.classList.contains("correct")) return;
+        e.target.textContent = word;
+    }
 
-        function shuffle(arr) {
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
+    function checkAnswers() {
+        document.querySelectorAll(".drop-zone").forEach(zone => {
+            const correct = zone.dataset.answer;
+            const user = zone.textContent.trim();
+
+            if (user === correct) {
+                zone.classList.add("correct");
+                showFeedback();
+            } else {
+                zone.classList.add("wrong");
+                setTimeout(() => {
+                    zone.classList.remove("wrong");
+                    zone.textContent = "________";
+                }, 800);
             }
-            return arr;
+        });
+    }
+
+    function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
         }
-    </script>
+        return arr;
+    }
+
+    renderPage();
+</script>
+
 
 </body>
 

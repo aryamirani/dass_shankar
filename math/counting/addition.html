@@ -6,14 +6,12 @@
     <link rel="stylesheet" href="../../fonts.css">
     <link rel="stylesheet" href="../../english/backbutton.css">
     <link rel="stylesheet" href="../instructions.css">
-    <title>Human Body</title>
     <style>
         body {
             margin: 0;
             min-height: 90vh;
             font-family: 'Grandstander';
             background-color: aquamarine;
-            /* background-image: url('../assets/bg2.png'); */
             background-size: cover;
             text-align: center;
             display: flex;
@@ -21,6 +19,7 @@
             align-items: center;
             justify-content: center;
             padding-top: 40px;
+            position: relative;
         }
 
         #curtain {
@@ -47,17 +46,7 @@
             box-shadow: 0 10px 30px rgba(193, 6, 6, 0.5);
         }
 
-        #items-area1 {
-            width: 50%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            font-size: 120px;
-            user-select: none;
-        }
-
+        #items-area1,
         #items-area2 {
             width: 50%;
             height: 100%;
@@ -98,7 +87,6 @@
         }
 
         input {
-            /* background-color: #35f10f; */
             border: none;
             padding: 15px 30px;
             font-size: 40px;
@@ -108,8 +96,43 @@
             color: #2c3e50;
             transition: transform 0.1s;
         }
-    </style>
 
+        /* ===== Tutorial overlay ===== */
+        #tutorial {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            z-index: 1000;
+        }
+
+        #tutorial button {
+            font-size: 30px;
+            margin-top: 40px;
+            padding: 15px 40px;
+        }
+
+        .arrow {
+            font-size: 60px;
+            margin: 20px 0;
+            animation: bounce 1s infinite alternate;
+        }
+
+        @keyframes bounce {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-20px);
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -136,7 +159,6 @@
         <div id="items-area1"></div>
         <div style="padding-top: 150px; font-size: 100px;">+</div>
         <div id="items-area2"></div>
-
         <div id="curtain"></div>
     </div>
 
@@ -146,36 +168,51 @@
         <button onclick="checkAnswer()" style="height:80px;">Check</button>
     </div>
 
-    <script>
+    <div id="tutorial">
+        <div>Count the caps on each side!</div>
+        <div class="arrow">⬇️</div>
+        <div>Enter the sum below and press Check.</div>
+        <button onclick="closeTutorial()">Got it!</button>
+    </div>
 
+    <script>
         const correctSound = document.getElementById("correct-sound");
         const wrongSound = document.getElementById("wrong-sound");
         const itemEmoji = "🧢";
 
+        let currentCount1, currentCount2;
+
+        const possiblePairs = [
+            [1, 1],
+            [2, 1],
+            [3, 1],
+            // [3, 2],
+
+            [4, 1]
+        ];
+
         function startRound() {
             moveCurtain('down');
             setTimeout(() => {
-                generate();        // Change the numbers behind the curtain
-                moveCurtain('up'); 
+                generate();
+                moveCurtain('up');
             }, 2000);
             moveCurtain('down');
         }
-
 
         function moveCurtain(direction) {
             const curtain = document.getElementById('curtain');
             curtain.style.height = (direction === 'down') ? '100%' : '0%';
         }
 
-        let currentCount1, currentCount2;
-
         function generate() {
-            currentCount1 = Math.floor(Math.random() * 3) + 1;
+            const [count1, count2] = possiblePairs[Math.floor(Math.random() * possiblePairs.length)];
+            currentCount1 = count1;
+            currentCount2 = count2;
+
             const itemsArea1 = document.getElementById('items-area1');
             itemsArea1.innerHTML = "";
-
-            currentCount2 = Math.floor(Math.random() * 3) + 1;
-            itemsArea2 = document.getElementById('items-area2');
+            const itemsArea2 = document.getElementById('items-area2');
             itemsArea2.innerHTML = "";
 
             for (let i = 0; i < currentCount1; i++) {
@@ -193,20 +230,18 @@
 
         function checkAnswer() {
             const val = parseInt(document.getElementById('user-guess').value);
-            console.log(val);
-            if (val == currentCount1 + currentCount2) {
+            if (val === currentCount1 + currentCount2) {
                 correctSound.play();
-            }
-            else {
+            } else {
                 wrongSound.play();
             }
             const button = document.getElementById("start");
             button.textContent = "Play Again";
-            //   moveCurtain('up');
-            //   startRound();
+        }
 
+        function closeTutorial() {
+            document.getElementById('tutorial').style.display = 'none';
         }
     </script>
 </body>
-
 </html>

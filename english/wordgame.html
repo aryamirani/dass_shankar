@@ -2,13 +2,13 @@
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <title>Word Surgery</title>
+
     <link rel="stylesheet" href="../fonts.css">
     <link rel="stylesheet" href="feedback.css">
     <link rel="stylesheet" href="backbutton.css">
 
-
-    <meta charset="UTF-8">
-    <title>Word Game</title>
     <style>
         * {
             font-family: "Grandstander";
@@ -17,12 +17,7 @@
         body {
             background-color: rgb(110, 231, 120);
             text-align: center;
-            padding: 20px;
-            /* background-image: url("assets/background.png"); */
-            background-size: 150%;
-            background-position: top;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+            padding: 25px;
         }
 
         .game-container {
@@ -44,7 +39,7 @@
             border: 3px solid #3498db;
             border-radius: 15px;
             padding: 20px;
-            font-size: 24px;
+            font-size: 28px;
             cursor: pointer;
             transition: transform 0.2s, background 0.2s;
             box-shadow: 4px 4px 0px #bdc3c7;
@@ -56,23 +51,19 @@
             background-color: #eaf2f8;
         }
 
-        /* Selected Card*/
-
         .selected {
             background-color: #f1c40f !important;
             border-color: #f39c12 !important;
             transform: scale(1.1);
         }
 
-        /* Success Animation  */
-
         @keyframes heal {
-            0% {
+            from {
                 transform: scale(1);
                 background-color: #2ecc71;
             }
 
-            100% {
+            to {
                 transform: scale(0);
                 opacity: 0;
             }
@@ -112,6 +103,12 @@
             animation: shake 0.5s;
         }
 
+        .column-title {
+            font-size: 35px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
         .healed-word {
             display: inline-block;
             background-color: #2ecc71;
@@ -119,37 +116,85 @@
             padding: 10px 20px;
             border-radius: 20px;
             margin: 10px;
-            font-size: 20px;
+            font-size: 30px;
             font-weight: bold;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         }
 
-        .column-title {
-            font-size: 35px;
-            margin-bottom: 10px;
-            color: #000000;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        /* ===== IMAGE POPUP ===== */
+        #image-popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        #popup-img {
+            max-width: 60%;
+            max-height: 60%;
+            background: white;
+            padding: 20px;
+            border-radius: 30px;
+        }
+
+        /* ===== TUTORIAL OVERLAY ===== */
+        #tutorial-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 3000;
+            pointer-events: none;
+        }
+
+        #tutorial-arrow {
+            font-size: 60px;
+            animation: bounce 1s infinite;
+            margin-bottom: 20px;
+            position: absolute;
+        }
+
+        #tutorial-text {
+            color: white;
+            font-size: 32px;
+            text-align: center;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <audio id="correct-sound" src="/assets/correct.wav" preload="auto"></audio>
-    <audio id="wrong-sound" src="/assets/wrong.wav" preload="auto"></audio>
+    <audio id="correct-sound" src="/assets/correct.wav"></audio>
+    <audio id="wrong-sound" src="/assets/wrong.wav"></audio>
 
-
-    <div style="text-align: left;">
-        <a href="engboard.html" class="card" style="border-top-color: #2ecc71;">
+    <div style="text-align:left;">
+        <a href="engboard.html" class="card" style="border-top-color:#2ecc71;">
             <span class="icon">↩️</span>
             <span class="subject-name">Back</span>
         </a>
     </div>
-    <h1 style="font-size: 50px;;">Word Surgery</h1>
-    <p style="font-size:35px;"><strong>Tap a blue word part, then tap the matching red part to connect them!</strong>
-    </p>
 
+    <h1 style="font-size:55px;">Word Surgery</h1>
+    <p style="font-size:40px;">
+        <strong>Tap a blue word part, then tap the matching red part.</strong>
+    </p>
 
     <div class="game-container">
         <div class="column" id="left-column">
@@ -160,28 +205,44 @@
             <div class="column-title">Part 2</div>
         </div>
     </div>
-    <div>
-        <hr style="height:3px; background-color: #000000;">
-        <h1 style="font-size: 40px;">Healed Words </h1>
-        <div id="healed-here" style="font-size: 50px;">
 
-        </div>
-    </div>
+    <hr>
+
+    <h1 style="font-size:40px;">Healed Words</h1>
+    <div id="healed-here"></div>
 
     <div id="feedback" class="feedback hidden"></div>
 
+    <!-- IMAGE POPUP -->
+    <div id="image-popup">
+        <img id="popup-img">
+    </div>
+
+    <!-- TUTORIAL OVERLAY -->
+    <div id="tutorial-overlay">
+        <div id="tutorial-arrow">⬇️</div>
+        <div id="tutorial-text">Click the blue word first</div>
+    </div>
 
     <script src="feedback.js"></script>
     <script>
-
         const correctSound = document.getElementById("correct-sound");
         const wrongSound = document.getElementById("wrong-sound");
+
         const wordPairs = {
             "Sun": "Flower",
             "Tooth": "Brush",
             "Rain": "Bow",
             "Jelly": "Fish",
             "Head": "Ache"
+        };
+
+        const wordImages = {
+            "SunFlower": "assets/sunflower.png",
+            "ToothBrush": "assets/toothbrush.png",
+            "RainBow": "assets/rainbow.png",
+            "JellyFish": "assets/jellyfish.png",
+            "HeadAche": "assets/headache.png"
         };
 
         let selectedLeft = null;
@@ -194,8 +255,8 @@
             const leftWords = Object.keys(wordPairs);
             const rightWords = Object.values(wordPairs);
 
-            shuffle(leftWords).forEach(word => createCard(word, 'left', leftCol));
-            shuffle(rightWords).forEach(word => createCard(word, 'right', rightCol));
+            shuffle(leftWords).forEach(w => createCard(w, 'left', leftCol));
+            shuffle(rightWords).forEach(w => createCard(w, 'right', rightCol));
         }
 
         function createCard(text, side, container) {
@@ -211,43 +272,30 @@
             container.appendChild(card);
         }
 
-
         function handleCardClick(card) {
-            console.log(card.dataset.value, card.classList.contains("healed"));
-            // Ignore if already matched (invisible)
             if (card.classList.contains('healed')) return;
 
-            // Logic for Left Side
             if (card.dataset.side === 'left') {
-                // Deselect previous
                 if (selectedElement) selectedElement.classList.remove('selected');
-
                 selectedElement = card;
                 selectedLeft = card.dataset.value;
                 card.classList.add('selected');
-            }
-            // Logic for Right Side
-            else if (card.dataset.side === 'right') {
+            } else {
                 if (!selectedLeft) {
                     shakeCard(card);
                     return;
                 }
 
                 const correctMatch = wordPairs[selectedLeft];
-
                 if (card.dataset.value === correctMatch) {
-                    // SUCCESS
                     correctSound.play();
                     performSurgery(selectedElement, card, selectedLeft + card.dataset.value);
                     selectedLeft = null;
                     selectedElement = null;
-
-
                 } else {
                     shakeCard(selectedElement);
                     shakeCard(card);
                     wrongSound.play();
-
                 }
             }
         }
@@ -256,16 +304,33 @@
             leftCard.classList.add('healed');
             rightCard.classList.add('healed');
 
-            showFeedback();
+            
+            setTimeout(() => {
+                showFeedback();
+                const healed = document.createElement("span");
+                healed.className = "healed-word";
+                healed.textContent = fullWord;
+                document.getElementById("healed-here").appendChild(healed);
+                showImageForWord(fullWord);
+            }, 1000);
+            
+            
+        }
 
-            const healedContainer = document.getElementById("healed-here");
+        function showImageForWord(word) {
+            const imgPath = wordImages[word];
+            if (!imgPath) return;
 
-            const healed = document.createElement("span");
-            healed.className = "healed-here";
-            healed.textContent = fullWord + "  ";
+            const popup = document.getElementById("image-popup");
+            const img = document.getElementById("popup-img");
 
-            healedContainer.appendChild(healed);
+            img.src = imgPath;
+            popup.style.display = "flex";
 
+            setTimeout(() => {
+                popup.style.display = "none";
+                img.src = "";
+            }, 3000);
         }
 
         function shakeCard(card) {
@@ -274,16 +339,73 @@
             card.classList.add('shake');
         }
 
-        // shuffle mech
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
+        function shuffle(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+                [arr[i], arr[j]] = [arr[j], arr[i]];
             }
-            return array;
+            return arr;
         }
+
         initGame();
+
+        function startTutorial() {
+            const overlay = document.getElementById('tutorial-overlay');
+            const arrow = document.getElementById('tutorial-arrow');
+            const text = document.getElementById('tutorial-text');
+
+            const leftCards = document.querySelectorAll('#left-column .word-card');
+            const rightCards = document.querySelectorAll('#right-column .word-card');
+
+            // Pick first left card for tutorial
+            const leftCard = leftCards[0];
+
+            // Find the correct right card dynamically
+            const correctRightValue = wordPairs[leftCard.dataset.value];
+            const rightCard = Array.from(rightCards).find(c => c.dataset.value === correctRightValue);
+
+            const fullWord = leftCard.dataset.value + correctRightValue;
+
+            overlay.style.display = 'flex';
+
+            function moveArrowTo(card) {
+                const rect = card.getBoundingClientRect();
+                arrow.style.left = rect.left + rect.width / 2 - 30 + 'px';
+                arrow.style.top = rect.top - 80 + 'px';
+            }
+
+            // Step 1: Point to left word
+            text.textContent = "Click the blue word";
+            moveArrowTo(leftCard);
+
+            setTimeout(() => {
+                // Simulate click on left word
+                leftCard.classList.add('selected');
+
+                // Step 2: Point to right word after 1 second
+                setTimeout(() => {
+                    text.textContent = "Now click the red word";
+                    moveArrowTo(rightCard);
+
+                    // Step 3: Perform surgery after 1 second
+                    setTimeout(() => {
+                        performSurgery(leftCard, rightCard, fullWord);
+
+                        // Step 4: Hide overlay after 1 second
+                        setTimeout(() => {
+                            overlay.style.display = 'none';
+                        }, 1000);
+
+                    }, 1000);
+
+                }, 2000);
+
+            }, 2000);
+        }
+
+        startTutorial();
     </script>
+
 </body>
 
 </html>

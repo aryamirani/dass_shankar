@@ -2,25 +2,23 @@
 <html>
 
 <head>
-    <title>Addition</title>
+    <title>Subtraction</title>
     <link rel="stylesheet" href="../../fonts.css">
     <link rel="stylesheet" href="../../english/backbutton.css">
     <link rel="stylesheet" href="../instructions.css">
-    <title>Human Body</title>
     <style>
         body {
             margin: 0;
             min-height: 90vh;
             font-family: 'Grandstander';
             background-color: aquamarine;
-            /* background-image: url('../assets/bg2.png'); */
-            background-size: cover;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding-top: 40px;
+            position: relative;
         }
 
         #curtain {
@@ -47,17 +45,7 @@
             box-shadow: 0 10px 30px rgba(193, 6, 6, 0.5);
         }
 
-        #items-area1 {
-            width: 50%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            font-size: 120px;
-            user-select: none;
-        }
-
+        #items-area1,
         #items-area2 {
             width: 50%;
             height: 100%;
@@ -98,7 +86,6 @@
         }
 
         input {
-            /* background-color: #35f10f; */
             border: none;
             padding: 15px 30px;
             font-size: 40px;
@@ -108,8 +95,42 @@
             color: #2c3e50;
             transition: transform 0.1s;
         }
-    </style>
 
+        #tutorial {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            z-index: 1000;
+        }
+
+        #tutorial button {
+            font-size: 30px;
+            margin-top: 40px;
+            padding: 15px 40px;
+        }
+
+        .arrow {
+            font-size: 60px;
+            margin: 20px 0;
+            animation: bounce 1s infinite alternate;
+        }
+
+        @keyframes bounce {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-20px);
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -127,7 +148,7 @@
     <div class="tooltip card" style="font-size: 40px; z-index: 1000;">Instructions
         <div class="tooltiptext">
             <div class="card">
-                Welcome to Substraction. Your goal is to Substraction and count the number of caps
+                Welcome to Subtraction. Your goal is to subtract and count the number of caps.
             </div>
         </div>
     </div>
@@ -136,7 +157,6 @@
         <div id="items-area1"></div>
         <div style="padding-top: 150px; font-size: 100px;">-</div>
         <div id="items-area2"></div>
-
         <div id="curtain"></div>
     </div>
 
@@ -146,39 +166,49 @@
         <button onclick="checkAnswer()" style="height:80px;">Check</button>
     </div>
 
-    <script>
+    <div id="tutorial">
+        <div>Count the caps on each side!</div>
+        <div class="arrow">⬇️</div>
+        <div>Enter the difference below and press Check.</div>
+        <button onclick="closeTutorial()">Got it!</button>
+    </div>
 
+    <script>
         const correctSound = document.getElementById("correct-sound");
         const wrongSound = document.getElementById("wrong-sound");
         const itemEmoji = "🎩";
 
+        let currentCount1 = 2; 
+        let currentCount2;
+        let incrementRounds = 0;
+
         function startRound() {
             moveCurtain('down');
             setTimeout(() => {
-                generate();        // Change the numbers behind the curtain
-                moveCurtain('up'); 
+                generate();
+                moveCurtain('up');
             }, 2000);
             moveCurtain('down');
         }
-
 
         function moveCurtain(direction) {
             const curtain = document.getElementById('curtain');
             curtain.style.height = (direction === 'down') ? '100%' : '0%';
         }
 
-        let currentCount1, currentCount2;
-
         function generate() {
+            if (incrementRounds < 3) currentCount1 = 2 + incrementRounds; 
+            else if (incrementRounds < 6) currentCount1 = 4 + (incrementRounds - 3); 
+            else currentCount1 = Math.floor(Math.random() * 6) + 3;
 
-            currentCount2 = Math.floor(Math.random() * 2) + 1;
-            itemsArea2 = document.getElementById('items-area2');
-            itemsArea2.innerHTML = "";
+            incrementRounds++;
 
-            currentCount1 = 2+Math.floor(Math.random() * 3) + 1;
+            currentCount2 = Math.floor(Math.random() * Math.min(3, currentCount1)) + 1;
+
             const itemsArea1 = document.getElementById('items-area1');
+            const itemsArea2 = document.getElementById('items-area2');
             itemsArea1.innerHTML = "";
-
+            itemsArea2.innerHTML = "";
 
             for (let i = 0; i < currentCount1; i++) {
                 let span = document.createElement("span");
@@ -195,18 +225,17 @@
 
         function checkAnswer() {
             const val = parseInt(document.getElementById('user-guess').value);
-            console.log(val);
-            if (val == currentCount1 - currentCount2) {
+            if (val === currentCount1 - currentCount2) {
                 correctSound.play();
-            }
-            else {
+            } else {
                 wrongSound.play();
             }
             const button = document.getElementById("start");
             button.textContent = "Play Again";
-            //   moveCurtain('up');
-            //   startRound();
+        }
 
+        function closeTutorial() {
+            document.getElementById('tutorial').style.display = 'none';
         }
     </script>
 </body>

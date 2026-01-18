@@ -3,17 +3,17 @@
 
 <head>
     <title>Fill the Glasses</title>
+
     <link rel="stylesheet" href="../../fonts.css">
     <link rel="stylesheet" href="../../english/backbutton.css">
     <link rel="stylesheet" href="../instructions.css">
+
     <style>
         body {
             margin: 0;
             min-height: 140vh;
             font-family: 'Grandstander';
-            /* background-image: url('../assets/background.png'); */
             background-color: chocolate;
-            background-size: cover;
             text-align: center;
             padding-top: 40px;
         }
@@ -31,7 +31,6 @@
         }
 
         .glass {
-            font-size: 80px;
             cursor: pointer;
             transition: transform 0.1s;
         }
@@ -64,30 +63,32 @@
     <audio id="correct-sound" src="../assets/correct.wav" preload="auto"></audio>
     <audio id="wrong-sound" src="../assets/wrong.wav" preload="auto"></audio>
 
-
-    <h1 style="font-size:60px">Water Filling </h1>
     <div style="text-align: left;">
         <a href="countdash.html" class="card back_container" style="border-top-color: #2ecc71;">
             <span class="icon">↩️</span>
             <span class="subject-name" style="font-size: 30px;">Back</span>
         </a>
     </div>
+    <h1 style="font-size:60px">Water Filling</h1>
+
+
     <div style="text-align: center;">
         <div class="tooltip card center-card" style="font-size: 40px; z-index: 1000;">
             Instructions
             <div class="tooltiptext">
                 <div class="card">
-                    Welcome to Tap Filling. Your Objctive to fill the number of glasses displayed on screen
+                    Fill exactly the number of glasses shown.
                 </div>
             </div>
         </div>
     </div>
-    <div id="target" class="target" style="padding-top: 40px;"></div>
 
+    <div id="target" class="target"></div>
     <div id="glassArea" class="glass-area"></div>
-
     <div id="message" class="message"></div>
 
+    <button onclick="checkAnswer()">Check Answer</button>
+    <br>
     <button onclick="startGame()">Play Again</button>
 
     <script>
@@ -96,6 +97,7 @@
 
         const correctSound = document.getElementById("correct-sound");
         const wrongSound = document.getElementById("wrong-sound");
+
         function startGame() {
             target = Math.floor(Math.random() * 4) + 2; // 2–5
             filled = 0;
@@ -106,8 +108,8 @@
         }
 
         function renderTarget() {
-            let s = String(target);
-            document.getElementById("target").textContent = "Fill " + target + " glasses";
+            document.getElementById("target").textContent =
+                "Fill " + target + " glasses";
         }
 
         function renderGlasses() {
@@ -117,6 +119,7 @@
             for (let i = 0; i < 6; i++) {
                 const g = document.createElement("span");
                 const img = document.createElement("img");
+
                 img.src = "../assets/water.png";
                 img.style.width = "160px";
                 img.style.height = "150px";
@@ -136,16 +139,18 @@
             glass.dataset.filled = "true";
             glass.classList.add("filled");
             filled++;
+        }
 
+        function checkAnswer() {
             if (filled === target) {
                 correctSound.currentTime = 0;
                 correctSound.play();
                 document.getElementById("message").textContent = "Correct!";
-            }
-            if (filled > target) {
+            } else {
                 wrongSound.currentTime = 0;
                 wrongSound.play();
-                document.getElementById("message").textContent = "Too many!";
+                document.getElementById("message").textContent =
+                    filled < target ? "Not enough!" : "Too many!";
             }
         }
 
