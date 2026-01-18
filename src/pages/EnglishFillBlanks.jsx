@@ -6,17 +6,7 @@ export default function EnglishFillBlanks({ onBack }) {
         { clue: "A room where we sleep", answer: "bedroom" },
         { clue: "A person who studies in the same class", answer: "classmate" },
         { clue: "A container used to put trash", answer: "dustbin" },
-        { clue: "An ornament for ear", answer: "earring" },
-        { clue: "A glowing insect which flies in the night", answer: "firefly" },
-        { clue: "A box for the letters", answer: "postbox" },
-        { clue: "A tall house near sea beach is called", answer: "lighthouse" },
-        { clue: "A printed paper with daily news", answer: "newspaper" },
-        { clue: "An arch of the colors in the sky", answer: "rainbow" },
-        { clue: "A book issued by bank for account holder", answer: "passbook" },
-        { clue: "A large shop for household items", answer: "superbazar" },
-        { clue: "A brush we use to clean our teeth", answer: "toothbrush" },
-        { clue: "A cup in which we drink tea", answer: "teacup" },
-        { clue: "A hole on the lock is called", answer: "keyhole" }
+        { clue: "An ornament for ear", answer: "earring" }
     ]
 
     const [answers, setAnswers] = useState({})
