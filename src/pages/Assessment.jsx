@@ -1,10 +1,5 @@
 // Positive feedback messages
 const POSITIVE_FEEDBACKS = [
-  '🌟 Great work!',
-  '👍 Good job!',
-  '🤩 Wow!',
-  '✨ Amazing!',
-  '🚀 Awesome!',
   '🎉 You did it!',
   '🦸 Super!',
   '🪄 Fantastic!',
