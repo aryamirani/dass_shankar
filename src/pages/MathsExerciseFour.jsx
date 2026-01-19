@@ -1,13 +1,12 @@
 import React, { useState, useMemo, useEffect } from 'react'
 
 const POSITIVE = [
-  '🌟 Great job!', '👍 Perfect!', '🤩 Excellent!', '🚀 Awesome!', '🎉 Well done!', '✨ Fantastic!', '🧠 You got it!'
+  '👍 Good', '✅ Yes', '🌟 Nice', '🎉 Great', '😃 Yay', '👌 Ok'
 ]
 
 const GENTLE = [
-  'Not quite! Try again.', 'Almost there! Check your answer.', 'Nice try! Give it another go.'
+  '👎 Retry', '☹️ Try again', '❌ Wrong'
 ]
-
 export default function MathsExerciseFour({ onBack, onNextExercise }) {
   // Generate 5 random numbers with at least one 1-digit, one 2-digit, and one 3-digit
   const questions = useMemo(() => {

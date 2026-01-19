@@ -9,9 +9,12 @@ const WORDS = [
 ]
 
 const POSITIVE = [
-  '🌟 Great job!', '🎉 Yay!', '🙂 Nice!', '🚀 Awesome!', '👍 Well done!', '✨ Fantastic!'
+  '👍 Good', '✅ Yes', '🌟 Nice', '🎉 Great', '😃 Yay', '👌 Ok'
 ]
-const GENTLE = ['Try again!', 'Almost — try another one!', 'Nice effort — try again!']
+
+const GENTLE = [
+  '👎 Retry', '☹️ Try again', '❌ Wrong'
+]
 
 export default function VocabularyThree({ onBack }) {
   const [step, setStep] = useState(0) // 0: gallery, 1: match, 2: type
@@ -291,58 +294,65 @@ export default function VocabularyThree({ onBack }) {
                   const nextIndex = Math.min(2, pasted.length - 1)
                   setTimeout(() => { if (inputRefs.current[nextIndex]) inputRefs.current[nextIndex].focus() }, 20)
                 }}>
-                  <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 10 }}>
-                    {[0, 1, 2].map(i => (
-                      <input
-                        key={i}
-                        ref={el => inputRefs.current[i] = el}
-                        value={letters[i]}
-                        onChange={e => {
-                          const v = e.target.value.slice(0, 1)
-                          setLetters(prev => {
-                            const next = [...prev]
-                            next[i] = v
-                            return next
-                          })
-                          if (v && i < 2) {
-                            const next = inputRefs.current[i + 1]
-                            if (next) next.focus()
-                          }
-                        }}
-                        onKeyDown={e => {
-                          if (e.key === 'Backspace') {
-                            if (letters[i] === '') {
-                              if (i > 0) {
-                                const prev = inputRefs.current[i - 1]
+                  <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 10, minHeight: 70 }}>
+                    <div style={{ display: 'flex', gap: 12 }}>
+                      {[0, 1, 2].map(i => (
+                        <input
+                          key={i}
+                          ref={el => inputRefs.current[i] = el}
+                          value={letters[i]}
+                          onChange={e => {
+                            const v = e.target.value.slice(0, 1)
+                            setLetters(prev => {
+                              const next = [...prev]
+                              next[i] = v
+                              return next
+                            })
+                            if (v && i < 2) {
+                              const next = inputRefs.current[i + 1]
+                              if (next) next.focus()
+                            }
+                          }}
+                          onKeyDown={e => {
+                            if (e.key === 'Backspace') {
+                              if (letters[i] === '') {
+                                if (i > 0) {
+                                  const prev = inputRefs.current[i - 1]
+                                  setLetters(prevL => {
+                                    const next = [...prevL]
+                                    next[i - 1] = ''
+                                    return next
+                                  })
+                                  if (prev) prev.focus()
+                                  e.preventDefault()
+                                }
+                              } else {
                                 setLetters(prevL => {
                                   const next = [...prevL]
-                                  next[i - 1] = ''
+                                  next[i] = ''
                                   return next
                                 })
-                                if (prev) prev.focus()
                                 e.preventDefault()
                               }
-                            } else {
-                              setLetters(prevL => {
-                                const next = [...prevL]
-                                next[i] = ''
-                                return next
-                              })
+                            } else if (e.key === 'ArrowLeft') {
+                              if (i > 0 && inputRefs.current[i - 1]) inputRefs.current[i - 1].focus()
+                              e.preventDefault()
+                            } else if (e.key === 'ArrowRight') {
+                              if (i < 2 && inputRefs.current[i + 1]) inputRefs.current[i + 1].focus()
                               e.preventDefault()
                             }
-                          } else if (e.key === 'ArrowLeft') {
-                            if (i > 0 && inputRefs.current[i - 1]) inputRefs.current[i - 1].focus()
-                            e.preventDefault()
-                          } else if (e.key === 'ArrowRight') {
-                            if (i < 2 && inputRefs.current[i + 1]) inputRefs.current[i + 1].focus()
-                            e.preventDefault()
-                          }
-                        }}
-                        placeholder="_"
-                        maxLength={1}
-                        style={{ width: 60, height: 60, fontSize: 28, textAlign: 'center', borderRadius: 8, border: '2px solid #ddd', boxShadow: '0 8px 18px rgba(0,0,0,0.06)' }}
-                      />
-                    ))}
+                          }}
+                          placeholder="_"
+                          maxLength={1}
+                          style={{ width: 60, height: 60, fontSize: 28, textAlign: 'center', borderRadius: 8, border: '2px solid #ddd', boxShadow: '0 8px 18px rgba(0,0,0,0.06)' }}
+                        />
+                      ))}
+                    </div>
+                    {message && (
+                      <div style={{ position: 'absolute', left: 'calc(50% + 130px)', padding: '10px 18px', fontSize: 28, fontWeight: 800, color: message.type === 'success' ? '#155724' : '#856404', background: message.type === 'success' ? 'rgba(212,237,218,0.98)' : 'rgba(255,243,205,0.95)', borderRadius: 14, boxShadow: '0 8px 22px rgba(0,0,0,0.1)', whiteSpace: 'nowrap' }}>
+                        {message.text}
+                      </div>
+                    )}
                   </div>
                   <div style={{ height: 12 }}></div>
                   <button className="action-btn" type="submit" style={{ padding: '8px 16px' }}>Submit</button>
@@ -352,7 +362,7 @@ export default function VocabularyThree({ onBack }) {
           </div>
         )}
 
-        {message && (
+        {message && step !== 2 && (
           <div style={{ position: 'fixed', top: 40, left: '50%', transform: 'translateX(-50%)', padding: '12px 26px', fontSize: message.type === 'success' ? 36 : 28, fontWeight: 800, color: message.type === 'success' ? '#155724' : '#856404', background: message.type === 'success' ? 'rgba(212,237,218,0.98)' : 'rgba(255,243,205,0.95)', borderRadius: 14, boxShadow: '0 8px 22px rgba(0,0,0,0.1)' }}>
             {message.text}
           </div>

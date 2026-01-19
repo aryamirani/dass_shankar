@@ -1,11 +1,11 @@
 import React, { useState, useMemo, useEffect } from 'react'
 
 const POSITIVE = [
-  '🌟 Great job!', '🎉 Yay!', '🙂 Nice!', '🚀 Awesome!', '👍 Well done!', '✨ Fantastic!'
+  '👍 Good', '✅ Yes', '🌟 Nice', '🎉 Great', '😃 Yay', '👌 Ok'
 ]
 
 const GENTLE = [
-  'Try again!', 'Almost — try another one!', 'Nice effort — try again!'
+  '👎 Retry', '☹️ Try again', '❌ Wrong'
 ]
 
 export default function VocabularyExercise({ onBack, onNextExercise }) {
@@ -78,6 +78,13 @@ export default function VocabularyExercise({ onBack, onNextExercise }) {
 
 
       <div style={{ width: '100%', maxWidth: 980, background: 'rgba(255,255,255,0.0)', padding: 10 }}>
+        <div style={{ textAlign: 'center', marginBottom: 12, minHeight: 56 }}>
+          {message && (
+            <div style={{ padding: '10px 18px', fontSize: 28, fontWeight: 800, color: message.type === 'success' ? '#155724' : '#856404', background: message.type === 'success' ? 'rgba(212,237,218,0.98)' : 'rgba(255,243,205,0.95)', borderRadius: 14, boxShadow: '0 8px 22px rgba(0,0,0,0.1)', display: 'inline-block' }}>
+              {message.text}
+            </div>
+          )}
+        </div>
         <h2 style={{ fontSize: 36, textAlign: 'center', marginBottom: 8 }}>Find and tap only the "at" words</h2>
         <div style={{ textAlign: 'center', marginBottom: 12, fontSize: 18, color: '#333' }}>
           Correct found: {completedCount} / {totalAt}
@@ -112,11 +119,6 @@ export default function VocabularyExercise({ onBack, onNextExercise }) {
         )}
       </div>
 
-      {message && (
-        <div style={{ position: 'fixed', top: 40, left: '50%', transform: 'translateX(-50%)', padding: '12px 26px', fontSize: message.type === 'success' ? 36 : 28, fontWeight: 800, color: message.type === 'success' ? '#155724' : '#856404', background: message.type === 'success' ? 'rgba(212,237,218,0.98)' : 'rgba(255,243,205,0.95)', borderRadius: 14, boxShadow: '0 8px 22px rgba(0,0,0,0.1)' }}>
-          {message.text}
-        </div>
-      )}
     </div>
   )
 }

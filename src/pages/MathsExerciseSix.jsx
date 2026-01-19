@@ -1,13 +1,12 @@
 import React, { useState, useMemo, useEffect } from 'react'
 
 const POSITIVE = [
-  '🌟 Great job!', '👍 Perfect!', '🤩 Excellent!', '🚀 Awesome!', '🎉 Well done!', '✨ Fantastic!', '🧠 You got it!'
+  '👍 Good', '✅ Yes', '🌟 Nice', '🎉 Great', '😃 Yay', '👌 Ok'
 ]
 
 const GENTLE = [
-  'Not quite! Check the order.', 'Almost there! Try rearranging again.', 'Nice try! Arrange from smallest to biggest.'
+  '👎 Retry', '☹️ Try again', '❌ Wrong'
 ]
-
 export default function MathsExerciseSix({ onBack, onNextExercise }) {
   // Generate 2 sets of 5 random numbers
   const questions = useMemo(() => {
