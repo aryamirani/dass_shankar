@@ -251,7 +251,7 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                         display: 'flex', alignItems: 'center', justifyContent: 'center'
                     }}
                 >
-                    {collapsed ? '»' : '«'}
+                    {collapsed ? '>' : '<'}
                 </button>
             </div>
 
