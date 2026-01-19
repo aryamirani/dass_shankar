@@ -355,7 +355,7 @@ export default function VocabularyThree({ onBack }) {
                     )}
                   </div>
                   <div style={{ height: 12 }}></div>
-                  <button className="action-btn" type="submit" style={{ padding: '8px 16px' }}>Submit</button>
+                  <button className="action-btn" type="submit" style={{ padding: '8px 16px' }}>Click</button>
                 </form>
               </div>
             )}
