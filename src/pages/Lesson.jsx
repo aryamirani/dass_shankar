@@ -14,14 +14,14 @@ const POSITIVE_FEEDBACKS = [
 ];
 
 const ALL_ITEMS = [
-  { id: 'medicine', src: '/assets/medicine.png' },
-  { id: 'thermometer', src: '/assets/thermometer.png' },
-  { id: 'firstaid', src: '/assets/firstaid.png' },
-  { id: 'hotdrink', src: '/assets/hotdrink.png' },
-  { id: 'food', src: '/assets/food.png' },
-  { id: 'tissue', src: '/assets/tissue.png' },
-  { id: 'toilet', src: '/assets/toilet.png' },
-  { id: 'wetcloth', src: '/assets/wetcloth.png' }
+  { id: 'medicine', src: '/images/medicine.png' },
+  { id: 'thermometer', src: '/images/thermometer.png' },
+  { id: 'firstaid', src: '/images/firstaid.png' },
+  { id: 'hotdrink', src: '/images/hotdrink.png' },
+  { id: 'food', src: '/images/food.png' },
+  { id: 'tissue', src: '/images/tissue.png' },
+  { id: 'toilet', src: '/images/toilet.png' },
+  { id: 'wetcloth', src: '/images/wetcloth.png' }
 ]
 
 export default function Lesson({ data, index, total, onBack, onNext, onComplete, onBackToGrid }) {
@@ -202,7 +202,7 @@ export default function Lesson({ data, index, total, onBack, onNext, onComplete,
 
         {phase === 'healed' && (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 50 }}>
-            <img src={'/assets/boy.png'} alt="happy" style={{ width: 300 }} />
+            <img src={'/images/boy.png'} alt="happy" style={{ width: 300 }} />
             <h2 style={{ color: '#2e7d32' }}>I feel much better now!</h2>
             <button className="action-btn" onClick={() => {
               if (onComplete) {

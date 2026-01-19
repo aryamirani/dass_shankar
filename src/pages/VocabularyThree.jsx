@@ -1,11 +1,11 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react'
 
 const WORDS = [
-  { id: 'bat', img: '/assets/bat.png' },
-  { id: 'cat', img: '/assets/cat.png' },
-  { id: 'hat', img: '/assets/hat.png' },
-  { id: 'mat', img: '/assets/mat.png' },
-  { id: 'rat', img: '/assets/rat.png' }
+  { id: 'bat', img: '/images/bat.png' },
+  { id: 'cat', img: '/images/cat.png' },
+  { id: 'hat', img: '/images/hat.png' },
+  { id: 'mat', img: '/images/mat.png' },
+  { id: 'rat', img: '/images/rat.png' }
 ]
 
 const POSITIVE = [

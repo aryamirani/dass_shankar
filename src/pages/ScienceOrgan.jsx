@@ -26,14 +26,14 @@ export default function ScienceOrgan({ onBack }) {
             {/* Body Container */}
             <div style={{ position: 'relative', width: 900, height: 1800, transform: 'scale(1.5)', transformOrigin: 'top center', marginTop: 50 }}>
                 {/* Outline */}
-                <img src="/assets/science/outline.svg" alt="Human Body" width="900" style={{ pointerEvents: 'none' }} />
+                <img src="/images/outline.svg" alt="Human Body" width="900" style={{ pointerEvents: 'none' }} />
 
                 {/* Organs */}
                 <div style={{ position: 'absolute', top: 190, left: 430, width: 40, height: 40, pointerEvents: 'none', zIndex: 2 }}>
-                    <img src="/assets/science/heart.webp" alt="Heart" style={{ width: '190%', height: '140%' }} />
+                    <img src="/images/heart.webp" alt="Heart" style={{ width: '190%', height: '140%' }} />
                 </div>
                 <div style={{ position: 'absolute', top: 140, left: 350, width: 120, height: 90, pointerEvents: 'none', zIndex: 1 }}>
-                    <img src="/assets/science/lungs.png" alt="Lungs" style={{ width: '190%', height: '140%' }} />
+                    <img src="/images/lungs.png" alt="Lungs" style={{ width: '190%', height: '140%' }} />
                 </div>
 
                 {/* Hit Map (Interactive Layer) */}
