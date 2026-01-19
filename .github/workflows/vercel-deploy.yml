@@ -1,0 +1,21 @@
+name: Trigger Vercel Deployments
+on:
+  push:
+    branches:
+      - main
+      - development
+      - features
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel Hook
+        run: |
+          if [[ "${{ github.ref_name }}" == "main" ]]; then
+            curl -X POST "${{ secrets.HOOK_MAIN }}"
+          elif [[ "${{ github.ref_name }}" == "development" ]]; then
+            curl -X POST "${{ secrets.HOOK_DEVELOPMENT }}"
+          elif [[ "${{ github.ref_name }}" == "features" ]]; then
+            curl -X POST "${{ secrets.HOOK_FEATURES}}"
+          fi
