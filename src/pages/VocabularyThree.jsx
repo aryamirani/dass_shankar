@@ -194,7 +194,7 @@ export default function VocabularyThree({ onBack }) {
               <img src={galleryOrder[viewIndex].img} alt={galleryOrder[viewIndex].id} style={{ width: 440, height: 360, objectFit: 'contain' }} />
               <div style={{ height: 20 }} />
               <div style={{ fontSize: 36, fontWeight: 800, color: '#111' }}>{galleryOrder[viewIndex].id}</div>
-              <div style={{ marginTop: 10, color: '#666', fontSize: 14 }}>Click to listen</div>
+              <div style={{ marginTop: 10, color: '#666', fontSize: 16 }}>Click to listen</div>
             </div>
 
             <button
