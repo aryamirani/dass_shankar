@@ -4,7 +4,8 @@ export default function Landing({ onVocabulary, onHealth, onMaths, onEnglish, on
   return (
     <div id="landing" className="landing-root" role="main">
       <div className="landing-inner" style={{ padding: 40 }}>
-        <h1 style={{ fontSize: 64, lineHeight: 1, margin: 8, fontWeight: 900 }}>WELCOME TO SHANKAR FOUNDATION</h1>
+        <h1 style={{ fontSize: 64, lineHeight: 1, margin: 8, fontWeight: 900 }}>WELCOME TO S-LEARN</h1>
+        <h1 style={{ fontSize: 64, lineHeight: 1, margin: 8, fontWeight: 900 }}>BY SHANKAR FOUNDATION</h1>
         <h2 style={{ fontSize: 24, color: '#444', marginTop: 12 }}>Choose a module</h2>
 
         <div style={{ display: 'flex', gap: 20, justifyContent: 'center', marginTop: 36 }}>
