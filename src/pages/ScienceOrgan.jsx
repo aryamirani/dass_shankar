@@ -20,7 +20,7 @@ export default function ScienceOrgan({ onBack }) {
                 boxShadow: '0 10px 30px rgba(0, 0, 0, 0.6)'
             }}>
                 <h2 style={{ margin: '0 0 8px 0', fontSize: 20, color: '#fff' }}>Human Anatomy</h2>
-                <p style={{ margin: 0, fontSize: 16, color: '#d0d0d0', lineHeight: 1.5 }}>{info}</p>
+                <p style={{ margin: 0, fontSize: 22, color: '#d0d0d0', lineHeight: 1.5 }}>{info}</p>
             </div>
 
             {/* Body Container */}

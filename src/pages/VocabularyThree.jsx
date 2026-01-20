@@ -193,10 +193,9 @@ export default function VocabularyThree({ onBack }) {
             <div key={galleryOrder[viewIndex].id} onClick={() => speak(galleryOrder[viewIndex].id)} style={{ textAlign: 'center', width: 500, background: 'transparent', borderRadius: 20, padding: 30, cursor: 'pointer' }}>
               <img src={galleryOrder[viewIndex].img} alt={galleryOrder[viewIndex].id} style={{ width: 440, height: 360, objectFit: 'contain' }} />
               <div style={{ height: 20 }} />
-              <div style={{ fontSize: 36, fontWeight: 800, color: '#111' }}>{galleryOrder[viewIndex].id}</div>
-              <div style={{ marginTop: 10, color: '#666', fontSize: 16 }}>Click to listen</div>
+              <div style={{ fontSize: 50, fontWeight: 800, color: '#111' }}>{galleryOrder[viewIndex].id}</div>
+              <div style={{ marginTop: 10, color: '#666', fontSize: 18}}>Click to listen</div>
             </div>
-
             <button
               className="action-btn"
               onClick={() => setViewIndex(prev => Math.min(galleryOrder.length - 1, prev + 1))}
@@ -264,7 +263,7 @@ export default function VocabularyThree({ onBack }) {
                     position: 'relative'
                   }}
                 >
-                  <div style={{ fontSize: 22, fontWeight: 800, padding: '18px 28px', borderRadius: 8, background: 'transparent' }}>{d.text}</div>
+                  <div style={{ fontSize: 32, fontWeight: 800, padding: '18px 28px', borderRadius: 8, background: 'transparent' }}>{d.text}</div>
                   {d.used && (
                     <div style={{ position: 'absolute', right: 6, top: 6, color: '#2e7d32', fontSize: 36, fontWeight: 900, background: 'rgba(255,255,255,0.6)', borderRadius: 20, padding: '2px 8px', boxShadow: '0 6px 12px rgba(0,0,0,0.06)' }}>✓</div>
                   )}
@@ -382,7 +381,7 @@ export default function VocabularyThree({ onBack }) {
         <span style={{ fontWeight: 800, color: '#1976d2', fontSize: 16, textTransform: 'uppercase', letterSpacing: 2 }}>Words:</span>
         <div style={{ display: 'flex', gap: 20 }}>
           {WORDS.map(w => (
-            <span key={w.id} style={{ fontSize: 24, fontWeight: 700, color: '#333' }}>{w.id}</span>
+            <span key={w.id} style={{ fontSize: 34, fontWeight: 700, color: '#333' }}>{w.id}</span>
           ))}
         </div>
       </div>

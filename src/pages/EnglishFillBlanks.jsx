@@ -55,7 +55,7 @@ export default function EnglishFillBlanks({ onBack }) {
                             const isWrong = result && userAnswer && userAnswer !== item.answer
 
                             return (
-                                <div key={i} style={{ background: 'white', padding: 16, borderRadius: 12, fontSize: 18, boxShadow: '0 2px 5px rgba(0,0,0,0.05)' }}>
+                                <div key={i} style={{ background: 'white', padding: 16, borderRadius: 12, fontSize: 24, boxShadow: '0 2px 5px rgba(0,0,0,0.05)' }}>
                                     <span style={{ fontWeight: 'bold', marginRight: 8 }}>{i + 1}.</span>
                                     {item.clue}:
                                     <div
@@ -92,7 +92,8 @@ export default function EnglishFillBlanks({ onBack }) {
                                                 background: used ? '#eee' : '#e0f2fe',
                                                 color: used ? '#999' : '#0369a1',
                                                 padding: '8px 12px', borderRadius: 6, cursor: used ? 'default' : 'grab',
-                                                textDecoration: used ? 'line-through' : 'none'
+                                                textDecoration: used ? 'line-through' : 'none',
+                                                fontSize: 24
                                             }}
                                         >
                                             {word}
@@ -102,7 +103,7 @@ export default function EnglishFillBlanks({ onBack }) {
                             </div>
                         </div>
                         {result && (
-                            <div style={{ marginTop: 20, padding: 20, background: '#111', color: '#fff', borderRadius: 12, textAlign: 'center', fontSize: 18 }}>
+                            <div style={{ marginTop: 20, padding: 20, background: '#111', color: '#fff', borderRadius: 12, textAlign: 'center', fontSize: 22 }}>
                                 {result}
                             </div>
                         )}
