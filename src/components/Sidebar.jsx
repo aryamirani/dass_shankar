@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 
 const MENU_STRUCTURE = [
-    { id: 'landing', label: 'Overview', type: 'file', icon: '🏠' },
+    { id: 'landing', label: 'Grade 1', type: 'file', icon: '🏠' },
     {
         id: 'health', label: 'Health Module', type: 'folder', icon: '❤️', children: [
             { id: 'healthProblems', label: 'Common Problems', type: 'file', icon: '🌡️' },
@@ -42,13 +42,27 @@ const MENU_STRUCTURE = [
     }
 ]
 
+// Helper function to determine which folder contains the current view
+function getActiveFolderId(currentView) {
+    if (currentView === 'healthProblems' || currentView === 'assessment' || currentView === 'health' || currentView === 'lesson') return 'health'
+    if (currentView === 'vocabularyExercise' || currentView === 'vocabularyThree' || currentView === 'vocabulary') return 'vocabulary'
+    if (currentView.startsWith('mathsExercise') || currentView === 'maths') return 'maths'
+    if (currentView.startsWith('english')) return 'english'
+    if (currentView === 'scienceOrgan' || currentView === 'science') return 'science'
+    return null
+}
+
 export default function Sidebar({ currentView, onChangeView, completedItems = [] }) {
+    // Determine which folder should be open based on current view
+    const activeFolderId = getActiveFolderId(currentView)
+    
+    // Only the folder containing the current view is expanded by default
     const [expanded, setExpanded] = useState({
-        'health': true,
-        'vocabulary': true,
-        'maths': true,
-        'english': true,
-        'science': true
+        'health': activeFolderId === 'health',
+        'vocabulary': activeFolderId === 'vocabulary',
+        'maths': activeFolderId === 'maths',
+        'english': activeFolderId === 'english',
+        'science': activeFolderId === 'science'
     })
     const [collapsed, setCollapsed] = useState(false)
     const [hovered, setHovered] = useState(null)
@@ -84,24 +98,13 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
         const showChildren = isFolder && isOpen && !collapsed
 
         return (
-            <div key={item.id} style={{ marginBottom: 2 }}>
+            <div key={item.id} style={{ marginBottom: 4 }}>
                 <div
                     onClick={(e) => {
-                        // Logic:
-                        // If user clicks the arrow, TOGGLE.
-                        // If user clicks the label/box:
-                        //   - If it's a file, NAVIGATE.
-                        //   - If it's a folder:
-                        //       - If it has a navId (like vocab/maths), NAVIGATE.
-                        //       - Else TOGGLE.
+                        // Clicking on subject name or the row toggles the folder AND navigates
                         if (isFolder) {
-                            // If we clicked strictly on the arrow (handled by stopPropagation if we separate it), but here we handle main click
-                            // We want 'vocabulary' and 'maths' and 'health' to navigate
-                            if (item.id === 'vocabulary' || item.id === 'maths' || item.id === 'english' || item.id === 'science' || item.id === 'health') {
-                                onChangeView(item.id)
-                            } else {
-                                toggleFolder(item.id)
-                            }
+                            toggleFolder(item.id)
+                            onChangeView(item.id)
                         } else {
                             onChangeView(item.id)
                         }
@@ -109,10 +112,10 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                     onMouseEnter={() => setHovered(item.id)}
                     onMouseLeave={() => setHovered(null)}
                     style={{
-                        paddingLeft: collapsed ? 0 : 16 + level * 24,
-                        paddingRight: collapsed ? 0 : 16,
-                        paddingTop: 10,
-                        paddingBottom: 10,
+                        paddingLeft: collapsed ? 0 : 20 + level * 28,
+                        paddingRight: collapsed ? 0 : 20,
+                        paddingTop: 14,
+                        paddingBottom: 14,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: collapsed ? 'center' : 'flex-start',
@@ -126,7 +129,7 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                         borderRadius: collapsed ? 0 : '0 8px 8px 0',
                         marginRight: collapsed ? 0 : 8,
                         position: 'relative',
-                        height: 44
+                        height: 52
                     }}
                     title={collapsed ? item.label : ''}
                 >
@@ -138,19 +141,19 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                                 toggleFolder(item.id)
                             }}
                             style={{
-                                width: 20,
-                                height: 20,
+                                width: 24,
+                                height: 24,
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                marginRight: 4,
+                                marginRight: 8,
                                 borderRadius: 4,
                             }}
                             onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
                             onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                         >
                             <span style={{
-                                fontSize: 10,
+                                fontSize: 12,
                                 color: isActive ? '#4fc3f7' : '#888',
                                 transform: isOpen ? 'rotate(90deg)' : 'none',
                                 transition: 'transform 0.2s',
@@ -161,8 +164,8 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                     )}
 
                     <span style={{
-                        marginRight: collapsed ? 0 : 12,
-                        fontSize: 18,
+                        marginRight: collapsed ? 0 : 14,
+                        fontSize: 22,
                         filter: isActive ? 'drop-shadow(0 0 4px rgba(79, 195, 247, 0.4))' : 'none',
                         display: 'flex', alignItems: 'center', justifyContent: 'center'
                     }}>
@@ -170,13 +173,13 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                     </span>
 
                     {!collapsed && (
-                        <span style={{ flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', letterSpacing: 0.3 }}>
+                        <span style={{ flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', letterSpacing: 0.3, fontSize: 16 }}>
                             {item.label}
                         </span>
                     )}
 
                     {!collapsed && completed && (
-                        <span style={{ color: '#4CAF50', marginLeft: 8, fontSize: 16, fontWeight: 800 }}>✓</span>
+                        <span style={{ color: '#4CAF50', marginLeft: 8, fontSize: 18, fontWeight: 800 }}>✓</span>
                     )}
                 </div>
                 {showChildren && (
@@ -193,7 +196,7 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
 
     return (
         <div style={{
-            width: collapsed ? 64 : 280,
+            width: collapsed ? 80 : 340,
             background: '#1e1e1e',
             borderRight: '1px solid #333',
             display: 'flex',
@@ -208,28 +211,28 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
         }}>
             {/* Header */}
             <div style={{
-                padding: collapsed ? '20px 0' : '20px 24px',
+                padding: collapsed ? '24px 0' : '24px 28px',
                 borderBottom: '1px solid #2d2d2d',
                 background: '#252526',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: collapsed ? 'center' : 'space-between',
-                height: 80
+                height: 100
             }}>
                 {!collapsed && (
                     <div>
                         <div style={{
-                            fontSize: 13,
+                            fontSize: 15,
                             fontWeight: 800,
                             textTransform: 'uppercase',
                             letterSpacing: 1.2,
                             color: '#666',
-                            marginBottom: 4
+                            marginBottom: 6
                         }}>
                             Course Content
                         </div>
                         <div style={{
-                            fontSize: 20,
+                            fontSize: 24,
                             fontWeight: 700,
                             color: '#fff',
                             letterSpacing: -0.5
@@ -245,43 +248,55 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                     style={{
                         background: 'transparent',
                         border: 'none',
-                        color: '#888',
                         cursor: 'pointer',
-                        padding: 8,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center'
+                        padding: 10,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        transition: 'transform 0.3s ease'
                     }}
                 >
-                    {collapsed ? '>>' : '<<'}
+                    <img 
+                        src="/assets/main-menu.png" 
+                        // src="/assets/side-bar-arrow.png"
+                        alt={collapsed ? 'Expand' : 'Collapse'}
+                        style={{
+                            width: 28,
+                            height: 28,
+                            // transform: collapsed ? 'rotate(180deg)' : 'rotate(0deg)',
+                            // transition: 'transform 0.3s ease',
+                            filter: 'brightness(0.9)',
+                            objectFit: 'contain'
+                        }}
+                    />
                 </button>
             </div>
 
             {/* List */}
-            <div className="custom-scrollbar" style={{ flex: 1, overflowY: 'auto', padding: '16px 0', overflowX: 'hidden' }}>
+            <div className="custom-scrollbar" style={{ flex: 1, overflowY: 'auto', padding: '20px 0', overflowX: 'hidden' }}>
                 {MENU_STRUCTURE.map(item => renderItem(item))}
             </div>
 
             {/* Footer */}
             <div style={{
-                padding: '16px',
+                padding: '20px',
                 borderTop: '1px solid #2d2d2d',
                 background: '#252526',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: collapsed ? 'center' : 'flex-start',
-                gap: 12,
-                height: 70
+                gap: 14,
+                height: 85
             }}>
                 <div style={{
-                    width: 32, height: 32, borderRadius: '50%', background: '#4fc3f7', color: '#1e1e1e',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: 14,
+                    width: 40, height: 40, borderRadius: '50%', background: '#4fc3f7', color: '#1e1e1e',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: 16,
                     flexShrink: 0
                 }}>
                     SF
                 </div>
                 {!collapsed && (
                     <div style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-                        <div style={{ fontSize: 14, fontWeight: 600, color: '#fff' }}>Shankar Foundation</div>
-                        <div style={{ fontSize: 11, color: '#888' }}>Learning Portal</div>
+                        <div style={{ fontSize: 16, fontWeight: 600, color: '#fff' }}>Shankar Foundation</div>
+                        <div style={{ fontSize: 13, color: '#888' }}>Learning Portal</div>
                     </div>
                 )}
             </div>

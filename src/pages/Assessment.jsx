@@ -254,7 +254,7 @@ export default function Assessment({ onDone }) {
 
       {/* Inline controls */}
       <div style={{ textAlign: 'center', marginTop: 40, paddingTop: 20, borderTop: '2px dashed #ccc' }}>
-        <button className="action-btn secondary" style={{ fontSize: 16, padding: '6px 18px', marginRight: 10 }} onClick={resetAssessment}>Reset</button>
+        <button className="action-btn secondary" style={{ fontSize: 16, padding: '6px 18px', marginRight: 10}} onClick={resetAssessment}>Reset</button>
 
       </div>
 

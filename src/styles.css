@@ -185,7 +185,7 @@ html,
 }
 
 .action-btn {
-  background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%);
+  background: linear-gradient(180deg, #4facfe 0%, #3072ff 100%);
   color: #fff;
   border: none;
   padding: 16px 32px;
@@ -211,7 +211,7 @@ html,
 }
 
 .action-btn.secondary {
-  background: linear-gradient(180deg, #a18cd1 0%, #fbc2eb 100%);
+  background: linear-gradient(180deg, #227bff 0%, #2a7cf7 100%);
 }
 
 .back-btn {
