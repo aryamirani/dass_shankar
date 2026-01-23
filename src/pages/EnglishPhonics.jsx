@@ -55,20 +55,40 @@ export default function EnglishPhonics({ onBack }) {
                     <button className="back-btn" onClick={onBack}>←</button>
                 </div>
 
-                <h1 className="center-title" style={{ fontSize: 32, marginBottom: 20 }}>Drag the words to form compound words</h1>
+                <h1 className="center-title" style={{ fontSize: 'clamp(24px, 6vw, 32px)', marginBottom: 20 }}>Drag the words to form compound words</h1>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 40, width: '100%' }}>
+                <div style={{ display: 'flex', flexDirection: 'column-reverse', gap: 40, width: '100%', flexWrap: 'wrap-reverse' }}>
+                    {/* Word Bank */}
+                    <div style={{ position: 'sticky', top: 20, zIndex: 10, background: 'rgba(255,255,255,0.8)', padding: 20, borderRadius: 16, width: '100%', boxSizing: 'border-box' }}>
+                        <h3 style={{ marginTop: 0 }}>Word Bank</h3>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+                            {availableParts.map(part => (
+                                <div
+                                    key={part.id}
+                                    draggable
+                                    onDragStart={e => onDragStart(e, part)}
+                                    style={{
+                                        background: 'white', border: '1px solid #ccc', padding: '8px 14px', borderRadius: 8, cursor: 'grab', fontSize: 'clamp(16px, 4vw, 18px)',
+                                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                                    }}
+                                >
+                                    {part.text}
+                                </div>
+                            ))}
+                            {availableParts.length === 0 && <div style={{ color: '#888', fontStyle: 'italic' }}>All words used!</div>}
+                        </div>
+                    </div>
 
                     {/* Target Zones */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: '100%' }}>
                         {wordTriples.map((triple, i) => {
                             const currentDropped = dropped[i] || []
                             const isComplete = currentDropped.length === 2
 
                             return (
-                                <div key={triple.target} style={{ display: 'flex', alignItems: 'center', gap: 20, background: 'rgba(255,255,255,0.5)', padding: 12, borderRadius: 12 }}>
+                                <div key={triple.target} style={{ display: 'flex', alignItems: 'center', gap: 20, background: 'rgba(255,255,255,0.5)', padding: 12, borderRadius: 12, flexWrap: 'wrap' }}>
                                     <div style={{
-                                        background: 'white', padding: '12px 24px', borderRadius: 8, fontSize: 22, fontWeight: 'bold', width: 140, textAlign: 'center', boxShadow: '0 2px 5px rgba(0,0,0,0.05)'
+                                        background: 'white', padding: '12px 24px', borderRadius: 8, fontSize: 'clamp(18px, 5vw, 22px)', fontWeight: 'bold', width: 'clamp(120px, 30vw, 140px)', textAlign: 'center', boxShadow: '0 2px 5px rgba(0,0,0,0.05)'
                                     }}>
                                         {triple.target}
                                     </div>
@@ -80,10 +100,12 @@ export default function EnglishPhonics({ onBack }) {
                                             flex: 1, height: 60, border: `3px dashed ${isComplete ? '#2ecc71' : '#aaa'}`, borderRadius: 8,
                                             background: isComplete ? '#dcfce7' : 'rgba(255,255,255,0.4)',
                                             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-                                            transition: 'all 0.3s'
+                                            transition: 'all 0.3s',
+                                            padding: '0 10px',
+                                            minWidth: '200px'
                                         }}
                                     >
-                                        {currentDropped.length === 0 && !isComplete && <span style={{ color: '#999' }}>Drop parts here</span>}
+                                        {currentDropped.length === 0 && !isComplete && <span style={{ color: '#999', fontSize: 'clamp(14px, 3vw, 16px)' }}>Drop parts here</span>}
                                         {currentDropped.map(p => (
                                             <span key={p.id} style={{ background: '#fff', padding: '6px 12px', borderRadius: 6, boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>{p.text}</span>
                                         ))}
@@ -93,28 +115,6 @@ export default function EnglishPhonics({ onBack }) {
                             )
                         })}
                     </div>
-
-                    {/* Word Bank */}
-                    <div style={{ background: 'rgba(255,255,255,0.8)', padding: 20, borderRadius: 16, height: 'fit-content' }}>
-                        <h3 style={{ marginTop: 0 }}>Word Bank</h3>
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-                            {availableParts.map(part => (
-                                <div
-                                    key={part.id}
-                                    draggable
-                                    onDragStart={e => onDragStart(e, part)}
-                                    style={{
-                                        background: 'white', border: '1px solid #ccc', padding: '8px 14px', borderRadius: 8, cursor: 'grab', fontSize: 18,
-                                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                                    }}
-                                >
-                                    {part.text}
-                                </div>
-                            ))}
-                            {availableParts.length === 0 && <div style={{ color: '#888', fontStyle: 'italic' }}>All words used!</div>}
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>

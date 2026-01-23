@@ -134,16 +134,16 @@ export default function MathsExerciseFour({ onBack, onNextExercise }) {
       </div>
 
 
-      <div style={{ width: '100%', maxWidth: 900, background: 'rgba(255,255,255,0.95)', padding: 40, borderRadius: 20, boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>
-        <h2 style={{ fontSize: 42, textAlign: 'center', marginBottom: 8, fontWeight: 900, color: '#333' }}>Write the number before and after</h2>
-        <div style={{ textAlign: 'center', marginBottom: 24, fontSize: 20, color: '#555' }}>
+      <div style={{ width: '100%', maxWidth: 900, background: 'rgba(255,255,255,0.95)', padding: 'clamp(20px, 4vw, 40px)', borderRadius: 20, boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>
+        <h2 style={{ fontSize: 'clamp(24px, 6vw, 42px)', textAlign: 'center', marginBottom: 8, fontWeight: 900, color: '#333' }}>Write the number before and after</h2>
+        <div style={{ textAlign: 'center', marginBottom: 24, fontSize: 'clamp(16px, 4vw, 20px)', color: '#555' }}>
           Correct: {completedCount} / {totalCount}
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           {items.map(item => (
             <div key={item.id} style={{
-              padding: 20,
+              padding: 'clamp(12px, 3vw, 20px)',
               background: item.checked
                 ? (item.correct ? 'rgba(76, 175, 80, 0.1)' : 'rgba(244, 67, 54, 0.1)')
                 : 'white',
@@ -153,10 +153,10 @@ export default function MathsExerciseFour({ onBack, onNextExercise }) {
               borderRadius: 12,
               transition: 'all 0.3s ease'
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 20 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'clamp(10px, 3vw, 20px)', flexWrap: 'wrap' }}>
                 {/* Before */}
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-                  <div style={{ fontSize: 16, fontWeight: 600, color: '#666' }}>Before</div>
+                  <div style={{ fontSize: '16px', fontWeight: 600, color: '#666' }}>Before</div>
                   <div style={{ display: 'flex', gap: 6 }}>
                     {[0, 1, 2].map(boxIndex => (
                       <input
@@ -170,9 +170,9 @@ export default function MathsExerciseFour({ onBack, onNextExercise }) {
                         onKeyDown={(e) => handleKeyDown(item.id, 'before', boxIndex, e)}
                         disabled={item.checked && item.correct}
                         style={{
-                          width: 50,
-                          height: 60,
-                          fontSize: 28,
+                          width: 'clamp(30px, 8vw, 50px)',
+                          height: 'clamp(40px, 10vw, 60px)',
+                          fontSize: 'clamp(20px, 5vw, 28px)',
                           fontWeight: 700,
                           border: '2px solid #666',
                           borderRadius: 8,
@@ -188,14 +188,14 @@ export default function MathsExerciseFour({ onBack, onNextExercise }) {
 
                 {/* Given Number */}
                 <div style={{
-                  fontSize: 48,
+                  fontSize: 'clamp(24px, 8vw, 48px)',
                   fontWeight: 900,
                   color: '#333',
                   padding: '10px 30px',
                   background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                   color: 'white',
                   borderRadius: 12,
-                  minWidth: 120,
+                  minWidth: 'clamp(60px, 15vw, 120px)',
                   textAlign: 'center'
                 }}>
                   {item.number}

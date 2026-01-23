@@ -15,10 +15,10 @@ export default function ComputerOverview({ onStart, onBack }) {
                     Computer
                 </h1>
                 <div style={{ height: 12 }} />
-                <div style={{ fontSize: 20, color: 'white', opacity: 0.95, marginTop: 6, fontWeight: 600, animation: 'popIn 700ms cubic-bezier(.2,.9,.2,1) 120ms both' }}>Master the Digital World</div>
+                <div style={{ fontSize: 'clamp(18px, 4vw, 20px)', color: 'white', opacity: 0.95, marginTop: 6, fontWeight: 600, animation: 'popIn 700ms cubic-bezier(.2,.9,.2,1) 120ms both' }}>Master the Digital World</div>
                 <div style={{ height: 24 }} />
                 <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 18 }}>
-                    <button className="action-btn" onClick={onStart} style={{ padding: '12px 30px', fontSize: 20, background: 'white', color: '#3b82f6', border: 'none' }}>Start Now</button>
+                    <button className="action-btn" onClick={onStart} style={{ padding: '12px 30px', fontSize: 'clamp(18px, 4vw, 20px)', background: 'white', color: '#3b82f6', border: 'none' }}>Start Now</button>
                 </div>
             </div>
         </div>

@@ -205,19 +205,19 @@ export default function MathsExerciseEight({ onBack, onComplete }) {
         <button className="back-btn" onClick={onBack}>←</button>
       </div>
 
-      <div style={{ width: '100%', maxWidth: 1200, background: 'rgba(255,255,255,0.95)', padding: 40, borderRadius: 20, boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>
-        <h2 style={{ fontSize: 42, textAlign: 'center', marginBottom: 8, fontWeight: 900, color: '#333' }}>Calculator Practice</h2>
-        <p style={{ textAlign: 'center', fontSize: 18, color: '#666', marginBottom: 24 }}>Use the calculator to solve the problems</p>
-        <div style={{ textAlign: 'center', marginBottom: 24, fontSize: 20, color: '#555' }}>
+      <div style={{ width: '100%', maxWidth: 1200, background: 'rgba(255,255,255,0.95)', padding: 'clamp(20px, 4vw, 40px)', borderRadius: 20, boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>
+        <h2 style={{ fontSize: 'clamp(28px, 6vw, 42px)', textAlign: 'center', marginBottom: 8, fontWeight: 900, color: '#333' }}>Calculator Practice</h2>
+        <p style={{ textAlign: 'center', fontSize: 'clamp(16px, 4vw, 18px)', color: '#666', marginBottom: 24 }}>Use the calculator to solve the problems</p>
+        <div style={{ textAlign: 'center', marginBottom: 24, fontSize: 'clamp(16px, 4vw, 20px)', color: '#555' }}>
           Correct: {completedCount} / {totalCount}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 400px', gap: 30 }}>
+        <div style={{ display: 'flex', flexDirection: 'column-reverse', gap: 30, alignItems: 'center' }}>
           {/* Questions Section */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: '100%' }}>
             {items.map(item => (
               <div key={item.id} style={{
-                padding: 20,
+                padding: 'clamp(16px, 3vw, 20px)',
                 background: item.checked
                   ? (item.correct ? 'rgba(76, 175, 80, 0.1)' : 'rgba(244, 67, 54, 0.1)')
                   : 'white',
@@ -229,7 +229,7 @@ export default function MathsExerciseEight({ onBack, onComplete }) {
               }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                   <div style={{
-                    fontSize: 32,
+                    fontSize: 'clamp(20px, 5vw, 32px)',
                     fontWeight: 900,
                     color: '#333'
                   }}>
@@ -245,7 +245,7 @@ export default function MathsExerciseEight({ onBack, onComplete }) {
                     placeholder="Type your answer here"
                     style={{
                       width: '100%',
-                      fontSize: 24,
+                      fontSize: 'clamp(18px, 4vw, 24px)',
                       fontWeight: 600,
                       padding: '12px 20px',
                       border: '2px solid #999',
@@ -301,7 +301,9 @@ export default function MathsExerciseEight({ onBack, onComplete }) {
             boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
             position: 'sticky',
             top: 20,
-            alignSelf: 'flex-start'
+            width: '100%',
+            maxWidth: '400px',
+            boxSizing: 'border-box'
           }}>
             <div style={{
               background: '#1a1a2e',
@@ -312,7 +314,7 @@ export default function MathsExerciseEight({ onBack, onComplete }) {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'flex-end',
-              fontSize: 36,
+              fontSize: 'clamp(24px, 6vw, 36px)',
               fontWeight: 700,
               color: '#fff',
               wordBreak: 'break-all'

@@ -1,5 +1,5 @@
 //hehe
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const MENU_STRUCTURE = [
     { id: 'landing', label: 'Grade X', type: 'file', icon: '🏠' },
@@ -75,6 +75,22 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
     const [collapsed, setCollapsed] = useState(false)
     const [hovered, setHovered] = useState(null)
 
+    // Mobile support logic
+    const [isMobile, setIsMobile] = useState(false)
+    const [mobileOpen, setMobileOpen] = useState(false)
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 1024)
+            if (window.innerWidth >= 1024) {
+                setMobileOpen(false) // Reset when going back to desktop
+            }
+        }
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
+
     const toggleFolder = (id) => {
         setExpanded(prev => ({ ...prev, [id]: !prev[id] }))
     }
@@ -116,6 +132,7 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                             onChangeView(item.id)
                         } else {
                             onChangeView(item.id)
+                            if (isMobile) setMobileOpen(false) // Close sidebar on selection in mobile
                         }
                     }}
                     onMouseEnter={() => setHovered(item.id)}
@@ -204,131 +221,187 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
     }
 
     return (
-        <div style={{
-            width: collapsed ? 80 : 340,
-            background: '#1e1e1e',
-            borderRight: '1px solid #333',
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100%',
-            color: '#e0e0e0',
-            fontFamily: '"SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif',
-            userSelect: 'none',
-            boxShadow: '4px 0 24px rgba(0,0,0,0.2)',
-            zIndex: 10,
-            transition: 'width 0.3s cubic-bezier(0.2, 0, 0, 1)'
-        }}>
-            {/* Header */}
-            <div style={{
-                padding: collapsed ? '24px 0' : '24px 28px',
-                borderBottom: '1px solid #2d2d2d',
-                background: '#252526',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: collapsed ? 'center' : 'space-between',
-                height: 100
-            }}>
-                {!collapsed && (
-                    <div>
-                        <div style={{
-                            fontSize: 15,
-                            fontWeight: 800,
-                            textTransform: 'uppercase',
-                            letterSpacing: 1.2,
-                            color: '#666',
-                            marginBottom: 6
-                        }}>
-                            Course Content
-                        </div>
-                        <div style={{
-                            fontSize: 24,
-                            fontWeight: 700,
-                            color: '#fff',
-                            letterSpacing: -0.5
-                        }}>
-                            Explorer
-                        </div>
-                    </div>
-                )}
-
-                {/* Collapse Toggle */}
+        <>
+            {/* Mobile Hamburger Button */}
+            {isMobile && !mobileOpen && (
                 <button
-                    onClick={() => setCollapsed(!collapsed)}
+                    onClick={() => setMobileOpen(true)}
                     style={{
-                        background: 'transparent',
-                        border: 'none',
-                        cursor: 'pointer',
+                        position: 'fixed',
+                        top: 20,
+                        right: 20,
+                        zIndex: 999,
+                        background: '#1e1e1e',
+                        border: '1px solid #333',
+                        color: '#fff',
+                        borderRadius: 8,
                         padding: 10,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        transition: 'transform 0.3s ease'
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                        cursor: 'pointer',
+                        fontSize: 24,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center'
                     }}
                 >
-                    <img
-                        src="/assets/main-menu.png"
-                        // src="/assets/side-bar-arrow.png"
-                        alt={collapsed ? 'Expand' : 'Collapse'}
-                        style={{
-                            width: 28,
-                            height: 28,
-                            // transform: collapsed ? 'rotate(180deg)' : 'rotate(0deg)',
-                            // transition: 'transform 0.3s ease',
-                            filter: 'brightness(0.9)',
-                            objectFit: 'contain'
-                        }}
-                    />
+                    ☰
                 </button>
-            </div>
+            )}
 
-            {/* List */}
-            <div className="custom-scrollbar" style={{ flex: 1, overflowY: 'auto', padding: '20px 0', overflowX: 'hidden' }}>
-                {MENU_STRUCTURE.map(item => renderItem(item))}
-            </div>
+            {/* Mobile Backdrop */}
+            {isMobile && mobileOpen && (
+                <div
+                    onClick={() => setMobileOpen(false)}
+                    style={{
+                        position: 'fixed',
+                        top: 0, left: 0, right: 0, bottom: 0,
+                        background: 'rgba(0,0,0,0.5)',
+                        zIndex: 999
+                    }}
+                />
+            )}
 
-            {/* Footer */}
             <div style={{
-                padding: '20px',
-                borderTop: '1px solid #2d2d2d',
-                background: '#252526',
+                width: isMobile ? 300 : (collapsed ? 80 : 340),
+                background: '#1e1e1e',
+                borderRight: '1px solid #333',
                 display: 'flex',
-                alignItems: 'center',
-                justifyContent: collapsed ? 'center' : 'flex-start',
-                gap: 14,
-                height: 85
+                flexDirection: 'column',
+                height: '100%',
+                color: '#e0e0e0',
+                fontFamily: '"SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif',
+                userSelect: 'none',
+                boxShadow: '4px 0 24px rgba(0,0,0,0.2)',
+                zIndex: 1000,
+                transition: 'width 0.3s cubic-bezier(0.2, 0, 0, 1), transform 0.3s ease',
+                position: isMobile ? 'fixed' : 'relative',
+                transform: isMobile ? (mobileOpen ? 'translateX(0)' : 'translateX(-100%)') : 'none',
+                left: 0, top: 0
             }}>
+                {/* Header */}
                 <div style={{
-                    width: 40, height: 40, borderRadius: '50%', background: '#4fc3f7', color: '#1e1e1e',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: 16,
-                    flexShrink: 0
+                    padding: collapsed ? '24px 0' : '24px 28px',
+                    borderBottom: '1px solid #2d2d2d',
+                    background: '#252526',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: collapsed ? 'center' : 'space-between',
+                    height: 100
                 }}>
-                    SF
-                </div>
-                {!collapsed && (
-                    <div style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-                        <div style={{ fontSize: 16, fontWeight: 600, color: '#fff' }}>Shankar Foundation</div>
-                        <div style={{ fontSize: 13, color: '#888' }}>Learning Portal</div>
-                    </div>
-                )}
-            </div>
+                    {!collapsed && (
+                        <div>
+                            <div style={{
+                                fontSize: 15,
+                                fontWeight: 800,
+                                textTransform: 'uppercase',
+                                letterSpacing: 1.2,
+                                color: '#666',
+                                marginBottom: 6
+                            }}>
+                                Course Content
+                            </div>
+                            <div style={{
+                                fontSize: 24,
+                                fontWeight: 700,
+                                color: '#fff',
+                                letterSpacing: -0.5
+                            }}>
+                                Explorer
+                            </div>
+                        </div>
+                    )}
 
-            <style>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: #1e1e1e; 
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #444; 
-          border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #555; 
-        }
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
-        </div>
+                    {/* Collapse Toggle - Hide on mobile */}
+                    {!isMobile && (
+                        <button
+                            onClick={() => setCollapsed(!collapsed)}
+                            style={{
+                                background: 'transparent',
+                                border: 'none',
+                                cursor: 'pointer',
+                                padding: 10,
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                transition: 'transform 0.3s ease'
+                            }}
+                        >
+                            <img
+                                src="/assets/main-menu.png"
+                                alt={collapsed ? 'Expand' : 'Collapse'}
+                                style={{
+                                    width: 28,
+                                    height: 28,
+                                    filter: 'brightness(0.9)',
+                                    objectFit: 'contain'
+                                }}
+                            />
+                        </button>
+                    )}
+                    {/* Close button for Mobile */}
+                    {isMobile && (
+                        <button
+                            onClick={() => setMobileOpen(false)}
+                            style={{
+                                background: 'transparent',
+                                border: 'none',
+                                cursor: 'pointer',
+                                color: '#fff',
+                                fontSize: 24
+                            }}
+                        >
+                            ✕
+                        </button>
+                    )}
+                </div>
+
+                {/* List */}
+                <div className="custom-scrollbar" style={{ flex: 1, overflowY: 'auto', padding: '20px 0', overflowX: 'hidden' }}>
+                    {MENU_STRUCTURE.map(item => renderItem(item))}
+                </div>
+
+                {/* Footer */}
+                <div style={{
+                    padding: '20px',
+                    borderTop: '1px solid #2d2d2d',
+                    background: '#252526',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: collapsed ? 'center' : 'flex-start',
+                    gap: 14,
+                    height: 85
+                }}>
+                    <div style={{
+                        width: 40, height: 40, borderRadius: '50%', background: '#4fc3f7', color: '#1e1e1e',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: 16,
+                        flexShrink: 0
+                    }}>
+                        SF
+                    </div>
+                    {!collapsed && (
+                        <div style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
+                            <div style={{ fontSize: 16, fontWeight: 600, color: '#fff' }}>Shankar Foundation</div>
+                            <div style={{ fontSize: 13, color: '#888' }}>Learning Portal</div>
+                        </div>
+                    )}
+                </div>
+
+                <style>{`
+            .custom-scrollbar::-webkit-scrollbar {
+              width: 8px;
+            }
+            .custom-scrollbar::-webkit-scrollbar-track {
+              background: #1e1e1e; 
+            }
+            .custom-scrollbar::-webkit-scrollbar-thumb {
+              background: #444; 
+              border-radius: 4px;
+            }
+            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+              background: #555; 
+            }
+            @keyframes slideDown {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+          `}</style>
+            </div>
+        </>
     )
 }

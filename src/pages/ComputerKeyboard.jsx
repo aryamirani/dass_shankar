@@ -117,24 +117,25 @@ export default function ComputerKeyboard({ onBack }) {
                 background: 'rgba(255, 255, 255, 0.05)',
                 backdropFilter: 'blur(12px)',
                 borderRadius: 24,
-                padding: '40px 60px',
+                padding: 'clamp(20px, 4vw, 40px)',
                 boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
                 border: '1px solid rgba(255, 255, 255, 0.1)',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: 30,
-                width: '90%',
+                gap: 20,
+                width: '95%',
                 maxWidth: 900
             }}>
                 {/* Header / Instructions */}
                 <h1 style={{
                     margin: 0,
-                    fontSize: 32,
+                    fontSize: 'clamp(24px, 5vw, 32px)',
                     fontWeight: 600,
                     background: 'linear-gradient(90deg, #60a5fa, #c084fc)',
                     WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent'
+                    WebkitTextFillColor: 'transparent',
+                    textAlign: 'center'
                 }}>
                     Typing Master
                 </h1>
@@ -148,23 +149,29 @@ export default function ComputerKeyboard({ onBack }) {
                     minHeight: 120
                 }}>
                     <div style={{
-                        fontSize: 48,
+                        fontSize: 'clamp(32px, 8vw, 48px)',
                         fontWeight: 700,
                         letterSpacing: 2,
-                        textShadow: '0 0 20px rgba(255,255,255,0.2)'
+                        textShadow: '0 0 20px rgba(255,255,255,0.2)',
+                        textAlign: 'center',
+                        wordBreak: 'break-all'
                     }}>
                         {target}
                     </div>
 
                     {/* Typed Input Feedback */}
                     <div style={{
-                        fontSize: 32,
+                        fontSize: 'clamp(24px, 6vw, 32px)',
                         color: result === 'correct' ? '#4ade80' : '#e2e8f0',
                         minHeight: 40,
                         borderBottom: '2px solid rgba(255,255,255,0.3)',
                         padding: '0 20px',
                         transition: 'all 0.2s',
-                        textShadow: result === 'correct' ? '0 0 10px #4ade80' : 'none'
+                        textShadow: result === 'correct' ? '0 0 10px #4ade80' : 'none',
+                        textAlign: 'center',
+                        whiteSpace: 'pre-wrap',
+                        wordBreak: 'break-all',
+                        maxWidth: '100%'
                     }}>
                         {typed}<span className="blink">|</span>
                     </div>
@@ -174,14 +181,16 @@ export default function ComputerKeyboard({ onBack }) {
                 <div style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: 10,
-                    marginTop: 20,
-                    padding: 20,
+                    gap: 8,
+                    marginTop: 10,
+                    padding: 'clamp(10px, 2vw, 20px)',
                     background: 'rgba(0,0,0,0.2)',
-                    borderRadius: 16
+                    borderRadius: 16,
+                    width: '100%',
+                    boxSizing: 'border-box'
                 }}>
                     {rows.map((row, rIdx) => (
-                        <div key={rIdx} style={{ display: 'flex', justifyContent: 'center', gap: 8 }}>
+                        <div key={rIdx} style={{ display: 'flex', justifyContent: 'center', gap: 'clamp(2px, 1vw, 8px)' }}>
                             {row.map(char => {
                                 const isActive = activeKey === char
                                 return (
@@ -193,20 +202,30 @@ export default function ComputerKeyboard({ onBack }) {
                                         }}
                                         onMouseUp={() => setActiveKey(null)}
                                         onMouseLeave={() => setActiveKey(null)}
+                                        onTouchStart={(e) => {
+                                            e.preventDefault() // prevent mouse emulation double firing
+                                            setActiveKey(char)
+                                            handleInput(char)
+                                        }}
+                                        onTouchEnd={() => setActiveKey(null)}
                                         style={{
-                                            width: 50,
-                                            height: 50,
+                                            width: 'clamp(28px, 8vw, 50px)',
+                                            height: 'clamp(36px, 10vw, 50px)',
                                             borderRadius: 8,
                                             border: 'none',
                                             background: isActive ? '#3b82f6' : 'rgba(255,255,255,0.1)',
                                             color: 'white',
-                                            fontSize: 20,
+                                            fontSize: 'clamp(14px, 4vw, 20px)',
                                             fontWeight: 600,
                                             cursor: 'pointer',
                                             transition: 'all 0.1s',
                                             boxShadow: isActive ? '0 0 15px #3b82f6' : '0 4px 0 rgba(0,0,0,0.3)',
                                             transform: isActive ? 'translateY(4px)' : 'translateY(0)',
-                                            textTransform: 'uppercase'
+                                            textTransform: 'uppercase',
+                                            padding: 0,
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
                                         }}
                                     >
                                         {char}
@@ -225,19 +244,28 @@ export default function ComputerKeyboard({ onBack }) {
                             }}
                             onMouseUp={() => setActiveKey(null)}
                             onMouseLeave={() => setActiveKey(null)}
+                            onTouchStart={(e) => {
+                                e.preventDefault()
+                                setActiveKey('backspace')
+                                handleInput('Backspace')
+                            }}
+                            onTouchEnd={() => setActiveKey(null)}
                             style={{
-                                height: 50,
+                                height: 'clamp(36px, 10vw, 50px)',
                                 padding: '0 20px',
                                 borderRadius: 8,
                                 border: 'none',
                                 background: activeKey === 'backspace' ? '#ef4444' : 'rgba(255,255,255,0.1)',
                                 color: 'white',
-                                fontSize: 16,
+                                fontSize: 'clamp(12px, 3.5vw, 16px)',
                                 fontWeight: 600,
                                 cursor: 'pointer',
                                 transition: 'all 0.1s',
                                 boxShadow: activeKey === 'backspace' ? '0 0 15px #ef4444' : '0 4px 0 rgba(0,0,0,0.3)',
-                                transform: activeKey === 'backspace' ? 'translateY(4px)' : 'translateY(0)'
+                                transform: activeKey === 'backspace' ? 'translateY(4px)' : 'translateY(0)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
                             }}
                         >
                             Backspace ⌫
@@ -246,7 +274,7 @@ export default function ComputerKeyboard({ onBack }) {
                 </div>
 
                 {/* Controls */}
-                <div style={{ marginTop: 20 }}>
+                <div style={{ marginTop: 10 }}>
                     <button
                         onClick={reset}
                         style={{

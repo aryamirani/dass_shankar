@@ -158,9 +158,9 @@ export default function MathsExerciseTwo({ onBack, onNextExercise }) {
       </div>
 
 
-      <div style={{ width: '100%', maxWidth: 900, background: 'rgba(255,255,255,0.95)', padding: 40, borderRadius: 20, boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>
-        <h2 style={{ fontSize: 42, textAlign: 'center', marginBottom: 8, fontWeight: 900, color: '#333' }}>Write the numbers in digits</h2>
-        <div style={{ textAlign: 'center', marginBottom: 24, fontSize: 20, color: '#555' }}>
+      <div style={{ width: '100%', maxWidth: 900, background: 'rgba(255,255,255,0.95)', padding: 'clamp(20px, 4vw, 40px)', borderRadius: 20, boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>
+        <h2 style={{ fontSize: 'clamp(28px, 6vw, 42px)', textAlign: 'center', marginBottom: 8, fontWeight: 900, color: '#333' }}>Write the numbers in digits</h2>
+        <div style={{ textAlign: 'center', marginBottom: 24, fontSize: 'clamp(16px, 4vw, 20px)', color: '#555' }}>
           Correct: {completedCount} / {totalCount}
         </div>
 
@@ -169,8 +169,8 @@ export default function MathsExerciseTwo({ onBack, onNextExercise }) {
             <div key={item.id} style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 20,
-              padding: 20,
+              gap: '20px',
+              padding: 'clamp(12px, 3vw, 20px)',
               background: item.checked
                 ? (item.correct ? 'rgba(76, 175, 80, 0.1)' : 'rgba(244, 67, 54, 0.1)')
                 : 'white',
@@ -178,19 +178,22 @@ export default function MathsExerciseTwo({ onBack, onNextExercise }) {
                 ? (item.correct ? '2px solid #4CAF50' : '2px solid #F44336')
                 : '2px solid #ddd',
               borderRadius: 12,
-              transition: 'all 0.3s ease'
+              transition: 'all 0.3s ease',
+              flexWrap: 'wrap',
+              justifyContent: 'center'
             }}>
               <div style={{
-                fontSize: 28,
+                fontSize: 'clamp(20px, 5vw, 28px)',
                 fontWeight: 700,
-                flex: 1,
+                flex: '1 1 200px',
                 color: '#333',
-                textTransform: 'capitalize'
+                textTransform: 'capitalize',
+                textAlign: 'center'
               }}>
                 {item.numberInWords}
               </div>
 
-              <div style={{ display: 'flex', gap: 8 }}>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
                 {[0, 1, 2].map(boxIndex => (
                   <input
                     key={boxIndex}
@@ -206,9 +209,9 @@ export default function MathsExerciseTwo({ onBack, onNextExercise }) {
                     }}
                     disabled={item.checked && item.correct}
                     style={{
-                      width: 50,
-                      height: 60,
-                      fontSize: 28,
+                      width: 'clamp(40px, 10vw, 50px)',
+                      height: 'clamp(50px, 12vw, 60px)',
+                      fontSize: 'clamp(20px, 5vw, 28px)',
                       fontWeight: 700,
                       border: '2px solid #999',
                       borderRadius: 8,
@@ -226,7 +229,7 @@ export default function MathsExerciseTwo({ onBack, onNextExercise }) {
                 disabled={!item.digits.some(d => d) || (item.checked && item.correct)}
                 style={{
                   padding: '12px 24px',
-                  fontSize: 18,
+                  fontSize: 'clamp(14px, 4vw, 18px)',
                   fontWeight: 700,
                   background: item.checked
                     ? (item.correct ? '#4CAF50' : '#F44336')
@@ -236,7 +239,9 @@ export default function MathsExerciseTwo({ onBack, onNextExercise }) {
                   borderRadius: 8,
                   cursor: (!item.digits.some(d => d) || (item.checked && item.correct)) ? 'not-allowed' : 'pointer',
                   opacity: (!item.digits.some(d => d) || (item.checked && item.correct)) ? 0.5 : 1,
-                  transition: 'all 0.2s'
+                  transition: 'all 0.2s',
+                  width: 'auto',
+                  minWidth: '100px'
                 }}
               >
                 {item.checked

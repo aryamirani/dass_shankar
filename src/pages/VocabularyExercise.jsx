@@ -85,14 +85,14 @@ export default function VocabularyExercise({ onBack, onNextExercise }) {
             </div>
           )}
         </div>
-        <h2 style={{ fontSize: 36, textAlign: 'center', marginBottom: 8 }}>Find and tap only the "at" words</h2>
-        <div style={{ textAlign: 'center', marginBottom: 12, fontSize: 18, color: '#333' }}>
+        <h2 style={{ fontSize: 'clamp(24px, 5vw, 36px)', textAlign: 'center', marginBottom: 8 }}>Find and tap only the "at" words</h2>
+        <div style={{ textAlign: 'center', marginBottom: 12, fontSize: 'clamp(16px, 4vw, 18px)', color: '#333' }}>
           Correct found: {completedCount} / {totalAt}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24, justifyItems: 'center', alignItems: 'center', padding: 20 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: 'clamp(16px, 3vw, 24px)', justifyItems: 'center', alignItems: 'center', padding: 20 }}>
           {items.map(item => (
-            <div key={item.id} style={{ minWidth: 140, minHeight: 100, position: 'relative', borderRadius: 20 }}>
+            <div key={item.id} style={{ width: '100%', maxWidth: 140, aspectRatio: '1.4', position: 'relative', borderRadius: 20 }}>
               <button
                 className="vocab-word-btn"
                 onClick={() => { if (!item.matched) handleClick(item) }}
@@ -102,7 +102,9 @@ export default function VocabularyExercise({ onBack, onNextExercise }) {
                   color: item.matched ? '#166534' : '#444',
                   boxShadow: item.matched ? 'inset 0 4px 10px rgba(0,0,0,0.05)' : undefined,
                   transform: item.matched ? 'scale(0.95)' : undefined,
-                  cursor: item.matched ? 'default' : 'pointer'
+                  cursor: item.matched ? 'default' : 'pointer',
+                  fontSize: 'clamp(28px, 6vw, 48px)',
+                  padding: '10px'
                 }}
               >
                 {item.word}

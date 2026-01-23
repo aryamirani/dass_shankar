@@ -125,17 +125,18 @@ export default function MathsExerciseThree({ onBack, onNextExercise }) {
       </div>
 
 
-      <div style={{ width: '100%', maxWidth: 1100, background: 'rgba(255,255,255,0.95)', padding: 40, borderRadius: 20, boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>
-        <h2 style={{ fontSize: 42, textAlign: 'center', marginBottom: 8, fontWeight: 900, color: '#333' }}>Fill in the missing numbers</h2>
-        <div style={{ textAlign: 'center', marginBottom: 24, fontSize: 20, color: '#555' }}>
+      <div style={{ width: '100%', maxWidth: 1100, background: 'rgba(255,255,255,0.95)', padding: 'clamp(20px, 4vw, 40px)', borderRadius: 20, boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>
+        <h2 style={{ fontSize: 'clamp(28px, 6vw, 42px)', textAlign: 'center', marginBottom: 8, fontWeight: 900, color: '#333' }}>Fill in the missing numbers</h2>
+        <div style={{ textAlign: 'center', marginBottom: 24, fontSize: 'clamp(16px, 4vw, 20px)', color: '#555' }}>
           Completed: {correctEditableCount} / {editableCount}
         </div>
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'flex-start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 16, justifyContent: 'center' }}>
           {items.map(item => (
             <div key={item.id} style={{
               display: 'flex',
               alignItems: 'center',
+              justifyContent: 'center',
               gap: 12,
               padding: 16,
               background: item.preFilled
@@ -152,7 +153,7 @@ export default function MathsExerciseThree({ onBack, onNextExercise }) {
               transition: 'all 0.3s ease',
               minWidth: 'fit-content'
             }}>
-              <div style={{ display: 'flex', gap: 6, flex: 1 }}>
+              <div style={{ display: 'flex', gap: 6 }}>
                 {[0, 1, 2].map(boxIndex => (
                   <input
                     key={boxIndex}
@@ -165,9 +166,9 @@ export default function MathsExerciseThree({ onBack, onNextExercise }) {
                     onKeyDown={(e) => handleKeyDown(item.id, boxIndex, e)}
                     disabled={item.preFilled || (item.checked && item.correct)}
                     style={{
-                      width: 50,
-                      height: 60,
-                      fontSize: 28,
+                      width: 'clamp(30px, 8vw, 50px)',
+                      height: 'clamp(40px, 10vw, 60px)',
+                      fontSize: 'clamp(20px, 5vw, 28px)',
                       fontWeight: 700,
                       border: item.preFilled ? '2px solid #999' : '2px solid #666',
                       borderRadius: 8,

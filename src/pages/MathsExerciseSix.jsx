@@ -104,17 +104,17 @@ export default function MathsExerciseSix({ onBack, onNextExercise }) {
       </div>
 
 
-      <div style={{ width: '100%', maxWidth: 1000, background: 'rgba(255,255,255,0.95)', padding: 40, borderRadius: 20, boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>
-        <h2 style={{ fontSize: 42, textAlign: 'center', marginBottom: 8, fontWeight: 900, color: '#333' }}>Arrange numbers from smallest to biggest</h2>
-        <p style={{ textAlign: 'center', fontSize: 18, color: '#666', marginBottom: 24 }}>Drag and drop the numbers to arrange them</p>
-        <div style={{ textAlign: 'center', marginBottom: 24, fontSize: 20, color: '#555' }}>
+      <div style={{ width: '100%', maxWidth: 1000, background: 'rgba(255,255,255,0.95)', padding: 'clamp(20px, 4vw, 40px)', borderRadius: 20, boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>
+        <h2 style={{ fontSize: 'clamp(24px, 5vw, 42px)', textAlign: 'center', marginBottom: 8, fontWeight: 900, color: '#333' }}>Arrange numbers from smallest to biggest</h2>
+        <p style={{ textAlign: 'center', fontSize: 'clamp(16px, 4vw, 18px)', color: '#666', marginBottom: 24 }}>Drag and drop the numbers to arrange them</p>
+        <div style={{ textAlign: 'center', marginBottom: 24, fontSize: 'clamp(16px, 4vw, 20px)', color: '#555' }}>
           Correct: {completedCount} / {totalCount}
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 30 }}>
           {items.map(item => (
             <div key={item.id} style={{
-              padding: 30,
+              padding: 'clamp(16px, 4vw, 30px)',
               background: item.checked
                 ? (item.correct ? 'rgba(76, 175, 80, 0.1)' : 'rgba(244, 67, 54, 0.1)')
                 : 'white',
@@ -124,10 +124,10 @@ export default function MathsExerciseSix({ onBack, onNextExercise }) {
               borderRadius: 16,
               transition: 'all 0.3s ease'
             }}>
-              <div style={{ fontSize: 20, fontWeight: 700, color: '#666', marginBottom: 16, textAlign: 'center' }}>
+              <div style={{ fontSize: 'clamp(18px, 4vw, 20px)', fontWeight: 700, color: '#666', marginBottom: 16, textAlign: 'center' }}>
                 Set {item.id + 1}
               </div>
-              <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: 'clamp(8px, 2vw, 16px)', justifyContent: 'center', flexWrap: 'wrap' }}>
                 {item.numbers.map((num, index) => (
                   <div
                     key={`${item.id}-${index}`}
@@ -136,12 +136,12 @@ export default function MathsExerciseSix({ onBack, onNextExercise }) {
                     onDragOver={handleDragOver}
                     onDrop={() => handleDrop(item.id, index)}
                     style={{
-                      width: 100,
-                      height: 100,
+                      width: 'clamp(60px, 15vw, 100px)',
+                      height: 'clamp(60px, 15vw, 100px)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: 36,
+                      fontSize: 'clamp(24px, 5vw, 36px)',
                       fontWeight: 900,
                       background: item.checked && item.correct
                         ? 'linear-gradient(135deg, #4CAF50, #66BB6A)'
@@ -179,7 +179,7 @@ export default function MathsExerciseSix({ onBack, onNextExercise }) {
                 ))}
               </div>
               {item.checked && item.correct && (
-                <div style={{ marginTop: 16, textAlign: 'center', fontSize: 18, color: '#4CAF50', fontWeight: 700 }}>
+                <div style={{ marginTop: 16, textAlign: 'center', fontSize: 'clamp(16px, 4vw, 18px)', color: '#4CAF50', fontWeight: 700 }}>
                   ✓ Correct: {item.correctOrder.join(' < ')}
                 </div>
               )}

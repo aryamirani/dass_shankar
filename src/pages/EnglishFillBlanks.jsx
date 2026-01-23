@@ -45,40 +45,11 @@ export default function EnglishFillBlanks({ onBack }) {
                     <button className="action-btn" onClick={checkAnswers}>Check Answers</button>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 40, padding: 40, maxWidth: 1400, margin: '0 auto' }}>
-
-                    {/* Questions */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                        {data.map((item, i) => {
-                            const userAnswer = answers[i]
-                            const isCorrect = result && userAnswer === item.answer
-                            const isWrong = result && userAnswer && userAnswer !== item.answer
-
-                            return (
-                                <div key={i} style={{ background: 'white', padding: 16, borderRadius: 12, fontSize: 24, boxShadow: '0 2px 5px rgba(0,0,0,0.05)' }}>
-                                    <span style={{ fontWeight: 'bold', marginRight: 8 }}>{i + 1}.</span>
-                                    {item.clue}:
-                                    <div
-                                        onDragOver={e => e.preventDefault()}
-                                        onDrop={e => onDrop(e, i)}
-                                        style={{
-                                            display: 'inline-block', minWidth: 150, borderBottom: '2px solid #555', margin: '0 10px',
-                                            textAlign: 'center', color: '#0056b3', fontWeight: 'bold', padding: '0 10px',
-                                            background: isCorrect ? '#dcfce7' : (isWrong ? '#fee2e2' : 'transparent'),
-                                            borderRadius: 4
-                                        }}
-                                    >
-                                        {userAnswer || (isWrong ? '?' : '________')}
-                                    </div>
-                                </div>
-                            )
-                        })}
-                    </div>
-
+                <div style={{ display: 'flex', flexDirection: 'column-reverse', gap: 40, padding: 'clamp(20px, 4vw, 40px)', maxWidth: 1400, margin: '0 auto', flexWrap: 'wrap-reverse' }}>
                     {/* Word Bank */}
-                    <div style={{ alignSelf: 'start', position: 'sticky', top: 100 }}>
-                        <div style={{ background: 'white', padding: 20, borderRadius: 16, border: '1px solid #ddd' }}>
-                            <h3 style={{ marginTop: 0 }}>Word Bank</h3>
+                    <div style={{ position: 'sticky', top: 20, zIndex: 10 }}>
+                        <div style={{ background: 'white', padding: 20, borderRadius: 16, border: '1px solid #ddd', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                            <h3 style={{ marginTop: 0, fontSize: 'clamp(18px, 4vw, 24px)' }}>Word Bank</h3>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                                 {shuffledWords.map((word, k) => {
                                     // Check if used
@@ -93,7 +64,7 @@ export default function EnglishFillBlanks({ onBack }) {
                                                 color: used ? '#999' : '#0369a1',
                                                 padding: '8px 12px', borderRadius: 6, cursor: used ? 'default' : 'grab',
                                                 textDecoration: used ? 'line-through' : 'none',
-                                                fontSize: 24
+                                                fontSize: 'clamp(16px, 4vw, 24px)'
                                             }}
                                         >
                                             {word}
@@ -103,12 +74,39 @@ export default function EnglishFillBlanks({ onBack }) {
                             </div>
                         </div>
                         {result && (
-                            <div style={{ marginTop: 20, padding: 20, background: '#111', color: '#fff', borderRadius: 12, textAlign: 'center', fontSize: 22 }}>
+                            <div style={{ marginTop: 20, padding: 20, background: '#111', color: '#fff', borderRadius: 12, textAlign: 'center', fontSize: 'clamp(18px, 4vw, 22px)' }}>
                                 {result}
                             </div>
                         )}
                     </div>
 
+                    {/* Questions */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                        {data.map((item, i) => {
+                            const userAnswer = answers[i]
+                            const isCorrect = result && userAnswer === item.answer
+                            const isWrong = result && userAnswer && userAnswer !== item.answer
+
+                            return (
+                                <div key={i} style={{ background: 'white', padding: 16, borderRadius: 12, fontSize: 'clamp(18px, 4vw, 24px)', boxShadow: '0 2px 5px rgba(0,0,0,0.05)' }}>
+                                    <span style={{ fontWeight: 'bold', marginRight: 8 }}>{i + 1}.</span>
+                                    {item.clue}:
+                                    <div
+                                        onDragOver={e => e.preventDefault()}
+                                        onDrop={e => onDrop(e, i)}
+                                        style={{
+                                            display: 'inline-block', minWidth: 'clamp(100px, 20vw, 150px)', borderBottom: '2px solid #555', margin: '0 10px',
+                                            textAlign: 'center', color: '#0056b3', fontWeight: 'bold', padding: '0 10px',
+                                            background: isCorrect ? '#dcfce7' : (isWrong ? '#fee2e2' : 'transparent'),
+                                            borderRadius: 4
+                                        }}
+                                    >
+                                        {userAnswer || (isWrong ? '?' : '________')}
+                                    </div>
+                                </div>
+                            )
+                        })}
+                    </div>
                 </div>
             </div>
         </div>

@@ -135,16 +135,16 @@ export default function Lesson({ data, index, total, onBack, onNext, onComplete,
       <div className="main-content" style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         {phase === 'exercise' && (
           <>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 30, background: 'rgba(255,255,255,0.7)', padding: 20, borderRadius: 20, marginBottom: 40, maxWidth: '1600px', width: '100%', margin: '0 auto 40px' }}>
-              <span style={{ fontSize: 28, fontWeight: 'bold', color: '#333', whiteSpace: 'nowrap' }}>Drag the helpful items:</span>
-              <div style={{ flex: 1, height: 40, background: '#ddd', borderRadius: 20, overflow: 'hidden', border: '3px solid #333' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 30, background: 'rgba(255,255,255,0.7)', padding: 20, borderRadius: 20, marginBottom: 'clamp(20px, 4vw, 40px)', maxWidth: '1600px', width: '100%', margin: '0 auto 40px', flexDirection: 'row', flexWrap: 'wrap' }}>
+              <span style={{ fontSize: 'clamp(18px, 4vw, 28px)', fontWeight: 'bold', color: '#333', whiteSpace: 'nowrap' }}>Drag the helpful items:</span>
+              <div style={{ flex: 1, minWidth: 200, height: 40, background: '#ddd', borderRadius: 20, overflow: 'hidden', border: '3px solid #333' }}>
                 <div style={{ width: `${health * 100}% `, height: '100%', background: 'linear-gradient(90deg, #4caf50, #8bc34a)', transition: 'width 0.4s' }} />
               </div>
             </div>
 
-            <div style={{ display: 'flex', gap: '60px', alignItems: 'flex-start', justifyContent: 'center', width: '100%', maxWidth: '1600px', margin: '0 auto', flex: 1 }}>
-              <div style={{ display: 'flex', flexDirection: 'row', gap: 40, flex: '1 1 auto', alignItems: 'center', justifyContent: 'flex-end' }}>
-                <div id="drop-zone" onDrop={onDrop} onDragOver={e => e.preventDefault()} style={{ position: 'relative', width: 440, height: 500, border: '6px dashed #1976d2', borderRadius: 40, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'rgba(25,118,210,0.05)' }}>
+            <div style={{ display: 'flex', gap: 'clamp(20px, 4vw, 60px)', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '1600px', margin: '0 auto', flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 40, flex: '1 1 auto', alignItems: 'center', justifyContent: 'flex-start', minWidth: '300px' }}>
+                <div id="drop-zone" onDrop={onDrop} onDragOver={e => e.preventDefault()} style={{ position: 'relative', width: 'min(90vw, 440px)', height: 'min(90vw, 500px)', border: '6px dashed #1976d2', borderRadius: 40, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'rgba(25,118,210,0.05)' }}>
                   <div style={{ position: 'absolute', top: -25, background: 'white', padding: '5px 25px', border: '3px solid #1976d2', borderRadius: 15, fontWeight: 'bold', color: '#1976d2', fontSize: 24 }}>Drop Here</div>
                   <img src={data.img} alt="character" style={{ height: '80%', objectFit: 'contain' }} />
                   {feedback && (
@@ -153,16 +153,16 @@ export default function Lesson({ data, index, total, onBack, onNext, onComplete,
                     </div>
                   )}
                 </div>
-                <div className="speech-cloud" style={{ background: '#fff', padding: 30, borderRadius: 30, boxShadow: '0 8px 24px rgba(0,0,0,0.1)', border: '2px solid #eee', minWidth: 320, maxWidth: 450 }}>
-                  <h3 style={{ marginTop: 0, fontSize: 32 }}>What the child says:</h3>
-                  <ul style={{ fontSize: 24, lineHeight: '1.6' }}>
+                <div className="speech-cloud" style={{ background: '#fff', padding: 'clamp(20px, 3vw, 30px)', borderRadius: 30, boxShadow: '0 8px 24px rgba(0,0,0,0.1)', border: '2px solid #eee', width: 'min(90vw, 450px)', minWidth: 0 }}>
+                  <h3 style={{ marginTop: 0, fontSize: 'clamp(20px, 4vw, 32px)' }}>What the child says:</h3>
+                  <ul style={{ fontSize: 'clamp(16px, 3vw, 24px)', lineHeight: '1.6', paddingLeft: 20 }}>
                     {data.lines.map((l, i) => (
                       <li key={i} dangerouslySetInnerHTML={{ __html: l }} />
                     ))}
                   </ul>
                 </div>
               </div>
-              <div className="items-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 24, flex: '0 0 540px' }}>
+              <div className="items-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 24, flex: '1 1 540px', width: '100%', minWidth: 'min(90vw, 500px)' }}>
                 {ALL_ITEMS.map((item) => {
                   const isUsed = dropped.includes(item.id);
                   const isCorrect = data.items.includes(item.id);
@@ -175,7 +175,7 @@ export default function Lesson({ data, index, total, onBack, onNext, onComplete,
                       style={{
                         position: 'relative',
                         background: 'white',
-                        padding: 20,
+                        padding: 'clamp(10px, 2vw, 20px)',
                         borderRadius: 24,
                         boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                         cursor: isUsed ? 'default' : 'grab',
@@ -183,10 +183,10 @@ export default function Lesson({ data, index, total, onBack, onNext, onComplete,
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        height: 180
+                        height: 'clamp(120px, 15vw, 180px)'
                       }}
                     >
-                      <img src={item.src} alt={item.id} style={{ width: '220px', height: '160px', objectFit: 'contain' }} />
+                      <img src={item.src} alt={item.id} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
                       {isUsed && (
                         <div style={{ position: 'absolute', fontSize: 60, color: isCorrect ? 'green' : 'red', fontWeight: 'bold' }}>
                           {isCorrect ? '✓' : '✗'}

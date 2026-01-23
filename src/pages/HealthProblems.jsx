@@ -13,7 +13,7 @@ export default function HealthProblems({ onStart, onSelect, completed = [], allD
     <div id="landing" className="landing-root" role="main">
       <div className="landing-inner">
         <button className="back-btn" onClick={onBack}>←</button>
-        <h1 className="center-title" style={{ marginBottom: 32 }}>Health Problems</h1>
+        <h1 className="center-title" style={{ marginBottom: 32, fontSize: 'clamp(32px, 6vw, 42px)' }}>Health Problems</h1>
         <div className="health-grid" role="list">
           {displayedConditions.map((c, i) => {
             const globalIndex = page * itemsPerPage + i;
@@ -27,10 +27,10 @@ export default function HealthProblems({ onStart, onSelect, completed = [], allD
                 title={c.title}
                 disabled={done}
                 tabIndex={0}
-                style={{ animation: `popIn 0.5s cubic-bezier(.5,1.8,.5,1) ${(i * 0.04).toFixed(2)}s both` }}
+                style={{ animation: `popIn 0.5s cubic-bezier(.5,1.8,.5,1) ${(i * 0.04).toFixed(2)}s both`, width: '100%', maxWidth: '300px' }}
               >
-                <img src={c.img} alt={c.title} className="health-img" />
-                <div className="health-label">{c.title}</div>
+                <img src={c.img} alt={c.title} className="health-img" style={{ maxWidth: '100%', height: 'auto' }} />
+                <div className="health-label" style={{ fontSize: 'clamp(18px, 4vw, 24px)' }}>{c.title}</div>
                 {done && (
                   <span className="tick big-tick">✓</span>
                 )}
@@ -44,7 +44,7 @@ export default function HealthProblems({ onStart, onSelect, completed = [], allD
             {page > 0 && (
               <button
                 className="action-btn secondary"
-                style={{ borderRadius: 50, minWidth: 100, height: 60, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, padding: '0 30px' }}
+                style={{ borderRadius: 50, minWidth: 'clamp(60px, 10vw, 100px)', height: 'clamp(40px, 8vw, 60px)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 'clamp(18px, 4vw, 24px)', padding: '0 30px' }}
                 onClick={() => setPage(p => p - 1)}
               >
                 ←
