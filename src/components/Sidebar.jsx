@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 
 const MENU_STRUCTURE = [
-    { id: 'landing', label: 'Grade 1', type: 'file', icon: '🏠' },
+    { id: 'landing', label: 'Grade X', type: 'file', icon: '🏠' },
     {
         id: 'health', label: 'Health Module', type: 'folder', icon: '❤️', children: [
             { id: 'healthProblems', label: 'Common Problems', type: 'file', icon: '🌡️' },
@@ -29,7 +29,6 @@ const MENU_STRUCTURE = [
     },
     {
         id: 'english', label: 'English Module', type: 'folder', icon: '📝', children: [
-            { id: 'englishTheory', label: 'Compound Words', type: 'file', icon: '🧬' },
             { id: 'englishWordGame', label: 'Word Surgery', type: 'file', icon: '📚' },
             { id: 'englishPhonics', label: 'Word Match', type: 'file', icon: '📐' },
             { id: 'englishFillBlanks', label: 'Fill Blanks', type: 'file', icon: '✍️' }
@@ -37,7 +36,14 @@ const MENU_STRUCTURE = [
     },
     {
         id: 'science', label: 'Science Module', type: 'folder', icon: '🔬', children: [
-            { id: 'scienceOrgan', label: 'Human Anatomy', type: 'file', icon: '🫀' }
+            { id: 'scienceOrgan', label: 'Human Anatomy', type: 'file', icon: '🫀' },
+            { id: 'scienceHuman', label: 'Identify Organs', type: 'file', icon: '🧠' }
+        ]
+    }
+    ,
+    {
+        id: 'computer', label: 'Computer Module', type: 'folder', icon: '💻', children: [
+            { id: 'computerKeyboard', label: 'Typing Practice', type: 'file', icon: '⌨️' }
         ]
     }
 ]
@@ -48,21 +54,23 @@ function getActiveFolderId(currentView) {
     if (currentView === 'vocabularyExercise' || currentView === 'vocabularyThree' || currentView === 'vocabulary') return 'vocabulary'
     if (currentView.startsWith('mathsExercise') || currentView === 'maths') return 'maths'
     if (currentView.startsWith('english')) return 'english'
-    if (currentView === 'scienceOrgan' || currentView === 'science') return 'science'
+    if (currentView === 'scienceOrgan' || currentView === 'scienceHuman' || currentView === 'science') return 'science'
+    if (currentView === 'computerKeyboard' || currentView === 'computer') return 'computer'
     return null
 }
 
 export default function Sidebar({ currentView, onChangeView, completedItems = [] }) {
     // Determine which folder should be open based on current view
     const activeFolderId = getActiveFolderId(currentView)
-    
+
     // Only the folder containing the current view is expanded by default
     const [expanded, setExpanded] = useState({
         'health': activeFolderId === 'health',
         'vocabulary': activeFolderId === 'vocabulary',
         'maths': activeFolderId === 'maths',
         'english': activeFolderId === 'english',
-        'science': activeFolderId === 'science'
+        'science': activeFolderId === 'science',
+        'computer': activeFolderId === 'computer'
     })
     const [collapsed, setCollapsed] = useState(false)
     const [hovered, setHovered] = useState(null)
@@ -86,8 +94,9 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
     const renderItem = (item, level = 0) => {
         const isActive = currentView === item.id ||
             (item.id === 'health' && (currentView === 'healthProblems' || currentView === 'assessment')) ||
-            (item.id === 'science' && currentView === 'scienceOrgan') ||
-            (item.id === 'english' && currentView.startsWith('english'))
+            (item.id === 'science' && (currentView === 'scienceOrgan' || currentView === 'scienceHuman')) ||
+            (item.id === 'english' && currentView.startsWith('english')) ||
+            (item.id === 'computer' && currentView === 'computerKeyboard')
         const isFolder = item.type === 'folder'
         const isOpen = expanded[item.id]
         const isHovered = hovered === item.id
@@ -254,8 +263,8 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                         transition: 'transform 0.3s ease'
                     }}
                 >
-                    <img 
-                        src="/assets/main-menu.png" 
+                    <img
+                        src="/assets/main-menu.png"
                         // src="/assets/side-bar-arrow.png"
                         alt={collapsed ? 'Expand' : 'Collapse'}
                         style={{

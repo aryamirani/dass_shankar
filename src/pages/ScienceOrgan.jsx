@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export default function ScienceOrgan({ onBack }) {
+export default function ScienceOrgan({ onBack, onNext }) {
     const [info, setInfo] = useState("Click an organ to see details.")
 
     return (
@@ -21,6 +21,25 @@ export default function ScienceOrgan({ onBack }) {
             }}>
                 <h2 style={{ margin: '0 0 8px 0', fontSize: 20, color: '#fff' }}>Human Anatomy</h2>
                 <p style={{ margin: 0, fontSize: 22, color: '#d0d0d0', lineHeight: 1.5 }}>{info}</p>
+
+                <div style={{ marginTop: 20, display: 'flex', justifyContent: 'flex-end' }}>
+                    <button
+                        onClick={onNext}
+                        style={{
+                            padding: '10px 20px',
+                            background: '#ff512f',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: 8,
+                            fontSize: 16,
+                            fontWeight: 'bold',
+                            cursor: 'pointer',
+                            boxShadow: '0 4px 12px rgba(255, 81, 47, 0.4)'
+                        }}
+                    >
+                        PRACTICE →
+                    </button>
+                </div>
             </div>
 
             {/* Body Container */}

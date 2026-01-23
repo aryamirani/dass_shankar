@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Word Surgery</title>
+
+    <link rel="stylesheet" href="../fonts.css">
+    <link rel="stylesheet" href="feedback.css">
+    <link rel="stylesheet" href="backbutton.css">
+
+    <style>
+        * {
+            font-family: "Grandstander";
+        }
+
+        body {
+            background-color: rgb(110, 231, 120);
+            text-align: center;
+            padding: 25px;
+        }
+
+        .game-container {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 30px;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 350px;
+        }
+
+        .word-card {
+            background: rgb(224, 220, 220);
+            border: 3px solid #3498db;
+            border-radius: 15px;
+            padding: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            box-shadow: 4px 4px 0px #bdc3c7;
+            user-select: none;
+        }
+
+        .word-card:hover {
+            transform: scale(1.05);
+            background-color: #eaf2f8;
+        }
+
+        .selected {
+            background-color: #f1c40f !important;
+            border-color: #f39c12 !important;
+            transform: scale(1.1);
+        }
+
+        @keyframes heal {
+            from {
+                transform: scale(1);
+                background-color: #2ecc71;
+            }
+
+            to {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+
+        .healed {
+            animation: heal 0.8s forwards;
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-10px);
+                background-color: #e74c3c;
+                color: white;
+            }
+
+            50% {
+                transform: translateX(10px);
+            }
+
+            75% {
+                transform: translateX(-10px);
+            }
+
+            100% {
+                transform: translateX(0);
+                background-color: white;
+                color: black;
+            }
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        .column-title {
+            font-size: 35px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .healed-word {
+            display: inline-block;
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin: 10px;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        /* ===== IMAGE POPUP ===== */
+        #image-popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        #popup-img {
+            max-width: 60%;
+            max-height: 60%;
+            background: white;
+            padding: 20px;
+            border-radius: 30px;
+        }
+
+        /* ===== TUTORIAL OVERLAY ===== */
+        #tutorial-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 3000;
+            pointer-events: none;
+        }
+
+        #tutorial-arrow {
+            font-size: 60px;
+            animation: bounce 1s infinite;
+            margin-bottom: 20px;
+            position: absolute;
+        }
+
+        #tutorial-text {
+            color: white;
+            font-size: 32px;
+            text-align: center;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <audio id="correct-sound" src="/assets/correct.wav"></audio>
+    <audio id="wrong-sound" src="/assets/wrong.wav"></audio>
+
+    <div style="text-align:left;">
+        <a href="engboard.html" class="card" style="border-top-color:#2ecc71;">
+            <span class="icon">↩️</span>
+            <span class="subject-name">Back</span>
+        </a>
+    </div>
+
+    <h1 style="font-size:55px;">Word Surgery</h1>
+    <p style="font-size:40px;">
+        <strong>Tap a blue word part, then tap the matching red part.</strong>
+    </p>
+
+    <div class="game-container">
+        <div class="column" id="left-column">
+            <div class="column-title">Part 1</div>
+        </div>
+
+        <div class="column" id="right-column">
+            <div class="column-title">Part 2</div>
+        </div>
+    </div>
+
+    <hr>
+
+    <h1 style="font-size:40px;">Healed Words</h1>
+    <div id="healed-here"></div>
+
+    <div id="feedback" class="feedback hidden"></div>
+
+    <!-- IMAGE POPUP -->
+    <div id="image-popup">
+        <img id="popup-img">
+    </div>
+
+    <!-- TUTORIAL OVERLAY -->
+    <div id="tutorial-overlay">
+        <div id="tutorial-arrow">⬇️</div>
+        <div id="tutorial-text">Click the blue word first</div>
+    </div>
+
+    <script src="feedback.js"></script>
+    <script>
+        const correctSound = document.getElementById("correct-sound");
+        const wrongSound = document.getElementById("wrong-sound");
+
+        const wordPairs = {
+            "Sun": "Flower",
+            "Tooth": "Brush",
+            "Rain": "Bow",
+            "Jelly": "Fish",
+            "Head": "Ache"
+        };
+
+        const wordImages = {
+            "SunFlower": "assets/sunflower.png",
+            "ToothBrush": "assets/toothbrush.png",
+            "RainBow": "assets/rainbow.png",
+            "JellyFish": "assets/jellyfish.png",
+            "HeadAche": "assets/headache.png"
+        };
+
+        let selectedLeft = null;
+        let selectedElement = null;
+
+        function initGame() {
+            const leftCol = document.getElementById('left-column');
+            const rightCol = document.getElementById('right-column');
+
+            const leftWords = Object.keys(wordPairs);
+            const rightWords = Object.values(wordPairs);
+
+            shuffle(leftWords).forEach(w => createCard(w, 'left', leftCol));
+            shuffle(rightWords).forEach(w => createCard(w, 'right', rightCol));
+        }
+
+        function createCard(text, side, container) {
+            const card = document.createElement('div');
+            card.className = 'word-card';
+            card.innerText = text;
+            card.dataset.value = text;
+            card.dataset.side = side;
+
+            if (side === 'right') card.style.borderColor = '#e74c3c';
+
+            card.onclick = () => handleCardClick(card);
+            container.appendChild(card);
+        }
+
+        function handleCardClick(card) {
+            if (card.classList.contains('healed')) return;
+
+            if (card.dataset.side === 'left') {
+                if (selectedElement) selectedElement.classList.remove('selected');
+                selectedElement = card;
+                selectedLeft = card.dataset.value;
+                card.classList.add('selected');
+            } else {
+                if (!selectedLeft) {
+                    shakeCard(card);
+                    return;
+                }
+
+                const correctMatch = wordPairs[selectedLeft];
+                if (card.dataset.value === correctMatch) {
+                    correctSound.play();
+                    performSurgery(selectedElement, card, selectedLeft + card.dataset.value);
+                    selectedLeft = null;
+                    selectedElement = null;
+                } else {
+                    shakeCard(selectedElement);
+                    shakeCard(card);
+                    wrongSound.play();
+                }
+            }
+        }
+
+        function performSurgery(leftCard, rightCard, fullWord) {
+            leftCard.classList.add('healed');
+            rightCard.classList.add('healed');
+
+            
+            setTimeout(() => {
+                showFeedback();
+                const healed = document.createElement("span");
+                healed.className = "healed-word";
+                healed.textContent = fullWord;
+                document.getElementById("healed-here").appendChild(healed);
+                showImageForWord(fullWord);
+            }, 1000);
+            
+            
+        }
+
+        function showImageForWord(word) {
+            const imgPath = wordImages[word];
+            if (!imgPath) return;
+
+            const popup = document.getElementById("image-popup");
+            const img = document.getElementById("popup-img");
+
+            img.src = imgPath;
+            popup.style.display = "flex";
+
+            setTimeout(() => {
+                popup.style.display = "none";
+                img.src = "";
+            }, 3000);
+        }
+
+        function shakeCard(card) {
+            card.classList.remove('shake');
+            void card.offsetWidth;
+            card.classList.add('shake');
+        }
+
+        function shuffle(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        initGame();
+
+        function startTutorial() {
+            const overlay = document.getElementById('tutorial-overlay');
+            const arrow = document.getElementById('tutorial-arrow');
+            const text = document.getElementById('tutorial-text');
+
+            const leftCards = document.querySelectorAll('#left-column .word-card');
+            const rightCards = document.querySelectorAll('#right-column .word-card');
+
+            // Pick first left card for tutorial
+            const leftCard = leftCards[0];
+
+            // Find the correct right card dynamically
+            const correctRightValue = wordPairs[leftCard.dataset.value];
+            const rightCard = Array.from(rightCards).find(c => c.dataset.value === correctRightValue);
+
+            const fullWord = leftCard.dataset.value + correctRightValue;
+
+            overlay.style.display = 'flex';
+
+            function moveArrowTo(card) {
+                const rect = card.getBoundingClientRect();
+                arrow.style.left = rect.left + rect.width / 2 - 30 + 'px';
+                arrow.style.top = rect.top - 80 + 'px';
+            }
+
+            // Step 1: Point to left word
+            text.textContent = "Click the blue word";
+            moveArrowTo(leftCard);
+
+            setTimeout(() => {
+                // Simulate click on left word
+                leftCard.classList.add('selected');
+
+                // Step 2: Point to right word after 1 second
+                setTimeout(() => {
+                    text.textContent = "Now click the red word";
+                    moveArrowTo(rightCard);
+
+                    // Step 3: Perform surgery after 1 second
+                    setTimeout(() => {
+                        performSurgery(leftCard, rightCard, fullWord);
+
+                        // Step 4: Hide overlay after 1 second
+                        setTimeout(() => {
+                            overlay.style.display = 'none';
+                        }, 1000);
+
+                    }, 1000);
+
+                }, 2000);
+
+            }, 2000);
+        }
+
+        startTutorial();
+    </script>
+
+</body>
+
+</html>

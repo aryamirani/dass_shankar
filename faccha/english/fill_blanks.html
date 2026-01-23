@@ -1,0 +1,251 @@
+<!-- This is the code for the fill in the blank game -->
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="../fonts.css">
+    <link rel="stylesheet" href="backbutton.css">
+    <link rel="stylesheet" href="feedback.css">
+
+    <meta charset="UTF-8">
+    <title>Phonics – Drag & Drop</title>
+    <style>
+        * {
+            font-family: Grandstander;
+            font-weight: 700;
+        }
+
+        body {
+            height: 100%;
+            margin: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            min-height: 100vh;
+            color: black;
+            background: #6e64dc;
+            /* background-image: url("assets/background.png"); */
+            padding: 30px;
+        }
+
+        .game {
+            max-width: 1600px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            font-size: 35px;
+        }
+
+        .question {
+            margin-bottom: 18px;
+        }
+
+        .drop-zone {
+            display: inline-block;
+            min-width: 180px;
+            padding: 8px;
+            border: 3px dashed #555;
+            border-radius: 8px;
+            background: white;
+            text-align: center;
+        }
+
+        .word-bank {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            /* font-size:30px; */
+            border-radius: 12px;
+        }
+
+        .word {
+            padding: 10px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 8px;
+            cursor: grab;
+            /* font-size:20px; */
+            text-align: center;
+        }
+
+        .correct {
+            background: #22c55e !important;
+            color: white;
+            border: none;
+        }
+
+        .wrong {
+            background: #ef4444 !important;
+            color: white;
+        }
+
+        button {
+            display: block;
+            margin: 30px auto;
+            padding: 12px 30px;
+            font-size: 35px;
+            cursor: pointer;
+        }
+
+       #next-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 50%;
+    transform: translateX(50%);
+    padding: 12px 30px;
+    font-size: 30px;
+    z-index: 1000;
+}
+
+    </style>
+</head>
+
+<body>
+
+
+    <div style="text-align: left;">
+        <a href="engboard.html" class="card" style="border-top-color: #2ecc71;">
+            <span class="icon">↩️</span>
+            <span class="subject-name">Back</span>
+        </a>
+    </div>
+    <h1 style="text-align: center; font-size: 50px;">Phonics</h1>
+    <p style=" text-align: center; margin-bottom: 30px; font-size: 40px;">
+        Drag the correct compound word into the blank</p>
+
+    <div class="game">
+        <div id="questions"></div>
+        <div class="word-bank" id="bank">
+            <h3>Word Bank</h3>
+        </div>
+    </div>
+
+    <button onclick="checkAnswers()">Check Answers</button>
+    <div id="feedback" class="feedback hidden"></div>
+
+    <script src="feedback.js"></script>
+    <script>
+    const data = [
+        ["A vehicle with wings to fly", "airplane"],
+        ["A room where we sleep", "bedroom"],
+        ["A person who studies in the same class", "classmate"],
+        ["A container used to put trash", "dustbin"],
+        ["An ornament for ear", "earring"],
+        ["A glowing insect which flies in the night", "firefly"],
+        ["A box for the letters", "postbox"],
+        ["A tall house near sea beach is called", "lighthouse"],
+        ["A printed paper with daily news", "newspaper"],
+        ["An arch of the colors in the sky", "rainbow"],
+        ["A book issued by bank for account holder", "passbook"],
+        ["A large shop for household items", "superbazar"],
+        ["A brush we use to clean our teeth", "toothbrush"],
+        ["A cup in which we drink tea", "teacup"],
+        ["A hole on the lock is called", "keyhole"]
+    ];
+
+    const QUESTIONS_PER_PAGE = 5;
+    let currentPage = 0;
+
+    const qDiv = document.getElementById("questions");
+    const bank = document.getElementById("bank");
+
+    function renderPage() {
+        qDiv.innerHTML = ""; // clear previous questions
+        bank.innerHTML = "<h3>Word Bank</h3>"; // clear and reset bank
+
+        const start = currentPage * QUESTIONS_PER_PAGE;
+        const end = Math.min(start + QUESTIONS_PER_PAGE, data.length);
+        const pageData = data.slice(start, end);
+
+        pageData.forEach(([clue, answer], i) => {
+            const div = document.createElement("div");
+            div.className = "question";
+
+            div.innerHTML = `
+                ${start + i + 1}. ${clue} :
+                <span class="drop-zone" 
+                      data-answer="${answer}" 
+                      ondragover="event.preventDefault()"
+                      ondrop="dropWord(event)">
+                      ________
+                </span>
+            `;
+            qDiv.appendChild(div);
+        });
+
+        shuffle([...pageData.map(d => d[1])]).forEach(word => {
+            const div = document.createElement("div");
+            div.className = "word";
+            div.textContent = word;
+            div.draggable = true;
+
+            div.addEventListener("dragstart", e => {
+                e.dataTransfer.setData("text", word);
+                e.target.classList.add("dragging");
+            });
+
+            div.addEventListener("dragend", e => {
+                e.target.classList.remove("dragging");
+            });
+
+            bank.appendChild(div);
+        });
+
+        const nextButton = document.querySelector("#next-btn");
+        if (!nextButton) {
+            const btn = document.createElement("button");
+            btn.id = "next-btn";
+            btn.textContent = "Next";
+            btn.style.display = end >= data.length ? "none" : "block";
+            btn.onclick = nextPage;
+            qDiv.parentNode.appendChild(btn);
+        } else {
+            nextButton.style.display = end >= data.length ? "none" : "block";
+        }
+    }
+
+    function nextPage() {
+        currentPage++;
+        renderPage();
+    }
+
+    function dropWord(e) {
+        const word = e.dataTransfer.getData("text");
+        if (e.target.classList.contains("correct")) return;
+        e.target.textContent = word;
+    }
+
+    function checkAnswers() {
+        document.querySelectorAll(".drop-zone").forEach(zone => {
+            const correct = zone.dataset.answer;
+            const user = zone.textContent.trim();
+
+            if (user === correct) {
+                zone.classList.add("correct");
+                showFeedback();
+            } else {
+                zone.classList.add("wrong");
+                setTimeout(() => {
+                    zone.classList.remove("wrong");
+                    zone.textContent = "________";
+                }, 800);
+            }
+        });
+    }
+
+    function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    renderPage();
+</script>
+
+
+</body>
+
+</html>

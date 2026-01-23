@@ -18,12 +18,14 @@ import MathsExerciseSix from './pages/MathsExerciseSix'
 import MathsExerciseSeven from './pages/MathsExerciseSeven'
 import MathsExerciseEight from './pages/MathsExerciseEight'
 import EnglishOverview from './pages/EnglishOverview'
-import EnglishTheory from './pages/EnglishTheory'
 import EnglishWordGame from './pages/EnglishWordGame'
 import EnglishPhonics from './pages/EnglishPhonics'
 import EnglishFillBlanks from './pages/EnglishFillBlanks'
 import ScienceOverview from './pages/ScienceOverview'
 import ScienceOrgan from './pages/ScienceOrgan'
+import ScienceHuman from './pages/ScienceHuman'
+import ComputerOverview from './pages/ComputerOverview'
+import ComputerKeyboard from './pages/ComputerKeyboard'
 import CONDITIONS from './data/conditions'
 
 export default function App() {
@@ -65,12 +67,14 @@ export default function App() {
   function goToMathsExerciseSeven() { setView({ name: 'mathsExerciseSeven' }) }
   function goToMathsExerciseEight() { setView({ name: 'mathsExerciseEight' }) }
   function goToEnglish() { setView({ name: 'english' }) }
-  function goToEnglishTheory() { setView({ name: 'englishTheory' }) }
   function goToEnglishWordGame() { setView({ name: 'englishWordGame' }) }
   function goToEnglishPhonics() { setView({ name: 'englishPhonics' }) }
   function goToEnglishFillBlanks() { setView({ name: 'englishFillBlanks' }) }
   function goToScienceOverview() { setView({ name: 'science' }) }
   function goToScienceOrgan() { setView({ name: 'scienceOrgan' }) }
+  function goToScienceHuman() { setView({ name: 'scienceHuman' }) }
+  function goToComputerOverview() { setView({ name: 'computer' }) }
+  function goToComputerKeyboard() { setView({ name: 'computerKeyboard' }) }
   function next() {
     if (view.name === 'lesson') {
       const nextIndex = view.index + 1
@@ -98,6 +102,7 @@ export default function App() {
     else if (viewId === 'maths') setView({ name: 'maths' })
     else if (viewId === 'english') setView({ name: 'english' })
     else if (viewId === 'science') setView({ name: 'science' }) // Goes to science overview
+    else if (viewId === 'computer') setView({ name: 'computer' }) // Goes to computer overview
     else setView({ name: viewId })
   }
 
@@ -109,7 +114,7 @@ export default function App() {
     if (view.name === 'english' || view.name.startsWith('english')) return 'linear-gradient(135deg, #f6d365 0%, #fda085 100%)'
 
     // Science - Red
-    if (view.name === 'science' || view.name === 'scienceOrgan') return 'linear-gradient(135deg, #ff512f 0%, #dd2476 100%)'
+    if (view.name === 'science' || view.name === 'scienceOrgan' || view.name === 'scienceHuman') return 'linear-gradient(135deg, #ff512f 0%, #dd2476 100%)'
 
     // Health - Pink
     if (view.name === 'health' || view.name === 'healthProblems' || view.name === 'assessment' || view.name === 'lesson') return 'linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%)'
@@ -117,7 +122,10 @@ export default function App() {
     // Vocabulary - Green
     if (view.name === 'vocabulary' || view.name.startsWith('vocabulary')) return 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)'
 
-    // Overview / Landing - Blue
+    // Computer - Blue
+    if (view.name === 'computer' || view.name === 'computerKeyboard') return 'linear-gradient(135deg, #0f172a 0%, #334155 100%)'
+
+    // Overview / Landing - Blue (Lighter)
     return 'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)'
   }
 
@@ -126,7 +134,7 @@ export default function App() {
       <Sidebar currentView={view.name} onChangeView={handleSidebarNav} completedItems={completed} />
 
       <div style={{ flex: 1, overflowY: 'auto', position: 'relative' }}>
-        {view.name === 'landing' && <Landing onVocabulary={goToVocabulary} onHealth={goToHealthOverview} onMaths={goToMaths} onEnglish={goToEnglish} onScience={goToScienceOverview} />}
+        {view.name === 'landing' && <Landing onVocabulary={goToVocabulary} onHealth={goToHealthOverview} onMaths={goToMaths} onEnglish={goToEnglish} onScience={goToScienceOverview} onComputer={goToComputerOverview} />}
         {view.name === 'health' && <HealthOverview onStart={goToHealthProblems} onBack={goHome} />}
         {view.name === 'healthProblems' && <HealthProblems onStart={() => goToLesson(0)} onSelect={(imgIndex) => goToLesson(imgIndex)} completed={completed} allDone={allDone} onAllDone={() => markCompleted('health')} onVocabulary={goToVocabulary} onBack={goToHealthOverview} />}
         {view.name === 'lesson' && <Lesson data={CONDITIONS[view.index]} index={view.index} total={CONDITIONS.length} onBack={goToHealthProblems} onNext={next} onComplete={markCompleted} onBackToGrid={() => { markCompleted('health'); goToHealthProblems() }} />}
@@ -143,13 +151,19 @@ export default function App() {
         {view.name === 'mathsExerciseSix' && <MathsExerciseSix onBack={() => setView({ name: 'mathsExerciseFive' })} onNextExercise={() => { markCompleted('mathsExerciseSix'); goToMathsExerciseSeven() }} />}
         {view.name === 'mathsExerciseSeven' && <MathsExerciseSeven onBack={() => setView({ name: 'mathsExerciseSix' })} onNextExercise={() => { markCompleted('mathsExerciseSeven'); goToMathsExerciseEight() }} />}
         {view.name === 'mathsExerciseEight' && <MathsExerciseEight onBack={() => setView({ name: 'mathsExerciseSeven' })} onComplete={() => markCompleted('mathsExerciseEight')} />}
-        {view.name === 'english' && <EnglishOverview onStart={goToEnglishTheory} onBack={goHome} />}
-        {view.name === 'englishTheory' && <EnglishTheory onBack={() => setView({ name: 'english' })} />}
+        {view.name === 'english' && <EnglishOverview onStart={goToEnglishWordGame} onBack={goHome} />}
+
         {view.name === 'englishWordGame' && <EnglishWordGame onBack={() => setView({ name: 'english' })} />}
         {view.name === 'englishPhonics' && <EnglishPhonics onBack={() => setView({ name: 'english' })} />}
         {view.name === 'englishFillBlanks' && <EnglishFillBlanks onBack={() => setView({ name: 'english' })} />}
         {view.name === 'science' && <ScienceOverview onStart={goToScienceOrgan} onBack={goHome} />}
-        {view.name === 'scienceOrgan' && <ScienceOrgan onBack={goToScienceOverview} />}
+        {view.name === 'scienceOrgan' && <ScienceOrgan onBack={goToScienceOverview} onNext={goToScienceHuman} />}
+        {view.name === 'scienceHuman' && <ScienceHuman onBack={goToScienceOverview} />}
+
+        {view.name === 'computer' && <ComputerOverview onStart={goToComputerKeyboard} onBack={goHome} />}
+        {view.name === 'computerKeyboard' && <ComputerKeyboard onBack={goToComputerOverview} />}
+
+
       </div>
     </div>
   )

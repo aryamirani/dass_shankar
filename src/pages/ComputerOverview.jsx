@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function ScienceOverview({ onStart, onBack }) {
+export default function ComputerOverview({ onStart, onBack }) {
     return (
         <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
             <style>{`
@@ -12,13 +12,13 @@ export default function ScienceOverview({ onStart, onBack }) {
             </div>
             <div style={{ textAlign: 'center', background: 'rgba(255,255,255,0.0)', padding: 20 }}>
                 <h1 style={{ fontSize: 'clamp(48px, 12vw, 120px)', letterSpacing: 4, margin: 0, fontWeight: 900, display: 'inline-block', lineHeight: 1, color: 'white', textShadow: '0 4px 12px rgba(0,0,0,0.1)', animation: 'popIn 700ms cubic-bezier(.2,.9,.2,1) both' }}>
-                    Science
+                    Computer
                 </h1>
                 <div style={{ height: 12 }} />
-                <div style={{ fontSize: 20, color: 'white', opacity: 0.95, marginTop: 6, fontWeight: 600, animation: 'popIn 700ms cubic-bezier(.2,.9,.2,1) 120ms both' }}>Explore the wonders of Science</div>
+                <div style={{ fontSize: 20, color: 'white', opacity: 0.95, marginTop: 6, fontWeight: 600, animation: 'popIn 700ms cubic-bezier(.2,.9,.2,1) 120ms both' }}>Master the Digital World</div>
                 <div style={{ height: 24 }} />
                 <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 18 }}>
-                    <button className="action-btn" onClick={onStart} style={{ padding: '12px 30px', fontSize: 20, background: 'white', color: '#ff512f', border: 'none' }}>Start Now</button>
+                    <button className="action-btn" onClick={onStart} style={{ padding: '12px 30px', fontSize: 20, background: 'white', color: '#3b82f6', border: 'none' }}>Start Now</button>
                 </div>
             </div>
         </div>

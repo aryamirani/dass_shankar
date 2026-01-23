@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="fonts.css">
+    <meta charset="UTF-8">
+    <title>My Learning World</title>
+    <style>
+        * {
+            font-family: 'Grandstander';
+        }
+
+        html {
+
+            background-image: url('../assets/background.png');
+            background: linear-gradient(135deg, #596390 0%, #0a4ade 100%);
+        }
+
+        body {
+            /* background: linear-gradient(135deg, #596390 0%, #0a4ade 100%); */
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: rgb(42, 36, 36);
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 45px;
+        }
+
+        p {
+            margin-top: 10px;
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #444;
+            transition: all 0.3s ease;
+            border-top: 8px solid #ddd;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+            background: #f9f9f9;
+            width: 90px;
+            height: 90px;
+            line-height: 90px;
+            border-radius: 50%;
+            display: block;
+        }
+
+        .subject-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .desc {
+            font-size: 14px;
+            color: #888;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Shankar Foundation</h1>
+        <p>Select a subject to start Learning</p>
+    </header>
+
+    <div class="container">
+        <div class="subject-grid">
+
+            <a href="english/engboard.html" class="card" style="border-top-color: #3498db;">
+                <span class="icon">📚</span>
+                <span class="subject-name">English</span>
+            </a>
+
+            <a href="/math/mathdash.html" class="card" style="border-top-color:  #e74c3c;">
+                <span class="icon">📐</span>
+                <span class="subject-name">Math</span>
+            </a>
+
+            <a href="/science/human.html" class="card" style="border-top-color: #2ecc71;">
+                <span class="icon">🧬</span>
+                <span class="subject-name">Sciences</span>
+            </a>
+
+            <a href="#" class="card" style="border-top-color: #f1c40f;">
+                <span class="icon">🌍</span>
+                <span class="subject-name">Social Science</span>
+            </a>
+
+            <a href="/computer/keyboard.html" class="card computer" style="border-top-color: #9b59b6;">
+                <span class="icon">🖥️</span>
+                <span class="subject-name">Computer Skills</span>
+            </a>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

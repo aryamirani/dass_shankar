@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      #btn {
+        transition: opacity 0.5s ease;
+      }
+
+      .vanish {
+        opacity: 0;
+      }
+
+      body{
+        background-color: black;
+        color:white;
+      }
+    </style>
+  </head>
+  <body>
+
+    <button id="btn">Click</button>
+
+    <header>
+      dklf
+    </header>
+
+    <script>
+      const button = document.getElementById("btn");
+
+      button.addEventListener("click", function () {
+        button.classList.add("vanish");
+      });
+    </script>
+    
+  </body>
+</html>

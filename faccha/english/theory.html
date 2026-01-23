@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phonics: Compound Words</title>
+        <link rel="stylesheet" href="backbutton.css">
+        <link rel="stylesheet" href="../fonts.css">
+
+    <style>
+        :root {
+            --primary: #4a90e2;
+            --secondary: #ff6b6b;
+            --accent: #f8e71c;
+            --bg: #f0f4f8;
+            --text: #333;
+        }
+        body {
+            font-family: "Grandstander";
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 800px;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .theory-box {
+            background-color: #e3f2fd;
+            border-left: 5px solid var(--primary);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 0 10px 10px 0;
+        }
+        .formula {
+            font-size: 1.5em;
+            text-align: center;
+            font-weight: bold;
+            margin: 20px 0;
+            color: var(--secondary);
+            background: #fff0f0;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px dashed var(--secondary);
+        }
+        .word-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+        }
+        .word-card {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .word-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.2);
+        }
+        .part-a { color: var(--primary); font-weight: bold; }
+        .part-b { color: var(--secondary); font-weight: bold; }
+        .equals { color: #999; margin: 0 5px; }
+        .result { font-weight: 800; color: #333; }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px; }
+            h1 { font-size: 1.8em; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+     <div style="text-align: left;">
+        <a href="engboard.html" class="card" style="border-top-color: #2ecc71;">
+            <span class="icon">↩️</span>
+            <span class="subject-name">Back</span>
+        </a>
+    </div>
+    <h1 style="font-size:40px;">Compound Words</h1>
+    <div class="theory-box">
+        <h3>The Theory: What is a Compound Word?</h3>
+        <p>A compound word is made when <strong>two smaller words</strong> join together to create a <strong>new word</strong> with a completely new meaning.</p>
+        
+        <div class="formula">
+            Word 1 + Word 2 = New Word
+        </div>
+        
+        <p><em>Example:</em> "Rain" (water from the sky) + "Bow" (a tied ribbon) = <strong>Rainbow</strong> (colorful arc in the sky).</p>
+    </div>
+
+    <h3 style="text-align: center;">Matches from Class</h3>
+    <div class="word-grid">
+        <div class="word-card"><span class="part-a">post</span> + <span class="part-b">box</span> <span class="equals">=</span> <span class="result">Postbox</span></div>
+        <div class="word-card"><span class="part-a">pop</span> + <span class="part-b">corn</span> <span class="equals">=</span> <span class="result">Popcorn</span></div>
+        <div class="word-card"><span class="part-a">print</span> + <span class="part-b">out</span> <span class="equals">=</span> <span class="result">Printout</span></div>
+        <div class="word-card"><span class="part-a">road</span> + <span class="part-b">side</span> <span class="equals">=</span> <span class="result">Roadside</span></div>
+        <div class="word-card"><span class="part-a">rail</span> + <span class="part-b">way</span> <span class="equals">=</span> <span class="result">Railway</span></div>
+        <div class="word-card"><span class="part-a">rain</span> + <span class="part-b">bow</span> <span class="equals">=</span> <span class="result">Rainbow</span></div>
+        <div class="word-card"><span class="part-a">super</span> + <span class="part-b">man</span> <span class="equals">=</span> <span class="result">Superman</span></div>
+        <div class="word-card"><span class="part-a">some</span> + <span class="part-b">thing</span> <span class="equals">=</span> <span class="result">Something</span></div>
+        <div class="word-card"><span class="part-a">salt</span> + <span class="part-b">water</span> <span class="equals">=</span> <span class="result">Saltwater</span></div>
+        <div class="word-card"><span class="part-a">thunder</span> + <span class="part-b">storm</span> <span class="equals">=</span> <span class="result">Thunderstorm</span></div>
+        <div class="word-card"><span class="part-a">time</span> + <span class="part-b">table</span> <span class="equals">=</span> <span class="result">Timetable</span></div>
+        <div class="word-card"><span class="part-a">tea</span> + <span class="part-b">spoon</span> <span class="equals">=</span> <span class="result">Teaspoon</span></div>
+        <div class="word-card"><span class="part-a">up</span> + <span class="part-b">stairs</span> <span class="equals">=</span> <span class="result">Upstairs</span></div>
+        <div class="word-card"><span class="part-a">under</span> + <span class="part-b">ground</span> <span class="equals">=</span> <span class="result">Underground</span></div>
+        <div class="word-card"><span class="part-a">user</span> + <span class="part-b">name</span> <span class="equals">=</span> <span class="result">Username</span></div>
+        <div class="word-card"><span class="part-a">with</span> + <span class="part-b">out</span> <span class="equals">=</span> <span class="result">Without</span></div>
+        <div class="word-card"><span class="part-a">water</span> + <span class="part-b">colour</span> <span class="equals">=</span> <span class="result">Watercolour</span></div>
+        <div class="word-card"><span class="part-a">week</span> + <span class="part-b">day</span> <span class="equals">=</span> <span class="result">Weekday</span></div>
+    </div>
+</div>
+
+</body>
+</html>
