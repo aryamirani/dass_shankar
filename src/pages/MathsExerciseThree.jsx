@@ -11,8 +11,8 @@ const GENTLE = [
 export default function MathsExerciseThree({ onBack, onNextExercise }) {
   // Generate a sequence of 20 consecutive 3-digit numbers with ~10 pre-filled
   const questions = useMemo(() => {
-    const gridSize = 20
-    const preFillCount = 10
+    const gridSize = 10
+    const preFillCount = 5
 
     // Generate a random starting 3-digit number (100-979 to ensure we can have 20 consecutive)
     const startNumber = Math.floor(Math.random() * 880) + 100 // 100-979
@@ -131,7 +131,7 @@ export default function MathsExerciseThree({ onBack, onNextExercise }) {
           Completed: {correctEditableCount} / {editableCount}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 16, justifyContent: 'center' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 20, justifyContent: 'center' }}>
           {items.map(item => (
             <div key={item.id} style={{
               display: 'flex',
@@ -151,7 +151,8 @@ export default function MathsExerciseThree({ onBack, onNextExercise }) {
                   : '2px solid #ddd'),
               borderRadius: 12,
               transition: 'all 0.3s ease',
-              minWidth: 'fit-content'
+              minWidth: 'fit-content',
+              maxWidth: 300
             }}>
               <div style={{ display: 'flex', gap: 6 }}>
                 {[0, 1, 2].map(boxIndex => (
@@ -166,9 +167,9 @@ export default function MathsExerciseThree({ onBack, onNextExercise }) {
                     onKeyDown={(e) => handleKeyDown(item.id, boxIndex, e)}
                     disabled={item.preFilled || (item.checked && item.correct)}
                     style={{
-                      width: 'clamp(30px, 8vw, 50px)',
-                      height: 'clamp(40px, 10vw, 60px)',
-                      fontSize: 'clamp(20px, 5vw, 28px)',
+                      width: 'clamp(30px, 3.5vw, 50px)',
+                      height: 'clamp(40px, 6vw, 60px)',
+                      fontSize: 'clamp(20px, 3.2vw, 28px)',
                       fontWeight: 700,
                       border: item.preFilled ? '2px solid #999' : '2px solid #666',
                       borderRadius: 8,

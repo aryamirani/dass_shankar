@@ -14,14 +14,14 @@ const POSITIVE_FEEDBACKS = [
 ];
 
 const ALL_ITEMS = [
-  { id: 'medicine', src: '/images/medicine.png' },
-  { id: 'thermometer', src: '/images/thermometer.png' },
-  { id: 'firstaid', src: '/images/firstaid.png' },
-  { id: 'hotdrink', src: '/images/hotdrink.png' },
-  { id: 'food', src: '/images/food.png' },
-  { id: 'tissue', src: '/images/tissue.png' },
-  { id: 'toilet', src: '/images/toilet.png' },
-  { id: 'wetcloth', src: '/images/wetcloth.png' }
+  { id: 'medicine', src: '/medicine.png' },
+  { id: 'thermometer', src: '/thermometer.png' },
+  { id: 'firstaid', src: '/firstaid.png' },
+  { id: 'hotdrink', src: '/hotdrink.png' },
+  { id: 'food', src: '/food.png' },
+  { id: 'tissue', src: '/tissue.png' },
+  { id: 'toilet', src: '/toilet.png' },
+  { id: 'wetcloth', src: '/wetcloth.png' }
 ]
 
 export default function Lesson({ data, index, total, onBack, onNext, onComplete, onBackToGrid }) {
@@ -114,7 +114,7 @@ export default function Lesson({ data, index, total, onBack, onNext, onComplete,
   // Better: use an Overlay component that calculates positions.
 
   return (
-    <div className="lesson-root" style={{ display: 'flex', flexDirection: 'column', height: '100vh', padding: '20px', boxSizing: 'border-box' }}>
+    <div className="lesson-root" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', padding: '20px', boxSizing: 'border-box' }}>
       {positiveMsg && (
         <div style={{ position: 'fixed', top: 40, left: '50%', transform: 'translateX(-50%)', background: 'white', color: '#1976d2', fontWeight: 'bold', fontSize: 32, borderRadius: 15, padding: '10px 30px', zIndex: 2000, border: '3px solid #1976d2', boxShadow: '0 4px 15px rgba(0,0,0,0.2)' }}>
           {positiveMsg}
@@ -142,8 +142,8 @@ export default function Lesson({ data, index, total, onBack, onNext, onComplete,
               </div>
             </div>
 
-            <div style={{ display: 'flex', gap: 'clamp(20px, 4vw, 60px)', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '1600px', margin: '0 auto', flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 40, flex: '1 1 auto', alignItems: 'center', justifyContent: 'flex-start', minWidth: '300px' }}>
+            <div style={{ display: 'flex', gap: 'clamp(20px, 4vw, 60px)', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '1600px', margin: '0 auto', flex: 1, flexDirection: 'row', flexWrap: 'wrap', paddingBottom: 40 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 40, flex: '1 1 auto', alignItems: 'center', justifyContent: 'flex-start', minWidth: 'min(90vw, 300px)' }}>
                 <div id="drop-zone" onDrop={onDrop} onDragOver={e => e.preventDefault()} style={{ position: 'relative', width: 'min(90vw, 440px)', height: 'min(90vw, 500px)', border: '6px dashed #1976d2', borderRadius: 40, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'rgba(25,118,210,0.05)' }}>
                   <div style={{ position: 'absolute', top: -25, background: 'white', padding: '5px 25px', border: '3px solid #1976d2', borderRadius: 15, fontWeight: 'bold', color: '#1976d2', fontSize: 24 }}>Drop Here</div>
                   <img src={data.img} alt="character" style={{ height: '80%', objectFit: 'contain' }} />
@@ -162,7 +162,7 @@ export default function Lesson({ data, index, total, onBack, onNext, onComplete,
                   </ul>
                 </div>
               </div>
-              <div className="items-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 24, flex: '1 1 540px', width: '100%', minWidth: 'min(90vw, 500px)' }}>
+              <div className="items-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: 16, flex: '1 1 300px', width: '100%', minWidth: 'min(90vw, 300px)' }}>
                 {ALL_ITEMS.map((item) => {
                   const isUsed = dropped.includes(item.id);
                   const isCorrect = data.items.includes(item.id);
@@ -202,7 +202,7 @@ export default function Lesson({ data, index, total, onBack, onNext, onComplete,
 
         {phase === 'healed' && (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 50 }}>
-            <img src={'/images/boy.png'} alt="happy" style={{ width: 300 }} />
+            <img src={'/boy.png'} alt="happy" style={{ width: 300 }} />
             <h2 style={{ color: '#2e7d32' }}>I feel much better now!</h2>
             <button className="action-btn" onClick={() => {
               if (onComplete) {

@@ -4,12 +4,6 @@ import React, { useState, useEffect } from 'react'
 const MENU_STRUCTURE = [
     { id: 'landing', label: 'Grade X', type: 'file', icon: '🏠' },
     {
-        id: 'health', label: 'Health Module', type: 'folder', icon: '❤️', children: [
-            { id: 'healthProblems', label: 'Common Problems', type: 'file', icon: '🌡️' },
-            { id: 'assessment', label: 'Health Quiz', type: 'file', icon: '📝' }
-        ]
-    },
-    {
         id: 'vocabulary', label: 'Vocabulary Module', type: 'folder', icon: '📚', children: [
             { id: 'vocabularyExercise', label: 'Matching Game', type: 'file', icon: '🧩' },
             { id: 'vocabularyThree', label: 'Interactive Learn', type: 'file', icon: '🎮' }
@@ -28,22 +22,28 @@ const MENU_STRUCTURE = [
         ]
     },
     {
-        id: 'english', label: 'English Module', type: 'folder', icon: '📝', children: [
+        id: 'computer', label: 'Computer Module', type: 'folder', icon: '�', children: [
+            { id: 'computerKeyboard', label: 'Typing Practice', type: 'file', icon: '⌨️' }
+        ]
+    },
+    { id: 'landing2', label: 'Grade X2', type: 'file', icon: '🏠' },
+    {
+        id: 'health', label: 'Health Module', type: 'folder', icon: '❤️', children: [
+            { id: 'healthProblems', label: 'Common Problems', type: 'file', icon: '🌡️' },
+            { id: 'assessment', label: 'Health Quiz', type: 'file', icon: '📝' }
+        ]
+    },
+    {
+        id: 'english', label: 'English Module', type: 'folder', icon: '�', children: [
             { id: 'englishWordGame', label: 'Word Surgery', type: 'file', icon: '📚' },
             { id: 'englishPhonics', label: 'Word Match', type: 'file', icon: '📐' },
             { id: 'englishFillBlanks', label: 'Fill Blanks', type: 'file', icon: '✍️' }
         ]
     },
     {
-        id: 'science', label: 'Science Module', type: 'folder', icon: '🔬', children: [
-            { id: 'scienceOrgan', label: 'Human Anatomy', type: 'file', icon: '🫀' },
+        id: 'science', label: 'Science Module', type: 'folder', icon: '�', children: [
+            // { id: 'scienceOrgan', label: 'Human Anatomy', type: 'file', icon: '🫀' },
             { id: 'scienceHuman', label: 'Identify Organs', type: 'file', icon: '🧠' }
-        ]
-    }
-    ,
-    {
-        id: 'computer', label: 'Computer Module', type: 'folder', icon: '💻', children: [
-            { id: 'computerKeyboard', label: 'Typing Practice', type: 'file', icon: '⌨️' }
         ]
     }
 ]
@@ -91,8 +91,13 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
         return () => window.removeEventListener('resize', checkMobile)
     }, [])
 
+    // Accordion: only one folder open at a time
     const toggleFolder = (id) => {
-        setExpanded(prev => ({ ...prev, [id]: !prev[id] }))
+        setExpanded(prev => {
+            const newExpanded = Object.fromEntries(Object.keys(prev).map(k => [k, false]))
+            newExpanded[id] = !prev[id]
+            return newExpanded
+        })
     }
 
     // Check if an item or folder is completed
@@ -105,6 +110,32 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
             return item.children.every(child => completedItems.includes(child.id))
         }
         return false
+    }
+
+    // When navigating to a page, auto-expand the parent module and collapse others
+    const handleItemClick = (item) => {
+        if (item.type === 'folder') {
+            toggleFolder(item.id)
+            onChangeView(item.id)
+        } else {
+            // Find parent folder
+            let parentId = null
+            for (const mod of MENU_STRUCTURE) {
+                if (mod.type === 'folder' && mod.children && mod.children.some(child => child.id === item.id)) {
+                    parentId = mod.id
+                    break
+                }
+            }
+            if (parentId) {
+                setExpanded(prev => {
+                    const newExpanded = Object.fromEntries(Object.keys(prev).map(k => [k, false]))
+                    newExpanded[parentId] = true
+                    return newExpanded
+                })
+            }
+            onChangeView(item.id)
+            if (isMobile) setMobileOpen(false)
+        }
     }
 
     const renderItem = (item, level = 0) => {
@@ -125,16 +156,7 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
         return (
             <div key={item.id} style={{ marginBottom: 4 }}>
                 <div
-                    onClick={(e) => {
-                        // Clicking on subject name or the row toggles the folder AND navigates
-                        if (isFolder) {
-                            toggleFolder(item.id)
-                            onChangeView(item.id)
-                        } else {
-                            onChangeView(item.id)
-                            if (isMobile) setMobileOpen(false) // Close sidebar on selection in mobile
-                        }
-                    }}
+                    onClick={() => handleItemClick(item)}
                     onMouseEnter={() => setHovered(item.id)}
                     onMouseLeave={() => setHovered(null)}
                     style={{

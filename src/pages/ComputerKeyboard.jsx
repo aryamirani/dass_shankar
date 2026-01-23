@@ -304,8 +304,8 @@ export default function ComputerKeyboard({ onBack }) {
                 }
             `}</style>
 
-            <audio ref={correctRef} src="/faccha/computer/assets/correct.wav" />
-            <audio ref={wrongRef} src="/faccha/computer/assets/wrong.wav" />
+            <audio ref={correctRef} src="/correct.wav" />
+            <audio ref={wrongRef} src="/wrong.wav" />
         </div>
     )
 }

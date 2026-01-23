@@ -145,7 +145,7 @@ export default function MathsExerciseFive({ onBack, onNextExercise }) {
               borderRadius: 12,
               transition: 'all 0.3s ease'
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'clamp(10px, 3vw, 20px)', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'clamp(10px, 3vw, 20px)', flexWrap: 'wrap', flexDirection: 'row' }}>
                 {/* Before Number */}
                 <div style={{
                   fontSize: 'clamp(24px, 8vw, 48px)',

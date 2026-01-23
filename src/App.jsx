@@ -22,7 +22,7 @@ import EnglishWordGame from './pages/EnglishWordGame'
 import EnglishPhonics from './pages/EnglishPhonics'
 import EnglishFillBlanks from './pages/EnglishFillBlanks'
 import ScienceOverview from './pages/ScienceOverview'
-import ScienceOrgan from './pages/ScienceOrgan'
+// import ScienceOrgan from './pages/ScienceOrgan'
 import ScienceHuman from './pages/ScienceHuman'
 import ComputerOverview from './pages/ComputerOverview'
 import ComputerKeyboard from './pages/ComputerKeyboard'
@@ -71,7 +71,7 @@ export default function App() {
   function goToEnglishPhonics() { setView({ name: 'englishPhonics' }) }
   function goToEnglishFillBlanks() { setView({ name: 'englishFillBlanks' }) }
   function goToScienceOverview() { setView({ name: 'science' }) }
-  function goToScienceOrgan() { setView({ name: 'scienceOrgan' }) }
+  // function goToScienceOrgan() { setView({ name: 'scienceOrgan' }) }
   function goToScienceHuman() { setView({ name: 'scienceHuman' }) }
   function goToComputerOverview() { setView({ name: 'computer' }) }
   function goToComputerKeyboard() { setView({ name: 'computerKeyboard' }) }
@@ -114,7 +114,7 @@ export default function App() {
     if (view.name === 'english' || view.name.startsWith('english')) return 'linear-gradient(135deg, #f6d365 0%, #fda085 100%)'
 
     // Science - Red
-    if (view.name === 'science' || view.name === 'scienceOrgan' || view.name === 'scienceHuman') return 'linear-gradient(135deg, #ff512f 0%, #dd2476 100%)'
+    if (view.name === 'science' || view.name === 'scienceHuman') return 'linear-gradient(135deg, #ff512f 0%, #dd2476 100%)'
 
     // Health - Pink
     if (view.name === 'health' || view.name === 'healthProblems' || view.name === 'assessment' || view.name === 'lesson') return 'linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%)'
@@ -134,7 +134,7 @@ export default function App() {
       <Sidebar currentView={view.name} onChangeView={handleSidebarNav} completedItems={completed} />
 
       <div style={{ flex: 1, overflowY: 'auto', position: 'relative' }}>
-        {view.name === 'landing' && <Landing onVocabulary={goToVocabulary} onHealth={goToHealthOverview} onMaths={goToMaths} onEnglish={goToEnglish} onScience={goToScienceOverview} onComputer={goToComputerOverview} />}
+        {(view.name === 'landing' || view.name === 'landing2') && <Landing onVocabulary={goToVocabulary} onHealth={goToHealthOverview} onMaths={goToMaths} onEnglish={goToEnglish} onScience={goToScienceOverview} onComputer={goToComputerOverview} />}
         {view.name === 'health' && <HealthOverview onStart={goToHealthProblems} onBack={goHome} />}
         {view.name === 'healthProblems' && <HealthProblems onStart={() => goToLesson(0)} onSelect={(imgIndex) => goToLesson(imgIndex)} completed={completed} allDone={allDone} onAllDone={() => markCompleted('health')} onVocabulary={goToVocabulary} onBack={goToHealthOverview} />}
         {view.name === 'lesson' && <Lesson data={CONDITIONS[view.index]} index={view.index} total={CONDITIONS.length} onBack={goToHealthProblems} onNext={next} onComplete={markCompleted} onBackToGrid={() => { markCompleted('health'); goToHealthProblems() }} />}
@@ -156,8 +156,8 @@ export default function App() {
         {view.name === 'englishWordGame' && <EnglishWordGame onBack={() => setView({ name: 'english' })} />}
         {view.name === 'englishPhonics' && <EnglishPhonics onBack={() => setView({ name: 'english' })} />}
         {view.name === 'englishFillBlanks' && <EnglishFillBlanks onBack={() => setView({ name: 'english' })} />}
-        {view.name === 'science' && <ScienceOverview onStart={goToScienceOrgan} onBack={goHome} />}
-        {view.name === 'scienceOrgan' && <ScienceOrgan onBack={goToScienceOverview} onNext={goToScienceHuman} />}
+        {view.name === 'science' && <ScienceOverview onBack={goHome} />}
+        {/* {view.name === 'scienceOrgan' && <ScienceOrgan onBack={goToScienceOverview} onNext={goToScienceHuman} />} */}
         {view.name === 'scienceHuman' && <ScienceHuman onBack={goToScienceOverview} />}
 
         {view.name === 'computer' && <ComputerOverview onStart={goToComputerKeyboard} onBack={goHome} />}

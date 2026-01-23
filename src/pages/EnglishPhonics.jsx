@@ -88,7 +88,8 @@ export default function EnglishPhonics({ onBack }) {
                             return (
                                 <div key={triple.target} style={{ display: 'flex', alignItems: 'center', gap: 20, background: 'rgba(255,255,255,0.5)', padding: 12, borderRadius: 12, flexWrap: 'wrap' }}>
                                     <div style={{
-                                        background: 'white', padding: '12px 24px', borderRadius: 8, fontSize: 'clamp(18px, 5vw, 22px)', fontWeight: 'bold', width: 'clamp(120px, 30vw, 140px)', textAlign: 'center', boxShadow: '0 2px 5px rgba(0,0,0,0.05)'
+                                        background: 'white', padding: '12px 24px', borderRadius: 8, fontSize: 'clamp(18px, 5vw, 22px)', fontWeight: 'bold', width: 'clamp(120px, 30vw, 140px)', textAlign: 'center', boxShadow: '0 2px 5px rgba(0,0,0,0.05)',
+                                        wordBreak: 'break-word'
                                     }}>
                                         {triple.target}
                                     </div>
@@ -97,19 +98,20 @@ export default function EnglishPhonics({ onBack }) {
                                         onDragOver={e => e.preventDefault()}
                                         onDrop={e => onDrop(e, i)}
                                         style={{
-                                            flex: 1, height: 60, border: `3px dashed ${isComplete ? '#2ecc71' : '#aaa'}`, borderRadius: 8,
+                                            flex: 1, minHeight: 60, height: 'auto', border: `3px dashed ${isComplete ? '#2ecc71' : '#aaa'}`, borderRadius: 8,
                                             background: isComplete ? '#dcfce7' : 'rgba(255,255,255,0.4)',
                                             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
                                             transition: 'all 0.3s',
-                                            padding: '0 10px',
-                                            minWidth: '200px'
+                                            padding: '8px 10px',
+                                            minWidth: '200px',
+                                            flexWrap: 'wrap'
                                         }}
                                     >
                                         {currentDropped.length === 0 && !isComplete && <span style={{ color: '#999', fontSize: 'clamp(14px, 3vw, 16px)' }}>Drop parts here</span>}
                                         {currentDropped.map(p => (
-                                            <span key={p.id} style={{ background: '#fff', padding: '6px 12px', borderRadius: 6, boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>{p.text}</span>
+                                            <span key={p.id} style={{ background: '#fff', padding: '6px 12px', borderRadius: 6, boxShadow: '0 2px 4px rgba(0,0,0,0.1)', wordBreak: 'break-word' }}>{p.text}</span>
                                         ))}
-                                        {isComplete && <span style={{ color: '#2ecc71', fontWeight: 'bold', marginLeft: 10 }}>✓ Correct</span>}
+                                        {isComplete && <span style={{ color: '#2ecc71', fontWeight: 'bold', marginLeft: 10 }}>✓</span>}
                                     </div>
                                 </div>
                             )

@@ -190,7 +190,6 @@ export default function MathsExerciseFour({ onBack, onNextExercise }) {
                 <div style={{
                   fontSize: 'clamp(24px, 8vw, 48px)',
                   fontWeight: 900,
-                  color: '#333',
                   padding: '10px 30px',
                   background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                   color: 'white',
@@ -217,9 +216,9 @@ export default function MathsExerciseFour({ onBack, onNextExercise }) {
                         onKeyDown={(e) => handleKeyDown(item.id, 'after', boxIndex, e)}
                         disabled={item.checked && item.correct}
                         style={{
-                          width: 50,
-                          height: 60,
-                          fontSize: 28,
+                          width: 'clamp(30px, 8vw, 50px)',
+                          height: 'clamp(40px, 10vw, 60px)',
+                          fontSize: 'clamp(20px, 5vw, 28px)',
                           fontWeight: 700,
                           border: '2px solid #666',
                           borderRadius: 8,

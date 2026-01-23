@@ -212,7 +212,7 @@ export default function MathsExerciseEight({ onBack, onComplete }) {
           Correct: {completedCount} / {totalCount}
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column-reverse', gap: 30, alignItems: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column-reverse', gap: 30, alignItems: 'center', width: '100%' }}>
           {/* Questions Section */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: '100%' }}>
             {items.map(item => (

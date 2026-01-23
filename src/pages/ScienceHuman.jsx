@@ -18,15 +18,15 @@ export default function ScienceHuman({ onBack }) {
 
     const items = [
         {
-            img: '/faccha/science/assets/lungs.png',
+            img: '/lungs.png',
             valid: ['lungs', 'lung'],
-            audio: '/faccha/science/assets/lungs.m4a',
+            audio: '/lungs.m4a',
             name: 'Lungs'
         },
         {
-            img: '/faccha/science/assets/heart.webp',
+            img: '/heart.webp',
             valid: ['heart'],
-            audio: '/faccha/science/assets/heart.m4a',
+            audio: '/heart.m4a',
             name: 'Heart'
         }
     ]
@@ -266,8 +266,8 @@ export default function ScienceHuman({ onBack }) {
                 }
             `}</style>
 
-            <audio ref={correctAudio} src="/faccha/math/assets/correct.wav" />
-            <audio ref={wrongAudio} src="/faccha/math/assets/wrong.wav" />
+            <audio ref={correctAudio} src="/correct.wav" />
+            <audio ref={wrongAudio} src="/wrong.wav" />
         </div>
     )
 }

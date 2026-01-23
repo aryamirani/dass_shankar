@@ -10,9 +10,10 @@ export default function HealthProblems({ onStart, onSelect, completed = [], allD
   const displayedConditions = CONDITIONS.slice(page * itemsPerPage, (page + 1) * itemsPerPage);
 
   return (
-    <div id="landing" className="landing-root" role="main">
+    <div id="landing" className="landing-root" role="main" style={{ position: 'relative' }}>
+      {/* Fixed back button top left */}
+      <button className="back-btn" onClick={onBack} style={{ position: 'fixed', top: 24, left: 24, zIndex: 100 }}>{"\u2190"}</button>
       <div className="landing-inner">
-        <button className="back-btn" onClick={onBack}>←</button>
         <h1 className="center-title" style={{ marginBottom: 32, fontSize: 'clamp(32px, 6vw, 42px)' }}>Health Problems</h1>
         <div className="health-grid" role="list">
           {displayedConditions.map((c, i) => {
@@ -27,9 +28,9 @@ export default function HealthProblems({ onStart, onSelect, completed = [], allD
                 title={c.title}
                 disabled={done}
                 tabIndex={0}
-                style={{ animation: `popIn 0.5s cubic-bezier(.5,1.8,.5,1) ${(i * 0.04).toFixed(2)}s both`, width: '100%', maxWidth: '300px' }}
+                style={{ animation: `popIn 0.5s cubic-bezier(.5,1.8,.5,1) ${(i * 0.04).toFixed(2)}s both`, width: '100%', maxWidth: '420px' }}
               >
-                <img src={c.img} alt={c.title} className="health-img" style={{ maxWidth: '100%', height: 'auto' }} />
+                <img src={c.img} alt={c.title} className="health-img" style={{ width: '100%', height: 'auto', maxHeight: 260, objectFit: 'contain' }} />
                 <div className="health-label" style={{ fontSize: 'clamp(18px, 4vw, 24px)' }}>{c.title}</div>
                 {done && (
                   <span className="tick big-tick">✓</span>
@@ -40,7 +41,7 @@ export default function HealthProblems({ onStart, onSelect, completed = [], allD
         </div>
 
         {totalPages > 1 && (
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: 20, gap: 20 }}>
+          <div style={{ display: 'flex', marginTop: 20, gap: 20, justifyContent: page > 0 ? 'space-between' : 'flex-end' }}>
             {page > 0 && (
               <button
                 className="action-btn secondary"

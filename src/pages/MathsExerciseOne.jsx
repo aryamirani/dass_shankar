@@ -96,10 +96,11 @@ export default function MathsExerciseOne({ onBack, onNextExercise }) {
                 : '2px solid #ddd',
               borderRadius: 12,
               transition: 'all 0.3s ease',
-              flexWrap: 'wrap'
+              flexWrap: 'wrap',
+              justifyContent: 'center'
             }}>
               {/* Objects display */}
-              <div style={{ flex: '1 1 auto', display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center' }}>
+              <div style={{ flex: '1 1 100%', display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center', marginBottom: 16 }}>
                 {Array.from({ length: item.count }).map((_, idx) => (
                   <span key={idx} style={{ fontSize: 'clamp(28px, 6vw, 40px)', userSelect: 'none', animation: 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both', animationDelay: `${idx * 50}ms` }}>{item.object}</span>
                 ))}

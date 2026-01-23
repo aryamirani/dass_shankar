@@ -119,12 +119,13 @@ export default function MathsExerciseSeven({ onBack, onNextExercise }) {
                   fontWeight: 900,
                   color: '#333',
                   minWidth: 100,
-                  textAlign: 'center'
+                  textAlign: 'center',
+                  flex: '0 0 auto'
                 }}>
                   {item.number} =
                 </div>
 
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'center', justifyContent: 'center', flex: '1 1 auto' }}>
                   {/* Hundreds */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <input

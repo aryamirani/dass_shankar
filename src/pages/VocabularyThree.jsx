@@ -1,11 +1,11 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react'
 
 const WORDS = [
-  { id: 'bat', img: '/images/bat.png' },
-  { id: 'cat', img: '/images/cat.png' },
-  { id: 'hat', img: '/images/hat.png' },
-  { id: 'mat', img: '/images/mat.png' },
-  { id: 'rat', img: '/images/rat.png' }
+  { id: 'bat', img: '/bat.png' },
+  { id: 'cat', img: '/cat.png' },
+  { id: 'hat', img: '/hat.png' },
+  { id: 'mat', img: '/mat.png' },
+  { id: 'rat', img: '/rat.png' }
 ]
 
 const POSITIVE = [
@@ -120,23 +120,51 @@ export default function VocabularyThree({ onBack }) {
   const tabStyle = (i) => step === i ? tabFilled : tabOutline
 
   // drag handlers
+  const [selectedDraggable, setSelectedDraggable] = useState(null)
+
   function onDragStart(e, item) {
+    if (item.used) return
     e.dataTransfer.setData('text/plain', item.id)
+    setSelectedDraggable(null) // Clear selection if dragging
+  }
+
+  function handleDraggableClick(item) {
+    if (item.used) return
+    if (selectedDraggable === item.id) {
+      setSelectedDraggable(null)
+    } else {
+      setSelectedDraggable(item.id)
+      speak(item.id) // Optional: speak word when selected
+    }
+  }
+
+  function handleTargetClick(target) {
+    if (target.matched) return
+    if (selectedDraggable) {
+      // Attempt match with selected draggable
+      checkMatch(selectedDraggable, target.id)
+    }
+  }
+
+  function checkMatch(dragId, targetId) {
+    if (dragId === targetId) {
+      setTargets(prev => prev.map(t => t.id === targetId ? { ...t, matched: true } : t))
+      setDraggables(prev => prev.map(d => d.id === dragId ? { ...d, used: true } : d))
+      setHoveredTarget(null)
+      setSelectedDraggable(null)
+      setMessage({ type: 'success', text: POSITIVE[Math.floor(Math.random() * POSITIVE.length)] })
+    } else {
+      setHoveredTarget(null)
+      setSelectedDraggable(null)
+      setMessage({ type: 'error', text: GENTLE[Math.floor(Math.random() * GENTLE.length)] })
+    }
   }
 
   function onDropTarget(e, target) {
     e.preventDefault()
     const id = e.dataTransfer.getData('text/plain')
     if (!id) return
-    if (id === target.id) {
-      setTargets(prev => prev.map(t => t.id === target.id ? { ...t, matched: true } : t))
-      setDraggables(prev => prev.map(d => d.id === id ? { ...d, used: true } : d))
-      setHoveredTarget(null)
-      setMessage({ type: 'success', text: POSITIVE[Math.floor(Math.random() * POSITIVE.length)] })
-    } else {
-      setHoveredTarget(null)
-      setMessage({ type: 'error', text: GENTLE[Math.floor(Math.random() * GENTLE.length)] })
-    }
+    checkMatch(id, target.id)
   }
 
   function allowDrop(e) { e.preventDefault() }
@@ -176,77 +204,51 @@ export default function VocabularyThree({ onBack }) {
         </div>
 
         {step === 0 && (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'clamp(10px, 4vw, 40px)', marginTop: 40 }}>
-            <button
-              className="action-btn"
-              onClick={() => setViewIndex(prev => Math.max(0, prev - 1))}
-              disabled={viewIndex === 0}
-              style={{
-                background: 'transparent', color: viewIndex === 0 ? '#ccc' : '#1976d2',
-                cursor: viewIndex === 0 ? 'default' : 'pointer',
-                border: 'none', fontSize: 'clamp(32px, 8vw, 60px)', fontWeight: 900, padding: 20
-              }}
-            >
-              &lt;
-            </button>
-
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 'clamp(10px, 4vw, 40px)', marginTop: 40 }}>
             <div key={galleryOrder[viewIndex].id} onClick={() => speak(galleryOrder[viewIndex].id)} style={{ textAlign: 'center', width: '100%', maxWidth: 500, background: 'transparent', borderRadius: 20, padding: 'clamp(10px, 3vw, 30px)', cursor: 'pointer' }}>
-              <img src={galleryOrder[viewIndex].img} alt={galleryOrder[viewIndex].id} style={{ width: '100%', maxWidth: 440, height: 'auto', maxHeight: 360, objectFit: 'contain' }} />
+              <img src={galleryOrder[viewIndex].img} alt={galleryOrder[viewIndex].id} style={{ width: '100%', maxWidth: 440, height: 'auto', maxHeight: '40vh', objectFit: 'contain' }} />
               <div style={{ height: 20 }} />
               <div style={{ fontSize: 'clamp(32px, 8vw, 50px)', fontWeight: 800, color: '#111' }}>{galleryOrder[viewIndex].id}</div>
               <div style={{ marginTop: 10, color: '#666', fontSize: 18 }}>Click to listen</div>
             </div>
-            <button
-              className="action-btn"
-              onClick={() => setViewIndex(prev => Math.min(galleryOrder.length - 1, prev + 1))}
-              disabled={viewIndex === galleryOrder.length - 1}
-              style={{
-                background: 'transparent', color: viewIndex === galleryOrder.length - 1 ? '#ccc' : '#1976d2',
-                cursor: viewIndex === galleryOrder.length - 1 ? 'default' : 'pointer',
-                border: 'none', fontSize: 'clamp(32px, 8vw, 60px)', fontWeight: 900, padding: 20
-              }}
-            >
-              &gt;
-            </button>
+
+            <div style={{ display: 'flex', gap: 40, marginTop: 20 }}>
+              <button
+                className="action-btn"
+                onClick={() => setViewIndex(prev => Math.max(0, prev - 1))}
+                disabled={viewIndex === 0}
+                style={{
+                  background: '#fff', color: viewIndex === 0 ? '#ccc' : '#1976d2',
+                  cursor: viewIndex === 0 ? 'default' : 'pointer',
+                  border: 'none', fontSize: 'clamp(24px, 6vw, 40px)', fontWeight: 900, padding: '15px 30px',
+                  borderRadius: 50, boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
+                }}
+              >
+                &lt;
+              </button>
+
+              <button
+                className="action-btn"
+                onClick={() => setViewIndex(prev => Math.min(galleryOrder.length - 1, prev + 1))}
+                disabled={viewIndex === galleryOrder.length - 1}
+                style={{
+                  background: '#fff', color: viewIndex === galleryOrder.length - 1 ? '#ccc' : '#1976d2',
+                  cursor: viewIndex === galleryOrder.length - 1 ? 'default' : 'pointer',
+                  border: 'none', fontSize: 'clamp(24px, 6vw, 40px)', fontWeight: 900, padding: '15px 30px',
+                  borderRadius: 50, boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
+                }}
+              >
+                &gt;
+              </button>
+            </div>
           </div>
         )}
 
         {step === 1 && (
-          <div style={{ display: 'flex', flexDirection: 'column-reverse', gap: 30, marginTop: 20, alignItems: 'center' }}>
-            {/* Draggables */}
-            <div style={{ width: '100%', display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
-              <div style={{ fontWeight: 800, width: '100%', textAlign: 'center', marginBottom: 10 }}>Drag the word tiles onto the matching image</div>
-              {draggables.map(d => (
-                <div
-                  key={d.id}
-                  id={`draggable-${d.id}`}
-                  draggable={!d.used}
-                  onDragStart={(e) => onDragStart(e, d)}
-                  style={{
-                    padding: 10,
-                    background: 'transparent',
-                    borderRadius: 10,
-                    marginBottom: 12,
-                    boxShadow: d.used ? 'none' : '0 6px 14px rgba(0,0,0,0.04)',
-                    border: '2px solid #000',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: d.used ? 'default' : 'grab',
-                    opacity: d.used ? 0.9 : 1,
-                    position: 'relative'
-                  }}
-                >
-                  <div style={{ fontSize: 'clamp(20px, 5vw, 32px)', fontWeight: 800, padding: '10px 20px', borderRadius: 8, background: 'transparent' }}>{d.text}</div>
-                  {d.used && (
-                    <div style={{ position: 'absolute', right: 6, top: 6, color: '#2e7d32', fontSize: 36, fontWeight: 900, background: 'rgba(255,255,255,0.6)', borderRadius: 20, padding: '2px 8px', boxShadow: '0 6px 12px rgba(0,0,0,0.06)' }}>✓</div>
-                  )}
-                </div>
-              ))}
-            </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginTop: 10, alignItems: 'center', minHeight: '60vh' }}>
 
-            {/* Target Grid */}
-            <div style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 20, width: '100%' }}>
+            {/* Target Grid - Top */}
+            <div style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 220px))', gap: 10, width: '100%', overflowY: 'auto', padding: 4, alignContent: 'start', alignItems: 'start' }}>
               {targets.map(t => {
                 const isHover = hoveredTarget === t.id
                 return (
@@ -257,21 +259,55 @@ export default function VocabularyThree({ onBack }) {
                     onDragEnter={(e) => onDragEnterTarget(e, t)}
                     onDragLeave={(e) => onDragLeaveTarget(e, t)}
                     style={{
-                      minHeight: 220,
+                      minHeight: 140,
                       borderRadius: 14,
-                      background: 'transparent',
+                      background: 'rgba(255,255,255,0.2)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column',
                       boxShadow: 'none',
                       border: t.matched ? 'none' : (isHover ? '3px dashed #1976d2' : '2px dashed rgba(0,0,0,0.12)'),
-                      transition: 'all 180ms ease'
+                      transition: 'all 180ms ease',
+                      padding: 10
                     }}>
-                    <img src={t.img} alt={t.id} style={{ width: '100%', maxWidth: 240, height: 'auto', maxHeight: 180, objectFit: 'contain', opacity: t.matched ? 0.6 : 1, filter: t.matched ? 'grayscale(0.1) brightness(0.98)' : 'none' }} />
-                    <div style={{ height: 8 }} />
-                    {t.matched ? <div style={{ color: '#2e7d32', fontWeight: 800, display: 'flex', alignItems: 'center', gap: 8 }}><span style={{ fontSize: 20 }}>✓</span>Matched</div> : <div style={{ height: 22 }} />}
+                    <img src={t.img} alt={t.id} style={{ width: '100%', maxWidth: 120, height: 'auto', maxHeight: 80, objectFit: 'contain', opacity: t.matched ? 0.6 : 1, filter: t.matched ? 'grayscale(0.1) brightness(0.98)' : 'none' }} />
+                    <div style={{ height: 4 }} />
+                    {t.matched ? <div style={{ color: '#2e7d32', fontWeight: 800, display: 'flex', alignItems: 'center', gap: 4 }}><span style={{ fontSize: 16 }}>✓</span></div> : null}
                   </div>
                 )
               })}
             </div>
+
+            {/* Draggables - Bottom */}
+            <div style={{ width: '100%', display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center', padding: '10px 0', background: 'rgba(255,255,255,0.1)', borderRadius: 20 }}>
+              <div style={{ fontWeight: 800, width: '100%', textAlign: 'center', marginBottom: 4, color: '#000', fontSize: 14 }}>Drag words to images</div>
+              {draggables.map(d => (
+                <div
+                  key={d.id}
+                  id={`draggable-${d.id}`}
+                  draggable={!d.used}
+                  onDragStart={(e) => onDragStart(e, d)}
+                  style={{
+                    padding: '8px 16px',
+                    background: 'white',
+                    borderRadius: 10,
+                    marginBottom: 4,
+                    boxShadow: d.used ? 'none' : '0 4px 8px rgba(0,0,0,0.1)',
+                    border: '1px solid #ddd',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: d.used ? 'default' : 'grab',
+                    opacity: d.used ? 0.5 : 1,
+                    position: 'relative'
+                  }}
+                >
+                  <div style={{ fontSize: 'clamp(18px, 4vw, 24px)', fontWeight: 700 }}>{d.text}</div>
+                  {d.used && (
+                    <div style={{ position: 'absolute', right: -5, top: -5, color: '#fff', fontSize: 14, fontWeight: 900, background: '#4caf50', borderRadius: '50%', width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✓</div>
+                  )}
+                </div>
+              ))}
+            </div>
+
           </div>
         )}
 
@@ -372,7 +408,7 @@ export default function VocabularyThree({ onBack }) {
       </div>
 
       {/* Word List Footer */}
-      <div style={{
+      <div className="word-footer" style={{
         position: 'fixed', bottom: 30, left: '50%', transform: 'translateX(-50%)',
         background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(8px)',
         padding: '15px 40px', borderRadius: 50,
