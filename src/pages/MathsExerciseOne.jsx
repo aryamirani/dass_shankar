@@ -74,9 +74,9 @@ export default function MathsExerciseOne({ onBack, onNextExercise }) {
       </div>
 
 
-      <div style={{ width: '100%', maxWidth: 900, background: 'rgba(255,255,255,0.95)', padding: 40, borderRadius: 20, boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>
-        <h2 style={{ fontSize: 42, textAlign: 'center', marginBottom: 8, fontWeight: 900, color: '#333' }}>Count the objects</h2>
-        <div style={{ textAlign: 'center', marginBottom: 24, fontSize: 20, color: '#555' }}>
+      <div style={{ width: '100%', maxWidth: 900, background: 'rgba(255,255,255,0.95)', padding: 'clamp(20px, 4vw, 40px)', borderRadius: 20, boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>
+        <h2 style={{ fontSize: 'clamp(28px, 6vw, 42px)', textAlign: 'center', marginBottom: 8, fontWeight: 900, color: '#333' }}>Count the objects</h2>
+        <div style={{ textAlign: 'center', marginBottom: 24, fontSize: 'clamp(16px, 4vw, 20px)', color: '#555' }}>
           Correct: {completedCount} / {totalCount}
         </div>
 
@@ -87,7 +87,7 @@ export default function MathsExerciseOne({ onBack, onNextExercise }) {
               alignItems: 'center',
               justifyContent: 'space-between',
               gap: 16,
-              padding: 20,
+              padding: 'clamp(12px, 3vw, 20px)',
               background: item.checked
                 ? (item.correct ? 'rgba(76, 175, 80, 0.1)' : 'rgba(244, 67, 54, 0.1)')
                 : 'white',
@@ -95,16 +95,18 @@ export default function MathsExerciseOne({ onBack, onNextExercise }) {
                 ? (item.correct ? '2px solid #4CAF50' : '2px solid #F44336')
                 : '2px solid #ddd',
               borderRadius: 12,
-              transition: 'all 0.3s ease'
+              transition: 'all 0.3s ease',
+              flexWrap: 'wrap',
+              justifyContent: 'center'
             }}>
               {/* Objects display */}
-              <div style={{ flex: 1, display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+              <div style={{ flex: '1 1 100%', display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center', marginBottom: 16 }}>
                 {Array.from({ length: item.count }).map((_, idx) => (
-                  <span key={idx} style={{ fontSize: 40, userSelect: 'none', animation: 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both', animationDelay: `${idx * 50}ms` }}>{item.object}</span>
+                  <span key={idx} style={{ fontSize: 'clamp(28px, 6vw, 40px)', userSelect: 'none', animation: 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both', animationDelay: `${idx * 50}ms` }}>{item.object}</span>
                 ))}
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: '0 0 auto', justifyContent: 'center', width: 'auto' }}>
                 <input
                   type="text"
                   inputMode="numeric"
@@ -116,8 +118,8 @@ export default function MathsExerciseOne({ onBack, onNextExercise }) {
                   disabled={item.checked && item.correct}
                   placeholder="#"
                   style={{
-                    width: 80,
-                    fontSize: 28,
+                    width: 'clamp(60px, 15vw, 80px)',
+                    fontSize: 'clamp(20px, 5vw, 28px)',
                     padding: '12px',
                     textAlign: 'center',
                     border: '2px solid #999',
@@ -134,7 +136,7 @@ export default function MathsExerciseOne({ onBack, onNextExercise }) {
                   disabled={!item.userAnswer || (item.checked && item.correct)}
                   style={{
                     padding: '12px 24px',
-                    fontSize: 18,
+                    fontSize: 'clamp(14px, 4vw, 18px)',
                     fontWeight: 700,
                     background: item.checked
                       ? (item.correct ? '#4CAF50' : '#F44336')
@@ -157,7 +159,7 @@ export default function MathsExerciseOne({ onBack, onNextExercise }) {
         </div>
 
         {completedCount === totalCount && (
-          <div style={{ textAlign: 'center', marginTop: 30, fontSize: 36, fontWeight: 900, color: '#4CAF50', animation: 'popIn 600ms cubic-bezier(.2,.9,.2,1) both' }}>
+          <div style={{ textAlign: 'center', marginTop: 30, fontSize: 'clamp(24px, 6vw, 36px)', fontWeight: 900, color: '#4CAF50', animation: 'popIn 600ms cubic-bezier(.2,.9,.2,1) both' }}>
             🎉 All done — Excellent work! 🎉
           </div>
         )}

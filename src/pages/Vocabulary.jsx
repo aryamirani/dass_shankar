@@ -15,9 +15,9 @@ export default function Vocabulary({ onStart, onBack }) {
           Vocabulary
         </h1>
         <div style={{ height: 12 }} />
-        <div style={{ fontSize: 20, color: '#333', opacity: 0.95, marginTop: 6, animation: 'popIn 700ms cubic-bezier(.2,.9,.2,1) 120ms both' }}>Start learning words with fun activities</div>
+        <div style={{ fontSize: 'clamp(18px, 4vw, 20px)', color: '#333', opacity: 0.95, marginTop: 6, animation: 'popIn 700ms cubic-bezier(.2,.9,.2,1) 120ms both' }}>Start learning words with fun activities</div>
         <div style={{ height: 24 }} />
-        <button className="action-btn" onClick={onStart} style={{ padding: '14px 30px', fontSize: 20, animation: 'popIn 700ms cubic-bezier(.2,.9,.2,1) 260ms both', transformOrigin: 'center' }} onMouseEnter={e => { e.currentTarget.style.animation = 'floatB 900ms ease-in-out infinite' }} onMouseLeave={e => { e.currentTarget.style.animation = 'popIn 700ms cubic-bezier(.2,.9,.2,1) 260ms both' }}>
+        <button className="action-btn" onClick={onStart} style={{ padding: '14px 30px', fontSize: 'clamp(18px, 4vw, 20px)', animation: 'popIn 700ms cubic-bezier(.2,.9,.2,1) 260ms both', transformOrigin: 'center' }} onMouseEnter={e => { e.currentTarget.style.animation = 'floatB 900ms ease-in-out infinite' }} onMouseLeave={e => { e.currentTarget.style.animation = 'popIn 700ms cubic-bezier(.2,.9,.2,1) 260ms both' }}>
           Start now
         </button>
       </div>

@@ -1,13 +1,8 @@
-import React, { useState } from 'react'
+//hehe
+import React, { useState, useEffect } from 'react'
 
 const MENU_STRUCTURE = [
-    { id: 'landing', label: 'Overview', type: 'file', icon: '🏠' },
-    {
-        id: 'health', label: 'Health Module', type: 'folder', icon: '❤️', children: [
-            { id: 'healthProblems', label: 'Common Problems', type: 'file', icon: '🌡️' },
-            { id: 'assessment', label: 'Health Quiz', type: 'file', icon: '📝' }
-        ]
-    },
+    { id: 'landing', label: 'Grade X', type: 'file', icon: '🏠' },
     {
         id: 'vocabulary', label: 'Vocabulary Module', type: 'folder', icon: '📚', children: [
             { id: 'vocabularyExercise', label: 'Matching Game', type: 'file', icon: '🧩' },
@@ -27,16 +22,28 @@ const MENU_STRUCTURE = [
         ]
     },
     {
-        id: 'english', label: 'English Module', type: 'folder', icon: '📝', children: [
-            { id: 'englishTheory', label: 'Compound Words', type: 'file', icon: '🧬' },
+        id: 'computer', label: 'Computer Module', type: 'folder', icon: '�', children: [
+            { id: 'computerKeyboard', label: 'Typing Practice', type: 'file', icon: '⌨️' }
+        ]
+    },
+    { id: 'landing2', label: 'Grade X2', type: 'file', icon: '🏠' },
+    {
+        id: 'health', label: 'Health Module', type: 'folder', icon: '❤️', children: [
+            { id: 'healthProblems', label: 'Common Problems', type: 'file', icon: '🌡️' },
+            { id: 'assessment', label: 'Health Quiz', type: 'file', icon: '📝' }
+        ]
+    },
+    {
+        id: 'english', label: 'English Module', type: 'folder', icon: '�', children: [
             { id: 'englishWordGame', label: 'Word Surgery', type: 'file', icon: '📚' },
             { id: 'englishPhonics', label: 'Word Match', type: 'file', icon: '📐' },
             { id: 'englishFillBlanks', label: 'Fill Blanks', type: 'file', icon: '✍️' }
         ]
     },
     {
-        id: 'science', label: 'Science Module', type: 'folder', icon: '🔬', children: [
-            { id: 'scienceOrgan', label: 'Human Anatomy', type: 'file', icon: '🫀' }
+        id: 'science', label: 'Science Module', type: 'folder', icon: '�', children: [
+            // { id: 'scienceOrgan', label: 'Human Anatomy', type: 'file', icon: '🫀' },
+            { id: 'scienceHuman', label: 'Identify Organs', type: 'file', icon: '🧠' }
         ]
     },
     {
@@ -46,20 +53,57 @@ const MENU_STRUCTURE = [
     }
 ]
 
+// Helper function to determine which folder contains the current view
+function getActiveFolderId(currentView) {
+    if (currentView === 'healthProblems' || currentView === 'assessment' || currentView === 'health' || currentView === 'lesson') return 'health'
+    if (currentView === 'vocabularyExercise' || currentView === 'vocabularyThree' || currentView === 'vocabulary') return 'vocabulary'
+    if (currentView.startsWith('mathsExercise') || currentView === 'maths') return 'maths'
+    if (currentView.startsWith('english')) return 'english'
+    if (currentView === 'scienceOrgan' || currentView === 'scienceHuman' || currentView === 'science') return 'science'
+    if (currentView === 'computerKeyboard' || currentView === 'computer') return 'computer'
+    return null
+}
+
 export default function Sidebar({ currentView, onChangeView, completedItems = [] }) {
+    // Determine which folder should be open based on current view
+    const activeFolderId = getActiveFolderId(currentView)
+
+    // Only the folder containing the current view is expanded by default
     const [expanded, setExpanded] = useState({
-        'health': true,
-        'vocabulary': true,
-        'maths': true,
-        'english': true,
-        'science': true,
-        'evs': true
+        'health': activeFolderId === 'health',
+        'vocabulary': activeFolderId === 'vocabulary',
+        'maths': activeFolderId === 'maths',
+        'english': activeFolderId === 'english',
+        'science': activeFolderId === 'science',
+        'computer': activeFolderId === 'computer',
+        'evs': activeFolderId == 'evs'
     })
     const [collapsed, setCollapsed] = useState(false)
     const [hovered, setHovered] = useState(null)
 
+    // Mobile support logic
+    const [isMobile, setIsMobile] = useState(false)
+    const [mobileOpen, setMobileOpen] = useState(false)
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 1024)
+            if (window.innerWidth >= 1024) {
+                setMobileOpen(false) // Reset when going back to desktop
+            }
+        }
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
+
+    // Accordion: only one folder open at a time
     const toggleFolder = (id) => {
-        setExpanded(prev => ({ ...prev, [id]: !prev[id] }))
+        setExpanded(prev => {
+            const newExpanded = Object.fromEntries(Object.keys(prev).map(k => [k, false]))
+            newExpanded[id] = !prev[id]
+            return newExpanded
+        })
     }
 
     // Check if an item or folder is completed
@@ -74,11 +118,38 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
         return false
     }
 
+    // When navigating to a page, auto-expand the parent module and collapse others
+    const handleItemClick = (item) => {
+        if (item.type === 'folder') {
+            toggleFolder(item.id)
+            onChangeView(item.id)
+        } else {
+            // Find parent folder
+            let parentId = null
+            for (const mod of MENU_STRUCTURE) {
+                if (mod.type === 'folder' && mod.children && mod.children.some(child => child.id === item.id)) {
+                    parentId = mod.id
+                    break
+                }
+            }
+            if (parentId) {
+                setExpanded(prev => {
+                    const newExpanded = Object.fromEntries(Object.keys(prev).map(k => [k, false]))
+                    newExpanded[parentId] = true
+                    return newExpanded
+                })
+            }
+            onChangeView(item.id)
+            if (isMobile) setMobileOpen(false)
+        }
+    }
+
     const renderItem = (item, level = 0) => {
         const isActive = currentView === item.id ||
             (item.id === 'health' && (currentView === 'healthProblems' || currentView === 'assessment')) ||
-            (item.id === 'science' && currentView === 'scienceOrgan') ||
+            (item.id === 'science' && (currentView === 'scienceOrgan' || currentView === 'scienceHuman')) ||
             (item.id === 'english' && currentView.startsWith('english')) ||
+            (item.id === 'computer' && currentView === 'computerKeyboard') ||
             (item.id === 'evs' && currentView.startsWith('evs'))
         const isFolder = item.type === 'folder'
         const isOpen = expanded[item.id]
@@ -90,7 +161,7 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
         const showChildren = isFolder && isOpen && !collapsed
 
         return (
-            <div key={item.id} style={{ marginBottom: 2 }}>
+            <div key={item.id} style={{ marginBottom: 4 }}>
                 <div
                     onClick={(e) => {
                         // Logic:
@@ -112,13 +183,14 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                             onChangeView(item.id)
                         }
                     }}
+                    onClick={() => handleItemClick(item)}
                     onMouseEnter={() => setHovered(item.id)}
                     onMouseLeave={() => setHovered(null)}
                     style={{
-                        paddingLeft: collapsed ? 0 : 16 + level * 24,
-                        paddingRight: collapsed ? 0 : 16,
-                        paddingTop: 10,
-                        paddingBottom: 10,
+                        paddingLeft: collapsed ? 0 : 20 + level * 28,
+                        paddingRight: collapsed ? 0 : 20,
+                        paddingTop: 14,
+                        paddingBottom: 14,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: collapsed ? 'center' : 'flex-start',
@@ -132,7 +204,7 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                         borderRadius: collapsed ? 0 : '0 8px 8px 0',
                         marginRight: collapsed ? 0 : 8,
                         position: 'relative',
-                        height: 44
+                        height: 52
                     }}
                     title={collapsed ? item.label : ''}
                 >
@@ -144,19 +216,19 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                                 toggleFolder(item.id)
                             }}
                             style={{
-                                width: 20,
-                                height: 20,
+                                width: 24,
+                                height: 24,
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                marginRight: 4,
+                                marginRight: 8,
                                 borderRadius: 4,
                             }}
                             onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
                             onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                         >
                             <span style={{
-                                fontSize: 10,
+                                fontSize: 12,
                                 color: isActive ? '#4fc3f7' : '#888',
                                 transform: isOpen ? 'rotate(90deg)' : 'none',
                                 transition: 'transform 0.2s',
@@ -167,8 +239,8 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                     )}
 
                     <span style={{
-                        marginRight: collapsed ? 0 : 12,
-                        fontSize: 18,
+                        marginRight: collapsed ? 0 : 14,
+                        fontSize: 22,
                         filter: isActive ? 'drop-shadow(0 0 4px rgba(79, 195, 247, 0.4))' : 'none',
                         display: 'flex', alignItems: 'center', justifyContent: 'center'
                     }}>
@@ -176,13 +248,13 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                     </span>
 
                     {!collapsed && (
-                        <span style={{ flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', letterSpacing: 0.3 }}>
+                        <span style={{ flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', letterSpacing: 0.3, fontSize: 16 }}>
                             {item.label}
                         </span>
                     )}
 
                     {!collapsed && completed && (
-                        <span style={{ color: '#4CAF50', marginLeft: 8, fontSize: 16, fontWeight: 800 }}>✓</span>
+                        <span style={{ color: '#4CAF50', marginLeft: 8, fontSize: 18, fontWeight: 800 }}>✓</span>
                     )}
                 </div>
                 {showChildren && (
@@ -198,119 +270,187 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
     }
 
     return (
-        <div style={{
-            width: collapsed ? 64 : 280,
-            background: '#1e1e1e',
-            borderRight: '1px solid #333',
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100%',
-            color: '#e0e0e0',
-            fontFamily: '"SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif',
-            userSelect: 'none',
-            boxShadow: '4px 0 24px rgba(0,0,0,0.2)',
-            zIndex: 10,
-            transition: 'width 0.3s cubic-bezier(0.2, 0, 0, 1)'
-        }}>
-            {/* Header */}
-            <div style={{
-                padding: collapsed ? '20px 0' : '20px 24px',
-                borderBottom: '1px solid #2d2d2d',
-                background: '#252526',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: collapsed ? 'center' : 'space-between',
-                height: 80
-            }}>
-                {!collapsed && (
-                    <div>
-                        <div style={{
-                            fontSize: 13,
-                            fontWeight: 800,
-                            textTransform: 'uppercase',
-                            letterSpacing: 1.2,
-                            color: '#666',
-                            marginBottom: 4
-                        }}>
-                            Course Content
-                        </div>
-                        <div style={{
-                            fontSize: 20,
-                            fontWeight: 700,
-                            color: '#fff',
-                            letterSpacing: -0.5
-                        }}>
-                            Explorer
-                        </div>
-                    </div>
-                )}
-
-                {/* Collapse Toggle */}
+        <>
+            {/* Mobile Hamburger Button */}
+            {isMobile && !mobileOpen && (
                 <button
-                    onClick={() => setCollapsed(!collapsed)}
+                    onClick={() => setMobileOpen(true)}
                     style={{
-                        background: 'transparent',
-                        border: 'none',
-                        color: '#888',
+                        position: 'fixed',
+                        top: 20,
+                        right: 20,
+                        zIndex: 999,
+                        background: '#1e1e1e',
+                        border: '1px solid #333',
+                        color: '#fff',
+                        borderRadius: 8,
+                        padding: 10,
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
                         cursor: 'pointer',
-                        padding: 8,
+                        fontSize: 24,
                         display: 'flex', alignItems: 'center', justifyContent: 'center'
                     }}
                 >
-                    {collapsed ? '»' : '«'}
+                    ☰
                 </button>
-            </div>
+            )}
 
-            {/* List */}
-            <div className="custom-scrollbar" style={{ flex: 1, overflowY: 'auto', padding: '16px 0', overflowX: 'hidden' }}>
-                {MENU_STRUCTURE.map(item => renderItem(item))}
-            </div>
+            {/* Mobile Backdrop */}
+            {isMobile && mobileOpen && (
+                <div
+                    onClick={() => setMobileOpen(false)}
+                    style={{
+                        position: 'fixed',
+                        top: 0, left: 0, right: 0, bottom: 0,
+                        background: 'rgba(0,0,0,0.5)',
+                        zIndex: 999
+                    }}
+                />
+            )}
 
-            {/* Footer */}
             <div style={{
-                padding: '16px',
-                borderTop: '1px solid #2d2d2d',
-                background: '#252526',
+                width: isMobile ? 300 : (collapsed ? 80 : 340),
+                background: '#1e1e1e',
+                borderRight: '1px solid #333',
                 display: 'flex',
-                alignItems: 'center',
-                justifyContent: collapsed ? 'center' : 'flex-start',
-                gap: 12,
-                height: 70
+                flexDirection: 'column',
+                height: '100%',
+                color: '#e0e0e0',
+                fontFamily: '"SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif',
+                userSelect: 'none',
+                boxShadow: '4px 0 24px rgba(0,0,0,0.2)',
+                zIndex: 1000,
+                transition: 'width 0.3s cubic-bezier(0.2, 0, 0, 1), transform 0.3s ease',
+                position: isMobile ? 'fixed' : 'relative',
+                transform: isMobile ? (mobileOpen ? 'translateX(0)' : 'translateX(-100%)') : 'none',
+                left: 0, top: 0
             }}>
+                {/* Header */}
                 <div style={{
-                    width: 32, height: 32, borderRadius: '50%', background: '#4fc3f7', color: '#1e1e1e',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: 14,
-                    flexShrink: 0
+                    padding: collapsed ? '24px 0' : '24px 28px',
+                    borderBottom: '1px solid #2d2d2d',
+                    background: '#252526',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: collapsed ? 'center' : 'space-between',
+                    height: 100
                 }}>
-                    SF
-                </div>
-                {!collapsed && (
-                    <div style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-                        <div style={{ fontSize: 14, fontWeight: 600, color: '#fff' }}>Shankar Foundation</div>
-                        <div style={{ fontSize: 11, color: '#888' }}>Learning Portal</div>
-                    </div>
-                )}
-            </div>
+                    {!collapsed && (
+                        <div>
+                            <div style={{
+                                fontSize: 15,
+                                fontWeight: 800,
+                                textTransform: 'uppercase',
+                                letterSpacing: 1.2,
+                                color: '#666',
+                                marginBottom: 6
+                            }}>
+                                Course Content
+                            </div>
+                            <div style={{
+                                fontSize: 24,
+                                fontWeight: 700,
+                                color: '#fff',
+                                letterSpacing: -0.5
+                            }}>
+                                Explorer
+                            </div>
+                        </div>
+                    )}
 
-            <style>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: #1e1e1e; 
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #444; 
-          border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: #555; 
-        }
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
-        </div>
+                    {/* Collapse Toggle - Hide on mobile */}
+                    {!isMobile && (
+                        <button
+                            onClick={() => setCollapsed(!collapsed)}
+                            style={{
+                                background: 'transparent',
+                                border: 'none',
+                                cursor: 'pointer',
+                                padding: 10,
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                transition: 'transform 0.3s ease'
+                            }}
+                        >
+                            <img
+                                src="/assets/main-menu.png"
+                                alt={collapsed ? 'Expand' : 'Collapse'}
+                                style={{
+                                    width: 28,
+                                    height: 28,
+                                    filter: 'brightness(0.9)',
+                                    objectFit: 'contain'
+                                }}
+                            />
+                        </button>
+                    )}
+                    {/* Close button for Mobile */}
+                    {isMobile && (
+                        <button
+                            onClick={() => setMobileOpen(false)}
+                            style={{
+                                background: 'transparent',
+                                border: 'none',
+                                cursor: 'pointer',
+                                color: '#fff',
+                                fontSize: 24
+                            }}
+                        >
+                            ✕
+                        </button>
+                    )}
+                </div>
+
+                {/* List */}
+                <div className="custom-scrollbar" style={{ flex: 1, overflowY: 'auto', padding: '20px 0', overflowX: 'hidden' }}>
+                    {MENU_STRUCTURE.map(item => renderItem(item))}
+                </div>
+
+                {/* Footer */}
+                <div style={{
+                    padding: '20px',
+                    borderTop: '1px solid #2d2d2d',
+                    background: '#252526',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: collapsed ? 'center' : 'flex-start',
+                    gap: 14,
+                    height: 85
+                }}>
+                    <div style={{
+                        width: 40, height: 40, borderRadius: '50%', background: '#4fc3f7', color: '#1e1e1e',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: 16,
+                        flexShrink: 0
+                    }}>
+                        SF
+                    </div>
+                    {!collapsed && (
+                        <div style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
+                            <div style={{ fontSize: 16, fontWeight: 600, color: '#fff' }}>Shankar Foundation</div>
+                            <div style={{ fontSize: 13, color: '#888' }}>Learning Portal</div>
+                        </div>
+                    )}
+                </div>
+
+                <style>{`
+            .custom-scrollbar::-webkit-scrollbar {
+              width: 8px;
+            }
+            .custom-scrollbar::-webkit-scrollbar-track {
+              background: #1e1e1e; 
+            }
+            .custom-scrollbar::-webkit-scrollbar-thumb {
+              background: #444; 
+              border-radius: 4px;
+            }
+            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+              background: #555; 
+            }
+            @keyframes slideDown {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+          `}</style>
+            </div>
+        </>
     )
 }

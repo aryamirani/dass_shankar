@@ -1,11 +1,11 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react'
 
 const WORDS = [
-  { id: 'bat', img: '/assets/bat.png' },
-  { id: 'cat', img: '/assets/cat.png' },
-  { id: 'hat', img: '/assets/hat.png' },
-  { id: 'mat', img: '/assets/mat.png' },
-  { id: 'rat', img: '/assets/rat.png' }
+  { id: 'bat', img: '/bat.png' },
+  { id: 'cat', img: '/cat.png' },
+  { id: 'hat', img: '/hat.png' },
+  { id: 'mat', img: '/mat.png' },
+  { id: 'rat', img: '/rat.png' }
 ]
 
 const POSITIVE = [
@@ -120,23 +120,51 @@ export default function VocabularyThree({ onBack }) {
   const tabStyle = (i) => step === i ? tabFilled : tabOutline
 
   // drag handlers
+  const [selectedDraggable, setSelectedDraggable] = useState(null)
+
   function onDragStart(e, item) {
+    if (item.used) return
     e.dataTransfer.setData('text/plain', item.id)
+    setSelectedDraggable(null) // Clear selection if dragging
+  }
+
+  function handleDraggableClick(item) {
+    if (item.used) return
+    if (selectedDraggable === item.id) {
+      setSelectedDraggable(null)
+    } else {
+      setSelectedDraggable(item.id)
+      speak(item.id) // Optional: speak word when selected
+    }
+  }
+
+  function handleTargetClick(target) {
+    if (target.matched) return
+    if (selectedDraggable) {
+      // Attempt match with selected draggable
+      checkMatch(selectedDraggable, target.id)
+    }
+  }
+
+  function checkMatch(dragId, targetId) {
+    if (dragId === targetId) {
+      setTargets(prev => prev.map(t => t.id === targetId ? { ...t, matched: true } : t))
+      setDraggables(prev => prev.map(d => d.id === dragId ? { ...d, used: true } : d))
+      setHoveredTarget(null)
+      setSelectedDraggable(null)
+      setMessage({ type: 'success', text: POSITIVE[Math.floor(Math.random() * POSITIVE.length)] })
+    } else {
+      setHoveredTarget(null)
+      setSelectedDraggable(null)
+      setMessage({ type: 'error', text: GENTLE[Math.floor(Math.random() * GENTLE.length)] })
+    }
   }
 
   function onDropTarget(e, target) {
     e.preventDefault()
     const id = e.dataTransfer.getData('text/plain')
     if (!id) return
-    if (id === target.id) {
-      setTargets(prev => prev.map(t => t.id === target.id ? { ...t, matched: true } : t))
-      setDraggables(prev => prev.map(d => d.id === id ? { ...d, used: true } : d))
-      setHoveredTarget(null)
-      setMessage({ type: 'success', text: POSITIVE[Math.floor(Math.random() * POSITIVE.length)] })
-    } else {
-      setHoveredTarget(null)
-      setMessage({ type: 'error', text: GENTLE[Math.floor(Math.random() * GENTLE.length)] })
-    }
+    checkMatch(id, target.id)
   }
 
   function allowDrop(e) { e.preventDefault() }
@@ -167,54 +195,60 @@ export default function VocabularyThree({ onBack }) {
       {showTutorial && step === 1 && <TutorialOverlay draggables={draggables} targets={targets} />}
 
       <div style={{ maxWidth: 980, margin: '0 auto', background: 'rgba(255,255,255,0.0)', padding: 10 }}>
-        <h2 style={{ textAlign: 'center', fontSize: 42, fontWeight: 900, color: '#fff', textShadow: '0 2px 10px rgba(0,0,0,0.2)', marginBottom: 20 }}>Vocabulary</h2>
+        <h2 style={{ textAlign: 'center', fontSize: 'clamp(28px, 6vw, 42px)', fontWeight: 900, color: '#fff', textShadow: '0 2px 10px rgba(0,0,0,0.2)', marginBottom: 20 }}>Vocabulary</h2>
 
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginTop: 18 }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginTop: 18, flexWrap: 'wrap' }}>
           <button className="action-btn" onClick={() => { setStep(0); reshuffleAll() }} style={tabStyle(0)}>Visual Reference</button>
           <button className="action-btn" onClick={() => { setStep(1); reshuffleAll() }} style={tabStyle(1)}>Interactive Matching</button>
           <button className="action-btn" onClick={() => { setStep(2); reshuffleAll(); setTypeIndex(0); setLetters(['', '', '']); if (inputRefs.current[0]) inputRefs.current[0].focus() }} style={tabStyle(2)}>Type the word</button>
         </div>
 
         {step === 0 && (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 40, marginTop: 40 }}>
-            <button
-              className="action-btn"
-              onClick={() => setViewIndex(prev => Math.max(0, prev - 1))}
-              disabled={viewIndex === 0}
-              style={{
-                background: 'transparent', color: viewIndex === 0 ? '#ccc' : '#1976d2',
-                cursor: viewIndex === 0 ? 'default' : 'pointer',
-                border: 'none', fontSize: 60, fontWeight: 900, padding: 20
-              }}
-            >
-              &lt;
-            </button>
-
-            <div key={galleryOrder[viewIndex].id} onClick={() => speak(galleryOrder[viewIndex].id)} style={{ textAlign: 'center', width: 500, background: 'transparent', borderRadius: 20, padding: 30, cursor: 'pointer' }}>
-              <img src={galleryOrder[viewIndex].img} alt={galleryOrder[viewIndex].id} style={{ width: 440, height: 360, objectFit: 'contain' }} />
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 'clamp(10px, 4vw, 40px)', marginTop: 40 }}>
+            <div key={galleryOrder[viewIndex].id} onClick={() => speak(galleryOrder[viewIndex].id)} style={{ textAlign: 'center', width: '100%', maxWidth: 500, background: 'transparent', borderRadius: 20, padding: 'clamp(10px, 3vw, 30px)', cursor: 'pointer' }}>
+              <img src={galleryOrder[viewIndex].img} alt={galleryOrder[viewIndex].id} style={{ width: '100%', maxWidth: 440, height: 'auto', maxHeight: '40vh', objectFit: 'contain' }} />
               <div style={{ height: 20 }} />
-              <div style={{ fontSize: 36, fontWeight: 800, color: '#111' }}>{galleryOrder[viewIndex].id}</div>
-              <div style={{ marginTop: 10, color: '#666', fontSize: 14 }}>Click to listen</div>
+              <div style={{ fontSize: 'clamp(32px, 8vw, 50px)', fontWeight: 800, color: '#111' }}>{galleryOrder[viewIndex].id}</div>
+              <div style={{ marginTop: 10, color: '#666', fontSize: 18 }}>Click to listen</div>
             </div>
 
-            <button
-              className="action-btn"
-              onClick={() => setViewIndex(prev => Math.min(galleryOrder.length - 1, prev + 1))}
-              disabled={viewIndex === galleryOrder.length - 1}
-              style={{
-                background: 'transparent', color: viewIndex === galleryOrder.length - 1 ? '#ccc' : '#1976d2',
-                cursor: viewIndex === galleryOrder.length - 1 ? 'default' : 'pointer',
-                border: 'none', fontSize: 60, fontWeight: 900, padding: 20
-              }}
-            >
-              &gt;
-            </button>
+            <div style={{ display: 'flex', gap: 40, marginTop: 20 }}>
+              <button
+                className="action-btn"
+                onClick={() => setViewIndex(prev => Math.max(0, prev - 1))}
+                disabled={viewIndex === 0}
+                style={{
+                  background: '#fff', color: viewIndex === 0 ? '#ccc' : '#1976d2',
+                  cursor: viewIndex === 0 ? 'default' : 'pointer',
+                  border: 'none', fontSize: 'clamp(24px, 6vw, 40px)', fontWeight: 900, padding: '15px 30px',
+                  borderRadius: 50, boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
+                }}
+              >
+                &lt;
+              </button>
+
+              <button
+                className="action-btn"
+                onClick={() => setViewIndex(prev => Math.min(galleryOrder.length - 1, prev + 1))}
+                disabled={viewIndex === galleryOrder.length - 1}
+                style={{
+                  background: '#fff', color: viewIndex === galleryOrder.length - 1 ? '#ccc' : '#1976d2',
+                  cursor: viewIndex === galleryOrder.length - 1 ? 'default' : 'pointer',
+                  border: 'none', fontSize: 'clamp(24px, 6vw, 40px)', fontWeight: 900, padding: '15px 30px',
+                  borderRadius: 50, boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
+                }}
+              >
+                &gt;
+              </button>
+            </div>
           </div>
         )}
 
         {step === 1 && (
-          <div style={{ display: 'flex', gap: 30, marginTop: 20, alignItems: 'flex-start' }}>
-            <div style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 20 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginTop: 10, alignItems: 'center', minHeight: '60vh' }}>
+
+            {/* Target Grid - Top */}
+            <div style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 220px))', gap: 10, width: '100%', overflowY: 'auto', padding: 4, alignContent: 'start', alignItems: 'start' }}>
               {targets.map(t => {
                 const isHover = hoveredTarget === t.id
                 return (
@@ -225,24 +259,26 @@ export default function VocabularyThree({ onBack }) {
                     onDragEnter={(e) => onDragEnterTarget(e, t)}
                     onDragLeave={(e) => onDragLeaveTarget(e, t)}
                     style={{
-                      minHeight: 220,
+                      minHeight: 140,
                       borderRadius: 14,
-                      background: 'transparent',
+                      background: 'rgba(255,255,255,0.2)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column',
                       boxShadow: 'none',
                       border: t.matched ? 'none' : (isHover ? '3px dashed #1976d2' : '2px dashed rgba(0,0,0,0.12)'),
-                      transition: 'all 180ms ease'
+                      transition: 'all 180ms ease',
+                      padding: 10
                     }}>
-                    <img src={t.img} alt={t.id} style={{ width: 240, height: 180, objectFit: 'contain', opacity: t.matched ? 0.6 : 1, filter: t.matched ? 'grayscale(0.1) brightness(0.98)' : 'none' }} />
-                    <div style={{ height: 8 }} />
-                    {t.matched ? <div style={{ color: '#2e7d32', fontWeight: 800, display: 'flex', alignItems: 'center', gap: 8 }}><span style={{ fontSize: 20 }}>✓</span>Matched</div> : <div style={{ height: 22 }} />}
+                    <img src={t.img} alt={t.id} style={{ width: '100%', maxWidth: 120, height: 'auto', maxHeight: 80, objectFit: 'contain', opacity: t.matched ? 0.6 : 1, filter: t.matched ? 'grayscale(0.1) brightness(0.98)' : 'none' }} />
+                    <div style={{ height: 4 }} />
+                    {t.matched ? <div style={{ color: '#2e7d32', fontWeight: 800, display: 'flex', alignItems: 'center', gap: 4 }}><span style={{ fontSize: 16 }}>✓</span></div> : null}
                   </div>
                 )
               })}
             </div>
 
-            <div style={{ width: 280, display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <div style={{ fontWeight: 800 }}>Drag the word tiles onto the matching image</div>
+            {/* Draggables - Bottom */}
+            <div style={{ width: '100%', display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center', padding: '10px 0', background: 'rgba(255,255,255,0.1)', borderRadius: 20 }}>
+              <div style={{ fontWeight: 800, width: '100%', textAlign: 'center', marginBottom: 4, color: '#000', fontSize: 14 }}>Drag words to images</div>
               {draggables.map(d => (
                 <div
                   key={d.id}
@@ -250,27 +286,28 @@ export default function VocabularyThree({ onBack }) {
                   draggable={!d.used}
                   onDragStart={(e) => onDragStart(e, d)}
                   style={{
-                    padding: 10,
-                    background: 'transparent',
+                    padding: '8px 16px',
+                    background: 'white',
                     borderRadius: 10,
-                    marginBottom: 12,
-                    boxShadow: d.used ? 'none' : '0 6px 14px rgba(0,0,0,0.04)',
-                    border: '2px solid #000',
+                    marginBottom: 4,
+                    boxShadow: d.used ? 'none' : '0 4px 8px rgba(0,0,0,0.1)',
+                    border: '1px solid #ddd',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     cursor: d.used ? 'default' : 'grab',
-                    opacity: d.used ? 0.9 : 1,
+                    opacity: d.used ? 0.5 : 1,
                     position: 'relative'
                   }}
                 >
-                  <div style={{ fontSize: 22, fontWeight: 800, padding: '18px 28px', borderRadius: 8, background: 'transparent' }}>{d.text}</div>
+                  <div style={{ fontSize: 'clamp(18px, 4vw, 24px)', fontWeight: 700 }}>{d.text}</div>
                   {d.used && (
-                    <div style={{ position: 'absolute', right: 6, top: 6, color: '#2e7d32', fontSize: 36, fontWeight: 900, background: 'rgba(255,255,255,0.6)', borderRadius: 20, padding: '2px 8px', boxShadow: '0 6px 12px rgba(0,0,0,0.06)' }}>✓</div>
+                    <div style={{ position: 'absolute', right: -5, top: -5, color: '#fff', fontSize: 14, fontWeight: 900, background: '#4caf50', borderRadius: '50%', width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✓</div>
                   )}
                 </div>
               ))}
             </div>
+
           </div>
         )}
 
@@ -280,7 +317,7 @@ export default function VocabularyThree({ onBack }) {
               <div style={{ fontSize: 24, fontWeight: 800, color: '#2e7d32' }}>All done — great typing!</div>
             ) : (
               <div>
-                <img src={typeOrder[typeIndex].img} alt={typeOrder[typeIndex].id} style={{ width: 400, height: 320, objectFit: 'contain' }} />
+                <img src={typeOrder[typeIndex].img} alt={typeOrder[typeIndex].id} style={{ width: '100%', maxWidth: 400, height: 'auto', maxHeight: 320, objectFit: 'contain' }} />
                 <form onSubmit={onSubmitType} style={{ marginTop: 12 }} onPaste={(e) => {
                   e.preventDefault()
                   const pasted = (e.clipboardData || window.clipboardData).getData('text').trim().slice(0, 3)
@@ -344,18 +381,18 @@ export default function VocabularyThree({ onBack }) {
                           }}
                           placeholder="_"
                           maxLength={1}
-                          style={{ width: 60, height: 60, fontSize: 28, textAlign: 'center', borderRadius: 8, border: '2px solid #ddd', boxShadow: '0 8px 18px rgba(0,0,0,0.06)' }}
+                          style={{ width: 'clamp(40px, 10vw, 60px)', height: 'clamp(40px, 10vw, 60px)', fontSize: 28, textAlign: 'center', borderRadius: 8, border: '2px solid #ddd', boxShadow: '0 8px 18px rgba(0,0,0,0.06)' }}
                         />
                       ))}
                     </div>
                     {message && (
-                      <div style={{ position: 'absolute', left: 'calc(50% + 130px)', padding: '10px 18px', fontSize: 28, fontWeight: 800, color: message.type === 'success' ? '#155724' : '#856404', background: message.type === 'success' ? 'rgba(212,237,218,0.98)' : 'rgba(255,243,205,0.95)', borderRadius: 14, boxShadow: '0 8px 22px rgba(0,0,0,0.1)', whiteSpace: 'nowrap' }}>
+                      <div style={{ position: 'absolute', top: 80, padding: '10px 18px', fontSize: 28, fontWeight: 800, color: message.type === 'success' ? '#155724' : '#856404', background: message.type === 'success' ? 'rgba(212,237,218,0.98)' : 'rgba(255,243,205,0.95)', borderRadius: 14, boxShadow: '0 8px 22px rgba(0,0,0,0.1)', whiteSpace: 'nowrap' }}>
                         {message.text}
                       </div>
                     )}
                   </div>
                   <div style={{ height: 12 }}></div>
-                  <button className="action-btn" type="submit" style={{ padding: '8px 16px' }}>Submit</button>
+                  <button className="action-btn" type="submit" style={{ padding: '8px 16px' }}>Click</button>
                 </form>
               </div>
             )}
@@ -363,7 +400,7 @@ export default function VocabularyThree({ onBack }) {
         )}
 
         {message && step !== 2 && (
-          <div style={{ position: 'fixed', top: 40, left: '50%', transform: 'translateX(-50%)', padding: '12px 26px', fontSize: message.type === 'success' ? 36 : 28, fontWeight: 800, color: message.type === 'success' ? '#155724' : '#856404', background: message.type === 'success' ? 'rgba(212,237,218,0.98)' : 'rgba(255,243,205,0.95)', borderRadius: 14, boxShadow: '0 8px 22px rgba(0,0,0,0.1)' }}>
+          <div style={{ position: 'fixed', top: 40, left: '50%', transform: 'translateX(-50%)', padding: '12px 26px', fontSize: message.type === 'success' ? 36 : 28, fontWeight: 800, color: message.type === 'success' ? '#155724' : '#856404', background: message.type === 'success' ? 'rgba(212,237,218,0.98)' : 'rgba(255,243,205,0.95)', borderRadius: 14, boxShadow: '0 8px 22px rgba(0,0,0,0.1)', zIndex: 1000, whiteSpace: 'nowrap' }}>
             {message.text}
           </div>
         )}
@@ -371,7 +408,7 @@ export default function VocabularyThree({ onBack }) {
       </div>
 
       {/* Word List Footer */}
-      <div style={{
+      <div className="word-footer" style={{
         position: 'fixed', bottom: 30, left: '50%', transform: 'translateX(-50%)',
         background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(8px)',
         padding: '15px 40px', borderRadius: 50,
@@ -382,7 +419,7 @@ export default function VocabularyThree({ onBack }) {
         <span style={{ fontWeight: 800, color: '#1976d2', fontSize: 16, textTransform: 'uppercase', letterSpacing: 2 }}>Words:</span>
         <div style={{ display: 'flex', gap: 20 }}>
           {WORDS.map(w => (
-            <span key={w.id} style={{ fontSize: 24, fontWeight: 700, color: '#333' }}>{w.id}</span>
+            <span key={w.id} style={{ fontSize: 34, fontWeight: 700, color: '#333' }}>{w.id}</span>
           ))}
         </div>
       </div>

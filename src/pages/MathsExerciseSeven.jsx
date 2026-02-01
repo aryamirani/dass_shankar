@@ -92,17 +92,17 @@ export default function MathsExerciseSeven({ onBack, onNextExercise }) {
       </div>
 
 
-      <div style={{ width: '100%', maxWidth: 900, background: 'rgba(255,255,255,0.95)', padding: 40, borderRadius: 20, boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>
-        <h2 style={{ fontSize: 42, textAlign: 'center', marginBottom: 8, fontWeight: 900, color: '#333' }}>Value Chart</h2>
-        <p style={{ textAlign: 'center', fontSize: 18, color: '#666', marginBottom: 24 }}>Fill in the place values for each number</p>
-        <div style={{ textAlign: 'center', marginBottom: 24, fontSize: 20, color: '#555' }}>
+      <div style={{ width: '100%', maxWidth: 900, background: 'rgba(255,255,255,0.95)', padding: 'clamp(20px, 4vw, 40px)', borderRadius: 20, boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>
+        <h2 style={{ fontSize: 'clamp(28px, 6vw, 42px)', textAlign: 'center', marginBottom: 8, fontWeight: 900, color: '#333' }}>Value Chart</h2>
+        <p style={{ textAlign: 'center', fontSize: 'clamp(16px, 4vw, 18px)', color: '#666', marginBottom: 24 }}>Fill in the place values for each number</p>
+        <div style={{ textAlign: 'center', marginBottom: 24, fontSize: 'clamp(16px, 4vw, 20px)', color: '#555' }}>
           Correct: {completedCount} / {totalCount}
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           {items.map(item => (
             <div key={item.id} style={{
-              padding: 24,
+              padding: 'clamp(16px, 4vw, 24px)',
               background: item.checked
                 ? (item.correct ? 'rgba(76, 175, 80, 0.1)' : 'rgba(244, 67, 54, 0.1)')
                 : 'white',
@@ -112,90 +112,94 @@ export default function MathsExerciseSeven({ onBack, onNextExercise }) {
               borderRadius: 12,
               transition: 'all 0.3s ease'
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(10px, 3vw, 20px)', flexWrap: 'wrap', justifyContent: 'center' }}>
                 {/* Number */}
                 <div style={{
-                  fontSize: 40,
+                  fontSize: 'clamp(28px, 6vw, 40px)',
                   fontWeight: 900,
                   color: '#333',
-                  minWidth: 100
+                  minWidth: 100,
+                  textAlign: 'center',
+                  flex: '0 0 auto'
                 }}>
                   {item.number} =
                 </div>
 
-                {/* Hundreds */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    maxLength={1}
-                    value={item.hundredsInput}
-                    onChange={(e) => handleInputChange(item.id, 'hundredsInput', e.target.value)}
-                    disabled={item.checked && item.correct}
-                    style={{
-                      width: 50,
-                      height: 60,
-                      fontSize: 28,
-                      fontWeight: 700,
-                      border: '2px solid #666',
-                      borderRadius: 8,
-                      outline: 'none',
-                      textAlign: 'center',
-                      background: (item.checked && item.correct) ? '#f1f8f1' : 'white',
-                      fontFamily: 'inherit'
-                    }}
-                  />
-                  <span style={{ fontSize: 22, fontWeight: 600, color: '#444' }}>hundred</span>
-                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'center', justifyContent: 'center', flex: '1 1 auto' }}>
+                  {/* Hundreds */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={1}
+                      value={item.hundredsInput}
+                      onChange={(e) => handleInputChange(item.id, 'hundredsInput', e.target.value)}
+                      disabled={item.checked && item.correct}
+                      style={{
+                        width: 'clamp(40px, 10vw, 50px)',
+                        height: 'clamp(50px, 12vw, 60px)',
+                        fontSize: 'clamp(20px, 5vw, 28px)',
+                        fontWeight: 700,
+                        border: '2px solid #666',
+                        borderRadius: 8,
+                        outline: 'none',
+                        textAlign: 'center',
+                        background: (item.checked && item.correct) ? '#f1f8f1' : 'white',
+                        fontFamily: 'inherit'
+                      }}
+                    />
+                    <span style={{ fontSize: 'clamp(14px, 4vw, 22px)', fontWeight: 600, color: '#444' }}>hundred{item.hundredsInput !== '1' ? 's' : ''}</span>
+                  </div>
 
-                {/* Tens */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    maxLength={1}
-                    value={item.tensInput}
-                    onChange={(e) => handleInputChange(item.id, 'tensInput', e.target.value)}
-                    disabled={item.checked && item.correct}
-                    style={{
-                      width: 50,
-                      height: 60,
-                      fontSize: 28,
-                      fontWeight: 700,
-                      border: '2px solid #666',
-                      borderRadius: 8,
-                      outline: 'none',
-                      textAlign: 'center',
-                      background: (item.checked && item.correct) ? '#f1f8f1' : 'white',
-                      fontFamily: 'inherit'
-                    }}
-                  />
-                  <span style={{ fontSize: 22, fontWeight: 600, color: '#444' }}>tens</span>
-                </div>
+                  {/* Tens */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={1}
+                      value={item.tensInput}
+                      onChange={(e) => handleInputChange(item.id, 'tensInput', e.target.value)}
+                      disabled={item.checked && item.correct}
+                      style={{
+                        width: 'clamp(40px, 10vw, 50px)',
+                        height: 'clamp(50px, 12vw, 60px)',
+                        fontSize: 'clamp(20px, 5vw, 28px)',
+                        fontWeight: 700,
+                        border: '2px solid #666',
+                        borderRadius: 8,
+                        outline: 'none',
+                        textAlign: 'center',
+                        background: (item.checked && item.correct) ? '#f1f8f1' : 'white',
+                        fontFamily: 'inherit'
+                      }}
+                    />
+                    <span style={{ fontSize: 'clamp(14px, 4vw, 22px)', fontWeight: 600, color: '#444' }}>tens</span>
+                  </div>
 
-                {/* Ones */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    maxLength={1}
-                    value={item.onesInput}
-                    onChange={(e) => handleInputChange(item.id, 'onesInput', e.target.value)}
-                    disabled={item.checked && item.correct}
-                    style={{
-                      width: 50,
-                      height: 60,
-                      fontSize: 28,
-                      fontWeight: 700,
-                      border: '2px solid #666',
-                      borderRadius: 8,
-                      outline: 'none',
-                      textAlign: 'center',
-                      background: (item.checked && item.correct) ? '#f1f8f1' : 'white',
-                      fontFamily: 'inherit'
-                    }}
-                  />
-                  <span style={{ fontSize: 22, fontWeight: 600, color: '#444' }}>ones</span>
+                  {/* Ones */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={1}
+                      value={item.onesInput}
+                      onChange={(e) => handleInputChange(item.id, 'onesInput', e.target.value)}
+                      disabled={item.checked && item.correct}
+                      style={{
+                        width: 'clamp(40px, 10vw, 50px)',
+                        height: 'clamp(50px, 12vw, 60px)',
+                        fontSize: 'clamp(20px, 5vw, 28px)',
+                        fontWeight: 700,
+                        border: '2px solid #666',
+                        borderRadius: 8,
+                        outline: 'none',
+                        textAlign: 'center',
+                        background: (item.checked && item.correct) ? '#f1f8f1' : 'white',
+                        fontFamily: 'inherit'
+                      }}
+                    />
+                    <span style={{ fontSize: 'clamp(14px, 4vw, 22px)', fontWeight: 600, color: '#444' }}>ones</span>
+                  </div>
                 </div>
               </div>
             </div>

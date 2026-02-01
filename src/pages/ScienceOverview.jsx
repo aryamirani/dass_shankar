@@ -15,11 +15,11 @@ export default function ScienceOverview({ onStart, onBack }) {
                     Science
                 </h1>
                 <div style={{ height: 12 }} />
-                <div style={{ fontSize: 20, color: 'white', opacity: 0.95, marginTop: 6, fontWeight: 600, animation: 'popIn 700ms cubic-bezier(.2,.9,.2,1) 120ms both' }}>Explore the wonders of Science</div>
+                <div style={{ fontSize: 'clamp(18px, 4vw, 20px)', color: 'white', opacity: 0.95, marginTop: 6, fontWeight: 600, animation: 'popIn 700ms cubic-bezier(.2,.9,.2,1) 120ms both' }}>Explore the wonders of Science</div>
                 <div style={{ height: 24 }} />
-                <button className="action-btn" onClick={onStart} style={{ padding: '14px 30px', fontSize: 20, animation: 'popIn 700ms cubic-bezier(.2,.9,.2,1) 260ms both', transformOrigin: 'center', background: 'white', color: '#ff512f', border: 'none' }} onMouseEnter={e => { e.currentTarget.style.animation = 'floatB 900ms ease-in-out infinite'; e.currentTarget.style.transform = 'scale(1.05)' }} onMouseLeave={e => { e.currentTarget.style.animation = 'popIn 700ms cubic-bezier(.2,.9,.2,1) 260ms both'; e.currentTarget.style.transform = 'scale(1)' }}>
-                    Start now
-                </button>
+                <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 18 }}>
+                    <button className="action-btn" onClick={onStart} style={{ padding: '12px 30px', fontSize: 'clamp(18px, 4vw, 20px)', background: 'white', color: '#ff512f', border: 'none' }}>Start Now</button>
+                </div>
             </div>
         </div>
     )

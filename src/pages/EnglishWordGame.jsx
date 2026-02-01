@@ -77,13 +77,13 @@ export default function EnglishWordGame({ onBack }) {
                     <button className="back-btn" onClick={onBack}>←</button>
                 </div>
 
-                <h1 className="center-title" style={{ fontSize: 40, marginBottom: 10 }}>Word Surgery</h1>
-                <p style={{ fontSize: 20, color: '#555', marginBottom: 30 }}>Tap a blue word part, then tap the matching red part!</p>
+                <h1 className="center-title" style={{ fontSize: 'clamp(28px, 6vw, 40px)', marginBottom: 10 }}>Word Surgery</h1>
+                <p style={{ fontSize: 'clamp(16px, 4vw, 20px)', color: '#555', marginBottom: 30, textAlign: 'center', padding: '0 20px' }}>Tap a blue word part, then tap the matching red part!</p>
 
-                <div style={{ display: 'flex', gap: 60, marginBottom: 40 }}>
+                <div style={{ display: 'flex', gap: 'clamp(20px, 5vw, 60px)', marginBottom: 40, flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
                     {/* Left Column */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: 200 }}>
-                        <h3 style={{ textAlign: 'center', color: '#444' }}>Part 1</h3>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: '100%', maxWidth: 200 }}>
+                        <h3 style={{ textAlign: 'center', color: '#444', fontSize: 'clamp(18px, 4vw, 24px)' }}>Part 1</h3>
                         {leftWords.map(word => {
                             const healed = isHealed(word, 'left')
                             if (healed) return <div key={word} style={{ height: 60 }} /> // Placeholder to keep layout stable or just hide
@@ -97,14 +97,15 @@ export default function EnglishWordGame({ onBack }) {
                                         background: selectedLeft === word ? '#fff9c4' : 'white',
                                         border: `3px solid ${selectedLeft === word ? '#fbc02d' : '#3498db'}`,
                                         borderRadius: 12,
-                                        padding: 16,
-                                        fontSize: 20,
+                                        padding: 'clamp(12px, 3vw, 16px)',
+                                        fontSize: 'clamp(18px, 5vw, 24px)',
                                         cursor: 'pointer',
                                         transform: selectedLeft === word ? 'scale(1.05)' : 'scale(1)',
                                         transition: 'all 0.2s',
                                         boxShadow: '0 4px 0 #ddd',
                                         opacity: healed ? 0 : 1,
-                                        pointerEvents: healed ? 'none' : 'auto'
+                                        pointerEvents: healed ? 'none' : 'auto',
+                                        width: '100%'
                                     }}
                                 >
                                     {word}
@@ -114,8 +115,8 @@ export default function EnglishWordGame({ onBack }) {
                     </div>
 
                     {/* Right Column */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: 200 }}>
-                        <h3 style={{ textAlign: 'center', color: '#444' }}>Part 2</h3>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: '100%', maxWidth: 200 }}>
+                        <h3 style={{ textAlign: 'center', color: '#444', fontSize: 'clamp(18px, 4vw, 24px)' }}>Part 2</h3>
                         {rightWords.map(word => {
                             const healed = isHealed(word, 'right')
                             if (healed) return <div key={word} style={{ height: 60 }} />
@@ -129,12 +130,13 @@ export default function EnglishWordGame({ onBack }) {
                                         background: 'white',
                                         border: '3px solid #e74c3c',
                                         borderRadius: 12,
-                                        padding: 16,
-                                        fontSize: 20,
+                                        padding: 'clamp(12px, 3vw, 16px)',
+                                        fontSize: 'clamp(18px, 5vw, 24px)',
                                         cursor: 'pointer',
                                         transition: 'all 0.2s',
                                         boxShadow: '0 4px 0 #ddd',
-                                        opacity: healed ? 0 : 1
+                                        opacity: healed ? 0 : 1,
+                                        width: '100%'
                                     }}
                                 >
                                     {word}
