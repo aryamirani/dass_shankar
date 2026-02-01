@@ -1,13 +1,12 @@
 import React, { useState, useMemo, useEffect } from 'react'
 
 const POSITIVE = [
-  '🌟 Great job!', '👍 Perfect!', '🤩 Excellent!', '🚀 Awesome!', '🎉 Well done!', '✨ Fantastic!', '🧠 You got it!'
+  '👍 Good', '✅ Yes', '🌟 Nice', '🎉 Great', '😃 Yay', '👌 Ok'
 ]
 
 const GENTLE = [
-  'Not quite! Try again.', 'Almost there! Check your answer.', 'Nice try! Give it another go.'
+  '👎 Retry', '☹️ Try again', '❌ Wrong'
 ]
-
 export default function MathsExerciseFive({ onBack, onNextExercise }) {
   // Generate 5 questions where student finds the middle number
   const questions = useMemo(() => {

@@ -38,6 +38,11 @@ const MENU_STRUCTURE = [
         id: 'science', label: 'Science Module', type: 'folder', icon: '🔬', children: [
             { id: 'scienceOrgan', label: 'Human Anatomy', type: 'file', icon: '🫀' }
         ]
+    },
+    {
+        id: 'evs', label: 'EVS Module', type: 'folder', icon: '🌿', children: [
+            { id: 'evsIdentify', label: 'Identify Objects', type: 'file', icon: '🖼️' }
+        ]
     }
 ]
 
@@ -47,7 +52,8 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
         'vocabulary': true,
         'maths': true,
         'english': true,
-        'science': true
+        'science': true,
+        'evs': true
     })
     const [collapsed, setCollapsed] = useState(false)
     const [hovered, setHovered] = useState(null)
@@ -72,7 +78,8 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
         const isActive = currentView === item.id ||
             (item.id === 'health' && (currentView === 'healthProblems' || currentView === 'assessment')) ||
             (item.id === 'science' && currentView === 'scienceOrgan') ||
-            (item.id === 'english' && currentView.startsWith('english'))
+            (item.id === 'english' && currentView.startsWith('english')) ||
+            (item.id === 'evs' && currentView.startsWith('evs'))
         const isFolder = item.type === 'folder'
         const isOpen = expanded[item.id]
         const isHovered = hovered === item.id
@@ -96,7 +103,7 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                         if (isFolder) {
                             // If we clicked strictly on the arrow (handled by stopPropagation if we separate it), but here we handle main click
                             // We want 'vocabulary' and 'maths' and 'health' to navigate
-                            if (item.id === 'vocabulary' || item.id === 'maths' || item.id === 'english' || item.id === 'science' || item.id === 'health') {
+                            if (item.id === 'vocabulary' || item.id === 'maths' || item.id === 'english' || item.id === 'science' || item.id === 'health' || item.id === 'evs') {
                                 onChangeView(item.id)
                             } else {
                                 toggleFolder(item.id)

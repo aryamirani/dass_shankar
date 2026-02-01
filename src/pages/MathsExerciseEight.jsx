@@ -1,11 +1,11 @@
 import React, { useState, useMemo, useEffect } from 'react'
 
 const POSITIVE = [
-  '🌟 Great job!', '👍 Perfect!', '🤩 Excellent!', '🚀 Awesome!', '🎉 Well done!', '✨ Fantastic!', '🧠 You got it!'
+  '👍 Good', '✅ Yes', '🌟 Nice', '🎉 Great', '😃 Yay', '👌 Ok'
 ]
 
 const GENTLE = [
-  'Not quite! Try again.', 'Almost there! Check your answer.', 'Nice try! Use the calculator to help!'
+  '👎 Retry', '☹️ Try again', '❌ Wrong'
 ]
 
 export default function MathsExerciseEight({ onBack, onComplete }) {
