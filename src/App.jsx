@@ -24,6 +24,8 @@ import MathsExerciseSix from './pages/MathsExerciseSix'
 import MathsExerciseSeven from './pages/MathsExerciseSeven'
 import MathsExerciseEight from './pages/MathsExerciseEight'
 import MathsExerciseNine from './pages/MathsExerciseNine'
+import MathsExerciseTen from './pages/MathsExerciseTen'
+import MathsExerciseEleven from './pages/MathsExerciseEleven'
 import EnglishOverview from './pages/EnglishOverview'
 import EnglishWordGame from './pages/EnglishWordGame'
 import EnglishPhonics from './pages/EnglishPhonics'
@@ -82,6 +84,8 @@ export default function App() {
   function goToMathsExerciseSeven() { setView({ name: 'mathsExerciseSeven' }) }
   function goToMathsExerciseEight() { setView({ name: 'mathsExerciseEight' }) }
   function goToMathsExerciseNine() { setView({ name: 'mathsExerciseNine' }) }
+  function goToMathsExerciseTen() { setView({ name: 'mathsExerciseTen' }) }
+  function goToMathsExerciseEleven() { setView({ name: 'mathsExerciseEleven' }) }
   function goToEnglish() { setView({ name: 'english' }) }
   function goToEnglishWordGame() { setView({ name: 'englishWordGame' }) }
   function goToEnglishPhonics() { setView({ name: 'englishPhonics' }) }
@@ -176,7 +180,9 @@ export default function App() {
         {view.name === 'mathsExerciseSix' && <MathsExerciseSix onBack={() => setView({ name: 'mathsExerciseFive' })} onNextExercise={() => { markCompleted('mathsExerciseSix'); goToMathsExerciseSeven() }} />}
         {view.name === 'mathsExerciseSeven' && <MathsExerciseSeven onBack={() => setView({ name: 'mathsExerciseSix' })} onNextExercise={() => { markCompleted('mathsExerciseSeven'); goToMathsExerciseEight() }} />}
         {view.name === 'mathsExerciseEight' && <MathsExerciseEight onBack={() => setView({ name: 'mathsExerciseSeven' })} onNextExercise={() => { markCompleted('mathsExerciseEight'); goToMathsExerciseNine() }} />}
-        {view.name === 'mathsExerciseNine' && <MathsExerciseNine onBack={() => setView({ name: 'mathsExerciseEight' })} onComplete={() => markCompleted('mathsExerciseNine')} />}
+        {view.name === 'mathsExerciseNine' && <MathsExerciseNine onBack={() => setView({ name: 'mathsExerciseEight' })} onComplete={() => markCompleted('mathsExerciseNine')} onNext={() => goToMathsExerciseTen()} />}
+        {view.name === 'mathsExerciseTen' && <MathsExerciseTen onBack={() => setView({ name: 'mathsExerciseNine' })} onComplete={() => markCompleted('mathsExerciseTen')} onNext={() => goToMathsExerciseEleven()} />}
+        {view.name === 'mathsExerciseEleven' && <MathsExerciseEleven onBack={() => setView({ name: 'mathsExerciseTen' })} onComplete={() => markCompleted('mathsExerciseEleven')} onNext={() => setView({ name: 'maths' })} />}
         {view.name === 'english' && <EnglishOverview onStart={goToEnglishWordGame} onBack={goHome} />}
 
         {view.name === 'englishWordGame' && <EnglishWordGame onBack={() => setView({ name: 'english' })} />}

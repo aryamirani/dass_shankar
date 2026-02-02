@@ -12,7 +12,7 @@ export default function Vocabulary({ onStart, onBack }) {
       </div>
       <div style={{ textAlign: 'center', background: 'rgba(255,255,255,0.0)', padding: 20 }}>
         <h1 style={{ fontSize: 'clamp(48px, 12vw, 120px)', letterSpacing: 4, margin: 0, fontWeight: 900, display: 'inline-block', lineHeight: 1, color: 'white', textShadow: '0 10px 30px rgba(0,0,0,0.1)', animation: 'popIn 700ms cubic-bezier(.2,.9,.2,1) both' }}>
-          Vocabulary
+          English
         </h1>
         <div style={{ height: 12 }} />
         <div style={{ fontSize: 'clamp(18px, 4vw, 20px)', color: '#333', opacity: 0.95, marginTop: 6, animation: 'popIn 700ms cubic-bezier(.2,.9,.2,1) 120ms both' }}>Start learning words with fun activities</div>

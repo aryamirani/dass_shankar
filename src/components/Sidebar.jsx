@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 const MENU_STRUCTURE = [
     { id: 'landing', label: 'Grade X', type: 'file', icon: '🏠' },
     {
-        id: 'vocabulary', label: 'Vocabulary Module', type: 'folder', icon: '📚', children: [
+        id: 'vocabulary', label: 'English Module', type: 'folder', icon: '📚', children: [
             { id: 'vocabularyExercise', label: 'Matching Game', type: 'file', icon: '🧩' },
             { id: 'vocabularyThree', label: 'Interactive Learn', type: 'file', icon: '🎮' }
         ]

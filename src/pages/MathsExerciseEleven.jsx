@@ -1,4 +1,4 @@
-// Word Problems 1
+//word problems 3
 import React, { useState, useEffect, useRef } from 'react'
 
 const POSITIVE = [
@@ -9,7 +9,7 @@ const GENTLE = [
   '👎 Retry', '☹️ Try again', '❌ Wrong'
 ]
 
-export default function MathsExerciseNine({ onBack, onComplete, onNext }) {
+export default function MathsExerciseEleven({ onBack, onComplete, onNext }) {
   const [userAnswer, setUserAnswer] = useState('')
   const [checked, setChecked] = useState(false)
   const [correct, setCorrect] = useState(null)
@@ -19,8 +19,8 @@ export default function MathsExerciseNine({ onBack, onComplete, onNext }) {
   const [message, setMessage] = useState(null)
   const successRef = useRef(null)
 
-  const correctAnswer = 2
-  const correctLeftAnswer = 1
+  const correctAnswer = 4
+  const correctLeftAnswer = 3
 
   useEffect(() => {
     if (message) {
@@ -95,7 +95,7 @@ export default function MathsExerciseNine({ onBack, onComplete, onNext }) {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 30 }}>
           {/* Image */}
           <img 
-            src="/assets/bags2.png" 
+            src="/assets/bags4.png" 
             alt="bags" 
             style={{ 
               width: '100%', 
