@@ -23,6 +23,7 @@ import MathsExerciseFive from './pages/MathsExerciseFive'
 import MathsExerciseSix from './pages/MathsExerciseSix'
 import MathsExerciseSeven from './pages/MathsExerciseSeven'
 import MathsExerciseEight from './pages/MathsExerciseEight'
+import MathsExerciseNine from './pages/MathsExerciseNine'
 import EnglishOverview from './pages/EnglishOverview'
 import EnglishWordGame from './pages/EnglishWordGame'
 import EnglishPhonics from './pages/EnglishPhonics'
@@ -80,6 +81,7 @@ export default function App() {
   function goToMathsExerciseSix() { setView({ name: 'mathsExerciseSix' }) }
   function goToMathsExerciseSeven() { setView({ name: 'mathsExerciseSeven' }) }
   function goToMathsExerciseEight() { setView({ name: 'mathsExerciseEight' }) }
+  function goToMathsExerciseNine() { setView({ name: 'mathsExerciseNine' }) }
   function goToEnglish() { setView({ name: 'english' }) }
   function goToEnglishWordGame() { setView({ name: 'englishWordGame' }) }
   function goToEnglishPhonics() { setView({ name: 'englishPhonics' }) }
@@ -136,8 +138,8 @@ export default function App() {
     // Health - Pink
     if (view.name === 'health' || view.name === 'healthProblems' || view.name === 'assessment' || view.name === 'lesson') return 'linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%)'
 
-    // Vocabulary - Green
-    if (view.name === 'vocabulary' || view.name.startsWith('vocabulary')) return 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)'
+    // Vocabulary - Orange
+    if (view.name === 'vocabulary' || view.name.startsWith('vocabulary')) return 'linear-gradient(135deg, #f6d365 0%, #fda085 100%)'
 
     // Computer - Blue
     if (view.name === 'computer' || view.name === 'computerKeyboard') return 'linear-gradient(135deg, #0f172a 0%, #334155 100%)'
@@ -173,7 +175,8 @@ export default function App() {
         {view.name === 'mathsExerciseFive' && <MathsExerciseFive onBack={() => setView({ name: 'mathsExerciseFour' })} onNextExercise={() => { markCompleted('mathsExerciseFive'); goToMathsExerciseSix() }} />}
         {view.name === 'mathsExerciseSix' && <MathsExerciseSix onBack={() => setView({ name: 'mathsExerciseFive' })} onNextExercise={() => { markCompleted('mathsExerciseSix'); goToMathsExerciseSeven() }} />}
         {view.name === 'mathsExerciseSeven' && <MathsExerciseSeven onBack={() => setView({ name: 'mathsExerciseSix' })} onNextExercise={() => { markCompleted('mathsExerciseSeven'); goToMathsExerciseEight() }} />}
-        {view.name === 'mathsExerciseEight' && <MathsExerciseEight onBack={() => setView({ name: 'mathsExerciseSeven' })} onComplete={() => markCompleted('mathsExerciseEight')} />}
+        {view.name === 'mathsExerciseEight' && <MathsExerciseEight onBack={() => setView({ name: 'mathsExerciseSeven' })} onNextExercise={() => { markCompleted('mathsExerciseEight'); goToMathsExerciseNine() }} />}
+        {view.name === 'mathsExerciseNine' && <MathsExerciseNine onBack={() => setView({ name: 'mathsExerciseEight' })} onComplete={() => markCompleted('mathsExerciseNine')} />}
         {view.name === 'english' && <EnglishOverview onStart={goToEnglishWordGame} onBack={goHome} />}
 
         {view.name === 'englishWordGame' && <EnglishWordGame onBack={() => setView({ name: 'english' })} />}

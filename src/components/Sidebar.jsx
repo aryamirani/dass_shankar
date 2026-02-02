@@ -18,7 +18,8 @@ const MENU_STRUCTURE = [
             { id: 'mathsExerciseFive', label: 'In between', type: 'file', icon: '🔹' },
             { id: 'mathsExerciseSix', label: 'Ordering', type: 'file', icon: '📊' },
             { id: 'mathsExerciseSeven', label: 'Place Values', type: 'file', icon: '🏘️' },
-            { id: 'mathsExerciseEight', label: 'Calculator', type: 'file', icon: '🧮' }
+            { id: 'mathsExerciseEight', label: 'Calculator', type: 'file', icon: '🧮' },
+            { id: 'mathsExerciseNine', label: 'Word Problems', type: 'file', icon: '💭' }
         ]
     },
     {
