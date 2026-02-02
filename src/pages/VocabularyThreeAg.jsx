@@ -186,6 +186,13 @@ export default function VocabularyThreeAg({ onBack, onGoToAd }) {
         {step === 2 && typeIndex >= typeOrder.length && <h2 style={{ textAlign: 'center', color: '#2e7d32' }}>Excellent Typing! 🎉</h2>}
       </div>
 
+      {/* Floating Success/Error Message */}
+      {message && (
+        <div style={{ position: 'fixed', top: 100, left: '50%', transform: 'translateX(-50%)', padding: '15px 30px', borderRadius: 15, background: 'white', boxShadow: '0 10px 30px rgba(0,0,0,0.2)', fontSize: 28, fontWeight: 800, zIndex: 1000 }}>
+          {message.text}
+        </div>
+      )}
+
       <div className="word-footer" style={{
         position: 'fixed', bottom: 30, left: '50%', transform: 'translateX(-50%)',
         background: 'rgba(255, 255, 255, 0.95)', padding: '15px 40px', borderRadius: 50,
