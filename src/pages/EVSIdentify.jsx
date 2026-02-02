@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 const SECTIONS = [
   {
@@ -78,6 +78,7 @@ export default function EVSIdentify({ onBack }) {
   }, [])
 
   const [answers, setAnswers] = useState({})
+  const [sectionIndex, setSectionIndex] = useState(0)
 
   const totalItems = SECTIONS.reduce((acc, section) => acc + section.items.length, 0)
   const correctCount = Object.keys(answers).filter(id => {
@@ -88,6 +89,28 @@ export default function EVSIdentify({ onBack }) {
   function handleSelect(item, choice) {
     setAnswers(prev => ({ ...prev, [item.id]: choice }))
   }
+
+  const currentSection = SECTIONS[sectionIndex]
+
+  function goPrevSection() {
+    setSectionIndex(prev => (prev - 1 + SECTIONS.length) % SECTIONS.length)
+  }
+
+  function goNextSection() {
+    setSectionIndex(prev => (prev + 1) % SECTIONS.length)
+  }
+
+  useEffect(() => {
+    function handleKeyDown(event) {
+      if (event.key === 'ArrowLeft') {
+        goPrevSection()
+      } else if (event.key === 'ArrowRight') {
+        goNextSection()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   return (
     <div style={{ minHeight: '100vh', padding: '40px 24px 80px', position: 'relative', color: '#fff' }}>
@@ -224,6 +247,36 @@ export default function EVSIdentify({ onBack }) {
           color: #fff;
           text-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
+        .evs-nav {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 16px;
+          margin: 16px 0 8px;
+        }
+        .evs-nav-btn {
+          width: 46px;
+          height: 46px;
+          border-radius: 50%;
+          border: none;
+          background: rgba(255,255,255,0.9);
+          color: #dd2476;
+          font-size: 24px;
+          font-weight: 900;
+          cursor: pointer;
+          box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+          transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .evs-nav-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 22px rgba(0,0,0,0.25);
+        }
+        .evs-nav-label {
+          font-size: 18px;
+          font-weight: 700;
+          color: #fff;
+          text-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
         @media (max-width: 900px) {
           .evs-grid { grid-template-columns: repeat(2, minmax(200px, 1fr)); }
         }
@@ -234,64 +287,68 @@ export default function EVSIdentify({ onBack }) {
       `}</style>
 
       <div style={{ textAlign: 'center', marginBottom: 12 }}>
-        <h1 style={{ margin: 0, fontSize: 'clamp(36px, 6vw, 64px)', fontWeight: 900, color: '#fff', textShadow: '0 4px 12px rgba(0,0,0,0.25)' }}>EVS: Identify the Object</h1>
+        <h1 style={{ margin: 0, fontSize: 'clamp(36px, 6vw, 64px)', fontWeight: 900, color: '#fff', textShadow: '0 4px 12px rgba(0,0,0,0.25)' }}>Identify the Object</h1>
         <div style={{ marginTop: 8, fontSize: 18, opacity: 0.95 }}>Tap the correct name for each picture.</div>
       </div>
 
       <div className="evs-progress">Correct: {correctCount} / {totalItems}</div>
 
-      {SECTIONS.map(section => (
-        <div key={section.id} className="evs-section">
-          <div className="evs-title">{section.title}</div>
-          <div className="evs-grid">
-            {section.items.map(item => {
-              const selected = answers[item.id]
-              const isCorrect = selected === item.label
+      <div className="evs-nav">
+        <button className="evs-nav-btn" onClick={goPrevSection} aria-label="Previous section">←</button>
+        <div className="evs-nav-label">Section {sectionIndex + 1} of {SECTIONS.length}</div>
+        <button className="evs-nav-btn" onClick={goNextSection} aria-label="Next section">→</button>
+      </div>
 
-              return (
-                <div key={item.id} className="evs-card">
-                  <div className="evs-photo" aria-label={item.label}>
-                    {item.imageSrc ? (
-                      <img src={item.imageSrc} alt={item.label} />
-                    ) : (
-                      <div className="evs-photo-placeholder">
-                        <span role="img" aria-label="photo">🖼️</span>
-                        Add photo for {item.label}
-                      </div>
-                    )}
-                  </div>
+      <div className="evs-section">
+        <div className="evs-title">{currentSection.title}</div>
+        <div className="evs-grid">
+          {currentSection.items.map(item => {
+            const selected = answers[item.id]
+            const isCorrect = selected === item.label
 
-                  {isCorrect ? (
-                    <div className="evs-label">
-                      <span>{item.label}</span>
-                      <span className="evs-tick" aria-hidden="true">✓</span>
-                    </div>
+            return (
+              <div key={item.id} className="evs-card">
+                <div className="evs-photo" aria-label={item.label}>
+                  {item.imageSrc ? (
+                    <img src={item.imageSrc} alt={item.label} />
                   ) : (
-                    <div className="evs-options">
-                      {optionMap[item.id].map(option => {
-                        const isWrong = selected === option && option !== item.label
-                        return (
-                          <button
-                            key={option}
-                            className={`evs-option-btn ${option === item.label && isCorrect ? 'correct' : ''} ${isWrong ? 'wrong' : ''}`}
-                            onClick={() => handleSelect(item, option)}
-                          >
-                            {option}
-                          </button>
-                        )
-                      })}
+                    <div className="evs-photo-placeholder">
+                      <span role="img" aria-label="photo">🖼️</span>
+                      Add photo for {item.label}
                     </div>
-                  )}
-
-                  {selected && !isCorrect && (
-                    <div style={{ fontSize: 12, color: '#b91c1c', fontWeight: 700 }}>Try again</div>
                   )}
                 </div>
-              )
-            })}
-          </div>
+
+                {isCorrect ? (
+                  <div className="evs-label">
+                    <span>{item.label}</span>
+                    <span className="evs-tick" aria-hidden="true">✓</span>
+                  </div>
+                ) : (
+                  <div className="evs-options">
+                    {optionMap[item.id].map(option => {
+                      const isWrong = selected === option && option !== item.label
+                      return (
+                        <button
+                          key={option}
+                          className={`evs-option-btn ${option === item.label && isCorrect ? 'correct' : ''} ${isWrong ? 'wrong' : ''}`}
+                          onClick={() => handleSelect(item, option)}
+                        >
+                          {option}
+                        </button>
+                      )
+                    })}
+                  </div>
+                )}
+
+                {selected && !isCorrect && (
+                  <div style={{ fontSize: 12, color: '#b91c1c', fontWeight: 700 }}>Try again</div>
+                )}
+              </div>
+            )
+          })}
         </div>
-      ))}
+      </div>
     </div>
   )
 }
