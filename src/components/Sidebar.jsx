@@ -56,9 +56,9 @@ const MENU_STRUCTURE = [
 // Helper function to determine which folder contains the current view
 function getActiveFolderId(currentView) {
     if (currentView === 'healthProblems' || currentView === 'assessment' || currentView === 'health' || currentView === 'lesson') return 'health'
-    if (currentView === 'vocabularyExercise' || currentView === 'vocabularyThree' || currentView === 'vocabulary') return 'vocabulary'
-    if (currentView.startsWith('mathsExercise') || currentView === 'maths') return 'maths'
-    if (currentView.startsWith('english')) return 'english'
+    if (currentView && currentView.startsWith('vocabulary')) return 'vocabulary'
+    if ((currentView && currentView.startsWith('mathsExercise')) || currentView === 'maths') return 'maths'
+    if (currentView && currentView.startsWith('english')) return 'english'
     if (currentView === 'scienceOrgan' || currentView === 'scienceHuman' || currentView === 'science') return 'science'
     if (currentView === 'computerKeyboard' || currentView === 'computer') return 'computer'
     return null
@@ -80,6 +80,7 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
     })
     const [collapsed, setCollapsed] = useState(false)
     const [hovered, setHovered] = useState(null)
+    const [subOpen, setSubOpen] = useState({})
 
     // Mobile support logic
     const [isMobile, setIsMobile] = useState(false)
@@ -123,25 +124,35 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
         if (item.type === 'folder') {
             toggleFolder(item.id)
             onChangeView(item.id)
-        } else {
-            // Find parent folder
-            let parentId = null
-            for (const mod of MENU_STRUCTURE) {
-                if (mod.type === 'folder' && mod.children && mod.children.some(child => child.id === item.id)) {
-                    parentId = mod.id
-                    break
-                }
-            }
-            if (parentId) {
-                setExpanded(prev => {
-                    const newExpanded = Object.fromEntries(Object.keys(prev).map(k => [k, false]))
-                    newExpanded[parentId] = true
-                    return newExpanded
-                })
-            }
-            onChangeView(item.id)
             if (isMobile) setMobileOpen(false)
+            return
         }
+
+        // Find parent folder and expand it
+        let parentId = null
+        for (const mod of MENU_STRUCTURE) {
+            if (mod.type === 'folder' && mod.children && mod.children.some(child => child.id === item.id)) {
+                parentId = mod.id
+                break
+            }
+        }
+        if (parentId) {
+            setExpanded(prev => {
+                const newExpanded = Object.fromEntries(Object.keys(prev).map(k => [k, false]))
+                newExpanded[parentId] = true
+                return newExpanded
+            })
+        }
+
+        // Special handling for Vocabulary submenu toggles
+        if (item.id === 'vocabularyExercise' || item.id === 'vocabularyThree') {
+            setSubOpen(prev => ({ ...prev, [item.id]: !prev[item.id] }))
+            return
+        }
+
+        // Default: navigate to the view
+        onChangeView(item.id)
+        if (isMobile) setMobileOpen(false)
     }
 
     const renderItem = (item, level = 0) => {
@@ -163,26 +174,6 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
         return (
             <div key={item.id} style={{ marginBottom: 4 }}>
                 <div
-                    onClick={(e) => {
-                        // Logic:
-                        // If user clicks the arrow, TOGGLE.
-                        // If user clicks the label/box:
-                        //   - If it's a file, NAVIGATE.
-                        //   - If it's a folder:
-                        //       - If it has a navId (like vocab/maths), NAVIGATE.
-                        //       - Else TOGGLE.
-                        if (isFolder) {
-                            // If we clicked strictly on the arrow (handled by stopPropagation if we separate it), but here we handle main click
-                            // We want 'vocabulary' and 'maths' and 'health' to navigate
-                            if (item.id === 'vocabulary' || item.id === 'maths' || item.id === 'english' || item.id === 'science' || item.id === 'health' || item.id === 'evs') {
-                                onChangeView(item.id)
-                            } else {
-                                toggleFolder(item.id)
-                            }
-                        } else {
-                            onChangeView(item.id)
-                        }
-                    }}
                     onClick={() => handleItemClick(item)}
                     onMouseEnter={() => setHovered(item.id)}
                     onMouseLeave={() => setHovered(null)}
@@ -262,7 +253,29 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                         overflow: 'hidden',
                         animation: 'slideDown 0.2s ease-out'
                     }}>
-                        {item.children.map(child => renderItem(child, level + 1))}
+                        {item.children.map(child => (
+                            <div key={child.id}>
+                                {renderItem(child, level + 1)}
+                                {/* Special submenu for Vocabulary matching game */}
+                                {child.id === 'vocabularyExercise' && subOpen['vocabularyExercise'] && (
+                                    <div style={{ paddingLeft: 20 + (level + 1) * 28 + 12, paddingTop: 6, paddingBottom: 6, display: 'flex', gap: 8, flexDirection: 'column' }}>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExercise'); if (isMobile) setMobileOpen(false); }} style={{ padding: '8px 12px', textAlign: 'left' }}>at</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAg'); if (isMobile) setMobileOpen(false); }} style={{ padding: '8px 12px', textAlign: 'left' }}>ag</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAM'); if (isMobile) setMobileOpen(false); }} style={{ padding: '8px 12px', textAlign: 'left' }}>am</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAd'); if (isMobile) setMobileOpen(false); }} style={{ padding: '8px 12px', textAlign: 'left' }}>ad</button>
+                                    </div>
+                                )}
+                                {/* Special submenu for Vocabulary interactive learn */}
+                                {child.id === 'vocabularyThree' && subOpen['vocabularyThree'] && (
+                                    <div style={{ paddingLeft: 20 + (level + 1) * 28 + 12, paddingTop: 6, paddingBottom: 6, display: 'flex', gap: 8, flexDirection: 'column' }}>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThree'); if (isMobile) setMobileOpen(false); }} style={{ padding: '8px 12px', textAlign: 'left' }}>at</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAg'); if (isMobile) setMobileOpen(false); }} style={{ padding: '8px 12px', textAlign: 'left' }}>ag</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAM'); if (isMobile) setMobileOpen(false); }} style={{ padding: '8px 12px', textAlign: 'left' }}>am</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAd'); if (isMobile) setMobileOpen(false); }} style={{ padding: '8px 12px', textAlign: 'left' }}>ad</button>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
                     </div>
                 )}
             </div>
