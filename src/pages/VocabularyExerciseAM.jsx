@@ -8,7 +8,7 @@ const GENTLE = [
   '👎 Retry', '☹️ Try again', '❌ Wrong'
 ]
 
-export default function VocabularyExercise({ onBack }) {
+export default function VocabularyExercise({ onBack, onNextExercise }) {
   // Generate randomized grid with 'am' targets
   const initialData = useMemo(() => {
     const distractors = ['an', 'ab', 'ac', 'ap', 'ad', 'at', 'ag', 'af', 'ar']
@@ -119,7 +119,13 @@ export default function VocabularyExercise({ onBack }) {
         </div>
 
         {completedCount === totalAm && (
-          <div style={{ textAlign: 'center', marginTop: 20, fontSize: 34, fontWeight: '900', color: '#2e7d32' }}>All done — great work!</div>
+          <div style={{ textAlign: 'center', marginTop: 20 }}>
+            <div style={{ fontSize: 34, fontWeight: '900', color: '#2e7d32' }}>All done — great work!</div>
+            <div style={{ height: 12 }} />
+            <div>
+              <button className="action-btn" onClick={() => { if (onNextExercise) onNextExercise() }} style={{ padding: '10px 18px', fontWeight: 800 }}>Next</button>
+            </div>
+          </div>
         )}
       </div>
     </div>
