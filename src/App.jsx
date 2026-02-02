@@ -7,6 +7,7 @@ import Lesson from './pages/Lesson'
 import Assessment from './pages/Assessment'
 import Vocabulary from './pages/Vocabulary'
 import VocabularyExercise from './pages/VocabularyExercise'
+import VocabularyExerciseAM from './pages/VocabularyExerciseAM'
 import VocabularyThree from './pages/VocabularyThree'
 import Maths from './pages/Maths'
 import MathsExerciseOne from './pages/MathsExerciseOne'
@@ -58,6 +59,7 @@ export default function App() {
   function goToHealthProblems() { setView({ name: 'healthProblems' }) }
   function goToVocabulary() { setView({ name: 'vocabulary' }) }
   function goToVocabularyExercise() { setView({ name: 'vocabularyExercise' }) }
+  function goToVocabularyExerciseAM() { setView({ name: 'vocabularyExerciseAM' }) }
   function goToVocabularyThree() { setView({ name: 'vocabularyThree' }) }
   function goToMaths() { setView({ name: 'maths' }) }
   function goToMathsExerciseOne() { setView({ name: 'mathsExerciseOne' }) }
@@ -145,8 +147,9 @@ export default function App() {
         {view.name === 'lesson' && <Lesson data={CONDITIONS[view.index]} index={view.index} total={CONDITIONS.length} onBack={goToHealthProblems} onNext={next} onComplete={markCompleted} onBackToGrid={() => { markCompleted('health'); goToHealthProblems() }} />}
         {view.name === 'assessment' && <Assessment onDone={() => { markCompleted('assessment'); goToHealthProblems() }} />}
         {view.name === 'vocabulary' && <Vocabulary onStart={goToVocabularyExercise} onBack={goHome} />}
-        {view.name === 'vocabularyExercise' && <VocabularyExercise onBack={() => setView({ name: 'vocabulary' })} onNextExercise={() => { markCompleted('vocabularyExercise'); goToVocabularyThree() }} />}
-        {view.name === 'vocabularyThree' && <VocabularyThree onBack={() => setView({ name: 'vocabulary' })} />}
+  {view.name === 'vocabularyExercise' && <VocabularyExercise onBack={() => setView({ name: 'vocabulary' })} onNextExercise={() => { markCompleted('vocabularyExercise'); goToVocabularyThree() }} />}
+  {view.name === 'vocabularyExerciseAM' && <VocabularyExerciseAM onBack={() => setView({ name: 'vocabulary' })} />}
+  {view.name === 'vocabularyThree' && <VocabularyThree onBack={() => setView({ name: 'vocabulary' })} onGoToAM={goToVocabularyExerciseAM} />}
         {view.name === 'maths' && <Maths onStart={goToMathsExerciseOne} onBack={goHome} />}
         {view.name === 'mathsExerciseOne' && <MathsExerciseOne onBack={() => setView({ name: 'maths' })} onNextExercise={() => { markCompleted('mathsExerciseOne'); goToMathsExerciseTwo() }} />}
         {view.name === 'mathsExerciseTwo' && <MathsExerciseTwo onBack={() => setView({ name: 'mathsExerciseOne' })} onNextExercise={() => { markCompleted('mathsExerciseTwo'); goToMathsExerciseThree() }} />}

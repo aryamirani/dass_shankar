@@ -21,3 +21,4 @@ export default function Landing({ onVocabulary, onHealth, onMaths, onEnglish, on
     </div>
   )
 }
+
