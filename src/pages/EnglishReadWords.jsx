@@ -25,30 +25,6 @@ export default function EnglishReadWords({ onBack, onNext }) {
           <div>The <span style={{ color: '#ff0000' }}>rat</span> <span style={{ color: '#ff0000' }}>ran</span> to a <span style={{ color: '#ff0000' }}>van</span>.</div>
           <div><span style={{ color: '#ff0000' }}>Dad bag</span> <span style={{ color: '#ff0000' }}>had</span> a <span style={{ color: '#ff0000' }}>tag</span>.</div>
         </div>
-
-        {onNext && (
-          <div style={{ textAlign: 'center', marginTop: 40 }}>
-            <button
-              onClick={onNext}
-              style={{
-                padding: '12px 28px',
-                fontSize: 'clamp(16px, 4vw, 20px)',
-                fontWeight: 700,
-                background: '#f6d365',
-                color: '#333',
-                border: 'none',
-                borderRadius: 8,
-                cursor: 'pointer',
-                transition: 'all 0.2s',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
-              }}
-              onMouseEnter={(e) => { e.target.style.background = '#fda085' }}
-              onMouseLeave={(e) => { e.target.style.background = '#f6d365' }}
-            >
-              Next →
-            </button>
-          </div>
-        )}
       </div>
     </div>
   )
