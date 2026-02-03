@@ -1,6 +1,6 @@
 import React from 'react'
 
-import CONDITIONS from '../data/conditions'
+import CONDITIONS from '../../../data/conditions'
 
 export default function HealthProblems({ onStart, onSelect, completed = [], allDone = false, onAllDone, onVocabulary, onBack }) {
   const [page, setPage] = React.useState(0);

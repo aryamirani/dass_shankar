@@ -13,7 +13,7 @@ const POSITIVE_FEEDBACKS = [
 ];
 
 import React, { useState, useRef, useEffect } from 'react'
-import CONDITIONS from '../data/conditions'
+import CONDITIONS from '../../../data/conditions'
 
 const DIAG_OPTIONS = CONDITIONS.map(c => ({ id: c.id, label: c.title, img: c.img }))
 
