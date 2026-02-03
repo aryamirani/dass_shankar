@@ -28,6 +28,12 @@ const MENU_STRUCTURE = [
             { id: 'computerKeyboard', label: 'Typing Practice', type: 'file', icon: '⌨️' }
         ]
     },
+    {
+        id: 'evs', label: 'EVS Module', type: 'folder', icon: '🌿', children: [
+            { id: 'evsIdentify', label: 'Identify Objects', type: 'file', icon: '🖼️' },
+            { id: 'evsMap', label: 'Map', type: 'file', icon: '🗺️' }
+        ]
+    },
     { id: 'landing2', label: 'Grade X2', type: 'file', icon: '🏠' },
     {
         id: 'health', label: 'Health Module', type: 'folder', icon: '❤️', children: [
@@ -39,6 +45,7 @@ const MENU_STRUCTURE = [
         id: 'english', label: 'English Module', type: 'folder', icon: '�', children: [{ id: 'englishWordGame', label: 'Word Surgery', type: 'file', icon: '📚'},
             { id: 'englishPhonics', label: 'Word Match', type: 'file', icon: '📐' },
             { id: 'englishFillBlanks', label: 'Fill Blanks', type: 'file', icon: '✍️' }
+
         ]
     },
     {
@@ -46,18 +53,14 @@ const MENU_STRUCTURE = [
             // { id: 'scienceOrgan', label: 'Human Anatomy', type: 'file', icon: '🫀' },
             { id: 'scienceHuman', label: 'Identify Organs', type: 'file', icon: '🧠' }
         ]
-    },
-    {
-        id: 'evs', label: 'EVS Module', type: 'folder', icon: '🌿', children: [
-            { id: 'evsIdentify', label: 'Identify Objects', type: 'file', icon: '🖼️' }
-        ]
     }
 ]
 
 // Helper function to determine which folder contains the current view
 function getActiveFolderId(currentView) {
     if (currentView === 'healthProblems' || currentView === 'assessment' || currentView === 'health' || currentView === 'lesson') return 'health'
-    if (currentView && (currentView.startsWith('vocabulary') || currentView === 'englishReadWords' || currentView === 'englishReadWords2')) return 'vocabulary'
+    if (currentView && currentView.startsWith('vocabulary')) return 'vocabulary'
+    if (currentView === 'englishReadWords' || currentView === 'englishReadWords2') return 'vocabulary'
     if ((currentView && currentView.startsWith('mathsExercise')) || currentView === 'maths') return 'maths'
     if (currentView && currentView.startsWith('english')) return 'english'
     if (currentView === 'scienceOrgan' || currentView === 'scienceHuman' || currentView === 'science') return 'science'
@@ -160,7 +163,8 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
         const isActive = currentView === item.id ||
             (item.id === 'health' && (currentView === 'healthProblems' || currentView === 'assessment')) ||
             (item.id === 'science' && (currentView === 'scienceOrgan' || currentView === 'scienceHuman')) ||
-            (item.id === 'english' && currentView.startsWith('english')) ||
+            (item.id === 'english' && currentView.startsWith('english') && currentView !== 'englishReadWords' && currentView !== 'englishReadWords2') ||
+            (item.id === 'vocabulary' && (currentView.startsWith('vocabulary') || currentView === 'englishReadWords' || currentView === 'englishReadWords2')) ||
             (item.id === 'computer' && currentView === 'computerKeyboard') ||
             (item.id === 'evs' && currentView.startsWith('evs'))
         const isFolder = item.type === 'folder'
