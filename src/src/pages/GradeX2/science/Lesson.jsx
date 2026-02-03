@@ -14,14 +14,14 @@ const POSITIVE_FEEDBACKS = [
 ];
 
 const ALL_ITEMS = [
-  { id: 'medicine', src: '/medicine.png' },
-  { id: 'thermometer', src: '/thermometer.png' },
-  { id: 'firstaid', src: '/firstaid.png' },
-  { id: 'hotdrink', src: '/hotdrink.png' },
-  { id: 'food', src: '/food.png' },
-  { id: 'tissue', src: '/tissue.png' },
-  { id: 'toilet', src: '/toilet.png' },
-  { id: 'wetcloth', src: '/wetcloth.png' }
+  { id: 'medicine', src: '/GradeX2/science/Lesson/medicine.png' },
+  { id: 'thermometer', src: '/GradeX2/science/Lesson/thermometer.png' },
+  { id: 'firstaid', src: '/GradeX2/science/Lesson/firstaid.png' },
+  { id: 'hotdrink', src: '/GradeX2/science/Lesson/hotdrink.png' },
+  { id: 'food', src: '/GradeX2/science/Lesson/food.png' },
+  { id: 'tissue', src: '/GradeX2/science/Lesson/tissue.png' },
+  { id: 'toilet', src: '/GradeX2/science/Lesson/toilet.png' },
+  { id: 'wetcloth', src: '/GradeX2/science/Lesson/wetcloth.png' }
 ]
 
 export default function Lesson({ data, index, total, onBack, onNext, onComplete, onBackToGrid }) {
@@ -202,7 +202,7 @@ export default function Lesson({ data, index, total, onBack, onNext, onComplete,
 
         {phase === 'healed' && (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 50 }}>
-            <img src={'/boy.png'} alt="happy" style={{ width: 300 }} />
+            <img src={'/GradeX2/health/Problems/boy.png'} alt="happy" style={{ width: 300 }} />
             <h2 style={{ color: '#2e7d32' }}>I feel much better now!</h2>
             <button className="action-btn" onClick={() => {
               if (onComplete) {

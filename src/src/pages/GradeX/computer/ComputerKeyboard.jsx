@@ -304,8 +304,8 @@ export default function ComputerKeyboard({ onBack }) {
                 }
             `}</style>
 
-            <audio ref={correctRef} src="/correct.wav" />
-            <audio ref={wrongRef} src="/wrong.wav" />
+            <audio ref={correctRef} src="/GradeX/computer/Keyboard/correct.wav" />
+            <audio ref={wrongRef} src="/GradeX/computer/Keyboard/wrong.wav" />
         </div>
     )
 }

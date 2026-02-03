@@ -95,7 +95,7 @@ export default function MathsExerciseEleven({ onBack, onComplete, onNext }) {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 30 }}>
           {/* Image */}
           <img 
-            src="/public/bags4.png" 
+            src="/GradeX/maths/ExerciseEleven/bags4.png" 
             alt="bags" 
             style={{ 
               width: '100%', 

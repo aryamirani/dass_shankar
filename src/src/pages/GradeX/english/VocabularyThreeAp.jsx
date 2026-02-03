@@ -2,9 +2,9 @@ import React, { useState, useMemo, useRef, useEffect } from 'react'
 
 // Updated word list for "ap" words: cap, map, tap
 const WORDS = [
-  { id: 'cap', img: '/vocab/ap/cap.png' },
-  { id: 'map', img: '/vocab/ap/map.png' },
-  { id: 'tap', img: '/vocab/ap/tap.png' }
+  { id: 'cap', img: '/GradeX/english/VocabularyThreeAp/cap.png' },
+  { id: 'map', img: '/GradeX/english/VocabularyThreeAp/map.png' },
+  { id: 'tap', img: '/GradeX/english/VocabularyThreeAp/tap.png' }
 ]
 
 const POSITIVE = ['👍 Good', '✅ Yes', '🌟 Nice', '🎉 Great', '😃 Yay', '👌 Ok']

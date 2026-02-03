@@ -2,9 +2,9 @@ import React, { useState, useMemo, useRef, useEffect } from 'react'
 
 // Updated word list based on Page 3 & 4 of the "ad" PDF
 const WORDS = [
-  { id: 'dad', img: '/dad.png' },
-  { id: 'pad', img: '/pad.png' },
-  { id: 'sad', img: '/sad.png' }
+  { id: 'dad', img: '/GradeX/english/VocabularyThreeAd/dad.png' },
+  { id: 'pad', img: '/GradeX/english/VocabularyThreeAd/pad.png' },
+  { id: 'sad', img: '/GradeX/english/VocabularyThreeAd/sad.png' }
 ]
 
 const POSITIVE = ['👍 Good', '✅ Yes', '🌟 Nice', '🎉 Great', '😃 Yay', '👌 Ok']

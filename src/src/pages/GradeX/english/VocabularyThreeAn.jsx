@@ -2,11 +2,11 @@ import React, { useState, useMemo, useRef, useEffect } from 'react'
 
 // Updated word list for "an" words: can, man, pan, fan, van
 const WORDS = [
-  { id: 'can', img: '/vocab/an/can.png' },
-  { id: 'fan', img: '/vocab/an/fan.png' },
-  { id: 'man', img: '/vocab/an/man.png' },
-  { id: 'pan', img: '/vocab/an/pan.png' },
-  { id: 'van', img: '/vocab/an/van.png' }
+  { id: 'can', img: '/GradeX/english/VocabularyThreeAn/can.png' },
+  { id: 'fan', img: '/GradeX/english/VocabularyThreeAn/fan.png' },
+  { id: 'man', img: '/GradeX/english/VocabularyThreeAn/man.png' },
+  { id: 'pan', img: '/GradeX/english/VocabularyThreeAn/pan.png' },
+  { id: 'van', img: '/GradeX/english/VocabularyThreeAn/van.png' }
 ]
 
 const POSITIVE = ['👍 Good', '✅ Yes', '🌟 Nice', '🎉 Great', '😃 Yay', '👌 Ok']

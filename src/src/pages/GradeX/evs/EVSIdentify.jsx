@@ -5,45 +5,45 @@ const SECTIONS = [
     id: 'animals',
     title: 'Learn to identify and name different animals',
     items: [
-      { id: 'animal-cat', label: 'cat', imageSrc: '/public/cat.png' },
-      { id: 'animal-dog', label: 'dog', imageSrc: '/public/dog.png' },
-      { id: 'animal-pig', label: 'pig', imageSrc: '/public/pig.png' },
-      { id: 'animal-cow', label: 'cow', imageSrc: '/public/cow.png' },
-      { id: 'animal-goat', label: 'goat', imageSrc: '/public/goat.png' },
-      { id: 'animal-buffalo', label: 'buffalo', imageSrc: '/public/buffalo.png' },
-      { id: 'animal-donkey', label: 'donkey', imageSrc: '/public/donkey.png' },
-      { id: 'animal-horse', label: 'horse', imageSrc: '/public/horse.png' },
-      { id: 'animal-camel', label: 'camel', imageSrc: '/public/camel.png' }
+      { id: 'animal-cat', label: 'cat', imageSrc: '/GradeX/evs/Identify/cat.png' },
+      { id: 'animal-dog', label: 'dog', imageSrc: '/GradeX/evs/Identify/dog.png' },
+      { id: 'animal-pig', label: 'pig', imageSrc: '/GradeX/evs/Identify/pig.png' },
+      { id: 'animal-cow', label: 'cow', imageSrc: '/GradeX/evs/Identify/cow.png' },
+      { id: 'animal-goat', label: 'goat', imageSrc: '/GradeX/evs/Identify/goat.png' },
+      { id: 'animal-buffalo', label: 'buffalo', imageSrc: '/GradeX/evs/Identify/buffalo.png' },
+      { id: 'animal-donkey', label: 'donkey', imageSrc: '/GradeX/evs/Identify/donkey.png' },
+      { id: 'animal-horse', label: 'horse', imageSrc: '/GradeX/evs/Identify/horse.png' },
+      { id: 'animal-camel', label: 'camel', imageSrc: '/GradeX/evs/Identify/camel.png' }
     ]
   },
   {
     id: 'vehicles',
     title: 'Learn to identify and name different vehicles',
     items: [
-      { id: 'vehicle-van', label: 'van', imageSrc: '/public/van.png' },
-      { id: 'vehicle-car', label: 'car', imageSrc: '/public/car.png' },
-      { id: 'vehicle-bus', label: 'bus', imageSrc: '/public/bus.png' },
-      { id: 'vehicle-auto', label: 'auto', imageSrc: '/public/auto.png' },
-      { id: 'vehicle-bike', label: 'bike', imageSrc: '/public/bike.png' },
-      { id: 'vehicle-cycle', label: 'cycle', imageSrc: '/public/cycle.png' },
-      { id: 'vehicle-train', label: 'train', imageSrc: '/public/train.png' },
-      { id: 'vehicle-airplane', label: 'airplane', imageSrc: '/public/airplane.png' },
-      { id: 'vehicle-truck', label: 'truck', imageSrc: '/public/truck.png' }
+      { id: 'vehicle-van', label: 'van', imageSrc: '/GradeX/evs/Identify/van.png' },
+      { id: 'vehicle-car', label: 'car', imageSrc: '/GradeX/evs/Identify/car.png' },
+      { id: 'vehicle-bus', label: 'bus', imageSrc: '/GradeX/evs/Identify/bus.png' },
+      { id: 'vehicle-auto', label: 'auto', imageSrc: '/GradeX/evs/Identify/auto.png' },
+      { id: 'vehicle-bike', label: 'bike', imageSrc: '/GradeX/evs/Identify/bike.png' },
+      { id: 'vehicle-cycle', label: 'cycle', imageSrc: '/GradeX/evs/Identify/cycle.png' },
+      { id: 'vehicle-train', label: 'train', imageSrc: '/GradeX/evs/Identify/train.png' },
+      { id: 'vehicle-airplane', label: 'airplane', imageSrc: '/GradeX/evs/Identify/airplane.png' },
+      { id: 'vehicle-truck', label: 'truck', imageSrc: '/GradeX/evs/Identify/truck.png' }
     ]
   },
   {
     id: 'household',
     title: 'Learn to identify and name different household objects',
     items: [
-      { id: 'home-fan', label: 'fan', imageSrc: '/public/fan.png' },
-      { id: 'home-tv', label: 'TV', imageSrc: '/public/tv.png' },
-      { id: 'home-fridge', label: 'fridge', imageSrc: '/public/fridge.png' },
-      { id: 'home-telephone', label: 'tele phone', imageSrc: '/public/telephone.ong' },
-      { id: 'home-cellphone', label: 'cell phone', imageSrc: '/public/cellphone.png' },
-      { id: 'home-iron', label: 'iron box', imageSrc: '/public/iron.png' },
-      { id: 'home-ac', label: 'AC', imageSrc: '/public/ac.png' },
-      { id: 'home-computer', label: 'computer', imageSrc: '/public/computer.png' },
-      { id: 'home-geyser', label: 'geyser', imageSrc: '/public/geyser.png' }
+      { id: 'home-fan', label: 'fan', imageSrc: '/GradeX/evs/Identify/fan.png' },
+      { id: 'home-tv', label: 'TV', imageSrc: '/GradeX/evs/Identify/tv.png' },
+      { id: 'home-fridge', label: 'fridge', imageSrc: '/GradeX/evs/Identify/fridge.png' },
+      { id: 'home-telephone', label: 'tele phone', imageSrc: '/GradeX/evs/Identify/telephone.png' },
+      { id: 'home-cellphone', label: 'cell phone', imageSrc: '/GradeX/evs/Identify/cellphone.png' },
+      { id: 'home-iron', label: 'iron box', imageSrc: '/GradeX/evs/Identify/iron.png' },
+      { id: 'home-ac', label: 'AC', imageSrc: '/GradeX/evs/Identify/ac.png' },
+      { id: 'home-computer', label: 'computer', imageSrc: '/GradeX/evs/Identify/computer.png' },
+      { id: 'home-geyser', label: 'geyser', imageSrc: '/GradeX/evs/Identify/geyser.png' }
     ]
   }
 ]

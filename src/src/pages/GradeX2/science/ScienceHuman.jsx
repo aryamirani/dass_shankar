@@ -18,15 +18,15 @@ export default function ScienceHuman({ onBack }) {
 
     const items = [
         {
-            img: '/lungs.png',
+            img: '/GradeX2/science/Human/lungs.png',
             valid: ['lungs', 'lung'],
-            audio: '/lungs.m4a',
+            audio: '/GradeX2/science/Human/lungs.m4a',
             name: 'Lungs'
         },
         {
-            img: '/heart.webp',
+            img: '/GradeX2/science/Human/heart.webp',
             valid: ['heart'],
-            audio: '/heart.m4a',
+            audio: '/GradeX2/science/Human/heart.m4a',
             name: 'Heart'
         }
     ]
@@ -266,8 +266,8 @@ export default function ScienceHuman({ onBack }) {
                 }
             `}</style>
 
-            <audio ref={correctAudio} src="/correct.wav" />
-            <audio ref={wrongAudio} src="/wrong.wav" />
+            <audio ref={correctAudio} src="/GradeX2/science/Human/correct.wav" />
+            <audio ref={wrongAudio} src="/GradeX2/science/Human/wrong.wav" />
         </div>
     )
 }

@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react'
 
 const BAGS = [
-  { id: 'lunch', bagImg: '/evs/bags/lunch-bag.png', tagImg: '/evs/bags/lunch-tag.png', label: 'lunch bag' },
-  { id: 'books', bagImg: '/evs/bags/books-bag.png', tagImg: '/evs/bags/books-tag.png', label: 'books bag' },
-  { id: 'vegetable', bagImg: '/evs/bags/vegetable-bag.png', tagImg: '/evs/bags/vegetable-tag.png', label: 'vegetable bag' }
+  { id: 'lunch', bagImg: '/GradeX/evs/Bags/lunch-bag.png', tagImg: '/GradeX/evs/Bags/lunch-tag.png', label: 'lunch bag' },
+  { id: 'books', bagImg: '/GradeX/evs/Bags/books-bag.png', tagImg: '/GradeX/evs/Bags/books-tag.png', label: 'books bag' },
+  { id: 'vegetable', bagImg: '/GradeX/evs/Bags/vegetable-bag.png', tagImg: '/GradeX/evs/Bags/vegetable-tag.png', label: 'vegetable bag' }
 ]
 
 function shuffle(arr) {

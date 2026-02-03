@@ -5,12 +5,12 @@ const SECTIONS = [
     id: 'gender',
     title: 'Learn to identify the gender',
     items: [
-      { id: 'gender-1', label: 'man', imageSrc: '/evs/gender/man1.png' },
-      { id: 'gender-2', label: 'woman', imageSrc: '/evs/gender/woman1.png' },
-      { id: 'gender-3', label: 'woman', imageSrc: '/evs/gender/woman2.png' },
-      { id: 'gender-4', label: 'man', imageSrc: '/evs/gender/man2.png' },
-      { id: 'gender-5', label: 'man', imageSrc: '/evs/gender/man3.png' },
-      { id: 'gender-6', label: 'woman', imageSrc: '/evs/gender/woman3.png' }
+      { id: 'gender-1', label: 'man', imageSrc: '/GradeX/evs/Gender/man1.png' },
+      { id: 'gender-2', label: 'woman', imageSrc: '/GradeX/evs/Gender/woman1.png' },
+      { id: 'gender-3', label: 'woman', imageSrc: '/GradeX/evs/Gender/woman2.png' },
+      { id: 'gender-4', label: 'man', imageSrc: '/GradeX/evs/Gender/man2.png' },
+      { id: 'gender-5', label: 'man', imageSrc: '/GradeX/evs/Gender/man3.png' },
+      { id: 'gender-6', label: 'woman', imageSrc: '/GradeX/evs/Gender/woman3.png' }
     ]
   }
 ]

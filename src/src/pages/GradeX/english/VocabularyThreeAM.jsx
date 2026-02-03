@@ -2,9 +2,9 @@ import React, { useState, useMemo, useRef, useEffect } from 'react'
 
 // Words from PDF. Images located in public folder.
 const WORDS = [
-  { id: 'dam', img: '/dam.png' },
-  { id: 'jam', img: '/jam.png' },
-  { id: 'ham', img: '/ham.png' },
+  { id: 'dam', img: '/GradeX/english/VocabularyThreeAM/dam.png' },
+  { id: 'jam', img: '/GradeX/english/VocabularyThreeAM/jam.png' },
+  { id: 'ham', img: '/GradeX/english/VocabularyThreeAM/ham.png' },
   
 ]
 

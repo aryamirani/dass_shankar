@@ -2,9 +2,9 @@ import React, { useState, useMemo, useRef, useEffect } from 'react'
 
 // Updated word list based on "ag" PDF content (Page 3)
 const WORDS = [
-  { id: 'bag', img: '/bag.png' },
-  { id: 'tag', img: '/tag.png' },
-  { id: 'rag', img: '/rag.png' }
+  { id: 'bag', img: '/GradeX/english/VocabularyThreeAg/bag.png' },
+  { id: 'tag', img: '/GradeX/english/VocabularyThreeAg/tag.png' },
+  { id: 'rag', img: '/GradeX/english/VocabularyThreeAg/rag.png' }
 ]
 
 const POSITIVE = ['👍 Good', '✅ Yes', '🌟 Nice', '🎉 Great', '😃 Yay', '👌 Ok']
