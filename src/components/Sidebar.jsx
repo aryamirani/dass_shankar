@@ -6,7 +6,8 @@ const MENU_STRUCTURE = [
     {
         id: 'vocabulary', label: 'English Module', type: 'folder', icon: '📚', children: [
             { id: 'vocabularyExercise', label: 'Matching Game', type: 'file', icon: '🧩' },
-            { id: 'vocabularyThree', label: 'Interactive Learn', type: 'file', icon: '🎮' }
+            { id: 'vocabularyThree', label: 'Interactive Learn', type: 'file', icon: '🎮' },
+            { id: 'englishReadWords', label: 'Read Words', type: 'file', icon: '👁️' }
         ]
     },
     {
@@ -35,8 +36,7 @@ const MENU_STRUCTURE = [
         ]
     },
     {
-        id: 'english', label: 'English Module', type: 'folder', icon: '�', children: [
-            { id: 'englishWordGame', label: 'Word Surgery', type: 'file', icon: '📚' },
+        id: 'english', label: 'English Module', type: 'folder', icon: '�', children: [{ id: 'englishWordGame', label: 'Word Surgery', type: 'file', icon: '📚'},
             { id: 'englishPhonics', label: 'Word Match', type: 'file', icon: '📐' },
             { id: 'englishFillBlanks', label: 'Fill Blanks', type: 'file', icon: '✍️' }
         ]
@@ -57,7 +57,7 @@ const MENU_STRUCTURE = [
 // Helper function to determine which folder contains the current view
 function getActiveFolderId(currentView) {
     if (currentView === 'healthProblems' || currentView === 'assessment' || currentView === 'health' || currentView === 'lesson') return 'health'
-    if (currentView && currentView.startsWith('vocabulary')) return 'vocabulary'
+    if (currentView && (currentView.startsWith('vocabulary') || currentView === 'englishReadWords' || currentView === 'englishReadWords2')) return 'vocabulary'
     if ((currentView && currentView.startsWith('mathsExercise')) || currentView === 'maths') return 'maths'
     if (currentView && currentView.startsWith('english')) return 'english'
     if (currentView === 'scienceOrgan' || currentView === 'scienceHuman' || currentView === 'science') return 'science'

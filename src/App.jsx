@@ -27,6 +27,8 @@ import MathsExerciseNine from './pages/MathsExerciseNine'
 import MathsExerciseTen from './pages/MathsExerciseTen'
 import MathsExerciseEleven from './pages/MathsExerciseEleven'
 import EnglishOverview from './pages/EnglishOverview'
+import EnglishReadWords from './pages/EnglishReadWords'
+import EnglishReadWords2 from './pages/EnglishReadWords2'
 import EnglishWordGame from './pages/EnglishWordGame'
 import EnglishPhonics from './pages/EnglishPhonics'
 import EnglishFillBlanks from './pages/EnglishFillBlanks'
@@ -87,6 +89,8 @@ export default function App() {
   function goToMathsExerciseTen() { setView({ name: 'mathsExerciseTen' }) }
   function goToMathsExerciseEleven() { setView({ name: 'mathsExerciseEleven' }) }
   function goToEnglish() { setView({ name: 'english' }) }
+  function goToEnglishReadWords() { setView({ name: 'englishReadWords' }) }
+  function goToEnglishReadWords2() { setView({ name: 'englishReadWords2' }) }
   function goToEnglishWordGame() { setView({ name: 'englishWordGame' }) }
   function goToEnglishPhonics() { setView({ name: 'englishPhonics' }) }
   function goToEnglishFillBlanks() { setView({ name: 'englishFillBlanks' }) }
@@ -185,6 +189,8 @@ export default function App() {
         {view.name === 'mathsExerciseEleven' && <MathsExerciseEleven onBack={() => setView({ name: 'mathsExerciseTen' })} onComplete={() => markCompleted('mathsExerciseEleven')} onNext={() => setView({ name: 'maths' })} />}
         {view.name === 'english' && <EnglishOverview onStart={goToEnglishWordGame} onBack={goHome} />}
 
+        {view.name === 'englishReadWords' && <EnglishReadWords onBack={() => setView({ name: 'english' })} onNext={() => goToEnglishReadWords2()} />}
+        {view.name === 'englishReadWords2' && <EnglishReadWords2 onBack={() => setView({ name: 'englishReadWords' })} />}
         {view.name === 'englishWordGame' && <EnglishWordGame onBack={() => setView({ name: 'english' })} />}
         {view.name === 'englishPhonics' && <EnglishPhonics onBack={() => setView({ name: 'english' })} />}
         {view.name === 'englishFillBlanks' && <EnglishFillBlanks onBack={() => setView({ name: 'english' })} />}

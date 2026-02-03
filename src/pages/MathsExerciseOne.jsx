@@ -97,7 +97,6 @@ export default function MathsExerciseOne({ onBack, onNextExercise }) {
               borderRadius: 12,
               transition: 'all 0.3s ease',
               flexWrap: 'wrap',
-              justifyContent: 'center'
             }}>
               {/* Objects display */}
               <div style={{ flex: '1 1 100%', display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center', marginBottom: 16 }}>
