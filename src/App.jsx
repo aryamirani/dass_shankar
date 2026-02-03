@@ -14,6 +14,10 @@ import VocabularyExerciseAg from './pages/VocabularyExerciseAg'
 import VocabularyThreeAg from './pages/VocabularyThreeAg'
 import VocabularyExerciseAd from './pages/VocabularyExerciseAd'
 import VocabularyThreeAd from './pages/VocabularyThreeAd'
+import VocabularyExerciseAn from './pages/VocabularyExerciseAn'
+import VocabularyThreeAn from './pages/VocabularyThreeAn'
+import VocabularyExerciseAp from './pages/VocabularyExerciseAp'
+import VocabularyThreeAp from './pages/VocabularyThreeAp'
 import Maths from './pages/Maths'
 import MathsExerciseOne from './pages/MathsExerciseOne'
 import MathsExerciseTwo from './pages/MathsExerciseTwo'
@@ -73,10 +77,14 @@ export default function App() {
   function goToVocabularyExerciseAM() { setView({ name: 'vocabularyExerciseAM' }) }
   function goToVocabularyExerciseAg() { setView({ name: 'vocabularyExerciseAg' }) }
   function goToVocabularyExerciseAd() { setView({ name: 'vocabularyExerciseAd' }) }
+  function goToVocabularyExerciseAn() { setView({ name: 'vocabularyExerciseAn' }) }
   function goToVocabularyThree() { setView({ name: 'vocabularyThree' }) }
   function goToVocabularyThreeAM() { setView({ name: 'vocabularyThreeAM' }) }
   function goToVocabularyThreeAg() { setView({ name: 'vocabularyThreeAg' }) }
   function goToVocabularyThreeAd() { setView({ name: 'vocabularyThreeAd' }) }
+  function goToVocabularyThreeAn() { setView({ name: 'vocabularyThreeAn' }) }
+  function goToVocabularyExerciseAp() { setView({ name: 'vocabularyExerciseAp' }) }
+  function goToVocabularyThreeAp() { setView({ name: 'vocabularyThreeAp' }) }
   function goToMaths() { setView({ name: 'maths' }) }
   function goToMathsExerciseOne() { setView({ name: 'mathsExerciseOne' }) }
   function goToMathsExerciseTwo() { setView({ name: 'mathsExerciseTwo' }) }
@@ -176,7 +184,11 @@ export default function App() {
   {view.name === 'vocabularyThree' && <VocabularyThree onBack={() => setView({ name: 'vocabulary' })} onGoToAM={goToVocabularyExerciseAM} />}
   {view.name === 'vocabularyThreeAM' && <VocabularyThreeAM onBack={() => setView({ name: 'vocabulary' })} onGoToAg={goToVocabularyExerciseAg} />}
   {view.name === 'vocabularyThreeAg' && <VocabularyThreeAg onBack={() => setView({ name: 'vocabulary' })} onGoToAd={goToVocabularyExerciseAd} />}
-  {view.name === 'vocabularyThreeAd' && <VocabularyThreeAd onBack={() => setView({ name: 'vocabulary' })} />}
+  {view.name === 'vocabularyThreeAd' && <VocabularyThreeAd onBack={() => setView({ name: 'vocabulary' })} onGoToAn={goToVocabularyExerciseAn} />}
+  {view.name === 'vocabularyExerciseAn' && <VocabularyExerciseAn onBack={() => setView({ name: 'vocabulary' })} onNextExercise={() => { markCompleted('vocabularyExerciseAn'); goToVocabularyThreeAn() }} />}
+  {view.name === 'vocabularyThreeAn' && <VocabularyThreeAn onBack={() => setView({ name: 'vocabulary' })} onGoToAp={goToVocabularyExerciseAp} />}
+  {view.name === 'vocabularyExerciseAp' && <VocabularyExerciseAp onBack={() => setView({ name: 'vocabulary' })} onNextExercise={() => { markCompleted('vocabularyExerciseAp'); goToVocabularyThreeAp() }} />}
+  {view.name === 'vocabularyThreeAp' && <VocabularyThreeAp onBack={() => setView({ name: 'vocabulary' })} />}
         {view.name === 'maths' && <Maths onStart={goToMathsExerciseOne} onBack={goHome} />}
         {view.name === 'mathsExerciseOne' && <MathsExerciseOne onBack={() => setView({ name: 'maths' })} onNextExercise={() => { markCompleted('mathsExerciseOne'); goToMathsExerciseTwo() }} />}
         {view.name === 'mathsExerciseTwo' && <MathsExerciseTwo onBack={() => setView({ name: 'mathsExerciseOne' })} onNextExercise={() => { markCompleted('mathsExerciseTwo'); goToMathsExerciseThree() }} />}
