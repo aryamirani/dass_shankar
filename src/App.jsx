@@ -43,6 +43,9 @@ import ComputerOverview from './pages/ComputerOverview'
 import ComputerKeyboard from './pages/ComputerKeyboard'
 import EVSOverview from './pages/EVSOverview'
 import EVSIdentify from './pages/EVSIdentify'
+import EVSGender from './pages/EVSGender'
+import EVSJams from './pages/EVSJams'
+import EVSBags from './pages/EVSBags'
 import EVSMap from './pages/EVSMap'
 import CONDITIONS from './data/conditions'
 
@@ -110,6 +113,9 @@ export default function App() {
   function goToComputerKeyboard() { setView({ name: 'computerKeyboard' }) }
   function goToEVSOverview() { setView({ name: 'evs' }) }
   function goToEVSIdentify() { setView({ name: 'evsIdentify' }) }
+  function goToEVSGender() { setView({ name: 'evsGender' }) }
+  function goToEVSJams() { setView({ name: 'evsJams' }) }
+  function goToEVSBags() { setView({ name: 'evsBags' }) }
   function goToEVSMap() { setView({ name: 'evsMap' }) }
   function next() {
     if (view.name === 'lesson') {
@@ -151,7 +157,7 @@ export default function App() {
     if (view.name === 'english' || view.name.startsWith('english')) return 'linear-gradient(135deg, #f6d365 0%, #fda085 100%)'
 
     // Science - Red
-    if (view.name === 'science' || view.name === 'scienceHuman' || view.name === 'evs' || view.name === 'evsIdentify' || view.name === 'evsMap') return 'linear-gradient(135deg, #ff512f 0%, #dd2476 100%)'
+    if (view.name === 'science' || view.name === 'scienceHuman' || view.name === 'evs' || view.name === 'evsIdentify' || view.name === 'evsGender' || view.name === 'evsJams' || view.name === 'evsBags' || view.name === 'evsMap') return 'linear-gradient(135deg, #ff512f 0%, #dd2476 100%)'
 
     // Health - Pink
     if (view.name === 'health' || view.name === 'healthProblems' || view.name === 'assessment' || view.name === 'lesson') return 'linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%)'
@@ -217,6 +223,9 @@ export default function App() {
 
         {view.name === 'evs' && <EVSOverview onStart={goToEVSIdentify} onBack={goHome} />}
         {view.name === 'evsIdentify' && <EVSIdentify onBack={goToEVSOverview} />}
+        {view.name === 'evsGender' && <EVSGender onBack={goToEVSOverview} />}
+        {view.name === 'evsJams' && <EVSJams onBack={goToEVSOverview} />}
+        {view.name === 'evsBags' && <EVSBags onBack={goToEVSOverview} />}
         {view.name === 'evsMap' && <EVSMap onBack={() => setView({ name: 'evs' })} />}
       </div>
     </div>

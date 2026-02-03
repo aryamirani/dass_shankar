@@ -1,7 +1,12 @@
 import React, { useState, useMemo, useEffect } from 'react'
 
-const POSITIVE = ['👍 Good', '✅ Yes', '🌟 Nice', '🎉 Great', '😃 Yay', '👌 Ok']
-const GENTLE = ['👎 Retry', '☹️ Try again', '❌ Wrong']
+const POSITIVE = [
+  '👍 Good', '✅ Yes', '🌟 Nice', '🎉 Great', '😃 Yay', '👌 Ok'
+]
+
+const GENTLE = [
+  '👎 Retry', '☹️ Try again', '❌ Wrong'
+]
 
 export default function VocabularyExerciseAn({ onBack, onNextExercise }) {
   // Updated for 'an' target words

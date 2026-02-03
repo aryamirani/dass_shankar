@@ -31,6 +31,9 @@ const MENU_STRUCTURE = [
     {
         id: 'evs', label: 'EVS Module', type: 'folder', icon: '🌿', children: [
             { id: 'evsIdentify', label: 'Identify Objects', type: 'file', icon: '🖼️' },
+            { id: 'evsGender', label: 'Identify Gender', type: 'file', icon: '👥' },
+            { id: 'evsJams', label: 'Read Labels', type: 'file', icon: '🏺' },
+            { id: 'evsBags', label: 'Types of Bags', type: 'file', icon: '👜' },
             { id: 'evsMap', label: 'Map', type: 'file', icon: '🗺️' }
         ]
     },
@@ -65,6 +68,7 @@ function getActiveFolderId(currentView) {
     if (currentView && currentView.startsWith('english')) return 'english'
     if (currentView === 'scienceOrgan' || currentView === 'scienceHuman' || currentView === 'science') return 'science'
     if (currentView === 'computerKeyboard' || currentView === 'computer') return 'computer'
+    if (currentView === 'evsIdentify' || currentView === 'evsGender' || currentView === 'evsJams' || currentView === 'evsBags' || currentView === 'evsMap' || currentView === 'evs') return 'evs'
     return null
 }
 
