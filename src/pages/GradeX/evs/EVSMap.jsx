@@ -43,7 +43,7 @@ export default function EVSMap({ onBack }) {
           width: '100%'
         }}>
           <img
-            src="/assets/map_india.png"
+            src="/public/map_india.png"
             alt="India Map"
             style={{
               maxWidth: '100%',

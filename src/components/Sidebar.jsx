@@ -398,7 +398,7 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                             }}
                         >
                             <img
-                                src="/assets/main-menu.png"
+                                src="/public/main-menu.png"
                                 alt={collapsed ? 'Expand' : 'Collapse'}
                                 style={{
                                     width: 28,

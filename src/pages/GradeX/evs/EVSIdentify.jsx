@@ -5,45 +5,45 @@ const SECTIONS = [
     id: 'animals',
     title: 'Learn to identify and name different animals',
     items: [
-      { id: 'animal-cat', label: 'cat', imageSrc: '/assets/cat.png' },
-      { id: 'animal-dog', label: 'dog', imageSrc: '/assets/dog.png' },
-      { id: 'animal-pig', label: 'pig', imageSrc: '/assets/pig.png' },
-      { id: 'animal-cow', label: 'cow', imageSrc: '/assets/cow.png' },
-      { id: 'animal-goat', label: 'goat', imageSrc: '/assets/goat.png' },
-      { id: 'animal-buffalo', label: 'buffalo', imageSrc: '/assets/buffalo.png' },
-      { id: 'animal-donkey', label: 'donkey', imageSrc: '/assets/donkey.png' },
-      { id: 'animal-horse', label: 'horse', imageSrc: '/assets/horse.png' },
-      { id: 'animal-camel', label: 'camel', imageSrc: '/assets/camel.png' }
+      { id: 'animal-cat', label: 'cat', imageSrc: '/public/cat.png' },
+      { id: 'animal-dog', label: 'dog', imageSrc: '/public/dog.png' },
+      { id: 'animal-pig', label: 'pig', imageSrc: '/public/pig.png' },
+      { id: 'animal-cow', label: 'cow', imageSrc: '/public/cow.png' },
+      { id: 'animal-goat', label: 'goat', imageSrc: '/public/goat.png' },
+      { id: 'animal-buffalo', label: 'buffalo', imageSrc: '/public/buffalo.png' },
+      { id: 'animal-donkey', label: 'donkey', imageSrc: '/public/donkey.png' },
+      { id: 'animal-horse', label: 'horse', imageSrc: '/public/horse.png' },
+      { id: 'animal-camel', label: 'camel', imageSrc: '/public/camel.png' }
     ]
   },
   {
     id: 'vehicles',
     title: 'Learn to identify and name different vehicles',
     items: [
-      { id: 'vehicle-van', label: 'van', imageSrc: '/assets/van.png' },
-      { id: 'vehicle-car', label: 'car', imageSrc: '/assets/car.png' },
-      { id: 'vehicle-bus', label: 'bus', imageSrc: '/assets/bus.png' },
-      { id: 'vehicle-auto', label: 'auto', imageSrc: '/assets/auto.png' },
-      { id: 'vehicle-bike', label: 'bike', imageSrc: '/assets/bike.png' },
-      { id: 'vehicle-cycle', label: 'cycle', imageSrc: '/assets/cycle.png' },
-      { id: 'vehicle-train', label: 'train', imageSrc: '/assets/train.png' },
-      { id: 'vehicle-airplane', label: 'airplane', imageSrc: '/assets/airplane.png' },
-      { id: 'vehicle-truck', label: 'truck', imageSrc: '/assets/truck.png' }
+      { id: 'vehicle-van', label: 'van', imageSrc: '/public/van.png' },
+      { id: 'vehicle-car', label: 'car', imageSrc: '/public/car.png' },
+      { id: 'vehicle-bus', label: 'bus', imageSrc: '/public/bus.png' },
+      { id: 'vehicle-auto', label: 'auto', imageSrc: '/public/auto.png' },
+      { id: 'vehicle-bike', label: 'bike', imageSrc: '/public/bike.png' },
+      { id: 'vehicle-cycle', label: 'cycle', imageSrc: '/public/cycle.png' },
+      { id: 'vehicle-train', label: 'train', imageSrc: '/public/train.png' },
+      { id: 'vehicle-airplane', label: 'airplane', imageSrc: '/public/airplane.png' },
+      { id: 'vehicle-truck', label: 'truck', imageSrc: '/public/truck.png' }
     ]
   },
   {
     id: 'household',
     title: 'Learn to identify and name different household objects',
     items: [
-      { id: 'home-fan', label: 'fan', imageSrc: '/assets/fan.png' },
-      { id: 'home-tv', label: 'TV', imageSrc: '/assets/tv.png' },
-      { id: 'home-fridge', label: 'fridge', imageSrc: '/assets/fridge.png' },
-      { id: 'home-telephone', label: 'tele phone', imageSrc: '/assets/telephone.ong' },
-      { id: 'home-cellphone', label: 'cell phone', imageSrc: '/assets/cellphone.png' },
-      { id: 'home-iron', label: 'iron box', imageSrc: '/assets/iron.png' },
-      { id: 'home-ac', label: 'AC', imageSrc: '/assets/ac.png' },
-      { id: 'home-computer', label: 'computer', imageSrc: '/assets/computer.png' },
-      { id: 'home-geyser', label: 'geyser', imageSrc: '/assets/geyser.png' }
+      { id: 'home-fan', label: 'fan', imageSrc: '/public/fan.png' },
+      { id: 'home-tv', label: 'TV', imageSrc: '/public/tv.png' },
+      { id: 'home-fridge', label: 'fridge', imageSrc: '/public/fridge.png' },
+      { id: 'home-telephone', label: 'tele phone', imageSrc: '/public/telephone.ong' },
+      { id: 'home-cellphone', label: 'cell phone', imageSrc: '/public/cellphone.png' },
+      { id: 'home-iron', label: 'iron box', imageSrc: '/public/iron.png' },
+      { id: 'home-ac', label: 'AC', imageSrc: '/public/ac.png' },
+      { id: 'home-computer', label: 'computer', imageSrc: '/public/computer.png' },
+      { id: 'home-geyser', label: 'geyser', imageSrc: '/public/geyser.png' }
     ]
   }
 ]
