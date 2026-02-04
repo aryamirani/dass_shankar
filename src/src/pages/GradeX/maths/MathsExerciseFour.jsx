@@ -27,16 +27,20 @@ export default function MathsExerciseFour({ onBack, onNextExercise }) {
       [nums[i], nums[j]] = [nums[j], nums[i]]
     }
 
-    return nums.map((num, idx) => ({
-      id: idx,
-      number: num,
-      before: num - 1,
-      after: num + 1,
-      beforeDigits: ['', '', ''],
-      afterDigits: ['', '', ''],
-      checked: false,
-      correct: null
-    }))
+    return nums.map((num, idx) => {
+      const beforeDigits = (num - 1).toString().length
+      const afterDigits = (num + 1).toString().length
+      return {
+        id: idx,
+        number: num,
+        before: num - 1,
+        after: num + 1,
+        beforeDigits: Array(beforeDigits).fill(''),
+        afterDigits: Array(afterDigits).fill(''),
+        checked: false,
+        correct: null
+      }
+    })
   }, [])
 
   const [items, setItems] = useState(questions)
@@ -55,18 +59,19 @@ export default function MathsExerciseFour({ onBack, onNextExercise }) {
       if (item.id === id) {
         const newDigits = type === 'before' ? [...item.beforeDigits] : [...item.afterDigits]
         newDigits[boxIndex] = digit
+        // Auto-focus next box if digit entered and not last box
+        if (digit && boxIndex < newDigits.length - 1) {
+          setTimeout(() => {
+            const nextInput = document.getElementById(`input-${id}-${type}-${boxIndex + 1}`)
+            if (nextInput) nextInput.focus()
+          }, 0)
+        }
         return type === 'before'
           ? { ...item, beforeDigits: newDigits, checked: false, correct: null }
           : { ...item, afterDigits: newDigits, checked: false, correct: null }
       }
       return item
     }))
-
-    // Auto-focus next box if digit entered and not last box
-    if (digit && boxIndex < 2) {
-      const nextInput = document.getElementById(`input-${id}-${type}-${boxIndex + 1}`)
-      if (nextInput) nextInput.focus()
-    }
   }
 
   function handleKeyDown(id, type, boxIndex, e) {
@@ -111,8 +116,8 @@ export default function MathsExerciseFour({ onBack, onNextExercise }) {
         ...item,
         checked: true,
         correct: isCorrect,
-        beforeDigits: isCorrect ? item.beforeDigits : ['', '', ''],
-        afterDigits: isCorrect ? item.afterDigits : ['', '', '']
+        beforeDigits: isCorrect ? item.beforeDigits : Array(item.before.toString().length).fill(''),
+        afterDigits: isCorrect ? item.afterDigits : Array(item.after.toString().length).fill('')
       }
     }))
 
@@ -158,14 +163,14 @@ export default function MathsExerciseFour({ onBack, onNextExercise }) {
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
                   <div style={{ fontSize: '16px', fontWeight: 600, color: '#666' }}>Before</div>
                   <div style={{ display: 'flex', gap: 6 }}>
-                    {[0, 1, 2].map(boxIndex => (
+                    {item.beforeDigits.map((digit, boxIndex) => (
                       <input
                         key={boxIndex}
                         id={`input-${item.id}-before-${boxIndex}`}
                         type="text"
                         inputMode="numeric"
                         maxLength={1}
-                        value={item.beforeDigits[boxIndex]}
+                        value={digit}
                         onChange={(e) => handleInputChange(item.id, 'before', boxIndex, e.target.value)}
                         onKeyDown={(e) => handleKeyDown(item.id, 'before', boxIndex, e)}
                         disabled={item.checked && item.correct}
@@ -204,14 +209,14 @@ export default function MathsExerciseFour({ onBack, onNextExercise }) {
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
                   <div style={{ fontSize: 16, fontWeight: 600, color: '#666' }}>After</div>
                   <div style={{ display: 'flex', gap: 6 }}>
-                    {[0, 1, 2].map(boxIndex => (
+                    {item.afterDigits.map((digit, boxIndex) => (
                       <input
                         key={boxIndex}
                         id={`input-${item.id}-after-${boxIndex}`}
                         type="text"
                         inputMode="numeric"
                         maxLength={1}
-                        value={item.afterDigits[boxIndex]}
+                        value={digit}
                         onChange={(e) => handleInputChange(item.id, 'after', boxIndex, e.target.value)}
                         onKeyDown={(e) => handleKeyDown(item.id, 'after', boxIndex, e)}
                         disabled={item.checked && item.correct}

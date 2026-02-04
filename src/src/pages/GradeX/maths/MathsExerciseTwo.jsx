@@ -65,14 +65,17 @@ export default function MathsExerciseTwo({ onBack, onNextExercise }) {
       const j = Math.floor(Math.random() * (i + 1));
       [nums[i], nums[j]] = [nums[j], nums[i]]
     }
-    return nums.map((num, idx) => ({
-      id: idx,
-      number: num,
-      numberInWords: numberToWords(num),
-      digits: ['', '', ''],
-      checked: false,
-      correct: null
-    }))
+    return nums.map((num, idx) => {
+      const numDigits = num.toString().length
+      return {
+        id: idx,
+        number: num,
+        numberInWords: numberToWords(num),
+        digits: Array(numDigits).fill(''),
+        checked: false,
+        correct: null
+      }
+    })
   }, [])
 
   const [items, setItems] = useState(questions)
@@ -92,16 +95,17 @@ export default function MathsExerciseTwo({ onBack, onNextExercise }) {
       if (item.id === id) {
         const newDigits = [...item.digits]
         newDigits[boxIndex] = digit
+        // Auto-focus next box if digit entered and not last box
+        if (digit && boxIndex < item.digits.length - 1) {
+          setTimeout(() => {
+            const nextInput = document.getElementById(`input-${id}-${boxIndex + 1}`)
+            if (nextInput) nextInput.focus()
+          }, 0)
+        }
         return { ...item, digits: newDigits, checked: false, correct: null }
       }
       return item
     }))
-
-    // Auto-focus next box if digit entered and not last box
-    if (digit && boxIndex < 2) {
-      const nextInput = document.getElementById(`input-${id}-${boxIndex + 1}`)
-      if (nextInput) nextInput.focus()
-    }
   }
 
   function handleKeyDown(id, boxIndex, e) {
@@ -138,7 +142,7 @@ export default function MathsExerciseTwo({ onBack, onNextExercise }) {
     const isCorrect = userNum === item.number
 
     setItems(prev => prev.map(i =>
-      i.id === id ? { ...i, checked: true, correct: isCorrect, digits: isCorrect ? i.digits : ['', '', ''] } : i
+      i.id === id ? { ...i, checked: true, correct: isCorrect, digits: isCorrect ? i.digits : Array(i.number.toString().length).fill('') } : i
     ))
 
     if (isCorrect) {
@@ -194,14 +198,14 @@ export default function MathsExerciseTwo({ onBack, onNextExercise }) {
               </div>
 
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
-                {[0, 1, 2].map(boxIndex => (
+                {item.digits.map((digit, boxIndex) => (
                   <input
                     key={boxIndex}
                     id={`input-${item.id}-${boxIndex}`}
                     type="text"
                     inputMode="numeric"
                     maxLength={1}
-                    value={item.digits[boxIndex]}
+                    value={digit}
                     onChange={(e) => handleInputChange(item.id, boxIndex, e.target.value)}
                     onKeyDown={(e) => handleKeyDown(item.id, boxIndex, e)}
                     onKeyPress={(e) => {

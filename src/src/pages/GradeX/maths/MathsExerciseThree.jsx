@@ -29,14 +29,18 @@ export default function MathsExerciseThree({ onBack, onNextExercise }) {
     }
     const preFilledIndices = new Set(indices.slice(0, preFillCount))
 
-    return numbers.map((num, idx) => ({
-      id: idx,
-      number: num,
-      preFilled: preFilledIndices.has(idx),
-      digits: preFilledIndices.has(idx) ? num.toString().split('') : ['', '', ''],
-      checked: false,
-      correct: null
-    }))
+    return numbers.map((num, idx) => {
+      const numDigits = num.toString().length
+      const numStr = num.toString()
+      return {
+        id: idx,
+        number: num,
+        preFilled: preFilledIndices.has(idx),
+        digits: preFilledIndices.has(idx) ? numStr.split('') : Array(numDigits).fill(''),
+        checked: false,
+        correct: null
+      }
+    })
   }, [])
 
   const [items, setItems] = useState(questions)
@@ -56,16 +60,17 @@ export default function MathsExerciseThree({ onBack, onNextExercise }) {
       if (item.id === id && !item.preFilled) {
         const newDigits = [...item.digits]
         newDigits[boxIndex] = digit
+        // Auto-focus next box if digit entered and not last box
+        if (digit && boxIndex < item.digits.length - 1) {
+          setTimeout(() => {
+            const nextInput = document.getElementById(`input-${id}-${boxIndex + 1}`)
+            if (nextInput) nextInput.focus()
+          }, 0)
+        }
         return { ...item, digits: newDigits, checked: false, correct: null }
       }
       return item
     }))
-
-    // Auto-focus next box if digit entered and not last box
-    if (digit && boxIndex < 2) {
-      const nextInput = document.getElementById(`input-${id}-${boxIndex + 1}`)
-      if (nextInput) nextInput.focus()
-    }
   }
 
   function handleKeyDown(id, boxIndex, e) {
@@ -103,7 +108,7 @@ export default function MathsExerciseThree({ onBack, onNextExercise }) {
       const userNum = parseInt(userAnswer, 10) || 0
       const isCorrect = userNum === item.number
       if (!isCorrect) hasErrors = true
-      return { ...item, checked: true, correct: isCorrect, digits: isCorrect ? item.digits : ['', '', ''] }
+      return { ...item, checked: true, correct: isCorrect, digits: isCorrect ? item.digits : Array(item.number.toString().length).fill('') }
     }))
 
     if (!hasErrors) {
@@ -155,14 +160,14 @@ export default function MathsExerciseThree({ onBack, onNextExercise }) {
               maxWidth: 300
             }}>
               <div style={{ display: 'flex', gap: 6 }}>
-                {[0, 1, 2].map(boxIndex => (
+                {item.digits.map((digit, boxIndex) => (
                   <input
                     key={boxIndex}
                     id={`input-${item.id}-${boxIndex}`}
                     type="text"
                     inputMode="numeric"
                     maxLength={1}
-                    value={item.digits[boxIndex]}
+                    value={digit}
                     onChange={(e) => handleInputChange(item.id, boxIndex, e.target.value)}
                     onKeyDown={(e) => handleKeyDown(item.id, boxIndex, e)}
                     disabled={item.preFilled || (item.checked && item.correct)}

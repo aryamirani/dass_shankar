@@ -14,13 +14,14 @@ export default function MathsExerciseOne({ onBack, onNextExercise }) {
   const questions = useMemo(() => {
     const qs = []
     for (let i = 0; i < 5; i++) {
-      const count = Math.floor(Math.random() * 10) + 1 // 1 to 10
+      const count = Math.floor(Math.random() * 9) + 1 // 1 to 9 (single digit only)
       const obj = OBJECTS[Math.floor(Math.random() * OBJECTS.length)]
+      const numDigits = count.toString().length
       qs.push({
         id: i,
         count,
         object: obj,
-        userAnswer: '',
+        digits: Array(numDigits).fill(''),
         checked: false,
         correct: null
       })
@@ -38,23 +39,61 @@ export default function MathsExerciseOne({ onBack, onNextExercise }) {
     }
   }, [message])
 
-  function handleInputChange(id, value) {
-    // allow only numbers
-    const val = value.replace(/[^0-9]/g, '')
-    setItems(prev => prev.map(item =>
-      item.id === id ? { ...item, userAnswer: val, checked: false, correct: null } : item
-    ))
+  function handleInputChange(id, boxIndex, value) {
+    // Only allow single digit
+    const digit = value.replace(/[^0-9]/g, '').slice(-1)
+    setItems(prev => prev.map(item => {
+      if (item.id === id) {
+        const newDigits = [...item.digits]
+        newDigits[boxIndex] = digit
+        // Auto-focus next box if digit entered and not last box
+        if (digit && boxIndex < item.digits.length - 1) {
+          setTimeout(() => {
+            const nextInput = document.getElementById(`input-${id}-${boxIndex + 1}`)
+            if (nextInput) nextInput.focus()
+          }, 0)
+        }
+        return { ...item, digits: newDigits, checked: false, correct: null }
+      }
+      return item
+    }))
+  }
+
+  function handleKeyDown(id, boxIndex, e) {
+    const item = items.find(i => i.id === id)
+    if (e.key === 'Backspace' && item) {
+      // If current box is empty, go to previous box
+      if (!item.digits[boxIndex] && boxIndex > 0) {
+        e.preventDefault()
+        const prevInput = document.getElementById(`input-${id}-${boxIndex - 1}`)
+        if (prevInput) {
+          prevInput.focus()
+          // Clear the previous box
+          setItems(prev => prev.map(i => {
+            if (i.id === id) {
+              const newDigits = [...i.digits]
+              newDigits[boxIndex - 1] = ''
+              return { ...i, digits: newDigits, checked: false, correct: null }
+            }
+            return i
+          }))
+        }
+      }
+    } else if (e.key === 'Enter') {
+      handleCheck(id)
+    }
   }
 
   function handleCheck(id) {
     const item = items.find(i => i.id === id)
     if (!item || item.checked) return
 
-    const userNum = parseInt(item.userAnswer, 10)
+    const userAnswer = item.digits.join('')
+    const userNum = parseInt(userAnswer, 10) || 0
     const isCorrect = userNum === item.count
 
     setItems(prev => prev.map(i =>
-      i.id === id ? { ...i, checked: true, correct: isCorrect } : i
+      i.id === id ? { ...i, checked: true, correct: isCorrect, digits: isCorrect ? i.digits : Array(i.count.toString().length).fill('') } : i
     ))
 
     if (isCorrect) {
@@ -96,43 +135,44 @@ export default function MathsExerciseOne({ onBack, onNextExercise }) {
                 : '2px solid #ddd',
               borderRadius: 12,
               transition: 'all 0.3s ease',
-              flexWrap: 'wrap',
             }}>
               {/* Objects display */}
-              <div style={{ flex: '1 1 100%', display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center', marginBottom: 16 }}>
+              <div style={{ flex: 1, display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'flex-start', alignItems: 'center' }}>
                 {Array.from({ length: item.count }).map((_, idx) => (
                   <span key={idx} style={{ fontSize: 'clamp(28px, 6vw, 40px)', userSelect: 'none', animation: 'popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both', animationDelay: `${idx * 50}ms` }}>{item.object}</span>
                 ))}
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: '0 0 auto', justifyContent: 'center', width: 'auto' }}>
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  value={item.userAnswer}
-                  onChange={(e) => handleInputChange(item.id, e.target.value)}
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') handleCheck(item.id)
-                  }}
-                  disabled={item.checked && item.correct}
-                  placeholder="#"
-                  style={{
-                    width: 'clamp(60px, 15vw, 80px)',
-                    fontSize: 'clamp(20px, 5vw, 28px)',
-                    padding: '12px',
-                    textAlign: 'center',
-                    border: '2px solid #999',
-                    borderRadius: 8,
-                    outline: 'none',
-                    background: (item.checked && item.correct) ? '#f1f8f1' : 'white',
-                    fontFamily: 'inherit',
-                    fontWeight: 700
-                  }}
-                />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+                {item.digits.map((digit, boxIndex) => (
+                  <input
+                    key={boxIndex}
+                    id={`input-${item.id}-${boxIndex}`}
+                    type="text"
+                    inputMode="numeric"
+                    value={digit}
+                    onChange={(e) => handleInputChange(item.id, boxIndex, e.target.value)}
+                    onKeyDown={(e) => handleKeyDown(item.id, boxIndex, e)}
+                    disabled={item.checked && item.correct}
+                    placeholder="#"
+                    style={{
+                      width: 'clamp(50px, 12vw, 60px)',
+                      fontSize: 'clamp(20px, 5vw, 28px)',
+                      padding: '12px',
+                      textAlign: 'center',
+                      border: '2px solid #999',
+                      borderRadius: 8,
+                      outline: 'none',
+                      background: (item.checked && item.correct) ? '#f1f8f1' : 'white',
+                      fontFamily: 'inherit',
+                      fontWeight: 700
+                    }}
+                  />
+                ))}
 
                 <button
                   onClick={() => handleCheck(item.id)}
-                  disabled={!item.userAnswer || (item.checked && item.correct)}
+                  disabled={item.digits.some(d => !d) || (item.checked && item.correct)}
                   style={{
                     padding: '12px 24px',
                     fontSize: 'clamp(14px, 4vw, 18px)',
@@ -143,8 +183,8 @@ export default function MathsExerciseOne({ onBack, onNextExercise }) {
                     color: 'white',
                     border: 'none',
                     borderRadius: 8,
-                    cursor: (!item.userAnswer || (item.checked && item.correct)) ? 'not-allowed' : 'pointer',
-                    opacity: (!item.userAnswer || (item.checked && item.correct)) ? 0.5 : 1,
+                    cursor: (item.digits.some(d => !d) || (item.checked && item.correct)) ? 'not-allowed' : 'pointer',
+                    opacity: (item.digits.some(d => !d) || (item.checked && item.correct)) ? 0.5 : 1,
                     transition: 'all 0.2s'
                   }}
                 >
