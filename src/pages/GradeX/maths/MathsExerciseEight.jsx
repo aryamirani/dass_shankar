@@ -9,22 +9,20 @@ const GENTLE = [
 ]
 
 export default function MathsExerciseEight({ onBack, onComplete }) {
-  // Generate 5 random math questions (mix of +, -, ×, ÷)
+  // Generate 4 random math questions (one each of +, -, ×, ÷)
   const questions = useMemo(() => {
-    const baseOps = ['+', '-', '×', '÷']
-    const randomOp = baseOps[Math.floor(Math.random() * baseOps.length)]
-    const finalOps = [...baseOps, randomOp]
-
+    const ops = ['+', '-', '×', '÷']
+    
     // Shuffle the operations
-    for (let i = finalOps.length - 1; i > 0; i--) {
+    for (let i = ops.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [finalOps[i], finalOps[j]] = [finalOps[j], finalOps[i]];
+      [ops[i], ops[j]] = [ops[j], ops[i]];
     }
 
     const qs = []
 
-    for (let i = 0; i < 5; i++) {
-      const op = finalOps[i]
+    for (let i = 0; i < 4; i++) {
+      const op = ops[i]
       let num1, num2, answer
 
       if (op === '+') {
@@ -212,9 +210,9 @@ export default function MathsExerciseEight({ onBack, onComplete }) {
           Correct: {completedCount} / {totalCount}
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column-reverse', gap: 30, alignItems: 'center', width: '100%' }}>
+        <div style={{ display: 'flex', gap: 30, alignItems: 'flex-start', width: '100%' }}>
           {/* Questions Section */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: '100%' }}>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 16 }}>
             {items.map(item => (
               <div key={item.id} style={{
                 padding: 'clamp(16px, 3vw, 20px)',
@@ -260,27 +258,6 @@ export default function MathsExerciseEight({ onBack, onComplete }) {
               </div>
             ))}
 
-            <div style={{ textAlign: 'center', marginTop: 20 }}>
-              <button
-                onClick={checkAll}
-                disabled={!allFilled}
-                style={{
-                  padding: '16px 40px',
-                  fontSize: 22,
-                  fontWeight: 700,
-                  background: !allFilled ? '#ccc' : '#8ec5fc',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: 12,
-                  cursor: !allFilled ? 'not-allowed' : 'pointer',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                  transition: 'all 0.2s'
-                }}
-              >
-                Check All Answers
-              </button>
-            </div>
-
             {completedCount === totalCount && (
               <div style={{ textAlign: 'center', marginTop: 20, fontSize: 32, fontWeight: 900, color: '#4CAF50', animation: 'popIn 600ms cubic-bezier(.2,.9,.2,1) both' }}>
                 🎉 All done — Excellent work! 🎉
@@ -293,18 +270,20 @@ export default function MathsExerciseEight({ onBack, onComplete }) {
             )}
           </div>
 
-          {/* Calculator Section */}
+          {/* Calculator Section - Fixed on right */}
           <div style={{
-            background: 'linear-gradient(145deg, #2c3e50, #34495e)',
-            padding: 20,
-            borderRadius: 16,
-            boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
-            position: 'sticky',
-            top: 20,
-            width: '100%',
-            maxWidth: '400px',
-            boxSizing: 'border-box'
+            width: '350px',
+            flexShrink: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 20
           }}>
+            <div style={{
+              background: 'linear-gradient(145deg, #2c3e50, #34495e)',
+              padding: 20,
+              borderRadius: 16,
+              boxShadow: '0 10px 30px rgba(0,0,0,0.3)'
+            }}>
             <div style={{
               background: '#1a1a2e',
               padding: 20,
@@ -345,6 +324,27 @@ export default function MathsExerciseEight({ onBack, onComplete }) {
               <button onClick={() => inputDigit(0)} style={{ ...calcButtonStyle('#95a5a6', '#7f8c8d'), gridColumn: 'span 2' }}>0</button>
               <button onClick={inputDecimal} style={{ ...calcButtonStyle('#95a5a6', '#7f8c8d') }}>.</button>
             </div>
+            </div>
+
+            <button
+              onClick={checkAll}
+              disabled={!allFilled}
+              style={{
+                padding: '16px 40px',
+                fontSize: 22,
+                fontWeight: 700,
+                background: !allFilled ? '#ccc' : '#8ec5fc',
+                color: 'white',
+                border: 'none',
+                borderRadius: 12,
+                cursor: !allFilled ? 'not-allowed' : 'pointer',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                transition: 'all 0.2s',
+                width: '100%'
+              }}
+            >
+              Check All Answers
+            </button>
           </div>
         </div>
       </div>

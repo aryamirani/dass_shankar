@@ -27,15 +27,18 @@ export default function MathsExerciseFive({ onBack, onNextExercise }) {
       [nums[i], nums[j]] = [nums[j], nums[i]]
     }
 
-    return nums.map((num, idx) => ({
-      id: idx,
-      middle: num,
-      before: num - 1,
-      after: num + 1,
-      middleDigits: ['', '', ''],
-      checked: false,
-      correct: null
-    }))
+    return nums.map((num, idx) => {
+      const numDigits = num.toString().length
+      return {
+        id: idx,
+        middle: num,
+        before: num - 1,
+        after: num + 1,
+        middleDigits: Array(numDigits).fill(''),
+        checked: false,
+        correct: null
+      }
+    })
   }, [])
 
   const [items, setItems] = useState(questions)
@@ -54,16 +57,17 @@ export default function MathsExerciseFive({ onBack, onNextExercise }) {
       if (item.id === id) {
         const newDigits = [...item.middleDigits]
         newDigits[boxIndex] = digit
+        // Auto-focus next box if digit entered and not last box
+        if (digit && boxIndex < item.middleDigits.length - 1) {
+          setTimeout(() => {
+            const nextInput = document.getElementById(`input-${id}-${boxIndex + 1}`)
+            if (nextInput) nextInput.focus()
+          }, 0)
+        }
         return { ...item, middleDigits: newDigits, checked: false, correct: null }
       }
       return item
     }))
-
-    // Auto-focus next box if digit entered and not last box
-    if (digit && boxIndex < 2) {
-      const nextInput = document.getElementById(`input-${id}-${boxIndex + 1}`)
-      if (nextInput) nextInput.focus()
-    }
   }
 
   function handleKeyDown(id, boxIndex, e) {
@@ -103,7 +107,7 @@ export default function MathsExerciseFive({ onBack, onNextExercise }) {
         ...item,
         checked: true,
         correct: isCorrect,
-        middleDigits: isCorrect ? item.middleDigits : ['', '', '']
+        middleDigits: isCorrect ? item.middleDigits : Array(item.middle.toString().length).fill('')
       }
     }))
 
@@ -163,14 +167,14 @@ export default function MathsExerciseFive({ onBack, onNextExercise }) {
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
                   <div style={{ fontSize: '16px', fontWeight: 600, color: '#666' }}>?</div>
                   <div style={{ display: 'flex', gap: 6 }}>
-                    {[0, 1, 2].map(boxIndex => (
+                    {item.middleDigits.map((digit, boxIndex) => (
                       <input
                         key={boxIndex}
                         id={`input-${item.id}-${boxIndex}`}
                         type="text"
                         inputMode="numeric"
                         maxLength={1}
-                        value={item.middleDigits[boxIndex]}
+                        value={digit}
                         onChange={(e) => handleInputChange(item.id, boxIndex, e.target.value)}
                         onKeyDown={(e) => handleKeyDown(item.id, boxIndex, e)}
                         disabled={item.checked && item.correct}

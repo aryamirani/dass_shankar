@@ -1,5 +1,5 @@
 // Word Problems 1
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useMemo } from 'react'
 
 const POSITIVE = [
   '👍 Good', '✅ Yes', '🌟 Nice', '🎉 Great', '😃 Yay', '👌 Ok'
@@ -10,6 +10,8 @@ const GENTLE = [
 ]
 
 export default function MathsExerciseNine({ onBack, onComplete, onNext }) {
+  const bagsToTakeOut = useMemo(() => Math.floor(Math.random() * 5), []) // 0-4
+  
   const [userAnswer, setUserAnswer] = useState('')
   const [checked, setChecked] = useState(false)
   const [correct, setCorrect] = useState(null)
@@ -19,8 +21,8 @@ export default function MathsExerciseNine({ onBack, onComplete, onNext }) {
   const [message, setMessage] = useState(null)
   const successRef = useRef(null)
 
-  const correctAnswer = 2
-  const correctLeftAnswer = 1
+  const correctAnswer = 4
+  const correctLeftAnswer = 4 - bagsToTakeOut
 
   useEffect(() => {
     if (message) {
@@ -95,7 +97,7 @@ export default function MathsExerciseNine({ onBack, onComplete, onNext }) {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 30 }}>
           {/* Image */}
           <img 
-            src="/public/bags2.png" 
+            src="/public/bags4.png" 
             alt="bags" 
             style={{ 
               width: '100%', 
@@ -185,7 +187,7 @@ export default function MathsExerciseNine({ onBack, onComplete, onNext }) {
             color: '#333',
             textAlign: 'center'
           }}>
-            Take out one bag
+            Take out {bagsToTakeOut} {bagsToTakeOut === 1 ? 'bag' : 'bags'}
           </div>
 
           <div style={{
