@@ -34,10 +34,6 @@ export default function EnglishFillBlanks({ onBack }) {
 
     return (
         <div className="landing-root" style={{ overflowY: 'auto', display: 'block', height: '100vh' }}>
-            {/* Back Button */}
-            <div style={{ position: 'fixed', left: 20, top: 20, zIndex: 100 }}>
-                <button className="back-btn" onClick={onBack}>←</button>
-            </div>
 
             <div style={{ maxWidth: 1200, margin: '80px auto 40px', padding: '0 20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 30 }}>

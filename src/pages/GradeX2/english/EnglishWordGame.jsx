@@ -73,9 +73,6 @@ export default function EnglishWordGame({ onBack }) {
     return (
         <div className="landing-root">
             <div className="landing-inner" style={{ alignItems: 'center' }}>
-                <div style={{ position: 'absolute', left: 20, top: 20 }}>
-                    <button className="back-btn" onClick={onBack}>←</button>
-                </div>
 
                 <h1 className="center-title" style={{ fontSize: 'clamp(28px, 6vw, 40px)', marginBottom: 10 }}>Word Surgery</h1>
                 <p style={{ fontSize: 'clamp(16px, 4vw, 20px)', color: '#555', marginBottom: 30, textAlign: 'center', padding: '0 20px' }}>Tap a blue word part, then tap the matching red part!</p>

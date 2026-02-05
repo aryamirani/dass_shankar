@@ -151,11 +151,6 @@ export default function Assessment({ onDone }) {
         </div>
       )}
 
-      {/* Back Button */}
-      <div style={{ position: 'absolute', left: 20, top: 20 }}>
-        <button className="back-btn" onClick={onDone}>←</button>
-      </div>
-
       <h2 style={{ textAlign: 'center', fontSize: 'clamp(32px, 8vw, 60px)', fontWeight: 900, marginTop: 40 }}>Health Quiz</h2>
       <p style={{ textAlign: 'center', fontSize: 'clamp(18px, 4vw, 24px)', fontWeight: 600, color: '#333', marginTop: -10, marginBottom: 30, padding: '0 20px' }}>
         {step === 'A' ? 'Choose the correct health problem based on the symptoms.' : 'Drag the correct solution to complete the sentence.'}

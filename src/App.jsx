@@ -263,9 +263,23 @@ export default function App() {
       <div style={{ flex: 1, overflowY: 'auto', position: 'relative' }}>
         {(view.name === 'landing' || view.name === 'landing2') && <Landing onVocabulary={goToVocabulary} onHealth={goToHealthOverview} onMaths={goToMaths} onEnglish={goToEnglish} onScience={goToScienceOverview} onComputer={goToComputerOverview} onEVS={goToEVSOverview} />}
         {view.name === 'health' && <HealthOverview onStart={goToHealthProblems} onBack={goHome} />}
-        {view.name === 'healthProblems' && <HealthProblems onStart={() => goToLesson(0)} onSelect={(imgIndex) => goToLesson(imgIndex)} completed={completed} allDone={allDone} onAllDone={() => markCompleted('health')} onVocabulary={goToVocabulary} onBack={goToHealthOverview} />}
+        {view.name === 'healthProblems' && (
+          <NavigationWrapper 
+            onBack={goToHealthOverview} 
+            onNext={goToAssessment}
+          >
+            <HealthProblems onStart={() => goToLesson(0)} onSelect={(imgIndex) => goToLesson(imgIndex)} completed={completed} allDone={allDone} onAllDone={() => markCompleted('health')} onVocabulary={goToVocabulary} onBack={goToHealthOverview} />
+          </NavigationWrapper>
+        )}
         {view.name === 'lesson' && <Lesson data={CONDITIONS[view.index]} index={view.index} total={CONDITIONS.length} onBack={goToHealthProblems} onNext={next} onComplete={markCompleted} onBackToGrid={() => { markCompleted('health'); goToHealthProblems() }} />}
-        {view.name === 'assessment' && <Assessment onDone={() => { markCompleted('assessment'); goToHealthProblems() }} />}
+        {view.name === 'assessment' && (
+          <NavigationWrapper 
+            onBack={goToHealthProblems} 
+            onNext={() => { markCompleted('assessment'); goToHealthOverview() }}
+          >
+            <Assessment onDone={() => { markCompleted('assessment'); goToHealthOverview() }} />
+          </NavigationWrapper>
+        )}
         {view.name === 'vocabulary' && <Vocabulary onStart={goToVocabularyExercise} onBack={goHome} />}
   {view.name === 'vocabularyExercise' && (
     <NavigationWrapper 
@@ -471,12 +485,40 @@ export default function App() {
             <EnglishReadWords2 onBack={() => goToEnglishReadWords()} />
           </NavigationWrapper>
         )}
-        {view.name === 'englishWordGame' && <EnglishWordGame onBack={() => setView({ name: 'english' })} />}
-        {view.name === 'englishPhonics' && <EnglishPhonics onBack={() => setView({ name: 'english' })} />}
-        {view.name === 'englishFillBlanks' && <EnglishFillBlanks onBack={() => setView({ name: 'english' })} />}
+        {view.name === 'englishWordGame' && (
+          <NavigationWrapper 
+            onBack={() => setView({ name: 'english' })} 
+            onNext={() => { markCompleted('englishWordGame'); goToEnglishPhonics() }}
+          >
+            <EnglishWordGame onBack={() => setView({ name: 'english' })} />
+          </NavigationWrapper>
+        )}
+        {view.name === 'englishPhonics' && (
+          <NavigationWrapper 
+            onBack={() => goToEnglishWordGame()} 
+            onNext={() => { markCompleted('englishPhonics'); goToEnglishFillBlanks() }}
+          >
+            <EnglishPhonics onBack={() => goToEnglishWordGame()} />
+          </NavigationWrapper>
+        )}
+        {view.name === 'englishFillBlanks' && (
+          <NavigationWrapper 
+            onBack={() => goToEnglishPhonics()} 
+            onNext={() => { markCompleted('englishFillBlanks'); setView({ name: 'english' }) }}
+          >
+            <EnglishFillBlanks onBack={() => goToEnglishPhonics()} />
+          </NavigationWrapper>
+        )}
         {view.name === 'science' && <ScienceOverview onBack={goHome} />}
         {/* {view.name === 'scienceOrgan' && <ScienceOrgan onBack={goToScienceOverview} onNext={goToScienceHuman} />} */}
-        {view.name === 'scienceHuman' && <ScienceHuman onBack={goToScienceOverview} />}
+        {view.name === 'scienceHuman' && (
+          <NavigationWrapper 
+            onBack={goToScienceOverview} 
+            onNext={() => { markCompleted('scienceHuman'); goToScienceOverview() }}
+          >
+            <ScienceHuman onBack={goToScienceOverview} />
+          </NavigationWrapper>
+        )}
 
         {view.name === 'computer' && <ComputerOverview onStart={goToComputerKeyboard} onBack={goHome} />}
         {view.name === 'computerKeyboard' && (

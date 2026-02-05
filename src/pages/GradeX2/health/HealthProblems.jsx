@@ -11,8 +11,6 @@ export default function HealthProblems({ onStart, onSelect, completed = [], allD
 
   return (
     <div id="landing" className="landing-root" role="main" style={{ position: 'relative' }}>
-      {/* Fixed back button top left */}
-      <button className="back-btn" onClick={onBack} style={{ position: 'fixed', top: 24, left: 24, zIndex: 100 }}>{"\u2190"}</button>
       <div className="landing-inner">
         <h1 className="center-title" style={{ marginBottom: 32, fontSize: 'clamp(32px, 6vw, 42px)' }}>Health Problems</h1>
         <div className="health-grid" role="list">

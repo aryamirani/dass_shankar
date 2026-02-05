@@ -91,30 +91,6 @@ export default function ScienceHuman({ onBack }) {
             padding: 20,
             fontFamily: '"Outfit", sans-serif'
         }}>
-            <div style={{ position: 'absolute', left: 30, top: 30, zIndex: 10 }}>
-                <button
-                    onClick={onBack}
-                    style={{
-                        background: 'rgba(255, 255, 255, 0.2)',
-                        backdropFilter: 'blur(10px)',
-                        border: '1px solid rgba(255, 255, 255, 0.3)',
-                        borderRadius: '50%',
-                        width: 50,
-                        height: 50,
-                        color: 'white',
-                        fontSize: 24,
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        transition: 'all 0.3s ease'
-                    }}
-                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)'}
-                    onMouseLeave={e => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'}
-                >
-                    ←
-                </button>
-            </div>
 
             <div style={{
                 width: '100%',
