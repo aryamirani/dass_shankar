@@ -45,9 +45,7 @@ export default function VocabularyExerciseAd({ onBack, onNextExercise }) {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: 20, position: 'relative' }}>
-      <div style={{ position: 'absolute', left: 20, top: 20 }}>
-        <button className="back-btn" onClick={onBack}>←</button>
-      </div>
+
 
       <style>{`
         .vocab-word-btn {

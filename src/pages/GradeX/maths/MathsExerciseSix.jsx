@@ -99,11 +99,7 @@ export default function MathsExerciseSix({ onBack, onNextExercise }) {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: 20, position: 'relative' }}>
-      <div style={{ position: 'absolute', left: 20, top: 20 }}>
-        <button className="back-btn" onClick={onBack}>←</button>
-      </div>
-
-
+      
       <div style={{ width: '100%', maxWidth: 1000, background: 'rgba(255,255,255,0.95)', padding: 'clamp(20px, 4vw, 40px)', borderRadius: 20, boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>
         <h2 style={{ fontSize: 'clamp(24px, 5vw, 42px)', textAlign: 'center', marginBottom: 8, fontWeight: 900, color: '#333' }}>Arrange numbers from smallest to biggest</h2>
         <p style={{ textAlign: 'center', fontSize: 'clamp(16px, 4vw, 18px)', color: '#666', marginBottom: 24 }}>Drag and drop the numbers to arrange them</p>

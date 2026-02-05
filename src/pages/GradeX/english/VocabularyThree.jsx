@@ -189,14 +189,6 @@ export default function VocabularyThree({ onBack, onGoToAM }) {
 
   return (
     <div style={{ minHeight: '100vh', padding: 20, boxSizing: 'border-box', position: 'relative' }}>
-      <div style={{ position: 'absolute', left: 20, top: 20 }}>
-        <button className="back-btn" onClick={onBack}>←</button>
-      </div>
-      {onGoToAM && (
-        <div style={{ position: 'absolute', right: 20, top: 20 }}>
-          <button className="action-btn" onClick={onGoToAM} style={{ padding: '8px 12px', borderRadius: 999, fontWeight: 800 }}>AM words</button>
-        </div>
-      )}
       {showTutorial && step === 1 && <TutorialOverlay draggables={draggables} targets={targets} />}
 
       <div style={{ maxWidth: 980, margin: '0 auto', background: 'rgba(255,255,255,0.0)', padding: 10 }}>

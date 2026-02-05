@@ -7,9 +7,6 @@ export default function ComputerOverview({ onStart, onBack }) {
         @keyframes popIn { 0% { opacity: 0; transform: translateY(30px) scale(0.98); } 60% { transform: translateY(-8px) scale(1.02); opacity: 1; } 100% { transform: translateY(0) scale(1); } }
         @keyframes floatB { 0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)} }
       `}</style>
-            <div style={{ position: 'absolute', top: 20, left: 20 }}>
-                <button className="back-btn" onClick={onBack}>←</button>
-            </div>
             <div style={{ textAlign: 'center', background: 'rgba(255,255,255,0.0)', padding: 20 }}>
                 <h1 style={{ fontSize: 'clamp(48px, 12vw, 120px)', letterSpacing: 4, margin: 0, fontWeight: 900, display: 'inline-block', lineHeight: 1, color: 'white', textShadow: '0 4px 12px rgba(0,0,0,0.1)', animation: 'popIn 700ms cubic-bezier(.2,.9,.2,1) both' }}>
                     Computer

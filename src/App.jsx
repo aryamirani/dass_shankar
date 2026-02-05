@@ -49,6 +49,90 @@ import EVSBags from './pages/GradeX/evs/EVSBags'
 import EVSMap from './pages/GradeX/evs/EVSMap'
 import CONDITIONS from './data/conditions'
 
+// Wrapper for consistent navigation buttons
+const NavigationWrapper = ({ children, onBack, onNext }) => {
+  return (
+    <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+      {/* Back Button - Top Left */}
+      {onBack && (
+        <button 
+          onClick={onBack}
+          style={{
+            position: 'absolute',
+            top: 20,
+            left: 20,
+            zIndex: 100,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            color: '#333',
+            fontSize: 18,
+            fontWeight: 'bold',
+            padding: '8px 16px',
+            borderRadius: '8px',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+            boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+            transition: 'all 0.2s'
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 1)'
+            e.currentTarget.style.transform = 'translateY(-2px)'
+            e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.15)'
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.8)'
+            e.currentTarget.style.transform = 'translateY(0)'
+            e.currentTarget.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)'
+          }}
+        >
+          <span style={{ fontSize: 24 }}>←</span> <span>Back</span>
+        </button>
+      )}
+
+      {/* Next Button - Bottom Right */}
+      {onNext && (
+        <button 
+          onClick={onNext}
+          style={{
+            position: 'fixed', // Changed to fixed to ensure it stays on screen
+            bottom: 30,
+            right: 30,
+            zIndex: 100,
+            background: 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)',
+            color: 'white',
+            border: 'none',
+            borderRadius: '50px',
+            padding: '12px 28px',
+            fontSize: 18,
+            fontWeight: 'bold',
+            boxShadow: '0 4px 15px rgba(76, 175, 80, 0.3)',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+            transition: 'all 0.2s'
+          }}
+          onMouseEnter={e => {
+            e.target.style.transform = 'translateY(-2px)'
+            e.target.style.boxShadow = '0 6px 20px rgba(76, 175, 80, 0.4)'
+          }}
+          onMouseLeave={e => {
+            e.target.style.transform = 'translateY(0)'
+            e.target.style.boxShadow = '0 4px 15px rgba(76, 175, 80, 0.3)'
+          }}
+        >
+          Next →
+        </button>
+      )}
+
+      {children}
+    </div>
+  )
+}
+
 export default function App() {
   const [view, setView] = useState({ name: 'landing', index: 0 })
   const [completed, setCompleted] = useState([]) // store condition ids
@@ -183,34 +267,210 @@ export default function App() {
         {view.name === 'lesson' && <Lesson data={CONDITIONS[view.index]} index={view.index} total={CONDITIONS.length} onBack={goToHealthProblems} onNext={next} onComplete={markCompleted} onBackToGrid={() => { markCompleted('health'); goToHealthProblems() }} />}
         {view.name === 'assessment' && <Assessment onDone={() => { markCompleted('assessment'); goToHealthProblems() }} />}
         {view.name === 'vocabulary' && <Vocabulary onStart={goToVocabularyExercise} onBack={goHome} />}
-  {view.name === 'vocabularyExercise' && <VocabularyExercise onBack={() => setView({ name: 'vocabulary' })} onNextExercise={() => { markCompleted('vocabularyExercise'); goToVocabularyThree() }} />}
-  {view.name === 'vocabularyExerciseAM' && <VocabularyExerciseAM onBack={() => setView({ name: 'vocabulary' })} onNextExercise={() => { markCompleted('vocabularyExerciseAM'); goToVocabularyThreeAM() }} />}
-  {view.name === 'vocabularyExerciseAg' && <VocabularyExerciseAg onBack={() => setView({ name: 'vocabulary' })} onNextExercise={() => { markCompleted('vocabularyExerciseAg'); goToVocabularyThreeAg() }} />}
-  {view.name === 'vocabularyExerciseAd' && <VocabularyExerciseAd onBack={() => setView({ name: 'vocabulary' })} onNextExercise={() => { markCompleted('vocabularyExerciseAd'); goToVocabularyThreeAd() }} />}
-  {view.name === 'vocabularyThree' && <VocabularyThree onBack={() => setView({ name: 'vocabulary' })} onGoToAM={goToVocabularyExerciseAM} />}
-  {view.name === 'vocabularyThreeAM' && <VocabularyThreeAM onBack={() => setView({ name: 'vocabulary' })} onGoToAg={goToVocabularyExerciseAg} />}
-  {view.name === 'vocabularyThreeAg' && <VocabularyThreeAg onBack={() => setView({ name: 'vocabulary' })} onGoToAd={goToVocabularyExerciseAd} />}
-  {view.name === 'vocabularyThreeAd' && <VocabularyThreeAd onBack={() => setView({ name: 'vocabulary' })} onGoToAn={goToVocabularyExerciseAn} />}
-  {view.name === 'vocabularyExerciseAn' && <VocabularyExerciseAn onBack={() => setView({ name: 'vocabulary' })} onNextExercise={() => { markCompleted('vocabularyExerciseAn'); goToVocabularyThreeAn() }} />}
-  {view.name === 'vocabularyThreeAn' && <VocabularyThreeAn onBack={() => setView({ name: 'vocabulary' })} onGoToAp={goToVocabularyExerciseAp} />}
-  {view.name === 'vocabularyExerciseAp' && <VocabularyExerciseAp onBack={() => setView({ name: 'vocabulary' })} onNextExercise={() => { markCompleted('vocabularyExerciseAp'); goToVocabularyThreeAp() }} />}
-  {view.name === 'vocabularyThreeAp' && <VocabularyThreeAp onBack={() => setView({ name: 'vocabulary' })} />}
+  {view.name === 'vocabularyExercise' && (
+    <NavigationWrapper 
+      onBack={() => setView({ name: 'vocabulary' })} 
+      onNext={() => { markCompleted('vocabularyExercise'); goToVocabularyExerciseAn() }}
+    >
+      <VocabularyExercise onBack={() => setView({ name: 'vocabulary' })} onNextExercise={() => { markCompleted('vocabularyExercise'); goToVocabularyExerciseAn() }} />
+    </NavigationWrapper>
+  )}
+  {view.name === 'vocabularyExerciseAn' && (
+    <NavigationWrapper 
+      onBack={() => goToVocabularyExercise()} 
+      onNext={() => { markCompleted('vocabularyExerciseAn'); goToVocabularyExerciseAp() }}
+    >
+      <VocabularyExerciseAn onBack={() => goToVocabularyExercise()} onNextExercise={() => { markCompleted('vocabularyExerciseAn'); goToVocabularyExerciseAp() }} />
+    </NavigationWrapper>
+  )}
+  {view.name === 'vocabularyExerciseAp' && (
+    <NavigationWrapper 
+      onBack={() => goToVocabularyExerciseAn()} 
+      onNext={() => { markCompleted('vocabularyExerciseAp'); goToVocabularyExerciseAg() }}
+    >
+      <VocabularyExerciseAp onBack={() => goToVocabularyExerciseAn()} onNextExercise={() => { markCompleted('vocabularyExerciseAp'); goToVocabularyExerciseAg() }} />
+    </NavigationWrapper>
+  )}
+  {view.name === 'vocabularyExerciseAg' && (
+    <NavigationWrapper 
+      onBack={() => goToVocabularyExerciseAp()} 
+      onNext={() => { markCompleted('vocabularyExerciseAg'); goToVocabularyExerciseAM() }}
+    >
+      <VocabularyExerciseAg onBack={() => goToVocabularyExerciseAp()} onNextExercise={() => { markCompleted('vocabularyExerciseAg'); goToVocabularyExerciseAM() }} />
+    </NavigationWrapper>
+  )}
+  {view.name === 'vocabularyExerciseAM' && (
+    <NavigationWrapper 
+      onBack={() => goToVocabularyExerciseAg()} 
+      onNext={() => { markCompleted('vocabularyExerciseAM'); goToVocabularyExerciseAd() }}
+    >
+      <VocabularyExerciseAM onBack={() => goToVocabularyExerciseAg()} onNextExercise={() => { markCompleted('vocabularyExerciseAM'); goToVocabularyExerciseAd() }} />
+    </NavigationWrapper>
+  )}
+  {view.name === 'vocabularyExerciseAd' && (
+    <NavigationWrapper 
+      onBack={() => goToVocabularyExerciseAM()} 
+      onNext={() => { markCompleted('vocabularyExerciseAd'); goToVocabularyThree() }}
+    >
+      <VocabularyExerciseAd onBack={() => goToVocabularyExerciseAM()} onNextExercise={() => { markCompleted('vocabularyExerciseAd'); goToVocabularyThree() }} />
+    </NavigationWrapper>
+  )}
+  
+  {view.name === 'vocabularyThree' && (
+    <NavigationWrapper 
+      onBack={() => goToVocabularyExerciseAd()} 
+      onNext={() => { markCompleted('vocabularyThree'); goToVocabularyThreeAn() }}
+    >
+      <VocabularyThree onBack={() => goToVocabularyExerciseAd()} onGoToAM={goToVocabularyThreeAn} />
+    </NavigationWrapper>
+  )}
+  {view.name === 'vocabularyThreeAn' && (
+    <NavigationWrapper 
+      onBack={() => goToVocabularyThree()} 
+      onNext={() => { markCompleted('vocabularyThreeAn'); goToVocabularyThreeAp() }}
+    >
+      <VocabularyThreeAn onBack={() => goToVocabularyThree()} onGoToAg={goToVocabularyThreeAp} />
+    </NavigationWrapper>
+  )}
+  {view.name === 'vocabularyThreeAp' && (
+    <NavigationWrapper 
+      onBack={() => goToVocabularyThreeAn()} 
+      onNext={() => { markCompleted('vocabularyThreeAp'); goToVocabularyThreeAg() }}
+    >
+      <VocabularyThreeAp onBack={() => goToVocabularyThreeAn()} />
+    </NavigationWrapper>
+  )}
+  {view.name === 'vocabularyThreeAg' && (
+    <NavigationWrapper 
+      onBack={() => goToVocabularyThreeAp()} 
+      onNext={() => { markCompleted('vocabularyThreeAg'); goToVocabularyThreeAM() }}
+    >
+      <VocabularyThreeAg onBack={() => goToVocabularyThreeAp()} onGoToAd={goToVocabularyThreeAM} />
+    </NavigationWrapper>
+  )}
+  {view.name === 'vocabularyThreeAM' && (
+    <NavigationWrapper 
+      onBack={() => goToVocabularyThreeAg()} 
+      onNext={() => { markCompleted('vocabularyThreeAM'); goToVocabularyThreeAd() }}
+    >
+      <VocabularyThreeAM onBack={() => goToVocabularyThreeAg()} onGoToAg={goToVocabularyThreeAd} />
+    </NavigationWrapper>
+  )}
+  {view.name === 'vocabularyThreeAd' && (
+    <NavigationWrapper 
+      onBack={() => goToVocabularyThreeAM()} 
+      onNext={() => { markCompleted('vocabularyThreeAd'); goToEnglishReadWords() }}
+    >
+      <VocabularyThreeAd onBack={() => goToVocabularyThreeAM()} onGoToAn={goToEnglishReadWords} />
+    </NavigationWrapper>
+  )}
         {view.name === 'maths' && <Maths onStart={goToMathsExerciseOne} onBack={goHome} />}
-        {view.name === 'mathsExerciseOne' && <MathsExerciseOne onBack={() => setView({ name: 'maths' })} onNextExercise={() => { markCompleted('mathsExerciseOne'); goToMathsExerciseTwo() }} />}
-        {view.name === 'mathsExerciseTwo' && <MathsExerciseTwo onBack={() => setView({ name: 'mathsExerciseOne' })} onNextExercise={() => { markCompleted('mathsExerciseTwo'); goToMathsExerciseThree() }} />}
-        {view.name === 'mathsExerciseThree' && <MathsExerciseThree onBack={() => setView({ name: 'mathsExerciseTwo' })} onNextExercise={() => { markCompleted('mathsExerciseThree'); goToMathsExerciseFour() }} />}
-        {view.name === 'mathsExerciseFour' && <MathsExerciseFour onBack={() => setView({ name: 'mathsExerciseThree' })} onNextExercise={() => { markCompleted('mathsExerciseFour'); goToMathsExerciseFive() }} />}
-        {view.name === 'mathsExerciseFive' && <MathsExerciseFive onBack={() => setView({ name: 'mathsExerciseFour' })} onNextExercise={() => { markCompleted('mathsExerciseFive'); goToMathsExerciseSix() }} />}
-        {view.name === 'mathsExerciseSix' && <MathsExerciseSix onBack={() => setView({ name: 'mathsExerciseFive' })} onNextExercise={() => { markCompleted('mathsExerciseSix'); goToMathsExerciseSeven() }} />}
-        {view.name === 'mathsExerciseSeven' && <MathsExerciseSeven onBack={() => setView({ name: 'mathsExerciseSix' })} onNextExercise={() => { markCompleted('mathsExerciseSeven'); goToMathsExerciseEight() }} />}
-        {view.name === 'mathsExerciseEight' && <MathsExerciseEight onBack={() => setView({ name: 'mathsExerciseSeven' })} onNextExercise={() => { markCompleted('mathsExerciseEight'); goToMathsExerciseNine() }} />}
-        {view.name === 'mathsExerciseNine' && <MathsExerciseNine onBack={() => setView({ name: 'mathsExerciseEight' })} onComplete={() => markCompleted('mathsExerciseNine')} onNext={() => goToMathsExerciseTen()} />}
-        {view.name === 'mathsExerciseTen' && <MathsExerciseTen onBack={() => setView({ name: 'mathsExerciseNine' })} onComplete={() => markCompleted('mathsExerciseTen')} onNext={() => goToMathsExerciseEleven()} />}
-        {view.name === 'mathsExerciseEleven' && <MathsExerciseEleven onBack={() => setView({ name: 'mathsExerciseTen' })} onComplete={() => markCompleted('mathsExerciseEleven')} onNext={() => setView({ name: 'maths' })} />}
+        {view.name === 'mathsExerciseOne' && (
+          <NavigationWrapper 
+            onBack={() => setView({ name: 'maths' })} 
+            onNext={() => { markCompleted('mathsExerciseOne'); goToMathsExerciseTwo() }}
+          >
+            <MathsExerciseOne onBack={() => setView({ name: 'maths' })} onNextExercise={() => { markCompleted('mathsExerciseOne'); goToMathsExerciseTwo() }} />
+          </NavigationWrapper>
+        )}
+        {view.name === 'mathsExerciseTwo' && (
+          <NavigationWrapper 
+            onBack={() => setView({ name: 'mathsExerciseOne' })} 
+            onNext={() => { markCompleted('mathsExerciseTwo'); goToMathsExerciseThree() }}
+          >
+            <MathsExerciseTwo onBack={() => setView({ name: 'mathsExerciseOne' })} onNextExercise={() => { markCompleted('mathsExerciseTwo'); goToMathsExerciseThree() }} />
+          </NavigationWrapper>
+        )}
+        {view.name === 'mathsExerciseThree' && (
+          <NavigationWrapper 
+            onBack={() => setView({ name: 'mathsExerciseTwo' })} 
+            onNext={() => { markCompleted('mathsExerciseThree'); goToMathsExerciseFour() }}
+          >
+            <MathsExerciseThree onBack={() => setView({ name: 'mathsExerciseTwo' })} onNextExercise={() => { markCompleted('mathsExerciseThree'); goToMathsExerciseFour() }} />
+          </NavigationWrapper>
+        )}
+        {view.name === 'mathsExerciseFour' && (
+          <NavigationWrapper 
+            onBack={() => setView({ name: 'mathsExerciseThree' })} 
+            onNext={() => { markCompleted('mathsExerciseFour'); goToMathsExerciseFive() }}
+          >
+            <MathsExerciseFour onBack={() => setView({ name: 'mathsExerciseThree' })} onNextExercise={() => { markCompleted('mathsExerciseFour'); goToMathsExerciseFive() }} />
+          </NavigationWrapper>
+        )}
+        {view.name === 'mathsExerciseFive' && (
+          <NavigationWrapper 
+            onBack={() => setView({ name: 'mathsExerciseFour' })} 
+            onNext={() => { markCompleted('mathsExerciseFive'); goToMathsExerciseSix() }}
+          >
+            <MathsExerciseFive onBack={() => setView({ name: 'mathsExerciseFour' })} onNextExercise={() => { markCompleted('mathsExerciseFive'); goToMathsExerciseSix() }} />
+          </NavigationWrapper>
+        )}
+        {view.name === 'mathsExerciseSix' && (
+          <NavigationWrapper 
+            onBack={() => setView({ name: 'mathsExerciseFive' })} 
+            onNext={() => { markCompleted('mathsExerciseSix'); goToMathsExerciseSeven() }}
+          >
+            <MathsExerciseSix onBack={() => setView({ name: 'mathsExerciseFive' })} onNextExercise={() => { markCompleted('mathsExerciseSix'); goToMathsExerciseSeven() }} />
+          </NavigationWrapper>
+        )}
+        {view.name === 'mathsExerciseSeven' && (
+          <NavigationWrapper 
+            onBack={() => setView({ name: 'mathsExerciseSix' })} 
+            onNext={() => { markCompleted('mathsExerciseSeven'); goToMathsExerciseEight() }}
+          >
+            <MathsExerciseSeven onBack={() => setView({ name: 'mathsExerciseSix' })} onNextExercise={() => { markCompleted('mathsExerciseSeven'); goToMathsExerciseEight() }} />
+          </NavigationWrapper>
+        )}
+        {view.name === 'mathsExerciseEight' && (
+          <NavigationWrapper 
+            onBack={() => setView({ name: 'mathsExerciseSeven' })} 
+            onNext={() => { markCompleted('mathsExerciseEight'); goToMathsExerciseNine() }}
+          >
+            <MathsExerciseEight onBack={() => setView({ name: 'mathsExerciseSeven' })} onNextExercise={() => { markCompleted('mathsExerciseEight'); goToMathsExerciseNine() }} />
+          </NavigationWrapper>
+        )}
+        {view.name === 'mathsExerciseNine' && (
+          <NavigationWrapper 
+            onBack={() => setView({ name: 'mathsExerciseEight' })} 
+            onNext={() => { markCompleted('mathsExerciseNine'); goToMathsExerciseTen() }}
+          >
+            <MathsExerciseNine onBack={() => setView({ name: 'mathsExerciseEight' })} onComplete={() => markCompleted('mathsExerciseNine')} onNext={() => { markCompleted('mathsExerciseNine'); goToMathsExerciseTen() }} />
+          </NavigationWrapper>
+        )}
+        {view.name === 'mathsExerciseTen' && (
+          <NavigationWrapper 
+            onBack={() => setView({ name: 'mathsExerciseNine' })} 
+            onNext={() => { markCompleted('mathsExerciseTen'); goToMathsExerciseEleven() }}
+          >
+            <MathsExerciseTen onBack={() => setView({ name: 'mathsExerciseNine' })} onComplete={() => markCompleted('mathsExerciseTen')} onNext={() => { markCompleted('mathsExerciseTen'); goToMathsExerciseEleven() }} />
+          </NavigationWrapper>
+        )}
+        {view.name === 'mathsExerciseEleven' && (
+          <NavigationWrapper 
+            onBack={() => setView({ name: 'mathsExerciseTen' })} 
+            onNext={() => { markCompleted('mathsExerciseEleven'); setView({ name: 'maths' }) }}
+          >
+            <MathsExerciseEleven onBack={() => setView({ name: 'mathsExerciseTen' })} onComplete={() => markCompleted('mathsExerciseEleven')} onNext={() => { markCompleted('mathsExerciseEleven'); setView({ name: 'maths' }) }} />
+          </NavigationWrapper>
+        )}
         {view.name === 'english' && <EnglishOverview onStart={goToEnglishWordGame} onBack={goHome} />}
 
-        {view.name === 'englishReadWords' && <EnglishReadWords onBack={() => setView({ name: 'english' })} onNext={() => goToEnglishReadWords2()} />}
-        {view.name === 'englishReadWords2' && <EnglishReadWords2 onBack={() => setView({ name: 'englishReadWords' })} />}
+        {view.name === 'englishReadWords' && (
+          <NavigationWrapper 
+            onBack={() => goToVocabularyThreeAd()} 
+            onNext={() => { markCompleted('englishReadWords'); goToEnglishReadWords2() }}
+          >
+            <EnglishReadWords onBack={() => goToVocabularyThreeAd()} onNext={() => { markCompleted('englishReadWords'); goToEnglishReadWords2() }} />
+          </NavigationWrapper>
+        )}
+        {view.name === 'englishReadWords2' && (
+          <NavigationWrapper 
+            onBack={() => goToEnglishReadWords()} 
+            onNext={() => { markCompleted('englishReadWords2'); setView({ name: 'vocabulary' }) }}
+          >
+            <EnglishReadWords2 onBack={() => goToEnglishReadWords()} />
+          </NavigationWrapper>
+        )}
         {view.name === 'englishWordGame' && <EnglishWordGame onBack={() => setView({ name: 'english' })} />}
         {view.name === 'englishPhonics' && <EnglishPhonics onBack={() => setView({ name: 'english' })} />}
         {view.name === 'englishFillBlanks' && <EnglishFillBlanks onBack={() => setView({ name: 'english' })} />}
@@ -219,14 +479,38 @@ export default function App() {
         {view.name === 'scienceHuman' && <ScienceHuman onBack={goToScienceOverview} />}
 
         {view.name === 'computer' && <ComputerOverview onStart={goToComputerKeyboard} onBack={goHome} />}
-        {view.name === 'computerKeyboard' && <ComputerKeyboard onBack={goToComputerOverview} />}
+        {view.name === 'computerKeyboard' && (
+          <NavigationWrapper onBack={goToComputerOverview} onNext={() => { markCompleted('computerKeyboard'); goToComputerOverview() }}>
+            <ComputerKeyboard onBack={goToComputerOverview} />
+          </NavigationWrapper>
+        )}
 
         {view.name === 'evs' && <EVSOverview onStart={goToEVSIdentify} onBack={goHome} />}
-        {view.name === 'evsIdentify' && <EVSIdentify onBack={goToEVSOverview} />}
-        {view.name === 'evsGender' && <EVSGender onBack={goToEVSOverview} />}
-        {view.name === 'evsJams' && <EVSJams onBack={goToEVSOverview} />}
-        {view.name === 'evsBags' && <EVSBags onBack={goToEVSOverview} />}
-        {view.name === 'evsMap' && <EVSMap onBack={() => setView({ name: 'evs' })} />}
+        {view.name === 'evsIdentify' && (
+          <NavigationWrapper onBack={goToEVSOverview} onNext={() => { markCompleted('evsIdentify'); goToEVSGender() }}>
+            <EVSIdentify onBack={goToEVSOverview} />
+          </NavigationWrapper>
+        )}
+        {view.name === 'evsGender' && (
+          <NavigationWrapper onBack={goToEVSIdentify} onNext={() => { markCompleted('evsGender'); goToEVSJams() }}>
+            <EVSGender onBack={goToEVSIdentify} />
+          </NavigationWrapper>
+        )}
+        {view.name === 'evsJams' && (
+          <NavigationWrapper onBack={goToEVSGender} onNext={() => { markCompleted('evsJams'); goToEVSBags() }}>
+            <EVSJams onBack={goToEVSGender} />
+          </NavigationWrapper>
+        )}
+        {view.name === 'evsBags' && (
+          <NavigationWrapper onBack={goToEVSJams} onNext={() => { markCompleted('evsBags'); goToEVSMap() }}>
+            <EVSBags onBack={goToEVSJams} />
+          </NavigationWrapper>
+        )}
+        {view.name === 'evsMap' && (
+          <NavigationWrapper onBack={goToEVSBags} onNext={() => { markCompleted('evsMap'); setView({ name: 'evs' }) }}>
+            <EVSMap onBack={() => setView({ name: 'evs' })} />
+          </NavigationWrapper>
+        )}
       </div>
     </div>
   )

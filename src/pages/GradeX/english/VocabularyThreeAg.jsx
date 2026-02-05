@@ -106,14 +106,6 @@ export default function VocabularyThreeAg({ onBack, onGoToAd }) {
 
   return (
     <div style={{ minHeight: '100vh', padding: 20, position: 'relative' }}>
-      <div style={{ position: 'absolute', left: 20, top: 20 }}>
-        <button className="back-btn" onClick={onBack}>←</button>
-      </div>
-      {onGoToAd && (
-        <div style={{ position: 'absolute', right: 20, top: 20 }}>
-          <button className="action-btn" onClick={onGoToAd} style={{ padding: '8px 12px', borderRadius: 999, fontWeight: 800 }}>Next</button>
-        </div>
-      )}
 
       <div style={{ maxWidth: 980, margin: '0 auto' }}>
         <h2 style={{ textAlign: 'center', fontSize: 'clamp(28px, 6vw, 42px)', fontWeight: 900, color: '#333' }}>"ag" Vocabulary</h2>

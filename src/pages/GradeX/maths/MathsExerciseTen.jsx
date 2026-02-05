@@ -85,10 +85,7 @@ export default function MathsExerciseTen({ onBack, onComplete, onNext }) {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', padding: 20, position: 'relative' }}>
-      <div style={{ position: 'absolute', left: 20, top: 20 }}>
-        <button className="back-btn" onClick={onBack}>←</button>
-      </div>
-
+      
       <div style={{ width: '100%', maxWidth: 900, background: 'rgba(255,255,255,0.95)', padding: 'clamp(20px, 4vw, 40px)', borderRadius: 20, boxShadow: '0 10px 40px rgba(0,0,0,0.2)' }}>
         <h2 style={{ fontSize: 'clamp(28px, 6vw, 42px)', textAlign: 'center', marginBottom: 32, fontWeight: 900, color: '#333' }}>Word Problems</h2>
 

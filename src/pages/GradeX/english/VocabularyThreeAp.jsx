@@ -102,9 +102,7 @@ export default function VocabularyThreeAp({ onBack }) {
 
   return (
     <div style={{ minHeight: '100vh', padding: 20, position: 'relative' }}>
-      <div style={{ position: 'absolute', left: 20, top: 20 }}>
-        <button className="back-btn" onClick={onBack}>←</button>
-      </div>
+
 
       <div style={{ maxWidth: 980, margin: '0 auto' }}>
         <h2 style={{ textAlign: 'center', fontSize: 'clamp(28px, 6vw, 42px)', fontWeight: 900, color: '#333' }}>"ap" Vocabulary</h2>

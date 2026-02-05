@@ -74,9 +74,7 @@ export default function EVSGender({ onBack }) {
 
   return (
     <div style={{ minHeight: '100vh', padding: '40px 24px 80px', position: 'relative', color: '#fff' }}>
-      <div style={{ position: 'absolute', left: 20, top: 20, zIndex: 2 }}>
-        <button className="back-btn" onClick={onBack}>←</button>
-      </div>
+
 
       <style>{`
         .evs-section {

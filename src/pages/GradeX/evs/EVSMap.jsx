@@ -11,10 +11,6 @@ export default function EVSMap({ onBack }) {
       padding: 20,
       position: 'relative'
     }}>
-      {/* Back Button */}
-      <div style={{ position: 'absolute', left: 20, top: 20 }}>
-        <button className="back-btn" onClick={onBack}>←</button>
-      </div>
 
       {/* White Box Container */}
       <div style={{
