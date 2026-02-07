@@ -79,6 +79,7 @@ export default function EVSIdentify({ onBack }) {
 
   const [answers, setAnswers] = useState({})
   const [sectionIndex, setSectionIndex] = useState(0)
+  const [pageIndexBySection, setPageIndexBySection] = useState({})
 
   const totalItems = SECTIONS.reduce((acc, section) => acc + section.items.length, 0)
   const correctCount = Object.keys(answers).filter(id => {
@@ -92,6 +93,28 @@ export default function EVSIdentify({ onBack }) {
 
   const currentSection = SECTIONS[sectionIndex]
 
+  const itemsPerPage = 3
+  const currentPageIndex = pageIndexBySection[currentSection.id] ?? 0
+  const pageCount = Math.max(1, Math.ceil(currentSection.items.length / itemsPerPage))
+  const safePageIndex = Math.min(Math.max(0, currentPageIndex), pageCount - 1)
+
+  const visibleItems = useMemo(() => {
+    const start = safePageIndex * itemsPerPage
+    return currentSection.items.slice(start, start + itemsPerPage)
+  }, [currentSection, safePageIndex])
+
+  function setCurrentPageIndex(nextIndex) {
+    setPageIndexBySection(prev => ({ ...prev, [currentSection.id]: nextIndex }))
+  }
+
+  function goPrevPage() {
+    setCurrentPageIndex((safePageIndex - 1 + pageCount) % pageCount)
+  }
+
+  function goNextPage() {
+    setCurrentPageIndex((safePageIndex + 1) % pageCount)
+  }
+
   function goPrevSection() {
     setSectionIndex(prev => (prev - 1 + SECTIONS.length) % SECTIONS.length)
   }
@@ -102,61 +125,86 @@ export default function EVSIdentify({ onBack }) {
 
   useEffect(() => {
     function handleKeyDown(event) {
-      if (event.key === 'ArrowLeft') {
-        goPrevSection()
-      } else if (event.key === 'ArrowRight') {
-        goNextSection()
-      }
+      if (event.key === 'ArrowLeft') goPrevPage()
+      else if (event.key === 'ArrowRight') goNextPage()
+      else if (event.key === 'PageUp') goPrevSection()
+      else if (event.key === 'PageDown') goNextSection()
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [])
+  }, [safePageIndex, pageCount, currentSection.id])
+
+  useEffect(() => {
+    // If the section changes and its saved page is out-of-range, clamp it.
+    const section = SECTIONS[sectionIndex]
+    const maxPages = Math.max(1, Math.ceil(section.items.length / itemsPerPage))
+    const stored = pageIndexBySection[section.id] ?? 0
+    const clamped = Math.min(Math.max(0, stored), maxPages - 1)
+    if (clamped !== stored) {
+      setPageIndexBySection(prev => ({ ...prev, [section.id]: clamped }))
+    }
+  }, [sectionIndex])
 
   return (
-    <div style={{ minHeight: '100vh', padding: '40px 24px 80px', position: 'relative', color: '#fff' }}>
+    <div
+      style={{
+        height: '100vh',
+        overflow: 'hidden',
+        padding: '24px 18px 18px',
+        position: 'relative',
+        color: '#fff',
+        display: 'flex',
+        flexDirection: 'column'
+      }}
+    >
 
 
       <style>{`
         .evs-section {
-          margin: 40px auto 60px;
+          margin: 18px auto 0;
           max-width: 1200px;
           background: rgba(255,255,255,0.08);
           border-radius: 24px;
-          padding: 28px 28px 36px;
+          padding: 22px 56px 22px;
           border: 1px solid rgba(255,255,255,0.2);
           box-shadow: 0 16px 40px rgba(0,0,0,0.2);
+          position: relative;
+          width: 100%;
         }
         .evs-title {
           text-align: center;
-          font-size: 26px;
+          font-size: 24px;
           font-weight: 800;
           color: #fff;
-          margin: 0 0 26px;
+          margin: 0 0 14px;
           text-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
         .evs-grid {
-          display: grid;
-          grid-template-columns: repeat(3, minmax(200px, 1fr));
-          gap: 26px;
-          justify-items: center;
+          display: flex;
+          justify-content: center;
+          align-items: flex-start;
+          gap: 22px;
+          width: 100%;
+          overflow: hidden;
         }
         .evs-card {
           width: 100%;
-          max-width: 240px;
+          max-width: 230px;
+          height: auto;
           background: #fff;
           border: 3px solid #6f6f6f;
           border-radius: 12px;
-          padding: 16px;
+          padding: 12px;
           box-shadow: 0 10px 22px rgba(0,0,0,0.15);
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 12px;
+          gap: 10px;
           color: #333;
         }
         .evs-photo {
-          width: 160px;
-          height: 120px;
+          width: 150px;
+          height: 112px;
           border: 3px solid #6f6f6f;
           border-radius: 8px;
           display: flex;
@@ -189,7 +237,7 @@ export default function EVSIdentify({ onBack }) {
           font-size: 26px;
         }
         .evs-label {
-          font-size: 20px;
+          font-size: 18px;
           font-weight: 800;
           color: #111;
           display: inline-flex;
@@ -250,7 +298,7 @@ export default function EVSIdentify({ onBack }) {
           align-items: center;
           justify-content: center;
           gap: 16px;
-          margin: 16px 0 8px;
+          margin: 10px 0 6px;
         }
         .evs-nav-btn {
           width: 46px;
@@ -275,12 +323,55 @@ export default function EVSIdentify({ onBack }) {
           color: #fff;
           text-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
+        .evs-carousel-btn {
+          position: absolute;
+          top: 55%;
+          transform: translateY(-50%);
+          width: 52px;
+          height: 52px;
+          border-radius: 16px;
+          border: 1px solid rgba(255,255,255,0.35);
+          background: rgba(0,0,0,0.35);
+          color: #fff;
+          font-size: 28px;
+          font-weight: 900;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+          transition: transform 0.12s ease, background 0.12s ease;
+          user-select: none;
+        }
+        .evs-carousel-btn:hover {
+          transform: translateY(-50%) scale(1.03);
+          background: rgba(0,0,0,0.45);
+        }
+        .evs-carousel-btn:disabled {
+          opacity: 0.35;
+          cursor: not-allowed;
+        }
+        .evs-carousel-btn.left { left: 14px; }
+        .evs-carousel-btn.right { right: 14px; }
+        .evs-page-indicator {
+          text-align: center;
+          margin-top: 10px;
+          font-size: 14px;
+          font-weight: 800;
+          opacity: 0.95;
+        }
         @media (max-width: 900px) {
-          .evs-grid { grid-template-columns: repeat(2, minmax(200px, 1fr)); }
+          .evs-section { padding: 18px 52px 18px; }
+          .evs-card { max-width: 210px; }
+          .evs-photo { width: 138px; height: 104px; }
         }
         @media (max-width: 600px) {
-          .evs-grid { grid-template-columns: 1fr; }
-          .evs-card { max-width: 320px; }
+          .evs-section { padding: 16px 46px 16px; }
+          .evs-grid { gap: 14px; }
+          .evs-card { max-width: 180px; padding: 10px; }
+          .evs-photo { width: 120px; height: 92px; }
+          .evs-option-btn { padding: 7px 6px; font-size: 12px; }
+          .evs-carousel-btn { width: 46px; height: 46px; border-radius: 14px; }
         }
       `}</style>
 
@@ -299,8 +390,24 @@ export default function EVSIdentify({ onBack }) {
 
       <div className="evs-section">
         <div className="evs-title">{currentSection.title}</div>
+        <button
+          className="evs-carousel-btn left"
+          onClick={goPrevPage}
+          aria-label="Previous pictures"
+          disabled={pageCount <= 1}
+        >
+          ‹
+        </button>
+        <button
+          className="evs-carousel-btn right"
+          onClick={goNextPage}
+          aria-label="Next pictures"
+          disabled={pageCount <= 1}
+        >
+          ›
+        </button>
         <div className="evs-grid">
-          {currentSection.items.map(item => {
+          {visibleItems.map(item => {
             const selected = answers[item.id]
             const isCorrect = selected === item.label
 
@@ -346,6 +453,7 @@ export default function EVSIdentify({ onBack }) {
             )
           })}
         </div>
+        <div className="evs-page-indicator">Pictures {safePageIndex + 1} / {pageCount}</div>
       </div>
     </div>
   )
