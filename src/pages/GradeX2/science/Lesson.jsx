@@ -162,7 +162,7 @@ export default function Lesson({ data, index, total, onBack, onNext, onComplete,
                   </ul>
                 </div>
               </div>
-              <div className="items-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', gap: 16, flex: '1 1 300px', width: '100%', minWidth: 'min(90vw, 300px)' }}>
+              <div className="items-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 160px))', gap: 20, flex: '1 1 300px', width: '100%', minWidth: 'min(90vw, 300px)', justifyContent: 'center' }}>
                 {ALL_ITEMS.map((item) => {
                   const isUsed = dropped.includes(item.id);
                   const isCorrect = data.items.includes(item.id);
@@ -183,7 +183,7 @@ export default function Lesson({ data, index, total, onBack, onNext, onComplete,
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        height: 'clamp(120px, 15vw, 180px)'
+                        height: 'clamp(140px, 18vw, 200px)'
                       }}
                     >
                       <img src={item.src} alt={item.id} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />

@@ -28,8 +28,6 @@ import MathsExerciseSix from './pages/GradeX/maths/MathsExerciseSix'
 import MathsExerciseSeven from './pages/GradeX/maths/MathsExerciseSeven'
 import MathsExerciseEight from './pages/GradeX/maths/MathsExerciseEight'
 import MathsExerciseNine from './pages/GradeX/maths/MathsExerciseNine'
-import MathsExerciseTen from './pages/GradeX/maths/MathsExerciseTen'
-import MathsExerciseEleven from './pages/GradeX/maths/MathsExerciseEleven'
 import EnglishOverview from './pages/GradeX2/english/EnglishOverview'
 import EnglishReadWords from './pages/GradeX/english/EnglishReadWords'
 import EnglishReadWords2 from './pages/GradeX/english/EnglishReadWords2'
@@ -182,8 +180,6 @@ export default function App() {
   function goToMathsExerciseSeven() { setView({ name: 'mathsExerciseSeven' }) }
   function goToMathsExerciseEight() { setView({ name: 'mathsExerciseEight' }) }
   function goToMathsExerciseNine() { setView({ name: 'mathsExerciseNine' }) }
-  function goToMathsExerciseTen() { setView({ name: 'mathsExerciseTen' }) }
-  function goToMathsExerciseEleven() { setView({ name: 'mathsExerciseEleven' }) }
   function goToEnglish() { setView({ name: 'english' }) }
   function goToEnglishReadWords() { setView({ name: 'englishReadWords' }) }
   function goToEnglishReadWords2() { setView({ name: 'englishReadWords2' }) }
@@ -275,9 +271,9 @@ export default function App() {
         {view.name === 'assessment' && (
           <NavigationWrapper 
             onBack={goToHealthProblems} 
-            onNext={() => { markCompleted('assessment'); goToHealthOverview() }}
+            onNext={() => { markCompleted('assessment'); goToEnglish() }}
           >
-            <Assessment onDone={() => { markCompleted('assessment'); goToHealthOverview() }} />
+            <Assessment onDone={() => { markCompleted('assessment'); goToEnglish() }} />
           </NavigationWrapper>
         )}
         {view.name === 'vocabulary' && <Vocabulary onStart={goToVocabularyExercise} onBack={goHome} />}
@@ -446,25 +442,9 @@ export default function App() {
         {view.name === 'mathsExerciseNine' && (
           <NavigationWrapper 
             onBack={() => setView({ name: 'mathsExerciseEight' })} 
-            onNext={() => { markCompleted('mathsExerciseNine'); goToMathsExerciseTen() }}
+            onNext={() => { markCompleted('mathsExerciseNine'); goToComputerOverview() }}
           >
-            <MathsExerciseNine onBack={() => setView({ name: 'mathsExerciseEight' })} onComplete={() => markCompleted('mathsExerciseNine')} onNext={() => { markCompleted('mathsExerciseNine'); goToMathsExerciseTen() }} />
-          </NavigationWrapper>
-        )}
-        {view.name === 'mathsExerciseTen' && (
-          <NavigationWrapper 
-            onBack={() => setView({ name: 'mathsExerciseNine' })} 
-            onNext={() => { markCompleted('mathsExerciseTen'); goToMathsExerciseEleven() }}
-          >
-            <MathsExerciseTen onBack={() => setView({ name: 'mathsExerciseNine' })} onComplete={() => markCompleted('mathsExerciseTen')} onNext={() => { markCompleted('mathsExerciseTen'); goToMathsExerciseEleven() }} />
-          </NavigationWrapper>
-        )}
-        {view.name === 'mathsExerciseEleven' && (
-          <NavigationWrapper 
-            onBack={() => setView({ name: 'mathsExerciseTen' })} 
-            onNext={() => { markCompleted('mathsExerciseEleven'); setView({ name: 'maths' }) }}
-          >
-            <MathsExerciseEleven onBack={() => setView({ name: 'mathsExerciseTen' })} onComplete={() => markCompleted('mathsExerciseEleven')} onNext={() => { markCompleted('mathsExerciseEleven'); setView({ name: 'maths' }) }} />
+            <MathsExerciseNine onBack={() => setView({ name: 'mathsExerciseEight' })} onComplete={() => markCompleted('mathsExerciseNine')} onNext={() => { markCompleted('mathsExerciseNine'); goToComputerOverview() }} />
           </NavigationWrapper>
         )}
         {view.name === 'english' && <EnglishOverview onStart={goToEnglishWordGame} onBack={goHome} />}
@@ -480,7 +460,7 @@ export default function App() {
         {view.name === 'englishReadWords2' && (
           <NavigationWrapper 
             onBack={() => goToEnglishReadWords()} 
-            onNext={() => { markCompleted('englishReadWords2'); setView({ name: 'vocabulary' }) }}
+            onNext={() => { markCompleted('englishReadWords2'); goToMaths() }}
           >
             <EnglishReadWords2 onBack={() => goToEnglishReadWords()} />
           </NavigationWrapper>
@@ -504,17 +484,17 @@ export default function App() {
         {view.name === 'englishFillBlanks' && (
           <NavigationWrapper 
             onBack={() => goToEnglishPhonics()} 
-            onNext={() => { markCompleted('englishFillBlanks'); setView({ name: 'english' }) }}
+            onNext={() => { markCompleted('englishFillBlanks'); goToScienceOverview() }}
           >
             <EnglishFillBlanks onBack={() => goToEnglishPhonics()} />
           </NavigationWrapper>
         )}
-        {view.name === 'science' && <ScienceOverview onBack={goHome} />}
+        {view.name === 'science' && <ScienceOverview onStart={goToScienceHuman} onBack={goHome} />}
         {/* {view.name === 'scienceOrgan' && <ScienceOrgan onBack={goToScienceOverview} onNext={goToScienceHuman} />} */}
         {view.name === 'scienceHuman' && (
           <NavigationWrapper 
             onBack={goToScienceOverview} 
-            onNext={() => { markCompleted('scienceHuman'); goToScienceOverview() }}
+            onNext={() => { markCompleted('scienceHuman'); goHome() }}
           >
             <ScienceHuman onBack={goToScienceOverview} />
           </NavigationWrapper>
@@ -522,7 +502,7 @@ export default function App() {
 
         {view.name === 'computer' && <ComputerOverview onStart={goToComputerKeyboard} onBack={goHome} />}
         {view.name === 'computerKeyboard' && (
-          <NavigationWrapper onBack={goToComputerOverview} onNext={() => { markCompleted('computerKeyboard'); goToComputerOverview() }}>
+          <NavigationWrapper onBack={goToComputerOverview} onNext={() => { markCompleted('computerKeyboard'); goToEVSOverview() }}>
             <ComputerKeyboard onBack={goToComputerOverview} />
           </NavigationWrapper>
         )}
@@ -549,7 +529,7 @@ export default function App() {
           </NavigationWrapper>
         )}
         {view.name === 'evsMap' && (
-          <NavigationWrapper onBack={goToEVSBags} onNext={() => { markCompleted('evsMap'); setView({ name: 'evs' }) }}>
+          <NavigationWrapper onBack={goToEVSBags} onNext={() => { markCompleted('evsMap'); goToHealthOverview() }}>
             <EVSMap onBack={() => setView({ name: 'evs' })} />
           </NavigationWrapper>
         )}

@@ -267,24 +267,24 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                                 {renderItem(child, level + 1)}
                                 {/* Special submenu for Vocabulary matching game */}
                                 {child.id === 'vocabularyExercise' && subOpen['vocabularyExercise'] && (
-                                    <div style={{ paddingLeft: 20 + (level + 1) * 28 + 12, paddingTop: 6, paddingBottom: 6, display: 'flex', gap: 8, flexDirection: 'column' }}>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExercise'); if (isMobile) setMobileOpen(false); }} style={{ padding: '8px 12px', textAlign: 'left' }}>at</button>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAn'); if (isMobile) setMobileOpen(false); }} style={{ padding: '8px 12px', textAlign: 'left' }}>an</button>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAp'); if (isMobile) setMobileOpen(false); }} style={{ padding: '8px 12px', textAlign: 'left' }}>ap</button>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAg'); if (isMobile) setMobileOpen(false); }} style={{ padding: '8px 12px', textAlign: 'left' }}>ag</button>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAM'); if (isMobile) setMobileOpen(false); }} style={{ padding: '8px 12px', textAlign: 'left' }}>am</button>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAd'); if (isMobile) setMobileOpen(false); }} style={{ padding: '8px 12px', textAlign: 'left' }}>ad</button>
+                                    <div style={{ paddingLeft: 20 + (level + 1) * 28 + 12, paddingTop: 8, paddingBottom: 8, display: 'flex', gap: 6, flexDirection: 'column' }}>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExercise'); if (isMobile) setMobileOpen(false); }} style={{ padding: '10px 16px', textAlign: 'left' }}>at</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAn'); if (isMobile) setMobileOpen(false); }} style={{ padding: '10px 16px', textAlign: 'left' }}>an</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAp'); if (isMobile) setMobileOpen(false); }} style={{ padding: '10px 16px', textAlign: 'left' }}>ap</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAg'); if (isMobile) setMobileOpen(false); }} style={{ padding: '10px 16px', textAlign: 'left' }}>ag</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAM'); if (isMobile) setMobileOpen(false); }} style={{ padding: '10px 16px', textAlign: 'left' }}>am</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAd'); if (isMobile) setMobileOpen(false); }} style={{ padding: '10px 16px', textAlign: 'left' }}>ad</button>
                                     </div>
                                 )}
                                 {/* Special submenu for Vocabulary interactive learn */}
                                 {child.id === 'vocabularyThree' && subOpen['vocabularyThree'] && (
-                                    <div style={{ paddingLeft: 20 + (level + 1) * 28 + 12, paddingTop: 6, paddingBottom: 6, display: 'flex', gap: 8, flexDirection: 'column' }}>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThree'); if (isMobile) setMobileOpen(false); }} style={{ padding: '8px 12px', textAlign: 'left' }}>at</button>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAn'); if (isMobile) setMobileOpen(false); }} style={{ padding: '8px 12px', textAlign: 'left' }}>an</button>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAp'); if (isMobile) setMobileOpen(false); }} style={{ padding: '8px 12px', textAlign: 'left' }}>ap</button>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAg'); if (isMobile) setMobileOpen(false); }} style={{ padding: '8px 12px', textAlign: 'left' }}>ag</button>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAM'); if (isMobile) setMobileOpen(false); }} style={{ padding: '8px 12px', textAlign: 'left' }}>am</button>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAd'); if (isMobile) setMobileOpen(false); }} style={{ padding: '8px 12px', textAlign: 'left' }}>ad</button>
+                                    <div style={{ paddingLeft: 20 + (level + 1) * 28 + 12, paddingTop: 8, paddingBottom: 8, display: 'flex', gap: 6, flexDirection: 'column' }}>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThree'); if (isMobile) setMobileOpen(false); }} style={{ padding: '10px 16px', textAlign: 'left' }}>at</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAn'); if (isMobile) setMobileOpen(false); }} style={{ padding: '10px 16px', textAlign: 'left' }}>an</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAp'); if (isMobile) setMobileOpen(false); }} style={{ padding: '10px 16px', textAlign: 'left' }}>ap</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAg'); if (isMobile) setMobileOpen(false); }} style={{ padding: '10px 16px', textAlign: 'left' }}>ag</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAM'); if (isMobile) setMobileOpen(false); }} style={{ padding: '10px 16px', textAlign: 'left' }}>am</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAd'); if (isMobile) setMobileOpen(false); }} style={{ padding: '10px 16px', textAlign: 'left' }}>ad</button>
                                     </div>
                                 )}
                             </div>
