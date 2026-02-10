@@ -22,6 +22,10 @@ export const AuthProvider = ({ children }) => {
         supabase.auth.getSession().then(({ data: { session } }) => {
             setUser(session?.user ?? null)
             if (session?.user) {
+                // Initial check for role in user_metadata for fast redirection
+                if (session.user.user_metadata?.role) {
+                    setRole(session.user.user_metadata.role)
+                }
                 fetchUserRole(session.user.id)
             } else {
                 setLoading(false)
@@ -32,6 +36,10 @@ export const AuthProvider = ({ children }) => {
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             setUser(session?.user ?? null)
             if (session?.user) {
+                // Initial check for role in user_metadata for fast redirection
+                if (session.user.user_metadata?.role) {
+                    setRole(session.user.user_metadata.role)
+                }
                 fetchUserRole(session.user.id)
             } else {
                 setRole(null)
@@ -81,6 +89,12 @@ export const AuthProvider = ({ children }) => {
             const { data, error } = await supabase.auth.signUp({
                 email,
                 password,
+                options: {
+                    data: {
+                        role: roleType,
+                        full_name: fullName
+                    }
+                }
             })
 
             if (error) throw error

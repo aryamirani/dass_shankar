@@ -14,7 +14,7 @@ export default function App() {
     const [authView, setAuthView] = useState('login') // 'login' or 'signup'
     const [selectedStudent, setSelectedStudent] = useState(null)
 
-    if (loading) {
+    if (loading || (user && !role)) {
         return (
             <div style={{
                 minHeight: '100vh',
@@ -23,7 +23,11 @@ export default function App() {
                 justifyContent: 'center',
                 background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
             }}>
-                <div style={{ fontSize: '24px', color: 'white' }}>Loading...</div>
+                <div style={{ textAlign: 'center' }}>
+                    <div style={{ fontSize: '24px', color: 'white', marginBottom: '10px' }}>
+                        {loading ? 'Loading...' : 'Fetching permissions...'}
+                    </div>
+                </div>
             </div>
         )
     }
