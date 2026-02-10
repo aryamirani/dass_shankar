@@ -8,11 +8,13 @@ import AdminDashboard from './pages/Admin/AdminDashboard'
 import TeacherDashboard from './pages/Teacher/TeacherDashboard'
 import ParentDashboard from './pages/Parent/ParentDashboard'
 import LearningApp from './LearningApp'
+import Home from './pages/Home'
 
 export default function App() {
     const { user, role, approvalStatus, loading, signOut } = useAuth()
-    const [authView, setAuthView] = useState('login') // 'login' or 'signup'
+    const [authView, setAuthView] = useState('home') // 'home', 'login', or 'signup'
     const [selectedStudent, setSelectedStudent] = useState(null)
+    const [isGuest, setIsGuest] = useState(false)
 
     if (loading || (user && !role)) {
         return (
@@ -32,12 +34,41 @@ export default function App() {
         )
     }
 
-    // Not authenticated - show login/signup
-    if (!user) {
-        if (authView === 'signup') {
-            return <Signup onNavigateToLogin={() => setAuthView('login')} />
+    // Not authenticated - show home/login/signup
+    if (!user && !isGuest) {
+        if (authView === 'home') {
+            return (
+                <Home
+                    onLogin={() => setAuthView('login')}
+                    onSignup={() => setAuthView('signup')}
+                    onGuest={() => setIsGuest(true)}
+                />
+            )
         }
-        return <Login onNavigateToSignup={() => setAuthView('signup')} />
+        if (authView === 'signup') {
+            return (
+                <Signup
+                    onNavigateToLogin={() => setAuthView('login')}
+                    onBackToHome={() => setAuthView('home')}
+                />
+            )
+        }
+        return (
+            <Login
+                onNavigateToSignup={() => setAuthView('signup')}
+                onBackToHome={() => setAuthView('home')}
+            />
+        )
+    }
+
+    // If guest mode, show learning app with a guest profile
+    if (isGuest) {
+        return (
+            <LearningApp
+                studentProfile={{ id: 'guest', isGuest: true, grades: null }}
+                onExit={() => setIsGuest(false)}
+            />
+        )
     }
 
     // If a student is selected (by teacher/admin), show learning app

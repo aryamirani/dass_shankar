@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 
-export default function Login({ onNavigateToSignup }) {
+export default function Login({ onNavigateToSignup, onBackToHome }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
@@ -19,96 +19,134 @@ export default function Login({ onNavigateToSignup }) {
             setError(error.message)
             setLoading(false)
         }
-        // On success, App.jsx will automatically redirect based on role
     }
 
     return (
         <div style={{
             minHeight: '100vh',
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            background: 'linear-gradient(135deg, hsl(230, 80%, 15%) 0%, hsl(230, 80%, 10%) 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '20px'
+            padding: '20px',
+            fontFamily: "'Outfit', 'Inter', sans-serif"
         }}>
-            <div style={{
-                background: 'white',
-                background: '#1e293b', // Card background
-                padding: '40px',
-                borderRadius: '24px',
-                boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
+            <style>{`
+                @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+                .fade-in { animation: fadeIn 0.6s ease-out forwards; }
+                .input-field:focus { border-color: hsl(230, 100%, 65%) !important; box-shadow: 0 0 0 4px hsla(230, 100%, 65%, 0.1); }
+            `}</style>
+
+            {/* Back Button */}
+            <button
+                onClick={onBackToHome}
+                style={{
+                    position: 'absolute',
+                    top: '30px',
+                    left: '30px',
+                    background: 'hsla(0, 0%, 100%, 0.05)',
+                    border: '1px solid hsla(0, 0%, 100%, 0.1)',
+                    color: 'white',
+                    padding: '10px 20px',
+                    borderRadius: '12px',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontSize: '0.9rem',
+                    fontWeight: '600',
+                    transition: 'all 0.3s',
+                    zIndex: 10
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = 'hsla(0, 0%, 100%, 0.1)'}
+                onMouseLeave={e => e.currentTarget.style.background = 'hsla(0, 0%, 100%, 0.05)'}
+            >
+                ← Back to Home
+            </button>
+
+            <div className="fade-in" style={{
+                background: 'hsla(0, 0%, 100%, 0.03)',
+                backdropFilter: 'blur(15px)',
+                padding: '48px',
+                borderRadius: '32px',
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
                 width: '100%',
-                maxWidth: '400px',
-                border: '1px solid #334155'
+                maxWidth: '420px',
+                border: '1px solid hsla(0, 0%, 100%, 0.05)',
+                boxSizing: 'border-box'
             }}>
-                <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+                <div style={{ textAlign: 'center', marginBottom: '40px' }}>
                     <h1 style={{
                         fontSize: '32px',
                         fontWeight: '800',
-                        color: '#f1f5f9', // Light text
-                        marginBottom: '10px'
+                        color: 'white',
+                        marginBottom: '12px',
+                        letterSpacing: '-0.5px'
                     }}>
                         Welcome Back
                     </h1>
-                    <p style={{ color: '#94a3b8' }}>Sign in to continue</p>
+                    <p style={{ color: '#94a3b8', fontSize: '1.1rem' }}>Sign in to continue your journey</p>
                 </div>
 
                 {error && (
                     <div style={{
-                        background: 'rgba(239, 68, 68, 0.1)',
-                        color: '#fca5a5',
-                        padding: '12px',
-                        borderRadius: '8px',
-                        marginBottom: '20px',
+                        background: 'hsla(0, 100%, 65%, 0.1)',
+                        color: 'hsl(0, 100%, 75%)',
+                        padding: '14px',
+                        borderRadius: '12px',
+                        marginBottom: '24px',
                         fontSize: '14px',
                         textAlign: 'center',
-                        border: '1px solid rgba(239, 68, 68, 0.2)'
+                        border: '1px solid hsla(0, 100%, 65%, 0.2)'
                     }}>
                         {error}
                     </div>
                 )}
 
                 <form onSubmit={handleSubmit}>
-                    <div style={{ marginBottom: '20px' }}>
+                    <div style={{ marginBottom: '24px' }}>
                         <label style={{
                             display: 'block',
                             fontSize: '14px',
                             fontWeight: '600',
                             color: '#e2e8f0',
-                            marginBottom: '8px'
+                            marginBottom: '8px',
+                            textTransform: 'uppercase',
+                            letterSpacing: '1px'
                         }}>
-                            Email
+                            Email Address
                         </label>
                         <input
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            placeholder="Enter your email"
+                            placeholder="name@example.com"
+                            className="input-field"
                             style={{
                                 width: '100%',
-                                padding: '14px',
+                                padding: '16px',
                                 fontSize: '16px',
-                                background: '#0f172a',
-                                border: '2px solid #334155',
-                                borderRadius: '12px',
+                                background: 'hsla(0, 0%, 0%, 0.2)',
+                                border: '2px solid hsla(0, 0%, 100%, 0.05)',
+                                borderRadius: '14px',
                                 outline: 'none',
-                                color: '#f1f5f9',
-                                transition: 'border-color 0.3s',
+                                color: 'white',
+                                transition: 'all 0.3s',
                                 boxSizing: 'border-box'
                             }}
-                            onFocus={(e) => e.target.style.borderColor = '#667eea'}
-                            onBlur={(e) => e.target.style.borderColor = '#334155'}
                         />
                     </div>
 
-                    <div style={{ marginBottom: '30px' }}>
+                    <div style={{ marginBottom: '32px' }}>
                         <label style={{
                             display: 'block',
                             fontSize: '14px',
                             fontWeight: '600',
                             color: '#e2e8f0',
-                            marginBottom: '8px'
+                            marginBottom: '8px',
+                            textTransform: 'uppercase',
+                            letterSpacing: '1px'
                         }}>
                             Password
                         </label>
@@ -117,21 +155,20 @@ export default function Login({ onNavigateToSignup }) {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            placeholder="Enter your password"
+                            placeholder="••••••••"
+                            className="input-field"
                             style={{
                                 width: '100%',
-                                padding: '14px',
+                                padding: '16px',
                                 fontSize: '16px',
-                                background: '#0f172a',
-                                border: '2px solid #334155',
-                                borderRadius: '12px',
+                                background: 'hsla(0, 0%, 0%, 0.2)',
+                                border: '2px solid hsla(0, 0%, 100%, 0.05)',
+                                borderRadius: '14px',
                                 outline: 'none',
-                                color: '#f1f5f9',
-                                transition: 'border-color 0.3s',
+                                color: 'white',
+                                transition: 'all 0.3s',
                                 boxSizing: 'border-box'
                             }}
-                            onFocus={(e) => e.target.style.borderColor = '#667eea'}
-                            onBlur={(e) => e.target.style.borderColor = '#334155'}
                         />
                     </div>
 
@@ -141,44 +178,45 @@ export default function Login({ onNavigateToSignup }) {
                         style={{
                             width: '100%',
                             padding: '16px',
-                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                            background: 'hsl(230, 100%, 65%)',
                             color: 'white',
                             border: 'none',
-                            borderRadius: '12px',
-                            fontSize: '16px',
-                            fontWeight: '600',
+                            borderRadius: '14px',
+                            fontSize: '18px',
+                            fontWeight: '700',
                             cursor: loading ? 'not-allowed' : 'pointer',
                             opacity: loading ? 0.7 : 1,
-                            transition: 'transform 0.2s',
-                            boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)'
+                            transition: 'all 0.3s',
+                            boxShadow: '0 10px 20px hsla(230, 100%, 65%, 0.3)'
                         }}
-                        onMouseEnter={(e) => !loading && (e.target.style.transform = 'translateY(-2px)')}
-                        onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}
+                        onMouseEnter={(e) => !loading && (e.currentTarget.style.transform = 'translateY(-2px)')}
+                        onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
                     >
-                        {loading ? 'Signing in...' : 'Sign In'}
+                        {loading ? 'Authenticating...' : 'Sign In'}
                     </button>
                 </form>
 
                 <div style={{
-                    marginTop: '25px',
+                    marginTop: '32px',
                     textAlign: 'center',
                     color: '#94a3b8',
-                    fontSize: '14px'
+                    fontSize: '15px'
                 }}>
-                    Don't have an account?{' '}
+                    New to Shankar Foundation?{' '}
                     <button
                         onClick={onNavigateToSignup}
                         style={{
                             background: 'none',
                             border: 'none',
-                            color: '#667eea',
-                            fontWeight: '600',
+                            color: 'hsl(230, 100%, 65%)',
+                            fontWeight: '700',
                             cursor: 'pointer',
                             padding: 0,
-                            fontSize: '14px'
+                            fontSize: '15px',
+                            textDecoration: 'underline'
                         }}
                     >
-                        Sign Up
+                        Create an account
                     </button>
                 </div>
             </div>

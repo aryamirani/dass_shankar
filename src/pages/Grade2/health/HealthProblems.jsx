@@ -16,12 +16,12 @@ export default function HealthProblems({ onStart, onSelect, completed = [], allD
         <div className="health-grid" role="list">
           {displayedConditions.map((c, i) => {
             const globalIndex = page * itemsPerPage + i;
-            const done = completed.includes(c.id) && mode !== 'test';
+            const done = completed.includes(c.id);
             return (
               <button
                 key={c.id}
                 className={"health-grid-item" + (done ? ' completed' : '')}
-                onClick={() => (!done || mode === 'test') && onSelect(globalIndex)}
+                onClick={() => onSelect(globalIndex)}
                 aria-label={c.title}
                 title={c.title}
                 disabled={done && mode !== 'test'}

@@ -305,7 +305,7 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                         </span>
                     )}
 
-                    {!collapsed && completed && appMode !== 'test' && (
+                    {!collapsed && completed && (
                         <span style={{ color: '#4CAF50', marginLeft: 6, fontSize: 14, fontWeight: 800 }}>✓</span>
                     )}
                 </div>

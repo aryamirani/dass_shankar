@@ -156,7 +156,15 @@ export default function LearningApp({ studentProfile, onExit }) {
   function goToLesson(index) {
     setView({ name: 'lesson', index })
   }
-  function goHome() { setView({ name: 'landing', index: 0 }) }
+  function goHome() {
+    if (studentProfile?.grades?.display_name === 'Grade 1') {
+      setView({ name: 'book-a-grade-x' })
+    } else if (studentProfile?.grades?.display_name === 'Grade 2') {
+      setView({ name: 'book-a-grade-x2' })
+    } else {
+      setView({ name: 'landing', index: 0 })
+    }
+  }
   function goToHealthOverview() { setView({ name: 'health' }) }
   function goToHealthProblems() { setView({ name: 'healthProblems' }) }
   function goToVocabulary() { setView({ name: 'vocabulary' }) }
@@ -223,15 +231,26 @@ export default function LearningApp({ studentProfile, onExit }) {
 
   async function handleComplete(id, score = 100, metadata = {}) {
     if (appMode === 'test') {
-      setTestSession(prev => ({
-        ...prev,
-        active: true,
-        results: [...prev.results, { id, score, metadata, timestamp: new Date().toISOString() }]
-      }))
+      setTestSession(prev => {
+        // Find if we already have a result for this specific activity
+        const existingIdx = prev.results.findIndex(r => r.id === id);
+        let newResults;
+        if (existingIdx >= 0) {
+          // Update existing result (take the higher score)
+          newResults = [...prev.results];
+          if (score > newResults[existingIdx].score) {
+            newResults[existingIdx] = { ...newResults[existingIdx], score, metadata, timestamp: new Date().toISOString() };
+          }
+        } else {
+          // Add new result
+          newResults = [...prev.results, { id, score, metadata, timestamp: new Date().toISOString() }];
+        }
+        return { ...prev, results: newResults };
+      })
     } else {
       setCompleted(prev => prev.includes(id) ? prev : [...prev, id])
-      // If parent is viewing, don't save progress to Supabase
-      if (studentProfile?.id && !studentProfile?.parentPreview) {
+      // If parent is viewing or guest is exploring, don't save progress to Supabase
+      if (studentProfile?.id && !studentProfile?.parentPreview && !studentProfile?.isGuest) {
         await saveProgress(id, score, true, { mode: 'practice', ...metadata })
       }
     }
@@ -240,14 +259,14 @@ export default function LearningApp({ studentProfile, onExit }) {
   async function finalizeTest() {
     if (!testSession.results.length) return
 
-    // Save all results to Supabase (only for students, not parent preview)
-    if (studentProfile?.id && !studentProfile?.parentPreview) {
+    // Save all results to Supabase (only for students, not parent preview or guest)
+    if (studentProfile?.id && !studentProfile?.parentPreview && !studentProfile?.isGuest) {
       for (const res of testSession.results) {
         await saveProgress(res.id, res.score, true, { mode: 'test', ...res.metadata })
       }
     }
 
-    // Switch to results view
+    setTestSession(prev => ({ ...prev, active: false }));
     setView({ name: 'test-summary' })
   }
 
@@ -351,7 +370,7 @@ export default function LearningApp({ studentProfile, onExit }) {
         {view.name === 'test-summary' && (
           <TestResultsSummary
             results={testSession.results}
-            totalExpectedCount={studentProfile?.grades?.display_name === 'Grade 2' ? 5 : 9} // Example counts
+            totalExpectedCount={studentProfile?.grades?.display_name === 'Grade 2' ? 17 : 29}
             onBackToOverview={() => {
               setAppMode('learn')
               setTestSession({ active: false, results: [] })
@@ -368,7 +387,7 @@ export default function LearningApp({ studentProfile, onExit }) {
             <HealthProblems mode={appMode} onStart={() => goToLesson(0)} onSelect={(imgIndex) => goToLesson(imgIndex)} completed={completed} allDone={allDone} onAllDone={() => handleComplete('health')} onVocabulary={goToVocabulary} onBack={goToHealthOverview} onNextExercise={goToAssessment} />
           </NavigationWrapper>
         )}
-        {view.name === 'lesson' && <Lesson data={CONDITIONS[view.index]} index={view.index} total={CONDITIONS.length} onBack={goToHealthProblems} onNext={next} onComplete={handleComplete} onBackToGrid={() => { handleComplete('health'); goToHealthProblems() }} />}
+        {view.name === 'lesson' && <Lesson data={CONDITIONS[view.index]} index={view.index} total={CONDITIONS.length} onBack={goToHealthProblems} onNext={next} onComplete={handleComplete} onBackToGrid={() => { if (appMode !== 'test') handleComplete('health'); goToHealthProblems() }} />}
         {view.name === 'assessment' && (
           <NavigationWrapper
             onBack={goToHealthProblems}
