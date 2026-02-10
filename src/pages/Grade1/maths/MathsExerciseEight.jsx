@@ -242,13 +242,14 @@ export default function MathsExerciseEight({ onBack, onNextExercise }) {
                       width: '100%',
                       fontSize: 'clamp(18px, 4vw, 24px)',
                       fontWeight: 600,
-                      padding: '12px 20px',
+                      padding: '8px 16px',
                       border: '2px solid #999',
                       borderRadius: 8,
                       outline: 'none',
                       background: (item.checked && item.correct) ? '#f1f8f1' : '#f9f9f9',
                       fontFamily: 'inherit',
-                      boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)'
+                      boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.06)',
+                      boxSizing: 'border-box'
                     }}
                   />
                 </div>

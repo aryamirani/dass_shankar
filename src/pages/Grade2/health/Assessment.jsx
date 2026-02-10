@@ -45,11 +45,11 @@ function shuffle(array) {
   return newArr;
 }
 
-export default function Assessment({ onDone, onNextExercise }) {
+export default function Assessment({ onDone, onNextExercise, mode = 'learn' }) {
   const [step, setStep] = useState('A')
   const [a1Index, setA1Index] = useState(0)
   const [a2Index, setA2Index] = useState(0)
-  const [a1Drops, setA1Drops] = useState([])
+  const [a1Drops, setA1Drops] = useState([]) // indices of PART_A that were correct in learn mode, or all answers in test mode
   const [a2Drops, setA2Drops] = useState([])
   const [optionsA, setOptionsA] = useState([])
   const [optionsB, setOptionsB] = useState(PARTB_OPTIONS)
@@ -57,6 +57,7 @@ export default function Assessment({ onDone, onNextExercise }) {
   const [positiveMsg, setPositiveMsg] = useState(null)
   const [locked, setLocked] = useState(false)
   const confettiRef = useRef(null)
+  const [testAnswers, setTestAnswers] = useState([])
 
   // Update options for Part A when the question changes
   useEffect(() => {
@@ -68,7 +69,6 @@ export default function Assessment({ onDone, onNextExercise }) {
       if (currentAnswerOpt) {
         setOptionsA(shuffle([currentAnswerOpt, ...shuffledDistractors]));
       } else {
-        // Fallback if answer id not found in conditions
         setOptionsA(shuffle(distractors).slice(0, 6));
       }
     }
@@ -79,10 +79,27 @@ export default function Assessment({ onDone, onNextExercise }) {
   function handleSelectA(optId) {
     if (locked) return;
     const answer = PART_A[a1Index].answer;
+
+    if (mode === 'test') {
+      const isCorrect = optId === answer;
+      const answerLabel = DIAG_OPTIONS.find(o => o.id === optId)?.label || optId;
+      const correctLabel = DIAG_OPTIONS.find(o => o.id === answer)?.label || answer;
+
+      setTestAnswers(prev => [...prev, {
+        question: `Symptoms: ${PART_A[a1Index].q}`,
+        user: answerLabel,
+        correct: correctLabel,
+        status: isCorrect ? 'correct' : 'wrong'
+      }]);
+
+      setA1Drops(prev => [...prev, optId]);
+      setA1Index(idx => idx + 1);
+      return;
+    }
+
     if (optId === answer) {
       setLocked(true);
       setA1Drops(prev => [...prev, optId]);
-      // Do not filter optionsA here anymore, as we regenerate for next question
       const msg = POSITIVE_FEEDBACKS[Math.floor(Math.random() * POSITIVE_FEEDBACKS.length)];
       setPositiveMsg(msg);
       setTimeout(() => {
@@ -104,6 +121,20 @@ export default function Assessment({ onDone, onNextExercise }) {
     let payload
     try { payload = JSON.parse(raw) } catch (err) { payload = { type: 'optionB', val: raw } }
     const answer = PART_B[a2Index].answer
+
+    if (mode === 'test') {
+      const isCorrect = payload.val === answer;
+      setTestAnswers(prev => [...prev, {
+        question: PART_B[a2Index].q,
+        user: payload.val,
+        correct: answer,
+        status: isCorrect ? 'correct' : 'wrong'
+      }]);
+      setA2Drops(prev => [...prev, payload.val]);
+      setA2Index(idx => idx + 1);
+      return;
+    }
+
     if (payload.type === 'optionB' && payload.val === answer) {
       setLocked(true)
       setA2Drops(prev => [...prev, payload.val])
@@ -122,6 +153,14 @@ export default function Assessment({ onDone, onNextExercise }) {
   }
 
   function checkAnswers() {
+    if (mode === 'test') {
+      const score = Math.round((testAnswers.filter(a => a.status === 'correct').length / testAnswers.length) * 100);
+      if (onDone) {
+        onDone('health-assessment', score, { answers: testAnswers });
+      }
+      return;
+    }
+
     let a1Correct = a1Drops.length;
     let a2Correct = a2Drops.length;
     const total = a1Correct + a2Correct
@@ -137,7 +176,7 @@ export default function Assessment({ onDone, onNextExercise }) {
     setA2Index(0)
     setA1Drops([])
     setA2Drops([])
-    // optionsA will reset via useEffect
+    setTestAnswers([])
     setOptionsB(PARTB_OPTIONS)
     setFeedback(null)
     setStep('A')

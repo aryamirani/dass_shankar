@@ -50,11 +50,11 @@ export default function EnglishPhonics({ onBack, onNextExercise }) {
 
     return (
         <div className="landing-root">
-            <div className="landing-inner" style={{ maxWidth: 1200 }}>
+            <div className="landing-inner" style={{ maxWidth: 1000, margin: '0 auto', paddingTop: 'clamp(60px, 8vh, 100px)' }}>
 
                 <h1 className="center-title" style={{ fontSize: 'clamp(24px, 6vw, 32px)', marginBottom: 20 }}>Drag the words to form compound words</h1>
 
-                <div style={{ display: 'flex', flexDirection: 'column-reverse', gap: 40, width: '100%', flexWrap: 'wrap-reverse' }}>
+                <div style={{ display: 'flex', flexDirection: 'column-reverse', gap: 40, width: '100%', alignItems: 'center' }}>
                     {/* Word Bank */}
                     <div style={{ position: 'sticky', top: 20, zIndex: 10, background: 'rgba(255,255,255,0.8)', padding: 20, borderRadius: 16, width: '100%', boxSizing: 'border-box' }}>
                         <h3 style={{ marginTop: 0 }}>Word Bank</h3>
@@ -77,7 +77,7 @@ export default function EnglishPhonics({ onBack, onNextExercise }) {
                     </div>
 
                     {/* Target Zones */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: '100%' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: '100%', maxWidth: 800 }}>
                         {wordTriples.map((triple, i) => {
                             const currentDropped = dropped[i] || []
                             const isComplete = currentDropped.length === 2

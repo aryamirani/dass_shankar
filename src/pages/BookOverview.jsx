@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function BookOverview({ gradeName, modules, onModuleClick }) {
+export default function BookOverview({ gradeName, modules, onModuleClick, mode, onModeChange }) {
     return (
         <div style={{
             minHeight: '100vh',
@@ -10,11 +10,61 @@ export default function BookOverview({ gradeName, modules, onModuleClick }) {
             fontFamily: '"Outfit", sans-serif'
         }}>
             <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+                {/* Mode Selector */}
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginBottom: '40px',
+                    animation: 'fadeInDown 0.8s ease-out'
+                }}>
+                    <div style={{
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        padding: '6px',
+                        borderRadius: '16px',
+                        display: 'flex',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        boxShadow: '0 10px 25px rgba(0,0,0,0.2)'
+                    }}>
+                        <button
+                            onClick={() => onModeChange('learn')}
+                            style={{
+                                padding: '10px 24px',
+                                borderRadius: '12px',
+                                border: 'none',
+                                background: mode === 'learn' ? 'linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%)' : 'transparent',
+                                color: mode === 'learn' ? 'white' : '#94a3b8',
+                                fontWeight: 700,
+                                cursor: 'pointer',
+                                transition: 'all 0.3s',
+                                fontSize: '15px'
+                            }}
+                        >
+                            Practice Mode
+                        </button>
+                        <button
+                            onClick={() => onModeChange('test')}
+                            style={{
+                                padding: '10px 24px',
+                                borderRadius: '12px',
+                                border: 'none',
+                                background: mode === 'test' ? 'linear-gradient(135deg, #f59e0b 0%, #ea580c 100%)' : 'transparent',
+                                color: mode === 'test' ? 'white' : '#94a3b8',
+                                fontWeight: 700,
+                                cursor: 'pointer',
+                                transition: 'all 0.3s',
+                                fontSize: '15px'
+                            }}
+                        >
+                            Test Mode
+                        </button>
+                    </div>
+                </div>
+
                 {/* Hero Section */}
                 <div style={{
                     textAlign: 'center',
                     marginBottom: '60px',
-                    animation: 'fadeInDown 0.8s ease-out'
+                    animation: 'fadeInDown 0.8s ease-out 0.1s both'
                 }}>
                     <h1 style={{
                         fontSize: 'clamp(32px, 8vw, 64px)',
@@ -33,7 +83,9 @@ export default function BookOverview({ gradeName, modules, onModuleClick }) {
                         marginTop: '10px',
                         fontWeight: 500
                     }}>
-                        Explore your modules and continue your learning journey
+                        {mode === 'learn'
+                            ? 'Master new concepts with immediate feedback and guidance.'
+                            : 'Challenge yourself! Complete exercises and see your results at the end.'}
                     </p>
                 </div>
 

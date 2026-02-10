@@ -48,6 +48,7 @@ import EVSBags from './pages/Grade1/evs/EVSBags'
 import EVSMap from './pages/Grade1/evs/EVSMap'
 import ArtsOverview from './pages/Grade1/arts/ArtsOverview'
 import BookOverview from './pages/BookOverview'
+import TestResultsSummary from './components/TestResultsSummary'
 import CONDITIONS from './data/conditions'
 
 // Wrapper for consistent navigation buttons
@@ -101,6 +102,8 @@ const NavigationWrapper = ({ children, onBack }) => {
 export default function LearningApp({ studentProfile, onExit }) {
   const [view, setView] = useState({ name: 'landing', index: 0 })
   const [completed, setCompleted] = useState([]) // store condition ids
+  const [appMode, setAppMode] = useState('learn') // 'learn' or 'test'
+  const [testSession, setTestSession] = useState({ active: false, results: [] })
 
   // load persisted completed list on mount
   useEffect(() => {
@@ -208,9 +211,44 @@ export default function LearningApp({ studentProfile, onExit }) {
   // Initialize hook
   const { saveProgress, getProgress } = useStudentProgress(studentProfile?.id)
 
-  function handleComplete(id, score = 100) {
-    setCompleted(prev => prev.includes(id) ? prev : [...prev, id])
-    saveProgress(id, score, true)
+  function handleModeChange(mode) {
+    setAppMode(mode)
+    // When switching to test mode, reset test session
+    if (mode === 'test') {
+      setTestSession({ active: true, results: [] })
+    } else {
+      setTestSession({ active: false, results: [] })
+    }
+  }
+
+  async function handleComplete(id, score = 100, metadata = {}) {
+    if (appMode === 'test') {
+      setTestSession(prev => ({
+        ...prev,
+        active: true,
+        results: [...prev.results, { id, score, metadata, timestamp: new Date().toISOString() }]
+      }))
+    } else {
+      setCompleted(prev => prev.includes(id) ? prev : [...prev, id])
+      // If parent is viewing, don't save progress to Supabase
+      if (studentProfile?.id && !studentProfile?.parentPreview) {
+        await saveProgress(id, score, true, { mode: 'practice', ...metadata })
+      }
+    }
+  }
+
+  async function finalizeTest() {
+    if (!testSession.results.length) return
+
+    // Save all results to Supabase (only for students, not parent preview)
+    if (studentProfile?.id && !studentProfile?.parentPreview) {
+      for (const res of testSession.results) {
+        await saveProgress(res.id, res.score, true, { mode: 'test', ...res.metadata })
+      }
+    }
+
+    // Switch to results view
+    setView({ name: 'test-summary' })
   }
 
   const allDone = completed.length === CONDITIONS.length
@@ -282,6 +320,9 @@ export default function LearningApp({ studentProfile, onExit }) {
         completedItems={completed}
         studentProfile={studentProfile}
         onExit={onExit}
+        testActive={testSession.active}
+        appMode={appMode}
+        onFinalize={finalizeTest}
       />
 
       <div style={{ flex: 1, overflowY: 'auto', position: 'relative' }}>
@@ -292,6 +333,8 @@ export default function LearningApp({ studentProfile, onExit }) {
             gradeName="Book A - Grade 1"
             modules={GRADE1_MODULES}
             onModuleClick={handleSidebarNav}
+            mode={appMode}
+            onModeChange={handleModeChange}
           />
         )}
 
@@ -300,6 +343,20 @@ export default function LearningApp({ studentProfile, onExit }) {
             gradeName="Book A - Grade 2"
             modules={GRADE2_MODULES}
             onModuleClick={handleSidebarNav}
+            mode={appMode}
+            onModeChange={handleModeChange}
+          />
+        )}
+
+        {view.name === 'test-summary' && (
+          <TestResultsSummary
+            results={testSession.results}
+            totalExpectedCount={studentProfile?.grades?.display_name === 'Grade 2' ? 5 : 9} // Example counts
+            onBackToOverview={() => {
+              setAppMode('learn')
+              setTestSession({ active: false, results: [] })
+              setView({ name: studentProfile?.grades?.display_name === 'Grade 2' ? 'book-a-grade-x2' : 'book-a-grade-x' })
+            }}
           />
         )}
 
@@ -308,7 +365,7 @@ export default function LearningApp({ studentProfile, onExit }) {
           <NavigationWrapper
             onBack={goToHealthOverview}
           >
-            <HealthProblems onStart={() => goToLesson(0)} onSelect={(imgIndex) => goToLesson(imgIndex)} completed={completed} allDone={allDone} onAllDone={() => handleComplete('health')} onVocabulary={goToVocabulary} onBack={goToHealthOverview} onNextExercise={goToAssessment} />
+            <HealthProblems mode={appMode} onStart={() => goToLesson(0)} onSelect={(imgIndex) => goToLesson(imgIndex)} completed={completed} allDone={allDone} onAllDone={() => handleComplete('health')} onVocabulary={goToVocabulary} onBack={goToHealthOverview} onNextExercise={goToAssessment} />
           </NavigationWrapper>
         )}
         {view.name === 'lesson' && <Lesson data={CONDITIONS[view.index]} index={view.index} total={CONDITIONS.length} onBack={goToHealthProblems} onNext={next} onComplete={handleComplete} onBackToGrid={() => { handleComplete('health'); goToHealthProblems() }} />}
@@ -316,7 +373,7 @@ export default function LearningApp({ studentProfile, onExit }) {
           <NavigationWrapper
             onBack={goToHealthProblems}
           >
-            <Assessment onDone={() => { handleComplete('assessment'); goToEnglish() }} onNextExercise={() => { handleComplete('assessment'); goToEnglish() }} />
+            <Assessment mode={appMode} onDone={() => { handleComplete('assessment'); goToEnglish() }} onNextExercise={() => { handleComplete('assessment'); goToEnglish() }} />
           </NavigationWrapper>
         )}
         {view.name === 'vocabulary' && <Vocabulary onStart={goToVocabularyExercise} onBack={goHome} />}

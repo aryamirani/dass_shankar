@@ -45,6 +45,7 @@ export default function ChildProgressView({ child, onBack }) {
                     updated_at,
                     completed,
                     exercise_id,
+                    metadata,
                     exercises (
                         name,
                         slug,
@@ -163,6 +164,7 @@ export default function ChildProgressView({ child, onBack }) {
                                 <tr style={{ borderBottom: '1px solid #334155', color: '#94a3b8', fontSize: '13px' }}>
                                     <th style={{ padding: '16px 24px', fontWeight: '500' }}>Exercise Name</th>
                                     <th style={{ padding: '16px 24px', fontWeight: '500' }}>Module</th>
+                                    <th style={{ padding: '16px 24px', fontWeight: '500' }}>Mode</th>
                                     <th style={{ padding: '16px 24px', fontWeight: '500' }}>Completion Date</th>
                                     <th style={{ padding: '16px 24px', fontWeight: '500', textAlign: 'right' }}>Score</th>
                                 </tr>
@@ -181,6 +183,19 @@ export default function ChildProgressView({ child, onBack }) {
                                                 fontWeight: '600'
                                             }}>
                                                 {item.exercises?.modules?.name || 'General'}
+                                            </span>
+                                        </td>
+                                        <td style={{ padding: '16px 24px' }}>
+                                            <span style={{
+                                                background: item.metadata?.mode === 'test' ? 'rgba(245, 158, 11, 0.1)' : 'rgba(16, 185, 129, 0.1)',
+                                                color: item.metadata?.mode === 'test' ? '#f59e0b' : '#10b981',
+                                                padding: '4px 8px',
+                                                borderRadius: '4px',
+                                                fontSize: '11px',
+                                                fontWeight: '700',
+                                                textTransform: 'uppercase'
+                                            }}>
+                                                {item.metadata?.mode || 'Learn'}
                                             </span>
                                         </td>
                                         <td style={{ padding: '16px 24px', color: '#94a3b8', fontSize: '14px' }}>
@@ -215,6 +230,6 @@ export default function ChildProgressView({ child, onBack }) {
                     to { opacity: 1; transform: translateY(0); }
                 }
             `}</style>
-        </div>
+        </div >
     )
 }

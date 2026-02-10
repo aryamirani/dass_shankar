@@ -38,7 +38,7 @@ export function useStudentProgress(studentId) {
         }
     }
 
-    const saveProgress = async (exerciseSlug, score = null, completed = true) => {
+    const saveProgress = async (exerciseSlug, score = null, completed = true, metadata = {}) => {
         if (!studentId) {
             console.warn('No student ID provided for progress tracking')
             return
@@ -86,8 +86,12 @@ export function useStudentProgress(studentId) {
                 completed: completed || existing?.completed || false,
                 score: score,
                 attempts: attempts,
-                time_spent_seconds: (existing?.time_spent_seconds || 0) + timeSpentSeconds, // Accumulate time? Or per attempt? Schema implies total time? "time_spent_seconds integer". Usually total.
-                last_attempted_at: new Date().toISOString()
+                time_spent_seconds: (existing?.time_spent_seconds || 0) + timeSpentSeconds,
+                last_attempted_at: new Date().toISOString(),
+                metadata: {
+                    ...(existing?.metadata || {}),
+                    ...metadata
+                }
             }
 
             // If it's the first time, updated headers are handled by DB defaults usually, 

@@ -132,7 +132,7 @@ export default function MathsExerciseThree({ onBack, onNextExercise }) {
           Completed: {correctEditableCount} / {editableCount}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 20, justifyContent: 'center' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 20, justifyContent: 'center' }}>
           {items.map(item => (
             <div key={item.id} style={{
               display: 'flex',

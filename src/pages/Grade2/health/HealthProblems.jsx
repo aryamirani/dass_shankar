@@ -2,7 +2,7 @@ import React from 'react'
 
 import CONDITIONS from '../../../data/conditions'
 
-export default function HealthProblems({ onStart, onSelect, completed = [], allDone = false, onAllDone, onVocabulary, onBack, onNextExercise }) {
+export default function HealthProblems({ onStart, onSelect, completed = [], allDone = false, onAllDone, onVocabulary, onBack, onNextExercise, mode = 'learn' }) {
   const [page, setPage] = React.useState(0);
   const itemsPerPage = 6;
   const totalPages = Math.ceil(CONDITIONS.length / itemsPerPage);
@@ -11,20 +11,20 @@ export default function HealthProblems({ onStart, onSelect, completed = [], allD
 
   return (
     <div id="landing" className="landing-root" role="main" style={{ position: 'relative' }}>
-      <div className="landing-inner">
-        <h1 className="center-title" style={{ marginBottom: 32, fontSize: 'clamp(32px, 6vw, 42px)' }}>Health Problems</h1>
+      <div className="landing-inner" style={{ paddingTop: 'clamp(60px, 10vh, 100px)' }}>
+        <h1 className="center-title" style={{ marginBottom: 40, fontSize: 'clamp(28px, 5vw, 42px)', width: '100%', textAlign: 'center' }}>Health Problems</h1>
         <div className="health-grid" role="list">
           {displayedConditions.map((c, i) => {
             const globalIndex = page * itemsPerPage + i;
-            const done = completed.includes(c.id);
+            const done = completed.includes(c.id) && mode !== 'test';
             return (
               <button
                 key={c.id}
                 className={"health-grid-item" + (done ? ' completed' : '')}
-                onClick={() => !done && onSelect(globalIndex)}
+                onClick={() => (!done || mode === 'test') && onSelect(globalIndex)}
                 aria-label={c.title}
                 title={c.title}
-                disabled={done}
+                disabled={done && mode !== 'test'}
                 tabIndex={0}
                 style={{ animation: `popIn 0.5s cubic-bezier(.5,1.8,.5,1) ${(i * 0.04).toFixed(2)}s both`, width: '100%', maxWidth: '420px' }}
               >

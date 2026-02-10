@@ -9,7 +9,7 @@ const GENTLE = [
   '👎 Retry', '☹️ Try again', '❌ Wrong'
 ]
 
-export default function MathsExerciseNine({ onBack, onComplete, onNextExercise }) {
+export default function MathsExerciseNine({ onBack, onComplete, onNextExercise, mode = 'learn' }) {
   const bagsToTakeOut = useMemo(() => Math.floor(Math.random() * 5), []) // 0-4
 
   const [userAnswer, setUserAnswer] = useState('')
@@ -58,13 +58,18 @@ export default function MathsExerciseNine({ onBack, onComplete, onNextExercise }
     const userNum = parseInt(userAnswer, 10)
     const isCorrect = userNum === correctAnswer
 
-    setChecked(true)
-    setCorrect(isCorrect)
-
-    if (isCorrect) {
-      setMessage({ type: 'success', text: POSITIVE[Math.floor(Math.random() * POSITIVE.length)] })
+    if (mode === 'test') {
+      // In test mode, we just mark as "done" locally for the UI flow
+      setChecked(true)
+      setCorrect(null) // Don't reveal correctness
     } else {
-      setMessage({ type: 'error', text: GENTLE[Math.floor(Math.random() * GENTLE.length)] })
+      setChecked(true)
+      setCorrect(isCorrect)
+      if (isCorrect) {
+        setMessage({ type: 'success', text: POSITIVE[Math.floor(Math.random() * POSITIVE.length)] })
+      } else {
+        setMessage({ type: 'error', text: GENTLE[Math.floor(Math.random() * GENTLE.length)] })
+      }
     }
   }
 
@@ -74,14 +79,28 @@ export default function MathsExerciseNine({ onBack, onComplete, onNextExercise }
     const userNum = parseInt(userAnswerLeft, 10)
     const isCorrect = userNum === correctLeftAnswer
 
-    setCheckedLeft(true)
-    setCorrectLeft(isCorrect)
-
-    if (isCorrect) {
-      setMessage({ type: 'success', text: POSITIVE[Math.floor(Math.random() * POSITIVE.length)] })
-      if (onComplete) onComplete()
+    if (mode === 'test') {
+      setCheckedLeft(true)
+      setCorrectLeft(null)
+      // Send results to handler
+      if (onComplete) {
+        onComplete({
+          score: (parseInt(userAnswer) === correctAnswer ? 50 : 0) + (userNum === correctLeftAnswer ? 50 : 0),
+          answers: [
+            { question: 'How many bags total?', user: userAnswer, correct: correctAnswer, status: parseInt(userAnswer) === correctAnswer ? 'correct' : 'wrong' },
+            { question: 'How many bags left?', user: userAnswerLeft, correct: correctLeftAnswer, status: userNum === correctLeftAnswer ? 'correct' : 'wrong' }
+          ]
+        })
+      }
     } else {
-      setMessage({ type: 'error', text: GENTLE[Math.floor(Math.random() * GENTLE.length)] })
+      setCheckedLeft(true)
+      setCorrectLeft(isCorrect)
+      if (isCorrect) {
+        setMessage({ type: 'success', text: POSITIVE[Math.floor(Math.random() * POSITIVE.length)] })
+        if (onComplete) onComplete()
+      } else {
+        setMessage({ type: 'error', text: GENTLE[Math.floor(Math.random() * GENTLE.length)] })
+      }
     }
   }
 
@@ -156,25 +175,29 @@ export default function MathsExerciseNine({ onBack, onComplete, onNextExercise }
 
             <button
               onClick={handleCheck}
-              disabled={!userAnswer || (checked && correct)}
+              disabled={!userAnswer || (checked && (mode === 'test' || correct))}
               style={{
                 padding: '12px 24px',
                 fontSize: 'clamp(14px, 4vw, 18px)',
                 fontWeight: 700,
-                background: checked
-                  ? (correct ? '#4CAF50' : '#F44336')
-                  : '#667eea',
+                background: mode === 'test'
+                  ? (checked ? '#94a3b8' : '#667eea')
+                  : checked
+                    ? (correct ? '#4CAF50' : '#F44336')
+                    : '#667eea',
                 color: 'white',
                 border: 'none',
                 borderRadius: 8,
-                cursor: (!userAnswer || (checked && correct)) ? 'not-allowed' : 'pointer',
-                opacity: (!userAnswer || (checked && correct)) ? 0.5 : 1,
+                cursor: (!userAnswer || (checked && (mode === 'test' || correct))) ? 'not-allowed' : 'pointer',
+                opacity: (!userAnswer || (checked && (mode === 'test' || correct))) ? 0.5 : 1,
                 transition: 'all 0.2s'
               }}
             >
-              {checked
-                ? (correct ? '✓' : '✗')
-                : 'Check'}
+              {mode === 'test'
+                ? (checked ? 'Saved' : 'Submit')
+                : checked
+                  ? (correct ? '✓' : '✗')
+                  : 'Check'}
             </button>
           </div>
 
@@ -237,32 +260,36 @@ export default function MathsExerciseNine({ onBack, onComplete, onNextExercise }
 
             <button
               onClick={handleCheckLeft}
-              disabled={!userAnswerLeft || (checkedLeft && correctLeft)}
+              disabled={!userAnswerLeft || (checkedLeft && (mode === 'test' || correctLeft))}
               style={{
                 padding: '12px 24px',
                 fontSize: 'clamp(14px, 4vw, 18px)',
                 fontWeight: 700,
-                background: checkedLeft
-                  ? (correctLeft ? '#4CAF50' : '#F44336')
-                  : '#667eea',
+                background: mode === 'test'
+                  ? (checkedLeft ? '#94a3b8' : '#667eea')
+                  : checkedLeft
+                    ? (correctLeft ? '#4CAF50' : '#F44336')
+                    : '#667eea',
                 color: 'white',
                 border: 'none',
                 borderRadius: 8,
-                cursor: (!userAnswerLeft || (checkedLeft && correctLeft)) ? 'not-allowed' : 'pointer',
-                opacity: (!userAnswerLeft || (checkedLeft && correctLeft)) ? 0.5 : 1,
+                cursor: (!userAnswerLeft || (checkedLeft && (mode === 'test' || correctLeft))) ? 'not-allowed' : 'pointer',
+                opacity: (!userAnswerLeft || (checkedLeft && (mode === 'test' || correctLeft))) ? 0.5 : 1,
                 transition: 'all 0.2s'
               }}
             >
-              {checkedLeft
-                ? (correctLeft ? '✓' : '✗')
-                : 'Check'}
+              {mode === 'test'
+                ? (checkedLeft ? 'Saved' : 'Submit')
+                : checkedLeft
+                  ? (correctLeft ? '✓' : '✗')
+                  : 'Check'}
             </button>
           </div>
 
-          {checked && correct && checkedLeft && correctLeft && (
+          {(mode === 'test' ? (checked && checkedLeft) : (checked && correct && checkedLeft && correctLeft)) && (
             <div ref={successRef} style={{ textAlign: 'center', marginTop: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
               <div style={{ fontSize: 'clamp(24px, 6vw, 36px)', fontWeight: 900, color: '#4CAF50', animation: 'popIn 600ms cubic-bezier(.2,.9,.2,1) both' }}>
-                🎉 Excellent work! 🎉
+                {mode === 'test' ? '🎉 Question Complete! 🎉' : '🎉 Excellent work! 🎉'}
               </div>
               {onNextExercise && (
                 <button

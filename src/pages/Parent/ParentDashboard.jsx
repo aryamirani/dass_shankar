@@ -4,7 +4,7 @@ import { supabase } from '../../lib/supabase'
 import ProfileSettings from '../../components/ProfileSettings'
 import ChildProgressView from './ChildProgressView'
 
-export default function ParentDashboard() {
+export default function ParentDashboard({ onSelectStudent }) {
     const { user } = useAuth()
     const [children, setChildren] = useState([])
     const [loading, setLoading] = useState(true)
@@ -219,23 +219,42 @@ export default function ParentDashboard() {
                                     <p style={{ fontSize: '14px', color: '#94a3b8' }}>
                                         View detailed progress by clicking "View Details" below
                                     </p>
-                                    <button
-                                        onClick={() => setSelectedChild(child)}
-                                        style={{
-                                            marginTop: '15px',
-                                            padding: '12px 24px',
-                                            fontSize: '14px',
-                                            fontWeight: '600',
-                                            color: 'white',
-                                            background: '#667eea',
-                                            border: 'none',
-                                            borderRadius: '8px',
-                                            cursor: 'pointer',
-                                            width: window.innerWidth < 640 ? '100%' : 'auto'
-                                        }}
-                                    >
-                                        View Details →
-                                    </button>
+                                    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                                        <button
+                                            onClick={() => setSelectedChild(child)}
+                                            style={{
+                                                marginTop: '15px',
+                                                padding: '12px 24px',
+                                                fontSize: '14px',
+                                                fontWeight: '600',
+                                                color: 'white',
+                                                background: '#667eea',
+                                                border: 'none',
+                                                borderRadius: '8px',
+                                                cursor: 'pointer',
+                                                flex: window.innerWidth < 640 ? 1 : 'none'
+                                            }}
+                                        >
+                                            View Details →
+                                        </button>
+                                        <button
+                                            onClick={() => onSelectStudent({ ...child, parentPreview: true })}
+                                            style={{
+                                                marginTop: '15px',
+                                                padding: '12px 24px',
+                                                fontSize: '14px',
+                                                fontWeight: '600',
+                                                color: 'white',
+                                                background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                                border: 'none',
+                                                borderRadius: '8px',
+                                                cursor: 'pointer',
+                                                flex: window.innerWidth < 640 ? 1 : 'none'
+                                            }}
+                                        >
+                                            Explore Modules 🚀
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         ))}

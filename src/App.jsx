@@ -153,7 +153,7 @@ export default function App() {
                         Logout
                     </button>
                 </div>
-                <ParentDashboard />
+                <ParentDashboard onSelectStudent={setSelectedStudent} />
             </div>
         )
     }

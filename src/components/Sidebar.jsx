@@ -84,7 +84,7 @@ function getActiveFolderId(currentView) {
 }
 
 
-export default function Sidebar({ currentView, onChangeView, completedItems = [], studentProfile, onExit }) {
+export default function Sidebar({ currentView, onChangeView, completedItems = [], studentProfile, onExit, testActive, appMode, onFinalize }) {
     // Filter logic
     const displayedMenu = useMemo(() => {
         if (!studentProfile) return MENU_STRUCTURE
@@ -170,8 +170,8 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
             return completedItems.includes(item.id)
         }
         if (item.type === 'folder' && item.children) {
-            // Folder is complete if ALL children are complete
-            return item.children.every(child => completedItems.includes(child.id))
+            // Folder is complete if ALL children are complete AND there is at least one child
+            return item.children.length > 0 && item.children.every(child => completedItems.includes(child.id))
         }
         return false
     }
@@ -305,7 +305,7 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                         </span>
                     )}
 
-                    {!collapsed && completed && (
+                    {!collapsed && completed && appMode !== 'test' && (
                         <span style={{ color: '#4CAF50', marginLeft: 6, fontSize: 14, fontWeight: 800 }}>✓</span>
                     )}
                 </div>
@@ -319,25 +319,25 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                                 {renderItem(child, level + 1)}
                                 {/* Special submenu for Vocabulary matching game */}
                                 {child.id === 'vocabularyExercise' && subOpen['vocabularyExercise'] && (
-                                    <div style={{ paddingLeft: 12 + (level + 1) * 16 + 8, paddingTop: 4, paddingBottom: 4, display: 'flex', gap: 4, flexDirection: 'column' }}>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExercise'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 10px', textAlign: 'left', fontSize: 12 }}>at</button>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAn'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 10px', textAlign: 'left', fontSize: 12 }}>an</button>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAp'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 10px', textAlign: 'left', fontSize: 12 }}>ap</button>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAg'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 10px', textAlign: 'left', fontSize: 12 }}>ag</button>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAM'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 10px', textAlign: 'left', fontSize: 12 }}>am</button>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAd'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 10px', textAlign: 'left', fontSize: 12 }}>ad</button>
+                                    <div style={{ paddingLeft: 12 + (level + 1) * 16 + 8, paddingRight: 10, paddingTop: 4, paddingBottom: 4, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExercise'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 4px', textAlign: 'center', fontSize: 11 }}>at</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAn'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 4px', textAlign: 'center', fontSize: 11 }}>an</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAp'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 4px', textAlign: 'center', fontSize: 11 }}>ap</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAg'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 4px', textAlign: 'center', fontSize: 11 }}>ag</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAM'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 4px', textAlign: 'center', fontSize: 11 }}>am</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyExerciseAd'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 4px', textAlign: 'center', fontSize: 11 }}>ad</button>
                                     </div>
                                 )}
 
                                 {/* Special submenu for Vocabulary interactive learn */}
                                 {child.id === 'vocabularyThree' && subOpen['vocabularyThree'] && (
-                                    <div style={{ paddingLeft: 12 + (level + 1) * 16 + 8, paddingTop: 6, paddingBottom: 6, display: 'flex', gap: 4, flexDirection: 'column' }}>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThree'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 10px', textAlign: 'left', fontSize: 12 }}>at</button>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAn'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 10px', textAlign: 'left', fontSize: 12 }}>an</button>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAp'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 10px', textAlign: 'left', fontSize: 12 }}>ap</button>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAg'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 10px', textAlign: 'left', fontSize: 12 }}>ag</button>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAM'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 10px', textAlign: 'left', fontSize: 12 }}>am</button>
-                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAd'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 10px', textAlign: 'left', fontSize: 12 }}>ad</button>
+                                    <div style={{ paddingLeft: 12 + (level + 1) * 16 + 8, paddingRight: 10, paddingTop: 6, paddingBottom: 6, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThree'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 4px', textAlign: 'center', fontSize: 11 }}>at</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAn'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 4px', textAlign: 'center', fontSize: 11 }}>an</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAp'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 4px', textAlign: 'center', fontSize: 11 }}>ap</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAg'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 4px', textAlign: 'center', fontSize: 11 }}>ag</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAM'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 4px', textAlign: 'center', fontSize: 11 }}>am</button>
+                                        <button className="sidebar-sub" onClick={() => { onChangeView('vocabularyThreeAd'); if (isMobile) setMobileOpen(false); }} style={{ padding: '6px 4px', textAlign: 'center', fontSize: 11 }}>ad</button>
                                     </div>
                                 )}
                             </div>
@@ -518,6 +518,28 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
                         )}
                     </div>
 
+                    {!collapsed && testActive && (
+                        <button
+                            onClick={onFinalize}
+                            style={{
+                                width: '100%',
+                                padding: '12px',
+                                fontSize: '14px',
+                                fontWeight: 800,
+                                color: 'white',
+                                background: 'linear-gradient(135deg, #f59e0b 0%, #ea580c 100%)',
+                                border: 'none',
+                                borderRadius: '8px',
+                                cursor: 'pointer',
+                                marginTop: 8,
+                                boxShadow: '0 4px 12px rgba(234, 88, 12, 0.3)',
+                                animation: 'pulse 2s infinite'
+                            }}
+                        >
+                            FINISH TEST
+                        </button>
+                    )}
+
                     {!collapsed && onExit && (
                         <button
                             onClick={onExit}
@@ -559,6 +581,11 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
             @keyframes slideDown {
                 from { opacity: 0; transform: translateY(-10px); }
                 to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes pulse {
+                0% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.4); }
+                70% { box-shadow: 0 0 0 10px rgba(234, 88, 12, 0); }
+                100% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0); }
             }
           `}</style>
             </div>
