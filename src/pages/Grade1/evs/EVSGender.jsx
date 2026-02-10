@@ -1,0 +1,303 @@
+import React, { useEffect, useMemo, useState } from 'react'
+
+const SECTIONS = [
+  {
+    id: 'gender',
+    title: 'Learn to identify the gender',
+    items: [
+      { id: 'gender-1', label: 'man', imageSrc: '/Grade1/evs/Gender/man1.png' },
+      { id: 'gender-2', label: 'woman', imageSrc: '/Grade1/evs/Gender/woman1.png' },
+      { id: 'gender-3', label: 'woman', imageSrc: '/Grade1/evs/Gender/woman2.png' },
+      { id: 'gender-4', label: 'man', imageSrc: '/Grade1/evs/Gender/man2.png' },
+      { id: 'gender-5', label: 'man', imageSrc: '/Grade1/evs/Gender/man3.png' },
+      { id: 'gender-6', label: 'woman', imageSrc: '/Grade1/evs/Gender/woman3.png' }
+    ]
+  }
+]
+
+function shuffle(arr) {
+  const copy = [...arr]
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    const temp = copy[i]
+    copy[i] = copy[j]
+    copy[j] = temp
+  }
+  return copy
+}
+
+export default function EVSGender({ onBack, onNextExercise }) {
+  const optionMap = useMemo(() => {
+    const map = {}
+    SECTIONS.forEach(section => {
+      section.items.forEach(item => {
+        map[item.id] = ['man', 'woman']
+      })
+    })
+    return map
+  }, [])
+
+  const [answers, setAnswers] = useState({})
+  const [sectionIndex, setSectionIndex] = useState(0)
+
+  const totalItems = SECTIONS.reduce((acc, section) => acc + section.items.length, 0)
+  const correctCount = Object.keys(answers).filter(id => {
+    const matchItem = SECTIONS.flatMap(s => s.items).find(i => i.id === id)
+    return matchItem && answers[id] === matchItem.label
+  }).length
+
+  function handleSelect(item, choice) {
+    setAnswers(prev => ({ ...prev, [item.id]: choice }))
+  }
+
+  const currentSection = SECTIONS[sectionIndex]
+
+  function goPrevSection() {
+    setSectionIndex(prev => (prev - 1 + SECTIONS.length) % SECTIONS.length)
+  }
+
+  function goNextSection() {
+    setSectionIndex(prev => (prev + 1) % SECTIONS.length)
+  }
+
+  useEffect(() => {
+    function handleKeyDown(event) {
+      if (event.key === 'ArrowLeft') {
+        goPrevSection()
+      } else if (event.key === 'ArrowRight') {
+        goNextSection()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
+  return (
+    <div style={{ minHeight: '100vh', padding: '40px 24px 80px', position: 'relative', color: '#fff' }}>
+
+
+      <style>{`
+        .evs-section {
+          margin: 40px auto 60px;
+          max-width: 1200px;
+          background: rgba(255,255,255,0.08);
+          border-radius: 24px;
+          padding: 28px 28px 36px;
+          border: 1px solid rgba(255,255,255,0.2);
+          box-shadow: 0 16px 40px rgba(0,0,0,0.2);
+        }
+        .evs-title {
+          text-align: center;
+          font-size: 26px;
+          font-weight: 800;
+          color: #fff;
+          margin: 0 0 26px;
+          text-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .evs-grid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(200px, 1fr));
+          gap: 26px;
+          justify-items: center;
+        }
+        .evs-card {
+          width: 100%;
+          max-width: 240px;
+          background: #fff;
+          border: 3px solid #6f6f6f;
+          border-radius: 12px;
+          padding: 16px;
+          box-shadow: 0 10px 22px rgba(0,0,0,0.15);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 12px;
+          color: #333;
+        }
+        .evs-photo {
+          width: 200px;
+          height: 200px;
+          border: 3px solid #6f6f6f;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #f6f6f6;
+          box-shadow: inset 0 2px 8px rgba(0,0,0,0.08);
+          position: relative;
+          overflow: hidden;
+        }
+        .evs-photo img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          display: block;
+        }
+        .evs-photo-placeholder {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          color: #555;
+          font-weight: 700;
+          font-size: 12px;
+          text-align: center;
+          padding: 8px;
+          gap: 6px;
+        }
+        .evs-photo-placeholder span {
+          font-size: 26px;
+        }
+        .evs-label {
+          font-size: 20px;
+          font-weight: 800;
+          color: #111;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .evs-tick {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 22px;
+          height: 22px;
+          border-radius: 6px;
+          background: #22c55e;
+          color: #fff;
+          font-size: 14px;
+          font-weight: 900;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .evs-options {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 8px;
+          width: 100%;
+        }
+        .evs-option-btn {
+          border: none;
+          border-radius: 8px;
+          padding: 8px 6px;
+          font-weight: 700;
+          cursor: pointer;
+          background: #ffe3e8;
+          color: #8a1c3e;
+          transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .evs-option-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .evs-option-btn.correct {
+          background: #dcfce7;
+          color: #166534;
+        }
+        .evs-option-btn.wrong {
+          background: #ffe4e6;
+          color: #b91c1c;
+        }
+        .evs-progress {
+          text-align: center;
+          font-size: 20px;
+          font-weight: 700;
+          margin: 30px 0 20px;
+          color: #fff;
+          text-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        @media (max-width: 900px) {
+          .evs-grid { grid-template-columns: repeat(2, minmax(200px, 1fr)); }
+        }
+        @media (max-width: 600px) {
+          .evs-grid { grid-template-columns: 1fr; }
+          .evs-card { max-width: 320px; }
+        }
+      `}</style>
+
+      <div style={{ textAlign: 'center', marginBottom: 12 }}>
+        <h1 style={{ margin: 0, fontSize: 'clamp(36px, 6vw, 64px)', fontWeight: 900, color: '#fff', textShadow: '0 4px 12px rgba(0,0,0,0.25)' }}>Identify Gender</h1>
+        <div style={{ marginTop: 8, fontSize: 18, opacity: 0.95 }}>Tap the correct gender for each person.</div>
+      </div>
+
+      <div className="evs-progress">Correct: {correctCount} / {totalItems}</div>
+
+      {correctCount === totalItems && (
+        <div style={{ textAlign: 'center', marginBottom: 40 }}>
+          <h2 style={{ color: '#4ade80', fontSize: 32, fontWeight: 800 }}>Well done! You identified everyone correctly! 🎉</h2>
+          <button
+            onClick={onNextExercise}
+            style={{
+              marginTop: 20,
+              padding: '16px 32px',
+              fontSize: '20px',
+              fontWeight: 'bold',
+              color: 'white',
+              background: 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)',
+              border: 'none',
+              borderRadius: '50px',
+              cursor: 'pointer',
+              boxShadow: '0 4px 15px rgba(76, 175, 80, 0.4)',
+              transition: 'transform 0.2s',
+              animation: 'popIn 600ms cubic-bezier(.2,.9,.2,1) 200ms both'
+            }}
+            onMouseEnter={e => e.target.style.transform = 'translateY(-2px)'}
+            onMouseLeave={e => e.target.style.transform = 'translateY(0)'}
+          >
+            Next Exercise →
+          </button>
+        </div>
+      )}
+
+      <div className="evs-section">
+        <div className="evs-title">{currentSection.title}</div>
+        <div className="evs-grid">
+          {currentSection.items.map(item => {
+            const selected = answers[item.id]
+            const isCorrect = selected === item.label
+
+            return (
+              <div key={item.id} className="evs-card">
+                <div className="evs-photo" aria-label={item.label}>
+                  {item.imageSrc ? (
+                    <img src={item.imageSrc} alt={item.label} />
+                  ) : (
+                    <div className="evs-photo-placeholder">
+                      <span role="img" aria-label="photo">🖼️</span>
+                      Add photo
+                    </div>
+                  )}
+                </div>
+
+                {isCorrect ? (
+                  <div className="evs-label">
+                    <span>{item.label}</span>
+                    <span className="evs-tick" aria-hidden="true">✓</span>
+                  </div>
+                ) : (
+                  <div className="evs-options">
+                    {optionMap[item.id].map(option => {
+                      const isWrong = selected === option && option !== item.label
+                      return (
+                        <button
+                          key={option}
+                          className={`evs-option-btn ${option === item.label && isCorrect ? 'correct' : ''} ${isWrong ? 'wrong' : ''}`}
+                          onClick={() => handleSelect(item, option)}
+                        >
+                          {option}
+                        </button>
+                      )
+                    })}
+                  </div>
+                )}
+
+                {selected && !isCorrect && (
+                  <div style={{ fontSize: 12, color: '#b91c1c', fontWeight: 700 }}>Try again</div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+  )
+}

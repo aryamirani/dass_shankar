@@ -1,0 +1,36 @@
+id,module_id,name,slug,description,type,max_score,sort_order,created_at
+017a78cf-c83c-4ee7-a3ef-eb0c54742217,10000000-0000-0000-0000-000000000002,Before and After,mathsExerciseFour,Identify numbers before and after,interactive,100,4,2026-02-10 07:23:52.971986+00
+1082879e-d903-41c7-a704-8219e4bc5681,20000000-0000-0000-0000-000000000002,Word Surgery,englishWordGame,Break down and analyze words,game,100,1,2026-02-10 07:23:52.971986+00
+1ff40357-21e5-4348-b4a3-3755ea452f49,10000000-0000-0000-0000-000000000001,Interactive Learn (an),vocabularyThreeAn,"Interactive learning for ""an"" words",interactive,100,8,2026-02-10 07:23:52.971986+00
+2c5d4d14-aba0-4b07-87f5-f8034c28e715,10000000-0000-0000-0000-000000000001,Read Words 1,englishReadWords,Practice reading words,interactive,100,13,2026-02-10 07:23:52.971986+00
+312ba189-e1b4-427d-9037-67d4b0172911,10000000-0000-0000-0000-000000000001,Interactive Learn (at),vocabularyThree,"Interactive learning for ""at"" words",interactive,100,7,2026-02-10 07:23:52.971986+00
+3509f97b-befa-4127-abf7-7fcc4b8567c7,10000000-0000-0000-0000-000000000001,Interactive Learn (ag),vocabularyThreeAg,"Interactive learning for ""ag"" words",interactive,100,10,2026-02-10 07:23:52.971986+00
+38d1e839-72fd-4452-9b74-aafea121e511,10000000-0000-0000-0000-000000000004,Identify Objects,evsIdentify,Recognize common objects,interactive,100,1,2026-02-10 07:23:52.971986+00
+3b3a2008-9e6c-48e9-8a38-c89ee9a106ed,10000000-0000-0000-0000-000000000001,Interactive Learn (ap),vocabularyThreeAp,"Interactive learning for ""ap"" words",interactive,100,9,2026-02-10 07:23:52.971986+00
+562527dc-7a39-42a5-91b9-a0e8faecc2be,10000000-0000-0000-0000-000000000002,Place Values,mathsExerciseSeven,Understand place value concepts,interactive,100,7,2026-02-10 07:23:52.971986+00
+56d3c00b-81bd-4ced-bafd-64aae2a88bce,10000000-0000-0000-0000-000000000002,Ordering,mathsExerciseSix,Arrange numbers in order,interactive,100,6,2026-02-10 07:23:52.971986+00
+5c0ebfd7-b0d8-4a27-86be-15931b9f552e,10000000-0000-0000-0000-000000000001,Matching Game (ag),vocabularyExerciseAg,"Match words with ""ag"" sound",game,100,4,2026-02-10 07:23:52.971986+00
+6033d3b1-2453-4008-99dd-d93c08ea6416,20000000-0000-0000-0000-000000000001,Health Quiz,assessment,Test your health knowledge,quiz,100,2,2026-02-10 07:23:52.971986+00
+60979667-6502-466b-8ae7-61c74eed67c0,10000000-0000-0000-0000-000000000001,Interactive Learn (ad),vocabularyThreeAd,"Interactive learning for ""ad"" words",interactive,100,12,2026-02-10 07:23:52.971986+00
+61aa0c12-6b54-48cb-b85a-044dd84bae5c,10000000-0000-0000-0000-000000000001,Matching Game (ap),vocabularyExerciseAp,"Match words with ""ap"" sound",game,100,3,2026-02-10 07:23:52.971986+00
+6c724980-6753-4094-8cb7-3379d504b9ef,10000000-0000-0000-0000-000000000001,Matching Game (am),vocabularyExerciseAM,"Match words with ""am"" sound",game,100,5,2026-02-10 07:23:52.971986+00
+6c960275-6354-4524-87a5-714b9574b0f1,20000000-0000-0000-0000-000000000003,Identify Organs,scienceHuman,Learn about human body organs,interactive,100,1,2026-02-10 07:23:52.971986+00
+89d8b210-561a-44b3-89c5-ebf9381cbe22,10000000-0000-0000-0000-000000000004,Read Labels,evsJams,Practice reading product labels,interactive,100,3,2026-02-10 07:23:52.971986+00
+9b9fd8b9-81fb-4451-9284-f7478372bae4,10000000-0000-0000-0000-000000000002,In Between,mathsExerciseFive,Find numbers in between,interactive,100,5,2026-02-10 07:23:52.971986+00
+9fec4929-29d5-41b0-b771-6e3f8a23b737,10000000-0000-0000-0000-000000000002,Fill Missing Number,mathsExerciseThree,Complete number sequences,interactive,100,3,2026-02-10 07:23:52.971986+00
+a5332d66-831b-4d78-a37f-96b655ee7856,20000000-0000-0000-0000-000000000001,Common Health Problems,healthProblems,Learn about common health issues,interactive,100,1,2026-02-10 07:23:52.971986+00
+b300b3d2-bf5f-4642-80a6-47c679c50919,20000000-0000-0000-0000-000000000002,Fill Blanks,englishFillBlanks,Complete sentences with correct words,interactive,100,3,2026-02-10 07:23:52.971986+00
+bf3f7175-f680-45f1-a296-cd8079afa022,10000000-0000-0000-0000-000000000001,Matching Game (an),vocabularyExerciseAn,"Match words with ""an"" sound",game,100,2,2026-02-10 07:23:52.971986+00
+c2ac3efe-e826-45d9-9631-b007247d532d,10000000-0000-0000-0000-000000000002,Word Problems,mathsExerciseNine,Solve mathematical word problems,interactive,100,9,2026-02-10 07:23:52.971986+00
+c4a3ef31-143a-4ab4-b8e7-38d8abfdf0c8,10000000-0000-0000-0000-000000000003,Typing Practice,computerKeyboard,Learn keyboard typing skills,interactive,100,1,2026-02-10 07:23:52.971986+00
+c6f0e09d-0d85-4301-99ff-e8424b0c3d5c,10000000-0000-0000-0000-000000000001,Read Words 2,englishReadWords2,Advanced word reading,interactive,100,14,2026-02-10 07:23:52.971986+00
+c726568f-5487-41d5-bbb4-dd0b5a410e98,20000000-0000-0000-0000-000000000002,Word Match,englishPhonics,Match words with phonics,game,100,2,2026-02-10 07:23:52.971986+00
+d25ea0c5-27c8-497e-9cca-0fb74399c0cc,10000000-0000-0000-0000-000000000004,Map Reading,evsMap,Basic map reading skills,interactive,100,5,2026-02-10 07:23:52.971986+00
+d356623e-a4b5-45b3-b971-0f3c315539bc,10000000-0000-0000-0000-000000000001,Interactive Learn (am),vocabularyThreeAM,"Interactive learning for ""am"" words",interactive,100,11,2026-02-10 07:23:52.971986+00
+df6e7289-5896-48cd-8e97-63cc155c3afb,10000000-0000-0000-0000-000000000001,Matching Game (ad),vocabularyExerciseAd,"Match words with ""ad"" sound",game,100,6,2026-02-10 07:23:52.971986+00
+e1027bf3-e0a8-4f03-b60f-21c149f578d0,10000000-0000-0000-0000-000000000002,Calculator,mathsExerciseEight,Basic calculator operations,interactive,100,8,2026-02-10 07:23:52.971986+00
+e3534855-370b-4172-8bdf-381660f529fa,10000000-0000-0000-0000-000000000004,Types of Bags,evsBags,Learn about different bag types,interactive,100,4,2026-02-10 07:23:52.971986+00
+e4674d09-8e05-46d7-ab93-e6a42ce420e7,10000000-0000-0000-0000-000000000002,Counting,mathsExerciseOne,Learn to count objects,interactive,100,1,2026-02-10 07:23:52.971986+00
+eb9eaf3e-5431-4aaf-b5ca-20c91d0f9ae1,10000000-0000-0000-0000-000000000001,Matching Game (at),vocabularyExercise,"Match words with ""at"" sound",game,100,1,2026-02-10 07:23:52.971986+00
+ed7741cf-63ba-4a9f-aaff-388ea2db98d7,10000000-0000-0000-0000-000000000002,Write the Digits,mathsExerciseTwo,Practice writing numbers,interactive,100,2,2026-02-10 07:23:52.971986+00
+f542a91e-5ad9-46dc-9a65-a5aac1f4cb81,10000000-0000-0000-0000-000000000004,Identify Gender,evsGender,Learn about gender identification,interactive,100,2,2026-02-10 07:23:52.971986+00
