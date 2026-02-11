@@ -2,85 +2,119 @@
 import React, { useState, useEffect, useMemo } from 'react'
 
 const MENU_STRUCTURE = [
-    { id: 'landing', label: 'Grade 1', type: 'file', icon: '🏠' },
     {
-        id: 'book-a-grade-x', label: 'Book A', type: 'folder', icon: '📖', children: [
+        id: 'landing', label: 'Grade 1', type: 'folder', icon: '🏫', children: [
             {
-                id: 'vocabulary', label: 'English Module', type: 'folder', icon: '📚', children: [
-                    { id: 'vocabularyExercise', label: 'Matching Game', type: 'file', icon: '🧩' },
-                    { id: 'vocabularyThree', label: 'Interactive Learn', type: 'file', icon: '🎮' },
-                    { id: 'englishReadWords', label: 'Read Words', type: 'file', icon: '👁️' }
+                id: 'book-a-grade-x', label: 'Book A', type: 'folder', icon: '📖', children: [
+                    {
+                        id: 'vocabulary', label: 'English Module', type: 'folder', icon: '📚', children: [
+                            { id: 'vocabularyExercise', label: 'Matching Game', type: 'file', icon: '🧩' },
+                            { id: 'vocabularyThree', label: 'Interactive Learn', type: 'file', icon: '🎮' },
+                            { id: 'englishReadWords', label: 'Read Words', type: 'file', icon: '👁️' }
+                        ]
+                    },
+                    {
+                        id: 'maths', label: 'Maths Module', type: 'folder', icon: '📐', children: [
+                            { id: 'mathsExerciseOne', label: 'Counting', type: 'file', icon: '1️⃣' },
+                            { id: 'mathsExerciseTwo', label: 'Write the digits', type: 'file', icon: '✍️' },
+                            { id: 'mathsExerciseThree', label: 'Fill missing number', type: 'file', icon: '❓' },
+                            { id: 'mathsExerciseFour', label: 'Before and after', type: 'file', icon: '↔️' },
+                            { id: 'mathsExerciseFive', label: 'In between', type: 'file', icon: '🔹' },
+                            { id: 'mathsExerciseSix', label: 'Ordering', type: 'file', icon: '📊' },
+                            { id: 'mathsExerciseSeven', label: 'Place Values', type: 'file', icon: '🏘️' },
+                            { id: 'mathsExerciseEight', label: 'Calculator', type: 'file', icon: '🧮' },
+                            { id: 'mathsExerciseNine', label: 'Word Problems', type: 'file', icon: '💭' }
+                        ]
+                    },
+                    {
+                        id: 'computer', label: 'Computer Module', type: 'folder', icon: '💻', children: [
+                            { id: 'computerKeyboard', label: 'Typing Practice', type: 'file', icon: '⌨️' }
+                        ]
+                    },
+                    {
+                        id: 'evs', label: 'EVS Module', type: 'folder', icon: '🌿', children: [
+                            { id: 'evsIdentify', label: 'Identify Objects', type: 'file', icon: '🖼️' },
+                            { id: 'evsGender', label: 'Identify Gender', type: 'file', icon: '👥' },
+                            { id: 'evsJams', label: 'Read Labels', type: 'file', icon: '🏺' },
+                            { id: 'evsBags', label: 'Types of Bags', type: 'file', icon: '👜' },
+                            { id: 'evsMap', label: 'Map', type: 'file', icon: '🗺️' }
+                        ]
+                    },
+                    {
+                        id: 'arts', label: 'Arts Module', type: 'folder', icon: '🎨', children: []
+                    }
                 ]
             },
-            {
-                id: 'maths', label: 'Maths Module', type: 'folder', icon: '📐', children: [
-                    { id: 'mathsExerciseOne', label: 'Counting', type: 'file', icon: '1️⃣' },
-                    { id: 'mathsExerciseTwo', label: 'Write the digits', type: 'file', icon: '✍️' },
-                    { id: 'mathsExerciseThree', label: 'Fill missing number', type: 'file', icon: '❓' },
-                    { id: 'mathsExerciseFour', label: 'Before and after', type: 'file', icon: '↔️' },
-                    { id: 'mathsExerciseFive', label: 'In between', type: 'file', icon: '🔹' },
-                    { id: 'mathsExerciseSix', label: 'Ordering', type: 'file', icon: '📊' },
-                    { id: 'mathsExerciseSeven', label: 'Place Values', type: 'file', icon: '🏘️' },
-                    { id: 'mathsExerciseEight', label: 'Calculator', type: 'file', icon: '🧮' },
-                    { id: 'mathsExerciseNine', label: 'Word Problems', type: 'file', icon: '💭' }
-                ]
-            },
-            {
-                id: 'computer', label: 'Computer Module', type: 'folder', icon: '💻', children: [
-                    { id: 'computerKeyboard', label: 'Typing Practice', type: 'file', icon: '⌨️' }
-                ]
-            },
-            {
-                id: 'evs', label: 'EVS Module', type: 'folder', icon: '🌿', children: [
-                    { id: 'evsIdentify', label: 'Identify Objects', type: 'file', icon: '🖼️' },
-                    { id: 'evsGender', label: 'Identify Gender', type: 'file', icon: '👥' },
-                    { id: 'evsJams', label: 'Read Labels', type: 'file', icon: '🏺' },
-                    { id: 'evsBags', label: 'Types of Bags', type: 'file', icon: '👜' },
-                    { id: 'evsMap', label: 'Map', type: 'file', icon: '🗺️' }
-                ]
-            },
-            {
-                id: 'arts', label: 'Arts Module', type: 'folder', icon: '🎨', children: []
-            }
+            { id: 'book-e-1', label: 'Book E', type: 'folder', icon: '📘', children: [] },
+            { id: 'book-i-1', label: 'Book I', type: 'folder', icon: '📗', children: [] },
+            { id: 'book-o-1', label: 'Book O', type: 'folder', icon: '📙', children: [] },
+            { id: 'book-u-1', label: 'Book U', type: 'folder', icon: '📕', children: [] },
         ]
     },
-    { id: 'landing2', label: 'Grade 2', type: 'file', icon: '🏠' },
     {
-        id: 'book-a-grade-x2', label: 'Book A', type: 'folder', icon: '📖', children: [
+        id: 'landing2', label: 'Grade 2', type: 'folder', icon: '🏫', children: [
             {
-                id: 'health', label: 'Health Module', type: 'folder', icon: '❤️', children: [
-                    { id: 'healthProblems', label: 'Common Problems', type: 'file', icon: '🌡️' },
-                    { id: 'assessment', label: 'Health Quiz', type: 'file', icon: '📝' }
+                id: 'book-a-grade-x2', label: 'Book A', type: 'folder', icon: '📖', children: [
+                    {
+                        id: 'health', label: 'Health Module', type: 'folder', icon: '❤️', children: [
+                            { id: 'healthProblems', label: 'Common Problems', type: 'file', icon: '🌡️' },
+                            { id: 'assessment', label: 'Health Quiz', type: 'file', icon: '📝' }
+                        ]
+                    },
+                    {
+                        id: 'english', label: 'English Module', type: 'folder', icon: '📖', children: [
+                            { id: 'englishWordGame', label: 'Word Surgery', type: 'file', icon: '📚' },
+                            { id: 'englishPhonics', label: 'Word Match', type: 'file', icon: '📐' },
+                            { id: 'englishFillBlanks', label: 'Fill Blanks', type: 'file', icon: '✍️' }
+                        ]
+                    },
+                    {
+                        id: 'science', label: 'Science Module', type: 'folder', icon: '🔬', children: [
+                            { id: 'scienceHuman', label: 'Identify Organs', type: 'file', icon: '🧠' }
+                        ]
+                    }
                 ]
             },
-            {
-                id: 'english', label: 'English Module', type: 'folder', icon: '📖', children: [
-                    { id: 'englishWordGame', label: 'Word Surgery', type: 'file', icon: '📚' },
-                    { id: 'englishPhonics', label: 'Word Match', type: 'file', icon: '📐' },
-                    { id: 'englishFillBlanks', label: 'Fill Blanks', type: 'file', icon: '✍️' }
-                ]
-            },
-            {
-                id: 'science', label: 'Science Module', type: 'folder', icon: '🔬', children: [
-                    { id: 'scienceHuman', label: 'Identify Organs', type: 'file', icon: '🧠' }
-                ]
-            }
+            { id: 'book-e-2', label: 'Book E', type: 'folder', icon: '📘', children: [] },
+            { id: 'book-i-2', label: 'Book I', type: 'folder', icon: '📗', children: [] },
+            { id: 'book-o-2', label: 'Book O', type: 'folder', icon: '📙', children: [] },
+            { id: 'book-u-2', label: 'Book U', type: 'folder', icon: '📕', children: [] },
         ]
     }
 ]
 
-// Helper function to determine which folder contains the current view
-function getActiveFolderId(currentView) {
-    if (currentView === 'healthProblems' || currentView === 'assessment' || currentView === 'health' || currentView === 'lesson') return 'health'
-    if (currentView && currentView.startsWith('vocabulary')) return 'vocabulary'
-    if (currentView === 'englishReadWords' || currentView === 'englishReadWords2') return 'vocabulary'
-    if ((currentView && currentView.startsWith('mathsExercise')) || currentView === 'maths') return 'maths'
-    if (currentView && currentView.startsWith('english')) return 'english'
-    if (currentView === 'scienceOrgan' || currentView === 'scienceHuman' || currentView === 'science') return 'science'
-    if (currentView === 'computerKeyboard' || currentView === 'computer') return 'computer'
-    if (currentView === 'evsIdentify' || currentView === 'evsGender' || currentView === 'evsJams' || currentView === 'evsBags' || currentView === 'evsMap' || currentView === 'evs') return 'evs'
-    if (currentView === 'arts') return 'arts'
-    return null
+// Helper function to determine which folder contains the current view at any level
+function getActivePath(currentView) {
+    if (!currentView) return []
+    const path = []
+
+    // Helper to search recursively
+    const findPath = (items, targetId) => {
+        for (const item of items) {
+            if (item.id === targetId) {
+                path.push(item.id)
+                return true
+            }
+            if (item.children && findPath(item.children, targetId)) {
+                path.push(item.id)
+                return true
+            }
+        }
+        return false
+    }
+
+    // Special cases for views that don't match IDs exactly
+    let mappedId = currentView
+    if (currentView === 'healthProblems' || currentView === 'assessment' || currentView === 'lesson') mappedId = 'health'
+    if (currentView.startsWith('vocabulary')) mappedId = 'vocabulary'
+    if (currentView === 'englishReadWords' || currentView === 'englishReadWords2') mappedId = 'vocabulary'
+    if (currentView.startsWith('mathsExercise')) mappedId = 'maths'
+    if (currentView === 'scienceOrgan' || currentView === 'scienceHuman') mappedId = 'science'
+    if (currentView === 'computerKeyboard') mappedId = 'computer'
+    if (currentView.startsWith('evs') && currentView !== 'evs') mappedId = 'evs'
+
+    findPath(MENU_STRUCTURE, mappedId)
+    return path.reverse() // [GradeId, BookId, ModuleId]
 }
 
 
@@ -98,42 +132,21 @@ export default function Sidebar({ currentView, onChangeView, completedItems = []
         return MENU_STRUCTURE
     }, [studentProfile])
 
-    // Determine which folder should be open based on current view
-    const activeFolderId = getActiveFolderId(currentView)
-
-    // Only the folder containing the current view is expanded by default
-    const [expanded, setExpanded] = useState({
-        'book-a-grade-x': activeFolderId && ['vocabulary', 'maths', 'computer', 'evs', 'arts'].includes(activeFolderId),
-        'book-a-grade-x2': activeFolderId && ['health', 'english', 'science'].includes(activeFolderId),
-        'health': activeFolderId === 'health',
-        'vocabulary': activeFolderId === 'vocabulary',
-        'maths': activeFolderId === 'maths',
-        'english': activeFolderId === 'english',
-        'science': activeFolderId === 'science',
-        'computer': activeFolderId === 'computer',
-        'evs': activeFolderId === 'evs',
-        'arts': activeFolderId === 'arts'
-    })
+    const [expanded, setExpanded] = useState({})
     const [collapsed, setCollapsed] = useState(false)
     const [hovered, setHovered] = useState(null)
     const [subOpen, setSubOpen] = useState({})
 
     // Update expanded state when currentView changes
     useEffect(() => {
-        const activeFolder = getActiveFolderId(currentView)
-        if (activeFolder) {
-            // Collapse all modules, then expand only the active ones
-            setExpanded({
-                'book-a-grade-x': ['vocabulary', 'maths', 'computer', 'evs', 'arts'].includes(activeFolder),
-                'book-a-grade-x2': ['health', 'english', 'science'].includes(activeFolder),
-                'health': activeFolder === 'health',
-                'vocabulary': activeFolder === 'vocabulary',
-                'maths': activeFolder === 'maths',
-                'english': activeFolder === 'english',
-                'science': activeFolder === 'science',
-                'computer': activeFolder === 'computer',
-                'evs': activeFolder === 'evs',
-                'arts': activeFolder === 'arts'
+        const path = getActivePath(currentView)
+        if (path.length > 0) {
+            setExpanded(prev => {
+                const next = { ...prev }
+                path.forEach(id => {
+                    if (id !== currentView) next[id] = true
+                })
+                return next
             })
         }
     }, [currentView])

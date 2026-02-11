@@ -48,6 +48,7 @@ import EVSBags from './pages/Grade1/evs/EVSBags'
 import EVSMap from './pages/Grade1/evs/EVSMap'
 import ArtsOverview from './pages/Grade1/arts/ArtsOverview'
 import BookOverview from './pages/BookOverview'
+import GradeOverview from './pages/GradeOverview'
 import TestResultsSummary from './components/TestResultsSummary'
 import CONDITIONS from './data/conditions'
 
@@ -145,13 +146,16 @@ export default function LearningApp({ studentProfile, onExit }) {
   useEffect(() => {
     if (studentProfile?.grades?.display_name) {
       const grade = studentProfile.grades.display_name
-      if (grade === 'Grade 1' && view.name === 'landing') {
-        setView({ name: 'book-a-grade-x' })
+      const currentGrade = view.name.startsWith('landing2') || ['book-a-grade-x2', 'health', 'english', 'science'].includes(view.name) ? 'Grade 2' : 'Grade 1'
+
+      // If student is looking at the other grade's landing page, force them back
+      if (grade === 'Grade 1' && view.name === 'landing2') {
+        setView({ name: 'landing' })
       } else if (grade === 'Grade 2' && view.name === 'landing') {
-        setView({ name: 'book-a-grade-x2' })
+        setView({ name: 'landing2' })
       }
     }
-  }, [studentProfile])
+  }, [studentProfile, view.name])
 
   function goToLesson(index) {
     setView({ name: 'lesson', index })
@@ -249,8 +253,8 @@ export default function LearningApp({ studentProfile, onExit }) {
       })
     } else {
       setCompleted(prev => prev.includes(id) ? prev : [...prev, id])
-      // If parent is viewing or guest is exploring, don't save progress to Supabase
-      if (studentProfile?.id && !studentProfile?.parentPreview && !studentProfile?.isGuest) {
+      // If guest is exploring, don't save progress to Supabase
+      if (studentProfile?.id && !studentProfile?.isGuest) {
         await saveProgress(id, score, true, { mode: 'practice', ...metadata })
       }
     }
@@ -345,7 +349,18 @@ export default function LearningApp({ studentProfile, onExit }) {
       />
 
       <div style={{ flex: 1, overflowY: 'auto', position: 'relative' }}>
-        {(view.name === 'landing' || view.name === 'landing2') && <Landing onVocabulary={goToVocabulary} onHealth={goToHealthOverview} onMaths={goToMaths} onEnglish={goToEnglish} onScience={goToScienceOverview} onComputer={goToComputerOverview} onEVS={goToEVSOverview} />}
+        {view.name === 'landing' && (
+          <GradeOverview
+            gradeName="Shankar Learning - Grade 1"
+            onBookClick={(bookId) => setView({ name: bookId })}
+          />
+        )}
+        {view.name === 'landing2' && (
+          <GradeOverview
+            gradeName="Shankar Learning - Grade 2"
+            onBookClick={(bookId) => setView({ name: bookId })}
+          />
+        )}
 
         {view.name === 'book-a-grade-x' && (
           <BookOverview

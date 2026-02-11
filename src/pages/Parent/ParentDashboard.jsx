@@ -238,7 +238,7 @@ export default function ParentDashboard({ onSelectStudent }) {
                                             View Details →
                                         </button>
                                         <button
-                                            onClick={() => onSelectStudent({ ...child, parentPreview: true })}
+                                            onClick={() => onSelectStudent(child)}
                                             style={{
                                                 marginTop: '15px',
                                                 padding: '12px 24px',

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import { supabase } from '../../lib/supabase'
 import ProfileSettings from '../../components/ProfileSettings'
+import ChildProgressView from '../Parent/ChildProgressView'
 
 export default function TeacherDashboard({ onSelectStudent }) {
     const { user } = useAuth()
@@ -12,6 +13,7 @@ export default function TeacherDashboard({ onSelectStudent }) {
     const [rollNoError, setRollNoError] = useState('')
     const [teacherProfileId, setTeacherProfileId] = useState(null)
     const [currentView, setCurrentView] = useState('dashboard') // 'dashboard', 'profile'
+    const [selectedStudentForProgress, setSelectedStudentForProgress] = useState(null)
 
     useEffect(() => {
         if (user) {
@@ -129,6 +131,19 @@ export default function TeacherDashboard({ onSelectStudent }) {
                 color: '#f1f5f9'
             }}>
                 <div style={{ fontSize: '24px' }}>Loading...</div>
+            </div>
+        )
+    }
+
+    if (selectedStudentForProgress) {
+        return (
+            <div style={{ minHeight: '100vh', background: '#0f172a', padding: '40px 20px' }}>
+                <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+                    <ChildProgressView
+                        child={selectedStudentForProgress}
+                        onBack={() => setSelectedStudentForProgress(null)}
+                    />
+                </div>
             </div>
         )
     }
@@ -297,9 +312,8 @@ export default function TeacherDashboard({ onSelectStudent }) {
                                         e.currentTarget.style.boxShadow = 'none'
                                         e.currentTarget.style.borderColor = '#334155'
                                     }}
-                                    onClick={() => onSelectStudent && onSelectStudent(student)}
                                 >
-                                    <div>
+                                    <div style={{ flex: 1 }}>
                                         <div style={{ fontSize: '20px', fontWeight: '600', color: '#f1f5f9', marginBottom: '5px' }}>
                                             {student.full_name}
                                         </div>
@@ -310,20 +324,44 @@ export default function TeacherDashboard({ onSelectStudent }) {
                                             {student.grades?.display_name || 'Unknown Grade'}
                                         </div>
                                     </div>
-                                    <button
-                                        style={{
-                                            padding: '10px 20px',
-                                            fontSize: '14px',
-                                            fontWeight: '600',
-                                            color: 'white',
-                                            background: '#667eea',
-                                            border: 'none',
-                                            borderRadius: '8px',
-                                            cursor: 'pointer'
-                                        }}
-                                    >
-                                        View Progress →
-                                    </button>
+                                    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setSelectedStudentForProgress(student);
+                                            }}
+                                            style={{
+                                                padding: '10px 20px',
+                                                fontSize: '14px',
+                                                fontWeight: '600',
+                                                color: 'white',
+                                                background: '#667eea',
+                                                border: 'none',
+                                                borderRadius: '8px',
+                                                cursor: 'pointer'
+                                            }}
+                                        >
+                                            View Progress →
+                                        </button>
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                onSelectStudent && onSelectStudent(student);
+                                            }}
+                                            style={{
+                                                padding: '10px 20px',
+                                                fontSize: '14px',
+                                                fontWeight: '600',
+                                                color: 'white',
+                                                background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                                border: 'none',
+                                                borderRadius: '8px',
+                                                cursor: 'pointer'
+                                            }}
+                                        >
+                                            Explore Modules 🚀
+                                        </button>
+                                    </div>
                                 </div>
                             ))}
                         </div>

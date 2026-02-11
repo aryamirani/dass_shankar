@@ -25,14 +25,15 @@ export default function ChildProgressView({ child, onBack }) {
                 .from('exercises')
                 .select(`
                     id,
-                    modules!inner (
-                        book_id,
-                        books!inner (
-                            grade_id
+                    module:modules!inner (
+                        book:books!inner (
+                            grade:grades!inner (
+                                id
+                            )
                         )
                     )
                 `, { count: 'exact', head: true })
-                .eq('modules.books.grade_id', child.grade_id)
+                .eq('module.book.grade.id', child.grade_id)
 
             if (countError) throw countError
 
@@ -182,7 +183,7 @@ export default function ChildProgressView({ child, onBack }) {
                                                 fontSize: '12px',
                                                 fontWeight: '600'
                                             }}>
-                                                {item.exercises?.modules?.name || 'General'}
+                                                {item.exercises?.modules?.name || item.exercises?.item_type || 'General'}
                                             </span>
                                         </td>
                                         <td style={{ padding: '16px 24px' }}>
