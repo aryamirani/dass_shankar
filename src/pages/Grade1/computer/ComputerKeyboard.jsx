@@ -5,6 +5,7 @@ export default function ComputerKeyboard({ onBack, onNextExercise }) {
     const [typed, setTyped] = useState('')
     const [result, setResult] = useState(null)
     const [activeKey, setActiveKey] = useState(null)
+    const [capsLock, setCapsLock] = useState(false)
 
     // Refs for audio
     const correctRef = useRef()
@@ -38,8 +39,11 @@ export default function ComputerKeyboard({ onBack, onNextExercise }) {
 
         if (key === 'Backspace') {
             setTyped(t => t.slice(0, -1))
+        } else if (key === 'CapsLock') {
+            setCapsLock(prev => !prev)
         } else if (key.length === 1 && /^[a-zA-Z]$/.test(key)) {
-            setTyped(t => t + key.toLowerCase())
+            const letter = capsLock ? key.toUpperCase() : key.toLowerCase()
+            setTyped(t => t + letter)
         }
     }
 
@@ -220,7 +224,10 @@ export default function ComputerKeyboard({ onBack, onNextExercise }) {
                                             setActiveKey(char)
                                             handleInput(char)
                                         }}
-                                        onTouchEnd={() => setActiveKey(null)}
+                                        onTouchEnd={(e) => {
+                                            e.preventDefault()
+                                            setActiveKey(null)
+                                        }}
                                         style={{
                                             width: 'clamp(28px, 8vw, 50px)',
                                             height: 'clamp(36px, 10vw, 50px)',
@@ -234,22 +241,57 @@ export default function ComputerKeyboard({ onBack, onNextExercise }) {
                                             transition: 'all 0.1s',
                                             boxShadow: isActive ? '0 0 15px #3b82f6' : '0 4px 0 rgba(0,0,0,0.3)',
                                             transform: isActive ? 'translateY(4px)' : 'translateY(0)',
-                                            textTransform: 'uppercase',
                                             padding: 0,
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'center'
                                         }}
                                     >
-                                        {char}
+                                        {capsLock ? char.toUpperCase() : char}
                                     </button>
                                 )
                             })}
                         </div>
                     ))}
 
-                    {/* Space and Backspace Row */}
+                    {/* Caps Lock and Backspace Row */}
                     <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 4 }}>
+                        <button
+                            onMouseDown={() => {
+                                setActiveKey('capslock')
+                                handleInput('CapsLock')
+                            }}
+                            onMouseUp={() => setActiveKey(null)}
+                            onMouseLeave={() => setActiveKey(null)}
+                            onTouchStart={(e) => {
+                                e.preventDefault()
+                                setActiveKey('capslock')
+                                handleInput('CapsLock')
+                            }}
+                            onTouchEnd={(e) => {
+                                e.preventDefault()
+                                setActiveKey(null)
+                            }}
+                            style={{
+                                height: 'clamp(36px, 10vw, 50px)',
+                                padding: '0 20px',
+                                borderRadius: 8,
+                                border: 'none',
+                                background: capsLock ? '#10b981' : (activeKey === 'capslock' ? '#6366f1' : 'rgba(255,255,255,0.1)'),
+                                color: 'white',
+                                fontSize: 'clamp(12px, 3.5vw, 16px)',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                                transition: 'all 0.1s',
+                                boxShadow: capsLock ? '0 0 15px #10b981' : (activeKey === 'capslock' ? '0 0 15px #6366f1' : '0 4px 0 rgba(0,0,0,0.3)'),
+                                transform: activeKey === 'capslock' ? 'translateY(4px)' : 'translateY(0)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}
+                        >
+                            ⇪ Caps Lock
+                        </button>
                         <button
                             onMouseDown={() => {
                                 setActiveKey('backspace')
@@ -262,7 +304,10 @@ export default function ComputerKeyboard({ onBack, onNextExercise }) {
                                 setActiveKey('backspace')
                                 handleInput('Backspace')
                             }}
-                            onTouchEnd={() => setActiveKey(null)}
+                            onTouchEnd={(e) => {
+                                e.preventDefault()
+                                setActiveKey(null)
+                            }}
                             style={{
                                 height: 'clamp(36px, 10vw, 50px)',
                                 padding: '0 20px',
