@@ -9,8 +9,8 @@ export default function TeacherDashboard({ onSelectStudent }) {
     const [students, setStudents] = useState([])
     const [loading, setLoading] = useState(true)
     const [showAddStudent, setShowAddStudent] = useState(false)
-    const [newStudent, setNewStudent] = useState({ name: '', rollNo: '', grade: 'grade_1' })
-    const [rollNoError, setRollNoError] = useState('')
+    const [availableStudents, setAvailableStudents] = useState([])
+    const [searchTerm, setSearchTerm] = useState('')
     const [teacherProfileId, setTeacherProfileId] = useState(null)
     const [currentView, setCurrentView] = useState('dashboard') // 'dashboard', 'profile'
     const [selectedStudentForProgress, setSelectedStudentForProgress] = useState(null)
@@ -65,60 +65,69 @@ export default function TeacherDashboard({ onSelectStudent }) {
         }
     }
 
-    const handleAddStudent = async (e) => {
-        e.preventDefault()
-        setRollNoError('')
-
+    const fetchAvailableStudents = async () => {
         try {
-            // Get grade ID
-            const { data: gradeData } = await supabase
-                .from('grades')
-                .select('id')
-                .eq('name', newStudent.grade)
-                .single()
+            // Get all students who aren't already matched with THIS teacher
+            const { data: currentLinks } = await supabase
+                .from('teacher_students')
+                .select('student_id')
+                .eq('teacher_id', teacherProfileId)
 
-            if (!gradeData) throw new Error('Grade not found')
+            const linkedIds = currentLinks?.map(l => l.student_id) || []
 
-            // Create student with roll number
-            const { data: studentData, error: studentError } = await supabase
+            let query = supabase
                 .from('students')
-                .insert([{
-                    full_name: newStudent.name,
-                    roll_no: newStudent.rollNo,
-                    grade_id: gradeData.id,
-                    created_by: teacherProfileId
-                }])
-                .select()
-                .single()
+                .select(`
+                    id,
+                    full_name,
+                    roll_no,
+                    grades (display_name)
+                `)
 
-            if (studentError) {
-                if (studentError.code === '23505') { // Unique constraint violation
-                    setRollNoError('This roll number is already taken')
-                    return
-                }
-                throw studentError
+            if (linkedIds.length > 0) {
+                query = query.not('id', 'in', `(${linkedIds.join(',')})`)
             }
 
-            // Link student to teacher
-            const { error: linkError } = await supabase
+            const { data, error } = await query
+
+            if (error) throw error
+            setAvailableStudents(data || [])
+        } catch (error) {
+            console.error('Error fetching available students:', error)
+        }
+    }
+
+    useEffect(() => {
+        if (showAddStudent && teacherProfileId) {
+            fetchAvailableStudents()
+        }
+    }, [showAddStudent, teacherProfileId])
+
+    const handleLinkStudent = async (studentId) => {
+        try {
+            const { error } = await supabase
                 .from('teacher_students')
                 .insert([{
                     teacher_id: teacherProfileId,
-                    student_id: studentData.id
+                    student_id: studentId
                 }])
 
-            if (linkError) throw linkError
+            if (error) throw error
 
-            // Refresh student list
+            // Refresh
             fetchStudents(teacherProfileId)
             setShowAddStudent(false)
-            setNewStudent({ name: '', rollNo: '', grade: 'grade_1' })
-            setRollNoError('')
+            setSearchTerm('')
         } catch (error) {
-            console.error('Error adding student:', error)
+            console.error('Error linking student:', error)
             alert('Failed to add student: ' + error.message)
         }
     }
+
+    const filteredAvailable = availableStudents.filter(s =>
+        s.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        s.roll_no?.toLowerCase().includes(searchTerm.toLowerCase())
+    )
 
     if (loading) {
         return (
@@ -281,7 +290,7 @@ export default function TeacherDashboard({ onSelectStudent }) {
                             color: '#94a3b8'
                         }}>
                             <div style={{ fontSize: '64px', marginBottom: '20px' }}>📚</div>
-                            <p style={{ fontSize: '18px' }}>No students yet. Click "Add Student" to get started!</p>
+                            <p style={{ fontSize: '18px' }}>No students yet. Click "+ Add Student" to select from registered students!</p>
                         </div>
                     ) : (
                         <div style={{ display: 'grid', gap: '15px' }}>
@@ -368,7 +377,7 @@ export default function TeacherDashboard({ onSelectStudent }) {
                     )}
                 </div>
 
-                {/* Add Student Modal */}
+                {/* Add Student Selection Modal */}
                 {showAddStudent && (
                     <div style={{
                         position: 'fixed',
@@ -376,169 +385,122 @@ export default function TeacherDashboard({ onSelectStudent }) {
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        background: 'rgba(0,0,0,0.7)',
-                        backdropFilter: 'blur(5px)',
+                        background: 'rgba(0,0,0,0.8)',
+                        backdropFilter: 'blur(8px)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        zIndex: 1000
+                        zIndex: 1000,
+                        padding: '20px'
                     }}>
                         <div style={{
                             background: '#1e293b',
-                            borderRadius: '16px',
+                            borderRadius: '20px',
                             padding: '40px',
-                            maxWidth: '500px',
-                            width: '90%',
+                            maxWidth: '600px',
+                            width: '100%',
+                            maxHeight: '90vh',
+                            display: 'flex',
+                            flexDirection: 'column',
                             border: '1px solid #334155',
                             boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
                         }}>
-                            <h2 style={{ fontSize: '28px', fontWeight: 'bold', marginBottom: '30px', color: '#f1f5f9' }}>
-                                Add New Student
-                            </h2>
-                            <form onSubmit={handleAddStudent}>
-                                <div style={{ marginBottom: '20px' }}>
-                                    <label style={{
-                                        display: 'block',
-                                        fontSize: '14px',
-                                        fontWeight: '600',
-                                        color: '#cbd5e1',
-                                        marginBottom: '8px'
-                                    }}>
-                                        Student Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={newStudent.name}
-                                        onChange={(e) => setNewStudent({ ...newStudent, name: e.target.value })}
-                                        required
-                                        style={{
-                                            width: '100%',
-                                            padding: '14px',
-                                            fontSize: '16px',
-                                            background: '#0f172a',
-                                            border: '1px solid #334155',
-                                            borderRadius: '12px',
-                                            outline: 'none',
-                                            color: '#f1f5f9',
-                                            boxSizing: 'border-box'
-                                        }}
-                                        placeholder="Enter student name"
-                                    />
-                                </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '25px' }}>
+                                <h2 style={{ fontSize: '28px', fontWeight: 'bold', color: '#f1f5f9', margin: 0 }}>
+                                    Select Student
+                                </h2>
+                                <button
+                                    onClick={() => setShowAddStudent(false)}
+                                    style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '24px', cursor: 'pointer' }}
+                                >
+                                    ×
+                                </button>
+                            </div>
 
-                                <div style={{ marginBottom: '20px' }}>
-                                    <label style={{
-                                        display: 'block',
-                                        fontSize: '14px',
-                                        fontWeight: '600',
-                                        color: '#cbd5e1',
-                                        marginBottom: '8px'
-                                    }}>
-                                        Roll Number <span style={{ color: '#ef5350' }}>*</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={newStudent.rollNo}
-                                        onChange={(e) => setNewStudent({ ...newStudent, rollNo: e.target.value.toUpperCase() })}
-                                        placeholder="e.g., 2024-1-001"
-                                        required
-                                        style={{
-                                            width: '100%',
-                                            padding: '14px',
-                                            fontSize: '16px',
-                                            background: '#0f172a',
-                                            border: rollNoError ? '1px solid #ef5350' : '1px solid #334155',
-                                            borderRadius: '12px',
-                                            outline: 'none',
-                                            color: '#f1f5f9',
-                                            boxSizing: 'border-box'
-                                        }}
-                                    />
-                                    {rollNoError && (
-                                        <div style={{ color: '#ef5350', fontSize: '13px', marginTop: '5px' }}>
-                                            {rollNoError}
-                                        </div>
-                                    )}
-                                    <div style={{ fontSize: '12px', color: '#64748b', marginTop: '5px' }}>
-                                        Roll number must be unique for each student.
+                            <div style={{ marginBottom: '20px' }}>
+                                <input
+                                    type="text"
+                                    placeholder="Search by name or roll number..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    style={{
+                                        width: '100%',
+                                        padding: '14px',
+                                        fontSize: '16px',
+                                        background: '#0f172a',
+                                        border: '1px solid #334155',
+                                        borderRadius: '12px',
+                                        color: '#f1f5f9',
+                                        outline: 'none',
+                                        boxSizing: 'border-box'
+                                    }}
+                                />
+                            </div>
+
+                            <div style={{
+                                flex: 1,
+                                overflowY: 'auto',
+                                paddingRight: '10px',
+                                display: 'grid',
+                                gap: '10px',
+                                minHeight: '300px'
+                            }}>
+                                {filteredAvailable.length === 0 ? (
+                                    <div style={{ textAlign: 'center', padding: '40px', color: '#94a3b8' }}>
+                                        {availableStudents.length === 0 ? 'No new students available to add.' : 'No students match your search.'}
                                     </div>
-                                </div>
+                                ) : (
+                                    filteredAvailable.map(child => (
+                                        <div
+                                            key={child.id}
+                                            onClick={() => handleLinkStudent(child.id)}
+                                            style={{
+                                                padding: '15px 20px',
+                                                background: '#0f172a',
+                                                borderRadius: '12px',
+                                                border: '1px solid #334155',
+                                                cursor: 'pointer',
+                                                transition: 'all 0.2s',
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center'
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.background = '#1e293b'
+                                                e.currentTarget.style.borderColor = '#667eea'
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.background = '#0f172a'
+                                                e.currentTarget.style.borderColor = '#334155'
+                                            }}
+                                        >
+                                            <div>
+                                                <div style={{ fontWeight: '600', color: '#f1f5f9' }}>{child.full_name}</div>
+                                                <div style={{ fontSize: '13px', color: '#94a3b8' }}>
+                                                    Roll: {child.roll_no} • {child.grades?.display_name}
+                                                </div>
+                                            </div>
+                                            <button style={{
+                                                padding: '6px 12px',
+                                                fontSize: '12px',
+                                                background: '#667eea',
+                                                color: 'white',
+                                                border: 'none',
+                                                borderRadius: '6px',
+                                                fontWeight: '600'
+                                            }}>
+                                                Select
+                                            </button>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
 
-                                <div style={{ marginBottom: '30px' }}>
-                                    <label style={{
-                                        display: 'block',
-                                        fontSize: '14px',
-                                        fontWeight: '600',
-                                        color: '#cbd5e1',
-                                        marginBottom: '8px'
-                                    }}>
-                                        Grade
-                                    </label>
-                                    <select
-                                        value={newStudent.grade}
-                                        onChange={(e) => setNewStudent({ ...newStudent, grade: e.target.value })}
-                                        style={{
-                                            width: '100%',
-                                            padding: '14px',
-                                            fontSize: '16px',
-                                            background: '#0f172a',
-                                            border: '1px solid #334155',
-                                            borderRadius: '12px',
-                                            outline: 'none',
-                                            color: '#f1f5f9',
-                                            boxSizing: 'border-box'
-                                        }}
-                                    >
-                                        <option value="grade_1">Grade 1</option>
-                                        <option value="grade_2">Grade 2</option>
-                                    </select>
-                                </div>
-
-                                <div style={{ display: 'flex', gap: '10px' }}>
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowAddStudent(false)}
-                                        style={{
-                                            flex: 1,
-                                            padding: '14px',
-                                            fontSize: '16px',
-                                            fontWeight: '600',
-                                            color: '#94a3b8',
-                                            background: 'transparent',
-                                            border: '1px solid #334155',
-                                            borderRadius: '12px',
-                                            cursor: 'pointer',
-                                            transition: 'all 0.2s'
-                                        }}
-                                        onMouseEnter={(e) => {
-                                            e.target.style.background = '#0f172a'
-                                            e.target.style.color = '#f1f5f9'
-                                        }}
-                                        onMouseLeave={(e) => {
-                                            e.target.style.background = 'transparent'
-                                            e.target.style.color = '#94a3b8'
-                                        }}
-                                    >
-                                        Cancel
-                                    </button>
-                                    <button
-                                        type="submit"
-                                        style={{
-                                            flex: 1,
-                                            padding: '14px',
-                                            fontSize: '16px',
-                                            fontWeight: '600',
-                                            color: 'white',
-                                            background: '#667eea',
-                                            border: 'none',
-                                            borderRadius: '12px',
-                                            cursor: 'pointer'
-                                        }}
-                                    >
-                                        Add Student
-                                    </button>
-                                </div>
-                            </form>
+                            <div style={{ marginTop: '25px', textAlign: 'center' }}>
+                                <p style={{ fontSize: '12px', color: '#64748b', margin: 0 }}>
+                                    Can't find a student? Please contact an administrator to register them.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 )}
