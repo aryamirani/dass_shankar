@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react'
+import { useSpeech } from '../../../hooks/useSpeech'
 
 // Updated word list based on Page 3 & 4 of the "ad" PDF
 const WORDS = [
@@ -15,7 +16,7 @@ export default function VocabularyThreeAd({ onBack, onNextExercise }) {
   const [viewIndex, setViewIndex] = useState(0)
   const [message, setMessage] = useState(null)
 
-  const voiceRef = useRef(null)
+  const { speak } = useSpeech()
 
   const shuffleWords = (arr) => {
     const a = [...arr]
@@ -50,24 +51,6 @@ export default function VocabularyThreeAd({ onBack, onNextExercise }) {
     }
   }, [message])
 
-  // --- Speech Logic ---
-  useEffect(() => {
-    if (typeof window === 'undefined' || !window.speechSynthesis) return
-    const chooseVoice = () => {
-      const voices = window.speechSynthesis.getVoices()
-      voiceRef.current = voices.find(v => v.lang.startsWith('en')) || voices[0]
-    }
-    chooseVoice()
-    window.speechSynthesis.onvoiceschanged = chooseVoice
-  }, [])
-
-  function speak(text) {
-    if (!window.speechSynthesis) return
-    window.speechSynthesis.cancel()
-    const u = new SpeechSynthesisUtterance(text)
-    if (voiceRef.current) u.voice = voiceRef.current
-    window.speechSynthesis.speak(u)
-  }
 
   function checkMatch(dragId, targetId) {
     if (dragId === targetId) {

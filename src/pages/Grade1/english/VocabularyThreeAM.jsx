@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react'
+import { useSpeech } from '../../../hooks/useSpeech'
 
 // Words from PDF. Images located in public folder.
 const WORDS = [
@@ -18,7 +19,7 @@ export default function VocabularyThreeAM({ onBack, onNextExercise }) {
   const [hoveredTarget, setHoveredTarget] = useState(null)
   const [selectedDraggable, setSelectedDraggable] = useState(null)
 
-  const voiceRef = useRef(null)
+  const { speak } = useSpeech()
   const inputRefs = useRef([])
 
   // --- Data Setup ---
@@ -46,24 +47,6 @@ export default function VocabularyThreeAM({ onBack, onNextExercise }) {
     setLetters(['', '', ''])
   }
 
-  // --- Voice & Speech ---
-  useEffect(() => {
-    if (typeof window === 'undefined' || !window.speechSynthesis) return
-    const chooseVoice = () => {
-      const voices = window.speechSynthesis.getVoices()
-      voiceRef.current = voices.find(v => v.lang.startsWith('en')) || voices[0]
-    }
-    chooseVoice()
-    window.speechSynthesis.onvoiceschanged = chooseVoice
-  }, [])
-
-  function speak(text) {
-    if (!window.speechSynthesis) return
-    window.speechSynthesis.cancel()
-    const u = new SpeechSynthesisUtterance(text)
-    if (voiceRef.current) u.voice = voiceRef.current
-    window.speechSynthesis.speak(u)
-  }
 
   // --- Matching Logic ---
   function checkMatch(dragId, targetId) {

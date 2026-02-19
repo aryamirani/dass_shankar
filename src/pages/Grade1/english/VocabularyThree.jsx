@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react'
+import { useSpeech } from '../../../hooks/useSpeech'
 
 const WORDS = [
   { id: 'bat', img: '/Grade1/english/VocabularyThree/bat.png' },
@@ -62,7 +63,7 @@ export default function VocabularyThree({ onBack, onNextExercise }) {
   const [typeIndex, setTypeIndex] = useState(0)
   const [letters, setLetters] = useState(['', '', ''])
   const inputRefs = useRef([])
-  const voiceRef = useRef(null)
+  const { speak } = useSpeech()
 
   useEffect(() => {
     if (message) {
@@ -71,48 +72,6 @@ export default function VocabularyThree({ onBack, onNextExercise }) {
     }
   }, [message])
 
-  // pick a reasonable English voice (if available) and respond to voice list changes
-  useEffect(() => {
-    if (typeof window === 'undefined' || !window.speechSynthesis) return
-    function chooseVoice() {
-      const voices = window.speechSynthesis.getVoices() || []
-      if (!voices.length) return
-
-      // Prioritize high-quality voices
-      let v = voices.find(v => v.name === 'Google US English')
-      v = v || voices.find(v => v.name === 'Samantha')
-      v = v || voices.find(v => v.name.includes('Natural') && v.lang.startsWith('en'))
-      v = v || voices.find(v => v.lang && v.lang.toLowerCase().startsWith('en-us'))
-      v = v || voices.find(v => v.lang && v.lang.toLowerCase().startsWith('en-gb'))
-      v = v || voices.find(v => v.lang && v.lang.toLowerCase().startsWith('en'))
-      v = v || voices[0]
-      voiceRef.current = v
-    }
-    chooseVoice()
-    // some browsers populate voices asynchronously
-    window.speechSynthesis.onvoiceschanged = chooseVoice
-    return () => { try { window.speechSynthesis.onvoiceschanged = null } catch (e) { } }
-  }, [])
-
-  // speak a word using Web Speech API
-  function speak(text) {
-    try {
-      if (typeof window !== 'undefined' && window.speechSynthesis) {
-        window.speechSynthesis.cancel()
-        const u = new SpeechSynthesisUtterance(text)
-        // prefer a selected voice if available
-        if (voiceRef.current) u.voice = voiceRef.current
-        u.lang = (voiceRef.current && voiceRef.current.lang) ? voiceRef.current.lang : 'en-US'
-        // gentle settings to avoid very high-pitched voices
-        u.rate = 1.0
-        u.pitch = 1.0
-        u.volume = 1
-        window.speechSynthesis.speak(u)
-      }
-    } catch (e) {
-      console.warn('Speech failed', e)
-    }
-  }
 
   // tab styles for header buttons
   const tabFilled = { padding: '10px 16px', borderRadius: 20, background: '#1976d2', border: 'none', color: '#fff', fontWeight: 800, boxShadow: '0 8px 18px rgba(25,118,210,0.18)' }
@@ -411,7 +370,7 @@ export default function VocabularyThree({ onBack, onNextExercise }) {
                     )}
                   </div>
                   <div style={{ height: 12 }}></div>
-                  <button className="action-btn" type="submit" style={{ padding: '8px 16px' }}>Click</button>
+                  <button className="action-btn" type="submit" style={{ padding: '8px 16px' }}>Check word</button>
                 </form>
               </div>
             )}

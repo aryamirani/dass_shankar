@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 
 export default function ComputerKeyboard({ onBack, onNextExercise }) {
     const [target, setTarget] = useState('')
@@ -6,6 +6,8 @@ export default function ComputerKeyboard({ onBack, onNextExercise }) {
     const [result, setResult] = useState(null)
     const [activeKey, setActiveKey] = useState(null)
     const [capsLock, setCapsLock] = useState(false)
+    // Prevents mobile double-firing (touchstart -> synthetic mousedown)
+    const touchActive = useRef(false)
 
     // Refs for audio
     const correctRef = useRef()
@@ -34,7 +36,7 @@ export default function ComputerKeyboard({ onBack, onNextExercise }) {
         }
     }, [completed])
 
-    const handleInput = (key) => {
+    const handleInput = useCallback((key) => {
         if (result === 'correct') return
 
         if (key === 'Backspace') {
@@ -42,27 +44,25 @@ export default function ComputerKeyboard({ onBack, onNextExercise }) {
         } else if (key === 'CapsLock') {
             setCapsLock(prev => !prev)
         } else if (key.length === 1 && /^[a-zA-Z]$/.test(key)) {
-            const letter = capsLock ? key.toUpperCase() : key.toLowerCase()
-            setTyped(t => t + letter)
+            setCapsLock(caps => {
+                const letter = caps ? key.toUpperCase() : key.toLowerCase()
+                setTyped(t => t + letter)
+                return caps
+            })
         }
-    }
+    }, [result])
 
     // Physical Keyboard Sync
     useEffect(() => {
         function onKey(e) {
-            // Prevent default behavior for some keys if needed, but usually we want to let them stay
-            // e.preventDefault() // Maybe better not to prevent default globally unless needed
-
             const k = e.key.toLowerCase()
             setActiveKey(k === 'backspace' ? 'backspace' : k)
             handleInput(e.key)
-
-            // Remove highlight
             setTimeout(() => setActiveKey(null), 150)
         }
         window.addEventListener('keydown', onKey)
         return () => window.removeEventListener('keydown', onKey)
-    }, [result, typed])
+    }, [handleInput])
 
     // Win Logic
     useEffect(() => {
@@ -214,13 +214,16 @@ export default function ComputerKeyboard({ onBack, onNextExercise }) {
                                     <button
                                         key={char}
                                         onMouseDown={() => {
+                                            if (touchActive.current) return // skip synthetic mouse event from touch
                                             setActiveKey(char)
                                             handleInput(char)
                                         }}
                                         onMouseUp={() => setActiveKey(null)}
                                         onMouseLeave={() => setActiveKey(null)}
                                         onTouchStart={(e) => {
-                                            e.preventDefault() // prevent mouse emulation double firing
+                                            e.preventDefault()
+                                            touchActive.current = true
+                                            setTimeout(() => { touchActive.current = false }, 500)
                                             setActiveKey(char)
                                             handleInput(char)
                                         }}
@@ -258,6 +261,7 @@ export default function ComputerKeyboard({ onBack, onNextExercise }) {
                     <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 4 }}>
                         <button
                             onMouseDown={() => {
+                                if (touchActive.current) return
                                 setActiveKey('capslock')
                                 handleInput('CapsLock')
                             }}
@@ -265,6 +269,8 @@ export default function ComputerKeyboard({ onBack, onNextExercise }) {
                             onMouseLeave={() => setActiveKey(null)}
                             onTouchStart={(e) => {
                                 e.preventDefault()
+                                touchActive.current = true
+                                setTimeout(() => { touchActive.current = false }, 500)
                                 setActiveKey('capslock')
                                 handleInput('CapsLock')
                             }}
@@ -294,6 +300,7 @@ export default function ComputerKeyboard({ onBack, onNextExercise }) {
                         </button>
                         <button
                             onMouseDown={() => {
+                                if (touchActive.current) return
                                 setActiveKey('backspace')
                                 handleInput('Backspace')
                             }}
@@ -301,6 +308,8 @@ export default function ComputerKeyboard({ onBack, onNextExercise }) {
                             onMouseLeave={() => setActiveKey(null)}
                             onTouchStart={(e) => {
                                 e.preventDefault()
+                                touchActive.current = true
+                                setTimeout(() => { touchActive.current = false }, 500)
                                 setActiveKey('backspace')
                                 handleInput('Backspace')
                             }}

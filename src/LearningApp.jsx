@@ -415,42 +415,42 @@ export default function LearningApp({ studentProfile, onExit }) {
           <NavigationWrapper
             onBack={() => setView({ name: 'vocabulary' })}
           >
-            <VocabularyExercise onBack={() => setView({ name: 'vocabulary' })} onNextExercise={() => { handleComplete('vocabularyExercise'); goToVocabularyExerciseAn() }} />
+            <VocabularyExercise onBack={() => setView({ name: 'vocabulary' })} onNextExercise={() => { handleComplete('vocabularyExercise'); goToVocabularyThree() }} />
           </NavigationWrapper>
         )}
         {view.name === 'vocabularyExerciseAn' && (
           <NavigationWrapper
             onBack={() => goToVocabularyExercise()}
           >
-            <VocabularyExerciseAn onBack={() => goToVocabularyExercise()} onNextExercise={() => { handleComplete('vocabularyExerciseAn'); goToVocabularyExerciseAp() }} />
+            <VocabularyExerciseAn onBack={() => goToVocabularyExercise()} onNextExercise={() => { handleComplete('vocabularyExerciseAn'); goToVocabularyThreeAn() }} />
           </NavigationWrapper>
         )}
         {view.name === 'vocabularyExerciseAp' && (
           <NavigationWrapper
             onBack={() => goToVocabularyExerciseAn()}
           >
-            <VocabularyExerciseAp onBack={() => goToVocabularyExerciseAn()} onNextExercise={() => { handleComplete('vocabularyExerciseAp'); goToVocabularyExerciseAg() }} />
+            <VocabularyExerciseAp onBack={() => goToVocabularyExerciseAn()} onNextExercise={() => { handleComplete('vocabularyExerciseAp'); goToVocabularyThreeAp() }} />
           </NavigationWrapper>
         )}
         {view.name === 'vocabularyExerciseAg' && (
           <NavigationWrapper
             onBack={() => goToVocabularyExerciseAp()}
           >
-            <VocabularyExerciseAg onBack={() => goToVocabularyExerciseAp()} onNextExercise={() => { handleComplete('vocabularyExerciseAg'); goToVocabularyExerciseAM() }} />
+            <VocabularyExerciseAg onBack={() => goToVocabularyExerciseAp()} onNextExercise={() => { handleComplete('vocabularyExerciseAg'); goToVocabularyThreeAg() }} />
           </NavigationWrapper>
         )}
         {view.name === 'vocabularyExerciseAM' && (
           <NavigationWrapper
             onBack={() => goToVocabularyExerciseAg()}
           >
-            <VocabularyExerciseAM onBack={() => goToVocabularyExerciseAg()} onNextExercise={() => { handleComplete('vocabularyExerciseAM'); goToVocabularyExerciseAd() }} />
+            <VocabularyExerciseAM onBack={() => goToVocabularyExerciseAg()} onNextExercise={() => { handleComplete('vocabularyExerciseAM'); goToVocabularyThreeAM() }} />
           </NavigationWrapper>
         )}
         {view.name === 'vocabularyExerciseAd' && (
           <NavigationWrapper
             onBack={() => goToVocabularyExerciseAM()}
           >
-            <VocabularyExerciseAd onBack={() => goToVocabularyExerciseAM()} onNextExercise={() => { handleComplete('vocabularyExerciseAd'); goToVocabularyThree() }} />
+            <VocabularyExerciseAd onBack={() => goToVocabularyExerciseAM()} onNextExercise={() => { handleComplete('vocabularyExerciseAd'); goToVocabularyThreeAd() }} />
           </NavigationWrapper>
         )}
 
@@ -458,35 +458,35 @@ export default function LearningApp({ studentProfile, onExit }) {
           <NavigationWrapper
             onBack={() => goToVocabularyExerciseAd()}
           >
-            <VocabularyThree onBack={() => goToVocabularyExerciseAd()} onNextExercise={() => { handleComplete('vocabularyThree'); goToVocabularyThreeAn() }} />
+            <VocabularyThree onBack={() => goToVocabularyExercise()} onNextExercise={() => { handleComplete('vocabularyThree'); goToVocabularyExerciseAn() }} />
           </NavigationWrapper>
         )}
         {view.name === 'vocabularyThreeAn' && (
           <NavigationWrapper
             onBack={() => goToVocabularyThree()}
           >
-            <VocabularyThreeAn onBack={() => goToVocabularyThree()} onNextExercise={() => { handleComplete('vocabularyThreeAn'); goToVocabularyThreeAp() }} />
+            <VocabularyThreeAn onBack={() => goToVocabularyThree()} onNextExercise={() => { handleComplete('vocabularyThreeAn'); goToVocabularyExerciseAp() }} />
           </NavigationWrapper>
         )}
         {view.name === 'vocabularyThreeAp' && (
           <NavigationWrapper
             onBack={() => goToVocabularyThreeAn()}
           >
-            <VocabularyThreeAp onBack={() => goToVocabularyThreeAn()} onNextExercise={() => { handleComplete('vocabularyThreeAp'); goToVocabularyThreeAg() }} />
+            <VocabularyThreeAp onBack={() => goToVocabularyThreeAn()} onNextExercise={() => { handleComplete('vocabularyThreeAp'); goToVocabularyExerciseAg() }} />
           </NavigationWrapper>
         )}
         {view.name === 'vocabularyThreeAg' && (
           <NavigationWrapper
             onBack={() => goToVocabularyThreeAp()}
           >
-            <VocabularyThreeAg onBack={() => goToVocabularyThreeAp()} onNextExercise={() => { handleComplete('vocabularyThreeAg'); goToVocabularyThreeAM() }} />
+            <VocabularyThreeAg onBack={() => goToVocabularyThreeAp()} onNextExercise={() => { handleComplete('vocabularyThreeAg'); goToVocabularyExerciseAM() }} />
           </NavigationWrapper>
         )}
         {view.name === 'vocabularyThreeAM' && (
           <NavigationWrapper
             onBack={() => goToVocabularyThreeAg()}
           >
-            <VocabularyThreeAM onBack={() => goToVocabularyThreeAg()} onNextExercise={() => { handleComplete('vocabularyThreeAM'); goToVocabularyThreeAd() }} />
+            <VocabularyThreeAM onBack={() => goToVocabularyThreeAg()} onNextExercise={() => { handleComplete('vocabularyThreeAM'); goToVocabularyExerciseAd() }} />
           </NavigationWrapper>
         )}
         {view.name === 'vocabularyThreeAd' && (
