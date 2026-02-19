@@ -53,26 +53,27 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
         return (
             <div style={{
                 minHeight: '100vh',
-                background: 'linear-gradient(135deg, hsl(230, 80%, 15%) 0%, hsl(230, 80%, 10%) 100%)',
+                background: '#f5f5f4',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 padding: '20px',
-                fontFamily: "'Outfit', 'Inter', sans-serif"
+                fontFamily: "'Outfit', 'Inter', sans-serif",
+                color: '#1e293b'
             }}>
                 <div style={{
-                    background: 'hsla(0, 0%, 100%, 0.03)',
-                    backdropFilter: 'blur(15px)',
+                    background: 'white',
                     padding: '48px',
-                    borderRadius: '32px',
+                    borderRadius: '24px',
                     textAlign: 'center',
                     maxWidth: '500px',
-                    border: '1px solid hsla(0, 0%, 100%, 0.1)',
-                    color: 'white'
+                    width: '100%',
+                    border: '1px solid #e2e8f0',
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
                 }}>
                     <div style={{ fontSize: '4rem', marginBottom: '24px' }}>🎉</div>
-                    <h2 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '16px' }}>Registration Successful!</h2>
-                    <p style={{ color: '#94a3b8', fontSize: '1.1rem', marginBottom: '32px', lineHeight: 1.6 }}>
+                    <h2 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '16px', color: '#0f172a' }}>Registration Successful!</h2>
+                    <p style={{ color: '#64748b', fontSize: '1.1rem', marginBottom: '32px', lineHeight: 1.6 }}>
                         Thank you for joining Shankar Foundation.
                         {role === 'teacher'
                             ? " Your account is now pending approval by an administrator."
@@ -82,14 +83,14 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                         onClick={onNavigateToLogin}
                         style={{
                             padding: '16px 32px',
-                            background: 'hsl(150, 80%, 45%)',
+                            background: '#10b981',
                             color: 'white',
                             border: 'none',
                             borderRadius: '14px',
                             fontSize: '1.1rem',
                             fontWeight: '700',
                             cursor: 'pointer',
-                            boxShadow: '0 10px 20px hsla(150, 80%, 45%, 0.3)'
+                            boxShadow: '0 4px 6px -1px rgba(16, 185, 129, 0.2)'
                         }}
                     >
                         Go to Sign In
@@ -102,7 +103,7 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
     return (
         <div style={{
             minHeight: '100vh',
-            background: 'linear-gradient(135deg, hsl(230, 80%, 15%) 0%, hsl(230, 80%, 10%) 100%)',
+            background: '#f5f5f4',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -110,28 +111,29 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
             fontFamily: "'Outfit', 'Inter', sans-serif"
         }}>
             <style>{`
-                @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-                .fade-in { animation: fadeIn 0.6s ease-out forwards; }
-                .input-field:focus { border-color: hsl(230, 100%, 65%) !important; box-shadow: 0 0 0 4px hsla(230, 100%, 65%, 0.1); }
+                @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+                .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+                .input-field:focus { border-color: #2563eb !important; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
                 .role-btn {
                     flex: 1;
                     padding: 16px;
-                    border: 2px solid hsla(0, 0%, 100%, 0.05);
+                    border: 2px solid #e2e8f0;
                     border-radius: 16px;
-                    background: hsla(0, 0%, 0%, 0.2);
-                    color: #94a3b8;
+                    background: #f8fafc;
+                    color: #64748b;
                     font-weight: 700;
                     cursor: pointer;
-                    transition: all 0.3s;
+                    transition: all 0.2s;
                     display: flex;
                     flex-direction: column;
                     alignItems: center;
                     gap: 8px;
                 }
+                .role-btn:hover { background: #f1f5f9; border-color: #cbd5e1; }
                 .role-btn.active {
-                    border-color: hsl(230, 100%, 65%);
-                    background: hsla(230, 100%, 65%, 0.1);
-                    color: white;
+                    border-color: #2563eb;
+                    background: #eff6ff;
+                    color: #2563eb;
                 }
             `}</style>
 
@@ -142,9 +144,9 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                     position: 'absolute',
                     top: '30px',
                     left: '30px',
-                    background: 'hsla(0, 0%, 100%, 0.05)',
-                    border: '1px solid hsla(0, 0%, 100%, 0.1)',
-                    color: 'white',
+                    background: 'white',
+                    border: '1px solid #e2e8f0',
+                    color: '#64748b',
                     padding: '10px 20px',
                     borderRadius: '12px',
                     cursor: 'pointer',
@@ -153,49 +155,49 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                     gap: '8px',
                     fontSize: '0.9rem',
                     fontWeight: '600',
-                    transition: 'all 0.3s',
-                    zIndex: 10
+                    transition: 'all 0.2s',
+                    zIndex: 10,
+                    boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
                 }}
-                onMouseEnter={e => e.currentTarget.style.background = 'hsla(0, 0%, 100%, 0.1)'}
-                onMouseLeave={e => e.currentTarget.style.background = 'hsla(0, 0%, 100%, 0.05)'}
+                onMouseEnter={e => { e.currentTarget.style.color = '#334155'; e.currentTarget.style.borderColor = '#cbd5e1' }}
+                onMouseLeave={e => { e.currentTarget.style.color = '#64748b'; e.currentTarget.style.borderColor = '#e2e8f0' }}
             >
                 ← Back to Home
             </button>
 
             <div className="fade-in" style={{
-                background: 'hsla(0, 0%, 100%, 0.03)',
-                backdropFilter: 'blur(15px)',
+                background: 'white',
                 padding: '48px',
-                borderRadius: '32px',
-                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+                borderRadius: '24px',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
                 width: '100%',
                 maxWidth: '500px',
-                border: '1px solid hsla(0, 0%, 100%, 0.05)',
+                border: '1px solid #f1f5f9',
                 boxSizing: 'border-box'
             }}>
                 <div style={{ textAlign: 'center', marginBottom: '40px' }}>
                     <h1 style={{
                         fontSize: '32px',
                         fontWeight: '800',
-                        color: 'white',
+                        color: '#0f172a',
                         marginBottom: '12px',
                         letterSpacing: '-0.5px'
                     }}>
                         Create Account
                     </h1>
-                    <p style={{ color: '#94a3b8', fontSize: '1.1rem' }}>Join our supportive learning community</p>
+                    <p style={{ color: '#64748b', fontSize: '1.1rem' }}>Join our supportive learning community</p>
                 </div>
 
                 {error && (
                     <div style={{
-                        background: 'hsla(0, 100%, 65%, 0.1)',
-                        color: 'hsl(0, 100%, 75%)',
+                        background: '#fef2f2',
+                        color: '#ef4444',
                         padding: '14px',
                         borderRadius: '12px',
                         marginBottom: '24px',
                         fontSize: '14px',
                         textAlign: 'center',
-                        border: '1px solid hsla(0, 100%, 65%, 0.2)'
+                        border: '1px solid #fee2e2'
                     }}>
                         {error}
                     </div>
@@ -208,10 +210,10 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                             display: 'block',
                             fontSize: '14px',
                             fontWeight: '600',
-                            color: '#94a3b8',
+                            color: '#64748b',
                             marginBottom: '12px',
                             textTransform: 'uppercase',
-                            letterSpacing: '1px'
+                            letterSpacing: '0.5px'
                         }}>
                             I am registering as a...
                         </label>
@@ -240,10 +242,10 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                             display: 'block',
                             fontSize: '14px',
                             fontWeight: '600',
-                            color: '#e2e8f0',
+                            color: '#475569',
                             marginBottom: '8px',
                             textTransform: 'uppercase',
-                            letterSpacing: '1px'
+                            letterSpacing: '0.5px'
                         }}>
                             Full Name
                         </label>
@@ -251,19 +253,19 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                             type="text"
                             value={fullName}
                             onChange={(e) => setFullName(e.target.value)}
-                            placeholder="e.g. John Doe"
+                            placeholder="e.g. Arya Mirani"
                             required
                             className="input-field"
                             style={{
                                 width: '100%',
-                                padding: '16px',
+                                padding: '14px 16px',
                                 fontSize: '16px',
-                                background: 'hsla(0, 0%, 0%, 0.2)',
-                                border: '2px solid hsla(0, 0%, 100%, 0.05)',
-                                borderRadius: '14px',
+                                background: '#f8fafc',
+                                border: '2px solid #e2e8f0',
+                                borderRadius: '12px',
                                 outline: 'none',
-                                color: 'white',
-                                transition: 'all 0.3s',
+                                color: '#1e293b',
+                                transition: 'all 0.2s',
                                 boxSizing: 'border-box'
                             }}
                         />
@@ -274,10 +276,10 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                             display: 'block',
                             fontSize: '14px',
                             fontWeight: '600',
-                            color: '#e2e8f0',
+                            color: '#475569',
                             marginBottom: '8px',
                             textTransform: 'uppercase',
-                            letterSpacing: '1px'
+                            letterSpacing: '0.5px'
                         }}>
                             Phone Number
                         </label>
@@ -290,14 +292,14 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                             className="input-field"
                             style={{
                                 width: '100%',
-                                padding: '16px',
+                                padding: '14px 16px',
                                 fontSize: '16px',
-                                background: 'hsla(0, 0%, 0%, 0.2)',
-                                border: '2px solid hsla(0, 0%, 100%, 0.05)',
-                                borderRadius: '14px',
+                                background: '#f8fafc',
+                                border: '2px solid #e2e8f0',
+                                borderRadius: '12px',
                                 outline: 'none',
-                                color: 'white',
-                                transition: 'all 0.3s',
+                                color: '#1e293b',
+                                transition: 'all 0.2s',
                                 boxSizing: 'border-box'
                             }}
                         />
@@ -308,10 +310,10 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                             display: 'block',
                             fontSize: '14px',
                             fontWeight: '600',
-                            color: '#e2e8f0',
+                            color: '#475569',
                             marginBottom: '8px',
                             textTransform: 'uppercase',
-                            letterSpacing: '1px'
+                            letterSpacing: '0.5px'
                         }}>
                             Email Address
                         </label>
@@ -324,14 +326,14 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                             className="input-field"
                             style={{
                                 width: '100%',
-                                padding: '16px',
+                                padding: '14px 16px',
                                 fontSize: '16px',
-                                background: 'hsla(0, 0%, 0%, 0.2)',
-                                border: '2px solid hsla(0, 0%, 100%, 0.05)',
-                                borderRadius: '14px',
+                                background: '#f8fafc',
+                                border: '2px solid #e2e8f0',
+                                borderRadius: '12px',
                                 outline: 'none',
-                                color: 'white',
-                                transition: 'all 0.3s',
+                                color: '#1e293b',
+                                transition: 'all 0.2s',
                                 boxSizing: 'border-box'
                             }}
                         />
@@ -343,7 +345,7 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                                 display: 'block',
                                 fontSize: '14px',
                                 fontWeight: '600',
-                                color: '#e2e8f0',
+                                color: '#475569',
                                 marginBottom: '8px',
                                 textTransform: 'uppercase',
                                 letterSpacing: '0.5px'
@@ -359,14 +361,14 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                                 className="input-field"
                                 style={{
                                     width: '100%',
-                                    padding: '16px',
+                                    padding: '14px 16px',
                                     fontSize: '16px',
-                                    background: 'hsla(0, 0%, 0%, 0.2)',
-                                    border: '2px solid hsla(0, 0%, 100%, 0.05)',
-                                    borderRadius: '14px',
+                                    background: '#f8fafc',
+                                    border: '2px solid #e2e8f0',
+                                    borderRadius: '12px',
                                     outline: 'none',
-                                    color: 'white',
-                                    transition: 'all 0.3s',
+                                    color: '#1e293b',
+                                    transition: 'all 0.2s',
                                     boxSizing: 'border-box'
                                 }}
                             />
@@ -376,7 +378,7 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                                 display: 'block',
                                 fontSize: '14px',
                                 fontWeight: '600',
-                                color: '#e2e8f0',
+                                color: '#475569',
                                 marginBottom: '8px',
                                 textTransform: 'uppercase',
                                 letterSpacing: '0.5px'
@@ -392,14 +394,14 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                                 className="input-field"
                                 style={{
                                     width: '100%',
-                                    padding: '16px',
+                                    padding: '14px 16px',
                                     fontSize: '16px',
-                                    background: 'hsla(0, 0%, 0%, 0.2)',
-                                    border: '2px solid hsla(0, 0%, 100%, 0.05)',
-                                    borderRadius: '14px',
+                                    background: '#f8fafc',
+                                    border: '2px solid #e2e8f0',
+                                    borderRadius: '12px',
                                     outline: 'none',
-                                    color: 'white',
-                                    transition: 'all 0.3s',
+                                    color: '#1e293b',
+                                    transition: 'all 0.2s',
                                     boxSizing: 'border-box'
                                 }}
                             />
@@ -409,16 +411,16 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                     {/* Student Details for Parents */}
                     {role === 'parent' && (
                         <div style={{
-                            background: 'hsla(0, 0%, 0%, 0.2)',
+                            background: '#f8fafc',
                             padding: '24px',
-                            borderRadius: '24px',
+                            borderRadius: '16px',
                             marginBottom: '32px',
-                            border: '1px solid hsla(0, 0%, 100%, 0.05)'
+                            border: '1px solid #e2e8f0'
                         }}>
                             <h3 style={{
-                                fontSize: '16px',
+                                fontSize: '15px',
                                 fontWeight: '700',
-                                color: 'white',
+                                color: '#334155',
                                 marginBottom: '20px',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -428,7 +430,7 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                             </h3>
 
                             <div style={{ marginBottom: '16px' }}>
-                                <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#94a3b8', marginBottom: '6px' }}>
+                                <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#64748b', marginBottom: '6px' }}>
                                     Child's Full Name
                                 </label>
                                 <input
@@ -441,10 +443,10 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                                         width: '100%',
                                         padding: '12px',
                                         fontSize: '15px',
-                                        background: 'hsla(0, 0%, 0%, 0.3)',
-                                        border: '1px solid hsla(0, 0%, 100%, 0.1)',
+                                        background: 'white',
+                                        border: '1px solid #cbd5e1',
                                         borderRadius: '10px',
-                                        color: 'white',
+                                        color: '#1e293b',
                                         outline: 'none',
                                         boxSizing: 'border-box'
                                     }}
@@ -453,7 +455,7 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
 
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                                 <div>
-                                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#94a3b8', marginBottom: '6px' }}>
+                                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#64748b', marginBottom: '6px' }}>
                                         Roll No.
                                     </label>
                                     <input
@@ -466,17 +468,17 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                                             width: '100%',
                                             padding: '12px',
                                             fontSize: '15px',
-                                            background: 'hsla(0, 0%, 0%, 0.3)',
-                                            border: '1px solid hsla(0, 0%, 100%, 0.1)',
+                                            background: 'white',
+                                            border: '1px solid #cbd5e1',
                                             borderRadius: '10px',
-                                            color: 'white',
+                                            color: '#1e293b',
                                             outline: 'none',
                                             boxSizing: 'border-box'
                                         }}
                                     />
                                 </div>
                                 <div>
-                                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#94a3b8', marginBottom: '6px' }}>
+                                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '600', color: '#64748b', marginBottom: '6px' }}>
                                         Grade
                                     </label>
                                     <select
@@ -487,10 +489,10 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                                             width: '100%',
                                             padding: '12px',
                                             fontSize: '15px',
-                                            background: 'hsla(0, 0%, 0%, 0.3)',
-                                            border: '1px solid hsla(0, 0%, 100%, 0.1)',
+                                            background: 'white',
+                                            border: '1px solid #cbd5e1',
                                             borderRadius: '10px',
-                                            color: 'white',
+                                            color: '#1e293b',
                                             outline: 'none',
                                             boxSizing: 'border-box'
                                         }}
@@ -508,20 +510,20 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                         disabled={loading}
                         style={{
                             width: '100%',
-                            padding: '18px',
-                            background: 'hsl(230, 100%, 65%)',
+                            padding: '16px',
+                            background: '#2563eb',
                             color: 'white',
                             border: 'none',
-                            borderRadius: '16px',
-                            fontSize: '18px',
+                            borderRadius: '14px',
+                            fontSize: '16px',
                             fontWeight: '700',
                             cursor: loading ? 'not-allowed' : 'pointer',
                             opacity: loading ? 0.7 : 1,
-                            transition: 'all 0.3s',
-                            boxShadow: '0 10px 20px hsla(230, 100%, 65%, 0.3)'
+                            transition: 'all 0.2s',
+                            boxShadow: '0 4px 6px -1px rgba(37, 99, 235, 0.2)'
                         }}
-                        onMouseEnter={(e) => !loading && (e.currentTarget.style.transform = 'translateY(-2px)')}
-                        onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+                        onMouseEnter={(e) => !loading && (e.currentTarget.style.background = '#1d4ed8')}
+                        onMouseLeave={(e) => !loading && (e.currentTarget.style.background = '#2563eb')}
                     >
                         {loading ? 'Creating your account...' : 'Create Account'}
                     </button>
@@ -530,7 +532,7 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                 <div style={{
                     marginTop: '32px',
                     textAlign: 'center',
-                    color: '#94a3b8',
+                    color: '#64748b',
                     fontSize: '15px'
                 }}>
                     Already have an account?{' '}
@@ -539,13 +541,15 @@ export default function Signup({ onNavigateToLogin, onBackToHome }) {
                         style={{
                             background: 'none',
                             border: 'none',
-                            color: 'hsl(230, 100%, 65%)',
+                            color: '#2563eb',
                             fontWeight: '700',
                             cursor: 'pointer',
                             padding: 0,
                             fontSize: '15px',
-                            textDecoration: 'underline'
+                            textDecoration: 'none'
                         }}
+                        onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
+                        onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
                     >
                         Sign In
                     </button>

@@ -351,13 +351,13 @@ export default function LearningApp({ studentProfile, onExit }) {
       <div style={{ flex: 1, overflowY: 'auto', position: 'relative' }}>
         {view.name === 'landing' && (
           <GradeOverview
-            gradeName="Shankar Learning - Grade 1"
+            gradeName="S-Learn - Grade 1"
             onBookClick={(bookId) => setView({ name: bookId })}
           />
         )}
         {view.name === 'landing2' && (
           <GradeOverview
-            gradeName="Shankar Learning - Grade 2"
+            gradeName="S-Learn - Grade 2"
             onBookClick={(bookId) => setView({ name: bookId })}
           />
         )}

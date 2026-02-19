@@ -4,8 +4,8 @@ export default function BookOverview({ gradeName, modules, onModuleClick, mode, 
     return (
         <div style={{
             minHeight: '100vh',
-            background: '#0f172a',
-            color: '#f1f5f9',
+            background: '#fdf8baff', // Light yellow
+            color: '#1e293b',
             padding: '40px 20px',
             fontFamily: '"Outfit", sans-serif'
         }}>
@@ -18,12 +18,12 @@ export default function BookOverview({ gradeName, modules, onModuleClick, mode, 
                     animation: 'fadeInDown 0.8s ease-out'
                 }}>
                     <div style={{
-                        background: 'rgba(255, 255, 255, 0.05)',
+                        background: 'white',
                         padding: '6px',
                         borderRadius: '16px',
                         display: 'flex',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
-                        boxShadow: '0 10px 25px rgba(0,0,0,0.2)'
+                        border: '1px solid #e2e8f0',
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
                     }}>
                         <button
                             onClick={() => onModeChange('learn')}
@@ -31,8 +31,8 @@ export default function BookOverview({ gradeName, modules, onModuleClick, mode, 
                                 padding: '10px 24px',
                                 borderRadius: '12px',
                                 border: 'none',
-                                background: mode === 'learn' ? 'linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%)' : 'transparent',
-                                color: mode === 'learn' ? 'white' : '#94a3b8',
+                                background: mode === 'learn' ? '#2563eb' : 'transparent',
+                                color: mode === 'learn' ? 'white' : '#64748b',
                                 fontWeight: 700,
                                 cursor: 'pointer',
                                 transition: 'all 0.3s',
@@ -47,8 +47,8 @@ export default function BookOverview({ gradeName, modules, onModuleClick, mode, 
                                 padding: '10px 24px',
                                 borderRadius: '12px',
                                 border: 'none',
-                                background: mode === 'test' ? 'linear-gradient(135deg, #f59e0b 0%, #ea580c 100%)' : 'transparent',
-                                color: mode === 'test' ? 'white' : '#94a3b8',
+                                background: mode === 'test' ? '#ea580c' : 'transparent',
+                                color: mode === 'test' ? 'white' : '#64748b',
                                 fontWeight: 700,
                                 cursor: 'pointer',
                                 transition: 'all 0.3s',
@@ -70,18 +70,19 @@ export default function BookOverview({ gradeName, modules, onModuleClick, mode, 
                         fontSize: 'clamp(32px, 8vw, 64px)',
                         fontWeight: 900,
                         margin: 0,
-                        background: 'linear-gradient(135deg, #60a5fa 0%, #c084fc 100%)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        letterSpacing: '-0.02em'
+                        color: '#0f172a',
+                        letterSpacing: '-0.02em',
+                        marginBottom: '16px'
                     }}>
                         {gradeName}
                     </h1>
                     <p style={{
                         fontSize: 'clamp(18px, 4vw, 24px)',
-                        color: '#94a3b8',
+                        color: '#475569',
                         marginTop: '10px',
-                        fontWeight: 500
+                        fontWeight: 500,
+                        maxWidth: '800px',
+                        margin: '0 auto'
                     }}>
                         {mode === 'learn'
                             ? 'Master new concepts with immediate feedback and guidance.'
@@ -101,9 +102,8 @@ export default function BookOverview({ gradeName, modules, onModuleClick, mode, 
                             key={module.id}
                             onClick={() => onModuleClick(module.id)}
                             style={{
-                                background: 'rgba(255, 255, 255, 0.03)',
-                                backdropFilter: 'blur(10px)',
-                                border: '1px solid rgba(255, 255, 255, 0.1)',
+                                background: 'white',
+                                border: '2px solid #e2e8f0', // Standardized border
                                 borderRadius: '24px',
                                 padding: '30px',
                                 cursor: 'pointer',
@@ -112,32 +112,34 @@ export default function BookOverview({ gradeName, modules, onModuleClick, mode, 
                                 overflow: 'hidden',
                                 display: 'flex',
                                 flexDirection: 'column',
-                                gap: '20px'
+                                alignItems: 'center', // Centered alignment
+                                textAlign: 'center',   // Centered text
+                                gap: '20px',
+                                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
                             }}
                             onMouseEnter={(e) => {
                                 e.currentTarget.style.transform = 'translateY(-8px)'
-                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
-                                e.currentTarget.style.borderColor = module.color
-                                e.currentTarget.style.boxShadow = `0 20px 40px -15px ${module.color}33`
+                                e.currentTarget.style.borderColor = '#94a3b8' // Darker grey on hover
+                                e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
                             }}
                             onMouseLeave={(e) => {
                                 e.currentTarget.style.transform = 'translateY(0)'
-                                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
-                                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)'
-                                e.currentTarget.style.boxShadow = 'none'
+                                e.currentTarget.style.borderColor = '#e2e8f0'
+                                e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
                             }}
                         >
                             {/* Icon Circle */}
                             <div style={{
-                                width: '64px',
-                                height: '64px',
-                                borderRadius: '18px',
+                                width: '80px',
+                                height: '80px',
+                                borderRadius: '50%',
                                 background: `${module.color}15`,
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                fontSize: '32px',
-                                border: `1px solid ${module.color}33`
+                                fontSize: '36px',
+                                border: `1px solid ${module.color}30`, // Kept icon styling for distinction
+                                marginBottom: '10px'
                             }}>
                                 {module.icon}
                             </div>
@@ -147,18 +149,11 @@ export default function BookOverview({ gradeName, modules, onModuleClick, mode, 
                                     fontSize: '24px',
                                     fontWeight: 700,
                                     margin: '0 0 8px 0',
-                                    color: '#f8fafc'
+                                    color: '#1e293b'
                                 }}>
                                     {module.label}
                                 </h3>
-                                <p style={{
-                                    fontSize: '15px',
-                                    color: '#94a3b8',
-                                    margin: 0,
-                                    lineHeight: 1.5
-                                }}>
-                                    {module.description}
-                                </p>
+                                {/* Description removed */}
                             </div>
 
                             {/* Start Button */}
@@ -167,25 +162,12 @@ export default function BookOverview({ gradeName, modules, onModuleClick, mode, 
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: '8px',
-                                fontWeight: 600,
-                                color: module.color,
+                                fontWeight: 700,
+                                color: '#475569', // Standardized color
                                 fontSize: '15px'
                             }}>
                                 Start Learning <span>→</span>
                             </div>
-
-                            {/* Decorative Background Blob */}
-                            <div style={{
-                                position: 'absolute',
-                                top: '-20px',
-                                right: '-20px',
-                                width: '100px',
-                                height: '100px',
-                                background: module.color,
-                                filter: 'blur(50px)',
-                                opacity: 0.1,
-                                pointerEvents: 'none'
-                            }} />
                         </div>
                     ))}
                 </div>

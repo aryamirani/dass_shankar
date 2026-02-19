@@ -75,7 +75,7 @@ export default function VocabularyExercise({ onBack, onNextExercise }) {
       `}</style>
 
 
-      <div style={{ width: '100%', maxWidth: 980, background: 'rgba(255,255,255,0.0)', padding: 10 }}>
+      <div style={{ width: '100%', maxWidth: 1000, background: 'white', padding: '40px', borderRadius: '24px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
         <div style={{ textAlign: 'center', marginBottom: 12, minHeight: 56 }}>
           {message && (
             <div style={{ padding: '8px 16px', fontSize: 24, fontWeight: 800, color: message.type === 'success' ? '#155724' : '#856404', background: message.type === 'success' ? 'rgba(212,237,218,0.98)' : 'rgba(255,243,205,0.95)', borderRadius: 14, boxShadow: '0 8px 22px rgba(0,0,0,0.1)', display: 'inline-block' }}>

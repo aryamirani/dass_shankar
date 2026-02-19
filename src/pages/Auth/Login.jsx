@@ -24,17 +24,18 @@ export default function Login({ onNavigateToSignup, onBackToHome }) {
     return (
         <div style={{
             minHeight: '100vh',
-            background: 'linear-gradient(135deg, hsl(230, 80%, 15%) 0%, hsl(230, 80%, 10%) 100%)',
+            background: '#f5f5f4', // Plain neutral background
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             padding: '20px',
-            fontFamily: "'Outfit', 'Inter', sans-serif"
+            fontFamily: "'Outfit', 'Inter', sans-serif",
+            color: '#1e293b'
         }}>
             <style>{`
-                @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-                .fade-in { animation: fadeIn 0.6s ease-out forwards; }
-                .input-field:focus { border-color: hsl(230, 100%, 65%) !important; box-shadow: 0 0 0 4px hsla(230, 100%, 65%, 0.1); }
+                @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+                .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+                .input-field:focus { border-color: #2563eb !important; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
             `}</style>
 
             {/* Back Button */}
@@ -44,9 +45,9 @@ export default function Login({ onNavigateToSignup, onBackToHome }) {
                     position: 'absolute',
                     top: '30px',
                     left: '30px',
-                    background: 'hsla(0, 0%, 100%, 0.05)',
-                    border: '1px solid hsla(0, 0%, 100%, 0.1)',
-                    color: 'white',
+                    background: 'white',
+                    border: '1px solid #e2e8f0',
+                    color: '#64748b',
                     padding: '10px 20px',
                     borderRadius: '12px',
                     cursor: 'pointer',
@@ -55,49 +56,49 @@ export default function Login({ onNavigateToSignup, onBackToHome }) {
                     gap: '8px',
                     fontSize: '0.9rem',
                     fontWeight: '600',
-                    transition: 'all 0.3s',
-                    zIndex: 10
+                    transition: 'all 0.2s',
+                    zIndex: 10,
+                    boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
                 }}
-                onMouseEnter={e => e.currentTarget.style.background = 'hsla(0, 0%, 100%, 0.1)'}
-                onMouseLeave={e => e.currentTarget.style.background = 'hsla(0, 0%, 100%, 0.05)'}
+                onMouseEnter={e => { e.currentTarget.style.color = '#334155'; e.currentTarget.style.borderColor = '#cbd5e1' }}
+                onMouseLeave={e => { e.currentTarget.style.color = '#64748b'; e.currentTarget.style.borderColor = '#e2e8f0' }}
             >
                 ← Back to Home
             </button>
 
             <div className="fade-in" style={{
-                background: 'hsla(0, 0%, 100%, 0.03)',
-                backdropFilter: 'blur(15px)',
+                background: 'white',
                 padding: '48px',
-                borderRadius: '32px',
-                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+                borderRadius: '24px',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
                 width: '100%',
                 maxWidth: '420px',
-                border: '1px solid hsla(0, 0%, 100%, 0.05)',
+                border: '1px solid #f1f5f9',
                 boxSizing: 'border-box'
             }}>
                 <div style={{ textAlign: 'center', marginBottom: '40px' }}>
                     <h1 style={{
                         fontSize: '32px',
                         fontWeight: '800',
-                        color: 'white',
+                        color: '#0f172a',
                         marginBottom: '12px',
                         letterSpacing: '-0.5px'
                     }}>
                         Welcome Back
                     </h1>
-                    <p style={{ color: '#94a3b8', fontSize: '1.1rem' }}>Sign in to continue your journey</p>
+                    <p style={{ color: '#64748b', fontSize: '1.1rem' }}>Sign in to continue your journey</p>
                 </div>
 
                 {error && (
                     <div style={{
-                        background: 'hsla(0, 100%, 65%, 0.1)',
-                        color: 'hsl(0, 100%, 75%)',
+                        background: '#fef2f2',
+                        color: '#ef4444',
                         padding: '14px',
                         borderRadius: '12px',
                         marginBottom: '24px',
                         fontSize: '14px',
                         textAlign: 'center',
-                        border: '1px solid hsla(0, 100%, 65%, 0.2)'
+                        border: '1px solid #fee2e2'
                     }}>
                         {error}
                     </div>
@@ -109,10 +110,10 @@ export default function Login({ onNavigateToSignup, onBackToHome }) {
                             display: 'block',
                             fontSize: '14px',
                             fontWeight: '600',
-                            color: '#e2e8f0',
+                            color: '#475569',
                             marginBottom: '8px',
                             textTransform: 'uppercase',
-                            letterSpacing: '1px'
+                            letterSpacing: '0.5px'
                         }}>
                             Email Address
                         </label>
@@ -125,14 +126,14 @@ export default function Login({ onNavigateToSignup, onBackToHome }) {
                             className="input-field"
                             style={{
                                 width: '100%',
-                                padding: '16px',
+                                padding: '14px 16px',
                                 fontSize: '16px',
-                                background: 'hsla(0, 0%, 0%, 0.2)',
-                                border: '2px solid hsla(0, 0%, 100%, 0.05)',
-                                borderRadius: '14px',
+                                background: '#f8fafc',
+                                border: '2px solid #e2e8f0',
+                                borderRadius: '12px',
                                 outline: 'none',
-                                color: 'white',
-                                transition: 'all 0.3s',
+                                color: '#1e293b',
+                                transition: 'all 0.2s',
                                 boxSizing: 'border-box'
                             }}
                         />
@@ -143,10 +144,10 @@ export default function Login({ onNavigateToSignup, onBackToHome }) {
                             display: 'block',
                             fontSize: '14px',
                             fontWeight: '600',
-                            color: '#e2e8f0',
+                            color: '#475569',
                             marginBottom: '8px',
                             textTransform: 'uppercase',
-                            letterSpacing: '1px'
+                            letterSpacing: '0.5px'
                         }}>
                             Password
                         </label>
@@ -159,14 +160,14 @@ export default function Login({ onNavigateToSignup, onBackToHome }) {
                             className="input-field"
                             style={{
                                 width: '100%',
-                                padding: '16px',
+                                padding: '14px 16px',
                                 fontSize: '16px',
-                                background: 'hsla(0, 0%, 0%, 0.2)',
-                                border: '2px solid hsla(0, 0%, 100%, 0.05)',
-                                borderRadius: '14px',
+                                background: '#f8fafc',
+                                border: '2px solid #e2e8f0',
+                                borderRadius: '12px',
                                 outline: 'none',
-                                color: 'white',
-                                transition: 'all 0.3s',
+                                color: '#1e293b',
+                                transition: 'all 0.2s',
                                 boxSizing: 'border-box'
                             }}
                         />
@@ -178,19 +179,19 @@ export default function Login({ onNavigateToSignup, onBackToHome }) {
                         style={{
                             width: '100%',
                             padding: '16px',
-                            background: 'hsl(230, 100%, 65%)',
+                            background: '#2563eb',
                             color: 'white',
                             border: 'none',
                             borderRadius: '14px',
-                            fontSize: '18px',
+                            fontSize: '16px',
                             fontWeight: '700',
                             cursor: loading ? 'not-allowed' : 'pointer',
                             opacity: loading ? 0.7 : 1,
-                            transition: 'all 0.3s',
-                            boxShadow: '0 10px 20px hsla(230, 100%, 65%, 0.3)'
+                            transition: 'all 0.2s',
+                            boxShadow: '0 4px 6px -1px rgba(37, 99, 235, 0.2)'
                         }}
-                        onMouseEnter={(e) => !loading && (e.currentTarget.style.transform = 'translateY(-2px)')}
-                        onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+                        onMouseEnter={(e) => !loading && (e.currentTarget.style.background = '#1d4ed8')}
+                        onMouseLeave={(e) => !loading && (e.currentTarget.style.background = '#2563eb')}
                     >
                         {loading ? 'Authenticating...' : 'Sign In'}
                     </button>
@@ -199,7 +200,7 @@ export default function Login({ onNavigateToSignup, onBackToHome }) {
                 <div style={{
                     marginTop: '32px',
                     textAlign: 'center',
-                    color: '#94a3b8',
+                    color: '#64748b',
                     fontSize: '15px'
                 }}>
                     New to Shankar Foundation?{' '}
@@ -208,13 +209,15 @@ export default function Login({ onNavigateToSignup, onBackToHome }) {
                         style={{
                             background: 'none',
                             border: 'none',
-                            color: 'hsl(230, 100%, 65%)',
+                            color: '#2563eb',
                             fontWeight: '700',
                             cursor: 'pointer',
                             padding: 0,
                             fontSize: '15px',
-                            textDecoration: 'underline'
+                            textDecoration: 'none'
                         }}
+                        onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
+                        onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
                     >
                         Create an account
                     </button>
