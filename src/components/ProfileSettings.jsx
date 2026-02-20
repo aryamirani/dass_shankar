@@ -158,15 +158,16 @@ export default function ProfileSettings({ role }) {
 
     return (
         <div style={{
-            background: '#1e293b',
+            background: '#ffffff',
             padding: '40px',
-            borderRadius: '16px',
+            borderRadius: '20px',
             maxWidth: '600px',
             margin: '0 auto',
-            border: '1px solid #334155'
+            border: '1px solid #e5e7eb',
+            boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)'
         }}>
-            <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: '#f1f5f9', marginBottom: '30px' }}>
-                👤 Profile Settings
+            <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: '#1f2937', marginBottom: '30px' }}>
+                Profile Settings
             </h2>
 
             {message && (
@@ -184,7 +185,7 @@ export default function ProfileSettings({ role }) {
 
             <form onSubmit={handleSubmit}>
                 <div style={{ marginBottom: '20px' }}>
-                    <label style={{ display: 'block', color: '#cbd5e1', marginBottom: '8px', fontWeight: '600' }}>
+                    <label style={{ display: 'block', color: '#4b5563', marginBottom: '8px', fontWeight: '600' }}>
                         Email Address
                     </label>
                     <input
@@ -194,20 +195,20 @@ export default function ProfileSettings({ role }) {
                         style={{
                             width: '100%',
                             padding: '12px',
-                            background: '#0f172a',
-                            border: '1px solid #334155',
-                            borderRadius: '8px',
-                            color: '#94a3b8',
+                            background: '#f3f4f6',
+                            border: '1px solid #e5e7eb',
+                            borderRadius: '12px',
+                            color: '#6b7280',
                             cursor: 'not-allowed'
                         }}
                     />
-                    <div style={{ fontSize: '12px', color: '#64748b', marginTop: '5px' }}>
+                    <div style={{ fontSize: '12px', color: '#9ca3af', marginTop: '5px' }}>
                         Email cannot be changed directly for security reasons.
                     </div>
                 </div>
 
                 <div style={{ marginBottom: '20px' }}>
-                    <label style={{ display: 'block', color: '#cbd5e1', marginBottom: '8px', fontWeight: '600' }}>
+                    <label style={{ display: 'block', color: '#4b5563', marginBottom: '8px', fontWeight: '600' }}>
                         Full Name
                     </label>
                     <input
@@ -218,17 +219,17 @@ export default function ProfileSettings({ role }) {
                         style={{
                             width: '100%',
                             padding: '12px',
-                            background: '#0f172a',
-                            border: '1px solid #334155',
-                            borderRadius: '8px',
-                            color: '#f1f5f9',
+                            background: '#ffffff',
+                            border: '1px solid #e5e7eb',
+                            borderRadius: '12px',
+                            color: '#1f2937',
                             outline: 'none'
                         }}
                     />
                 </div>
 
                 <div style={{ marginBottom: '30px' }}>
-                    <label style={{ display: 'block', color: '#cbd5e1', marginBottom: '8px', fontWeight: '600' }}>
+                    <label style={{ display: 'block', color: '#4b5563', marginBottom: '8px', fontWeight: '600' }}>
                         Phone Number
                     </label>
                     <input
@@ -239,10 +240,10 @@ export default function ProfileSettings({ role }) {
                         style={{
                             width: '100%',
                             padding: '12px',
-                            background: '#0f172a',
-                            border: '1px solid #334155',
-                            borderRadius: '8px',
-                            color: '#f1f5f9',
+                            background: '#ffffff',
+                            border: '1px solid #e5e7eb',
+                            borderRadius: '12px',
+                            color: '#1f2937',
                             outline: 'none'
                         }}
                     />
@@ -250,21 +251,21 @@ export default function ProfileSettings({ role }) {
 
 
                 {role === 'parent' && students.length > 0 && (
-                    <div style={{ marginTop: '20px', borderTop: '1px solid #334155', paddingTop: '40px', marginBottom: '30px' }}>
-                        <h3 style={{ fontSize: '20px', fontWeight: 'bold', color: '#f1f5f9', marginBottom: '25px' }}>
-                            👶 Child Profiles
+                    <div style={{ marginTop: '20px', borderTop: '1px solid #e5e7eb', paddingTop: '40px', marginBottom: '30px' }}>
+                        <h3 style={{ fontSize: '20px', fontWeight: 'bold', color: '#1f2937', marginBottom: '25px' }}>
+                            Child Profiles
                         </h3>
                         {students.map((student, index) => (
                             <div key={student.id} style={{
-                                background: '#0f172a',
+                                background: '#f9fafb',
                                 padding: '25px',
-                                borderRadius: '12px',
+                                borderRadius: '16px',
                                 marginBottom: '20px',
-                                border: '1px solid #334155'
+                                border: '1px solid #e5e7eb'
                             }}>
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '15px' }}>
                                     <div>
-                                        <label style={{ display: 'block', color: '#cbd5e1', fontSize: '13px', marginBottom: '8px', fontWeight: '600' }}>
+                                        <label style={{ display: 'block', color: '#4b5563', fontSize: '13px', marginBottom: '8px', fontWeight: '600' }}>
                                             Full Name
                                         </label>
                                         <input
@@ -278,16 +279,16 @@ export default function ProfileSettings({ role }) {
                                             style={{
                                                 width: '100%',
                                                 padding: '10px',
-                                                background: '#0f172a',
-                                                border: '1px solid #334155',
-                                                borderRadius: '8px',
-                                                color: '#f1f5f9',
+                                                background: '#ffffff',
+                                                border: '1px solid #e5e7eb',
+                                                borderRadius: '12px',
+                                                color: '#1f2937',
                                                 outline: 'none'
                                             }}
                                         />
                                     </div>
                                     <div>
-                                        <label style={{ display: 'block', color: '#94a3b8', fontSize: '13px', marginBottom: '8px' }}>
+                                        <label style={{ display: 'block', color: '#6b7280', fontSize: '13px', marginBottom: '8px' }}>
                                             Roll Number
                                         </label>
                                         <input
@@ -297,10 +298,10 @@ export default function ProfileSettings({ role }) {
                                             style={{
                                                 width: '100%',
                                                 padding: '10px',
-                                                background: '#1e293b',
-                                                border: '1px solid #334155',
-                                                borderRadius: '8px',
-                                                color: '#64748b',
+                                                background: '#f3f4f6',
+                                                border: '1px solid #e5e7eb',
+                                                borderRadius: '12px',
+                                                color: '#9ca3af',
                                                 cursor: 'not-allowed'
                                             }}
                                         />
@@ -308,7 +309,7 @@ export default function ProfileSettings({ role }) {
                                 </div>
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
                                     <div>
-                                        <label style={{ display: 'block', color: '#94a3b8', fontSize: '13px', marginBottom: '8px' }}>
+                                        <label style={{ display: 'block', color: '#6b7280', fontSize: '13px', marginBottom: '8px' }}>
                                             Grade
                                         </label>
                                         <input
@@ -318,16 +319,16 @@ export default function ProfileSettings({ role }) {
                                             style={{
                                                 width: '100%',
                                                 padding: '10px',
-                                                background: '#1e293b',
-                                                border: '1px solid #334155',
-                                                borderRadius: '8px',
-                                                color: '#64748b',
+                                                background: '#f3f4f6',
+                                                border: '1px solid #e5e7eb',
+                                                borderRadius: '12px',
+                                                color: '#9ca3af',
                                                 cursor: 'not-allowed'
                                             }}
                                         />
                                     </div>
                                     <div>
-                                        <label style={{ display: 'block', color: '#cbd5e1', fontSize: '13px', marginBottom: '8px', fontWeight: '600' }}>
+                                        <label style={{ display: 'block', color: '#4b5563', fontSize: '13px', marginBottom: '8px', fontWeight: '600' }}>
                                             Date of Birth
                                         </label>
                                         <input
@@ -341,10 +342,10 @@ export default function ProfileSettings({ role }) {
                                             style={{
                                                 width: '100%',
                                                 padding: '10px',
-                                                background: '#0f172a',
-                                                border: '1px solid #334155',
-                                                borderRadius: '8px',
-                                                color: '#f1f5f9',
+                                                background: '#ffffff',
+                                                border: '1px solid #e5e7eb',
+                                                borderRadius: '12px',
+                                                color: '#1f2937',
                                                 outline: 'none'
                                             }}
                                         />
@@ -361,10 +362,10 @@ export default function ProfileSettings({ role }) {
                     style={{
                         width: '100%',
                         padding: '14px',
-                        background: saving ? '#475569' : '#667eea',
+                        background: saving ? '#d1d5db' : '#111827',
                         color: 'white',
                         border: 'none',
-                        borderRadius: '8px',
+                        borderRadius: '12px',
                         fontSize: '16px',
                         fontWeight: '600',
                         cursor: saving ? 'not-allowed' : 'pointer',

@@ -76,213 +76,202 @@ export default function ManageTeachers() {
     if (loading) {
         return (
             <div style={{
-                minHeight: '100vh',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                padding: '60px'
             }}>
-                <div style={{ fontSize: '24px', color: '#666' }}>Loading...</div>
+                <div style={{ fontSize: '20px', color: '#6b7280' }}>Loading...</div>
             </div>
         )
     }
 
     return (
-        <div style={{
-            background: '#0f172a',
-            padding: '20px 0',
-            minHeight: '100vh',
-            color: '#f1f5f9'
-        }}>
-            <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-                <h1 style={{ fontSize: '36px', fontWeight: 'bold', color: '#f1f5f9', marginBottom: '30px' }}>
-                    👨‍🏫 Manage Teachers
-                </h1>
+        <div>
+            <h2 style={{ fontSize: '24px', fontWeight: '700', color: '#111827', marginBottom: '24px', margin: 0 }}>
+                Manage Teachers
+            </h2>
 
-                {/* Stats */}
+            {/* Stats */}
+            <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(4, 1fr)',
+                gap: '16px',
+                marginBottom: '24px',
+                marginTop: '20px'
+            }}>
                 <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                    gap: '15px',
-                    marginBottom: '30px'
-                }}>
-                    <div style={{
-                        background: '#1e293b',
-                        borderRadius: '12px',
-                        padding: '20px',
-                        border: '1px solid #334155'
-                    }}>
-                        <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#667eea' }}>{teachers.length}</div>
-                        <div style={{ fontSize: '14px', color: '#94a3b8' }}>Total Teachers</div>
-                    </div>
-                    <div style={{
-                        background: '#1e293b',
-                        borderRadius: '12px',
-                        padding: '20px',
-                        border: '1px solid #334155'
-                    }}>
-                        <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#ffa726' }}>{pendingCount}</div>
-                        <div style={{ fontSize: '14px', color: '#94a3b8' }}>Pending</div>
-                    </div>
-                    <div style={{
-                        background: '#1e293b',
-                        borderRadius: '12px',
-                        padding: '20px',
-                        border: '1px solid #334155'
-                    }}>
-                        <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#4caf50' }}>{approvedCount}</div>
-                        <div style={{ fontSize: '14px', color: '#94a3b8' }}>Approved</div>
-                    </div>
-                    <div style={{
-                        background: '#1e293b',
-                        borderRadius: '12px',
-                        padding: '20px',
-                        border: '1px solid #334155'
-                    }}>
-                        <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#ef5350' }}>{rejectedCount}</div>
-                        <div style={{ fontSize: '14px', color: '#94a3b8' }}>Rejected</div>
-                    </div>
-                </div>
-
-                {/* Filter Tabs */}
-                <div style={{
-                    display: 'flex',
-                    gap: '10px',
-                    marginBottom: '20px',
-                    flexWrap: 'wrap'
-                }}>
-                    {['all', 'pending', 'approved', 'rejected'].map(status => (
-                        <button
-                            key={status}
-                            onClick={() => setFilter(status)}
-                            style={{
-                                padding: '8px 16px',
-                                fontSize: '14px',
-                                fontWeight: '600',
-                                color: filter === status ? 'white' : '#94a3b8',
-                                background: filter === status ? '#667eea' : '#1e293b',
-                                border: filter === status ? 'none' : '1px solid #334155',
-                                borderRadius: '8px',
-                                cursor: 'pointer',
-                                textTransform: 'capitalize',
-                                transition: 'all 0.3s'
-                            }}
-                        >
-                            {status}
-                        </button>
-                    ))}
-                </div>
-
-                {/* Teachers List */}
-                <div style={{
-                    background: '#1e293b',
+                    background: 'white',
                     borderRadius: '16px',
-                    padding: '30px',
-                    border: '1px solid #334155'
+                    padding: '20px',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+                    borderTop: '4px solid #3b82f6'
                 }}>
-                    {filteredTeachers.length === 0 ? (
-                        <div style={{
-                            textAlign: 'center',
-                            padding: '60px 20px',
-                            color: '#94a3b8'
-                        }}>
-                            <div style={{ fontSize: '48px', marginBottom: '15px' }}>📭</div>
-                            <p style={{ fontSize: '16px' }}>No teachers found for this filter</p>
-                        </div>
-                    ) : (
-                        <div style={{ display: 'grid', gap: '15px' }}>
-                            {filteredTeachers.map((teacher) => (
-                                <div
-                                    key={teacher.id}
-                                    style={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        padding: '20px',
-                                        background: '#0f172a',
-                                        borderRadius: '12px',
-                                        border: teacher.approval_status === 'pending' ? '1px solid #ffa726' : '1px solid #334155',
-                                        flexDirection: window.innerWidth < 640 ? 'column' : 'row',
-                                        gap: window.innerWidth < 640 ? '15px' : '0',
-                                        textAlign: window.innerWidth < 640 ? 'center' : 'left'
-                                    }}
-                                >
-                                    <div style={{ flex: 1 }}>
-                                        <div style={{ fontSize: '18px', fontWeight: '600', color: '#f1f5f9', marginBottom: '5px' }}>
-                                            {teacher.full_name || teacher.name || 'Unnamed Teacher'}
-                                        </div>
-                                        <div style={{ fontSize: '14px', color: '#94a3b8', marginBottom: '5px' }}>
-                                            {teacher.email}
-                                        </div>
-                                        <div style={{ fontSize: '12px', color: '#64748b' }}>
-                                            Joined: {new Date(teacher.created_at).toLocaleDateString()}
-                                        </div>
+                    <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#3b82f6' }}>{teachers.length}</div>
+                    <div style={{ fontSize: '13px', color: '#6b7280' }}>Total Teachers</div>
+                </div>
+                <div style={{
+                    background: 'white',
+                    borderRadius: '16px',
+                    padding: '20px',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+                    borderTop: '4px solid #f59e0b'
+                }}>
+                    <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#f59e0b' }}>{pendingCount}</div>
+                    <div style={{ fontSize: '13px', color: '#6b7280' }}>Pending</div>
+                </div>
+                <div style={{
+                    background: 'white',
+                    borderRadius: '16px',
+                    padding: '20px',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+                    borderTop: '4px solid #10b981'
+                }}>
+                    <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#10b981' }}>{approvedCount}</div>
+                    <div style={{ fontSize: '13px', color: '#6b7280' }}>Approved</div>
+                </div>
+                <div style={{
+                    background: 'white',
+                    borderRadius: '16px',
+                    padding: '20px',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+                    borderTop: '4px solid #ef4444'
+                }}>
+                    <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#ef4444' }}>{rejectedCount}</div>
+                    <div style={{ fontSize: '13px', color: '#6b7280' }}>Rejected</div>
+                </div>
+            </div>
+
+            {/* Filter Tabs */}
+            <div style={{
+                display: 'flex',
+                gap: '8px',
+                marginBottom: '20px'
+            }}>
+                {['all', 'pending', 'approved', 'rejected'].map(status => (
+                    <button
+                        key={status}
+                        onClick={() => setFilter(status)}
+                        style={{
+                            padding: '8px 16px',
+                            fontSize: '13px',
+                            fontWeight: '600',
+                            color: filter === status ? 'white' : '#4b5563',
+                            background: filter === status ? '#111827' : 'white',
+                            border: filter === status ? 'none' : '1px solid #e5e7eb',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            textTransform: 'capitalize',
+                            transition: 'all 0.2s'
+                        }}
+                    >
+                        {status}
+                    </button>
+                ))}
+            </div>
+
+            {/* Teachers List */}
+            <div style={{
+                background: 'white',
+                borderRadius: '20px',
+                padding: '24px',
+                boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)'
+            }}>
+                {filteredTeachers.length === 0 ? (
+                    <div style={{
+                        textAlign: 'center',
+                        padding: '48px 20px',
+                        color: '#6b7280'
+                    }}>
+                        <p style={{ fontSize: '16px' }}>No teachers found for this filter</p>
+                    </div>
+                ) : (
+                    <div style={{ display: 'grid', gap: '12px' }}>
+                        {filteredTeachers.map((teacher) => (
+                            <div
+                                key={teacher.id}
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    padding: '16px 20px',
+                                    background: '#f9fafb',
+                                    borderRadius: '12px',
+                                    border: teacher.approval_status === 'pending' ? '1px solid #f59e0b' : '1px solid #e5e7eb'
+                                }}
+                            >
+                                <div style={{ flex: 1 }}>
+                                    <div style={{ fontSize: '16px', fontWeight: '600', color: '#111827', marginBottom: '4px' }}>
+                                        {teacher.full_name || teacher.name || 'Unnamed Teacher'}
                                     </div>
-
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                                        {/* Status Badge */}
-                                        <div style={{
-                                            padding: '6px 12px',
-                                            borderRadius: '6px',
-                                            fontSize: '12px',
-                                            fontWeight: '600',
-                                            background:
-                                                teacher.approval_status === 'approved' ? 'rgba(76, 175, 80, 0.1)' :
-                                                    teacher.approval_status === 'pending' ? 'rgba(255, 167, 38, 0.1)' :
-                                                        'rgba(239, 83, 80, 0.1)',
-                                            color:
-                                                teacher.approval_status === 'approved' ? '#4caf50' :
-                                                    teacher.approval_status === 'pending' ? '#ffa726' :
-                                                        '#ef5350',
-                                            textTransform: 'capitalize',
-                                            border: `1px solid ${teacher.approval_status === 'approved' ? '#4caf50' :
-                                                    teacher.approval_status === 'pending' ? '#ffa726' :
-                                                        '#ef5350'
-                                                }`
-                                        }}>
-                                            {teacher.approval_status}
-                                        </div>
-
-                                        {/* Action Buttons */}
-                                        {teacher.approval_status === 'pending' && (
-                                            <>
-                                                <button
-                                                    onClick={() => handleApprove(teacher.id)}
-                                                    style={{
-                                                        padding: '8px 16px',
-                                                        fontSize: '14px',
-                                                        fontWeight: '600',
-                                                        color: 'white',
-                                                        background: '#4caf50',
-                                                        border: 'none',
-                                                        borderRadius: '8px',
-                                                        cursor: 'pointer'
-                                                    }}
-                                                >
-                                                    ✓ Approve
-                                                </button>
-                                                <button
-                                                    onClick={() => handleReject(teacher.id)}
-                                                    style={{
-                                                        padding: '8px 16px',
-                                                        fontSize: '14px',
-                                                        fontWeight: '600',
-                                                        color: 'white',
-                                                        background: '#ef5350',
-                                                        border: 'none',
-                                                        borderRadius: '8px',
-                                                        cursor: 'pointer'
-                                                    }}
-                                                >
-                                                    ✗ Reject
-                                                </button>
-                                            </>
-                                        )}
+                                    <div style={{ fontSize: '13px', color: '#6b7280', marginBottom: '2px' }}>
+                                        {teacher.email}
+                                    </div>
+                                    <div style={{ fontSize: '12px', color: '#9ca3af' }}>
+                                        Joined: {new Date(teacher.created_at).toLocaleDateString()}
                                     </div>
                                 </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
+
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                    {/* Status Badge */}
+                                    <div style={{
+                                        padding: '4px 10px',
+                                        borderRadius: '6px',
+                                        fontSize: '12px',
+                                        fontWeight: '600',
+                                        background:
+                                            teacher.approval_status === 'approved' ? '#ecfdf5' :
+                                                teacher.approval_status === 'pending' ? '#fffbeb' :
+                                                    '#fef2f2',
+                                        color:
+                                            teacher.approval_status === 'approved' ? '#10b981' :
+                                                teacher.approval_status === 'pending' ? '#f59e0b' :
+                                                    '#ef4444',
+                                        textTransform: 'capitalize'
+                                    }}>
+                                        {teacher.approval_status}
+                                    </div>
+
+                                    {/* Action Buttons */}
+                                    {teacher.approval_status === 'pending' && (
+                                        <>
+                                            <button
+                                                onClick={() => handleApprove(teacher.id)}
+                                                style={{
+                                                    padding: '6px 14px',
+                                                    fontSize: '13px',
+                                                    fontWeight: '600',
+                                                    color: 'white',
+                                                    background: '#10b981',
+                                                    border: 'none',
+                                                    borderRadius: '8px',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                Approve
+                                            </button>
+                                            <button
+                                                onClick={() => handleReject(teacher.id)}
+                                                style={{
+                                                    padding: '6px 14px',
+                                                    fontSize: '13px',
+                                                    fontWeight: '600',
+                                                    color: 'white',
+                                                    background: '#ef4444',
+                                                    border: 'none',
+                                                    borderRadius: '8px',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                Reject
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     )

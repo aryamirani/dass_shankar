@@ -96,52 +96,54 @@ export default function ChildProgressView({ child, onBack }) {
     }
 
     return (
-        <div style={{ color: '#f1f5f9', animation: 'fadeIn 0.5s ease-out' }}>
+        <div style={{ color: '#111827', animation: 'fadeIn 0.5s ease-out' }}>
             {/* Header */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '30px' }}>
                 <button
                     onClick={onBack}
                     style={{
-                        background: 'transparent',
-                        border: '1px solid #334155',
-                        color: '#94a3b8',
+                        background: 'white',
+                        border: '1px solid #e5e7eb',
+                        color: '#4b5563',
                         padding: '8px 16px',
                         borderRadius: '8px',
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '8px',
-                        transition: 'all 0.2s'
+                        transition: 'all 0.2s',
+                        boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+                        fontWeight: '500'
                     }}
                     onMouseEnter={(e) => {
-                        e.target.style.background = '#1e293b'
-                        e.target.style.color = '#f1f5f9'
+                        e.target.style.background = '#f9fafb'
+                        e.target.style.color = '#111827'
                     }}
                     onMouseLeave={(e) => {
-                        e.target.style.background = 'transparent'
-                        e.target.style.color = '#94a3b8'
+                        e.target.style.background = 'white'
+                        e.target.style.color = '#4b5563'
                     }}
                 >
                     ← Back
                 </button>
                 <div>
-                    <h2 style={{ fontSize: '32px', fontWeight: 'bold', margin: 0 }}>{child.full_name}'s Progress</h2>
-                    <p style={{ color: '#94a3b8', margin: '4px 0 0 0' }}>{child.grades?.display_name}</p>
+                    <h2 style={{ fontSize: '32px', fontWeight: 'bold', margin: '0 0 4px 0', color: '#111827' }}>{child.full_name}'s Progress</h2>
+                    <p style={{ color: '#6b7280', margin: 0 }}>{child.grades?.display_name}</p>
                 </div>
             </div>
 
             {/* Stats Overview */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '40px' }}>
-                <div style={{ background: '#1e293b', padding: '24px', borderRadius: '16px', border: '1px solid #334155', textAlign: 'center' }}>
-                    <div style={{ fontSize: '14px', color: '#94a3b8', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px' }}>Exercises Completed</div>
+                <div style={{ background: 'white', padding: '24px', borderRadius: '16px', border: '1px solid #e5e7eb', textAlign: 'center', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+                    <div style={{ fontSize: '13px', color: '#6b7280', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '600' }}>Exercises Completed</div>
                     <div style={{ fontSize: '36px', fontWeight: 'bold', color: '#6366f1' }}>{stats.completedCount}</div>
                 </div>
-                <div style={{ background: '#1e293b', padding: '24px', borderRadius: '16px', border: '1px solid #334155', textAlign: 'center' }}>
-                    <div style={{ fontSize: '14px', color: '#94a3b8', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px' }}>Average Score</div>
+                <div style={{ background: 'white', padding: '24px', borderRadius: '16px', border: '1px solid #e5e7eb', textAlign: 'center', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+                    <div style={{ fontSize: '13px', color: '#6b7280', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '600' }}>Average Score</div>
                     <div style={{ fontSize: '36px', fontWeight: 'bold', color: '#10b981' }}>{stats.averageScore}%</div>
                 </div>
-                <div style={{ background: '#1e293b', padding: '24px', borderRadius: '16px', border: '1px solid #334155', textAlign: 'center' }}>
-                    <div style={{ fontSize: '14px', color: '#94a3b8', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px' }}>Total Progress</div>
+                <div style={{ background: 'white', padding: '24px', borderRadius: '16px', border: '1px solid #e5e7eb', textAlign: 'center', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+                    <div style={{ fontSize: '13px', color: '#6b7280', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: '600' }}>Total Progress</div>
                     <div style={{ fontSize: '36px', fontWeight: 'bold', color: '#f59e0b' }}>
                         {Math.round((stats.completedCount / stats.totalExercises) * 100)}%
                     </div>
@@ -149,35 +151,35 @@ export default function ChildProgressView({ child, onBack }) {
             </div>
 
             {/* Detailed Table */}
-            <div style={{ background: '#1e293b', borderRadius: '16px', border: '1px solid #334155', overflow: 'hidden' }}>
-                <div style={{ padding: '20px 24px', borderBottom: '1px solid #334155', background: 'rgba(255,255,255,0.02)' }}>
-                    <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600' }}>Recent Activity</h3>
+            <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #e5e7eb', overflow: 'hidden', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+                <div style={{ padding: '20px 24px', borderBottom: '1px solid #f3f4f6', background: '#f9fafb' }}>
+                    <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: '#111827' }}>Recent Activity</h3>
                 </div>
 
                 {progress.length === 0 ? (
-                    <div style={{ padding: '60px', textAlign: 'center', color: '#94a3b8' }}>
+                    <div style={{ padding: '60px', textAlign: 'center', color: '#6b7280' }}>
                         <p>No learning activity recorded yet.</p>
                     </div>
                 ) : (
                     <div style={{ overflowX: 'auto' }}>
                         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                             <thead>
-                                <tr style={{ borderBottom: '1px solid #334155', color: '#94a3b8', fontSize: '13px' }}>
-                                    <th style={{ padding: '16px 24px', fontWeight: '500' }}>Exercise Name</th>
-                                    <th style={{ padding: '16px 24px', fontWeight: '500' }}>Module</th>
-                                    <th style={{ padding: '16px 24px', fontWeight: '500' }}>Mode</th>
-                                    <th style={{ padding: '16px 24px', fontWeight: '500' }}>Completion Date</th>
-                                    <th style={{ padding: '16px 24px', fontWeight: '500', textAlign: 'right' }}>Score</th>
+                                <tr style={{ borderBottom: '1px solid #e5e7eb', color: '#6b7280', fontSize: '13px', background: 'white' }}>
+                                    <th style={{ padding: '16px 24px', fontWeight: '600' }}>Exercise Name</th>
+                                    <th style={{ padding: '16px 24px', fontWeight: '600' }}>Module</th>
+                                    <th style={{ padding: '16px 24px', fontWeight: '600' }}>Mode</th>
+                                    <th style={{ padding: '16px 24px', fontWeight: '600' }}>Completion Date</th>
+                                    <th style={{ padding: '16px 24px', fontWeight: '600', textAlign: 'right' }}>Score</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {progress.map((item) => (
-                                    <tr key={item.id} style={{ borderBottom: '1px solid #334155', transition: 'background 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'} onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
-                                        <td style={{ padding: '16px 24px', fontWeight: '500' }}>{item.exercises?.name || 'Unknown Exercise'}</td>
+                                    <tr key={item.id} style={{ borderBottom: '1px solid #f3f4f6', transition: 'background 0.2s', background: 'white' }} onMouseEnter={(e) => e.currentTarget.style.background = '#f9fafb'} onMouseLeave={(e) => e.currentTarget.style.background = 'white'}>
+                                        <td style={{ padding: '16px 24px', fontWeight: '500', color: '#111827' }}>{item.exercises?.name || 'Unknown Exercise'}</td>
                                         <td style={{ padding: '16px 24px' }}>
                                             <span style={{
-                                                background: 'rgba(99, 102, 241, 0.1)',
-                                                color: '#818cf8',
+                                                background: '#eff6ff',
+                                                color: '#3b82f6',
                                                 padding: '4px 10px',
                                                 borderRadius: '6px',
                                                 fontSize: '12px',
@@ -188,8 +190,8 @@ export default function ChildProgressView({ child, onBack }) {
                                         </td>
                                         <td style={{ padding: '16px 24px' }}>
                                             <span style={{
-                                                background: item.metadata?.mode === 'test' ? 'rgba(245, 158, 11, 0.1)' : 'rgba(16, 185, 129, 0.1)',
-                                                color: item.metadata?.mode === 'test' ? '#f59e0b' : '#10b981',
+                                                background: item.metadata?.mode === 'test' ? '#fef3c7' : '#d1fae5',
+                                                color: item.metadata?.mode === 'test' ? '#d97706' : '#059669',
                                                 padding: '4px 8px',
                                                 borderRadius: '4px',
                                                 fontSize: '11px',
@@ -199,7 +201,7 @@ export default function ChildProgressView({ child, onBack }) {
                                                 {item.metadata?.mode || 'Learn'}
                                             </span>
                                         </td>
-                                        <td style={{ padding: '16px 24px', color: '#94a3b8', fontSize: '14px' }}>
+                                        <td style={{ padding: '16px 24px', color: '#6b7280', fontSize: '14px' }}>
                                             {new Date(item.updated_at).toLocaleDateString('en-US', {
                                                 year: 'numeric',
                                                 month: 'short',

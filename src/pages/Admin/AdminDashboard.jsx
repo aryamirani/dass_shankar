@@ -5,8 +5,8 @@ import ManageTeachers from './ManageTeachers'
 import ManageParents from './ManageParents'
 import ManageStudents from './ManageStudents'
 
-export default function AdminDashboard() {
-    const [currentView, setCurrentView] = useState('dashboard') // 'dashboard', 'teachers', 'parents', 'students', 'profile'
+export default function AdminDashboard({ signOut }) {
+    const [currentView, setCurrentView] = useState('dashboard')
     const [stats, setStats] = useState({
         teachers: 0,
         students: 0,
@@ -38,152 +38,142 @@ export default function AdminDashboard() {
         }
     }
 
-    // Navigation wrapper to ensure consistent styling for sub-pages
-    const renderContent = () => {
-        if (currentView === 'teachers') {
-            return (
-                <div style={{ minHeight: '100vh', background: '#0f172a' }}>
-                    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-                        <button
-                            onClick={() => setCurrentView('dashboard')}
-                            style={{
-                                marginBottom: '20px',
-                                background: 'transparent',
-                                border: '1px solid #334155',
-                                color: '#94a3b8',
-                                padding: '8px 16px',
-                                borderRadius: '8px',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                                transition: 'all 0.2s'
-                            }}
-                            onMouseEnter={(e) => {
-                                e.target.style.background = '#1e293b'
-                                e.target.style.color = '#f1f5f9'
-                            }}
-                            onMouseLeave={(e) => {
-                                e.target.style.background = 'transparent'
-                                e.target.style.color = '#94a3b8'
-                            }}
-                        >
-                            ← Back to Dashboard
-                        </button>
+    // Shared header component
+    const renderHeader = () => (
+        <header style={{
+            background: '#111827',
+            color: 'white',
+            padding: '16px 40px',
+        }}>
+            <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                <span style={{ fontSize: '18px', fontWeight: 'bold' }}>Welcome, Admin</span>
+                <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
+                    <button
+                        style={{ background: 'transparent', border: 'none', color: currentView === 'dashboard' ? '#fbbc04' : 'white', cursor: 'pointer', fontWeight: '500' }}
+                        onClick={() => setCurrentView('dashboard')}
+                    >
+                        Dashboard
+                    </button>
+                    <button
+                        style={{ background: 'transparent', border: 'none', color: currentView === 'teachers' ? '#fbbc04' : 'white', cursor: 'pointer', fontWeight: '500' }}
+                        onClick={() => setCurrentView('teachers')}
+                    >
+                        Teachers
+                    </button>
+                    <button
+                        style={{ background: 'transparent', border: 'none', color: currentView === 'students' ? '#fbbc04' : 'white', cursor: 'pointer', fontWeight: '500' }}
+                        onClick={() => setCurrentView('students')}
+                    >
+                        Students
+                    </button>
+                    <button
+                        style={{ background: 'transparent', border: 'none', color: currentView === 'parents' ? '#fbbc04' : 'white', cursor: 'pointer', fontWeight: '500' }}
+                        onClick={() => setCurrentView('parents')}
+                    >
+                        Parents
+                    </button>
+                    <button
+                        style={{ background: 'transparent', border: 'none', color: '#f87171', cursor: 'pointer', fontWeight: '500' }}
+                        onClick={async () => {
+                            if (typeof signOut === 'function') {
+                                await signOut();
+                            } else {
+                                await supabase.auth.signOut();
+                            }
+                        }}
+                    >
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+    )
+
+    if (loading) {
+        return (
+            <div style={{
+                height: '100vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: '#f3f4f6',
+                color: '#6b7280'
+            }}>
+                <div style={{ fontSize: '20px' }}>Loading Dashboard...</div>
+            </div>
+        )
+    }
+
+    if (currentView === 'teachers') {
+        return (
+            <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: '#f3f4f6', overflow: 'hidden' }}>
+                {renderHeader()}
+                <div style={{ flex: 1, overflow: 'auto', padding: '24px 40px' }}>
+                    <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                         <ManageTeachers />
                     </div>
                 </div>
-            )
-        }
+            </div>
+        )
+    }
 
-        if (currentView === 'parents') {
-            return (
-                <div style={{ minHeight: '100vh', background: '#0f172a' }}>
-                    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-                        <button
-                            onClick={() => setCurrentView('dashboard')}
-                            style={{
-                                marginBottom: '20px',
-                                background: 'transparent',
-                                border: '1px solid #334155',
-                                color: '#94a3b8',
-                                padding: '8px 16px',
-                                borderRadius: '8px',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                                transition: 'all 0.2s'
-                            }}
-                            onMouseEnter={(e) => {
-                                e.target.style.background = '#1e293b'
-                                e.target.style.color = '#f1f5f9'
-                            }}
-                            onMouseLeave={(e) => {
-                                e.target.style.background = 'transparent'
-                                e.target.style.color = '#94a3b8'
-                            }}
-                        >
-                            ← Back to Dashboard
-                        </button>
+    if (currentView === 'parents') {
+        return (
+            <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: '#f3f4f6', overflow: 'hidden' }}>
+                {renderHeader()}
+                <div style={{ flex: 1, overflow: 'auto', padding: '24px 40px' }}>
+                    <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                         <ManageParents />
                     </div>
                 </div>
-            )
-        }
+            </div>
+        )
+    }
 
-        if (currentView === 'students') {
-            return (
-                <div style={{ minHeight: '100vh', background: '#0f172a' }}>
-                    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-                        <button
-                            onClick={() => setCurrentView('dashboard')}
-                            style={{
-                                marginBottom: '20px',
-                                background: 'transparent',
-                                border: '1px solid #334155',
-                                color: '#94a3b8',
-                                padding: '8px 16px',
-                                borderRadius: '8px',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                                transition: 'all 0.2s'
-                            }}
-                            onMouseEnter={(e) => {
-                                e.target.style.background = '#1e293b'
-                                e.target.style.color = '#f1f5f9'
-                            }}
-                            onMouseLeave={(e) => {
-                                e.target.style.background = 'transparent'
-                                e.target.style.color = '#94a3b8'
-                            }}
-                        >
-                            ← Back to Dashboard
-                        </button>
+    if (currentView === 'students') {
+        return (
+            <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: '#f3f4f6', overflow: 'hidden' }}>
+                {renderHeader()}
+                <div style={{ flex: 1, overflow: 'auto', padding: '24px 40px' }}>
+                    <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                         <ManageStudents />
                     </div>
                 </div>
-            )
-        }
+            </div>
+        )
+    }
 
-        return (
-            <div style={{
-                minHeight: '100vh',
-                background: '#0f172a', // Dark background
-                padding: '40px 20px',
-                color: '#f1f5f9'
-            }}>
+    // Main dashboard view
+    return (
+        <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: '#f3f4f6', fontFamily: '"Inter", "Segoe UI", sans-serif', overflow: 'hidden' }}>
+            {renderHeader()}
+            <div style={{ flex: 1, overflow: 'auto', padding: '24px 40px' }}>
                 <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-                    <h1 style={{
-                        fontSize: '42px',
-                        fontWeight: 'bold',
-                        color: '#f1f5f9',
-                        marginBottom: '40px'
-                    }}>
-                        🛡️ Admin Dashboard
-                    </h1>
 
                     {/* Stats Grid */}
                     <div style={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                        gap: '20px',
-                        marginBottom: '40px'
+                        gridTemplateColumns: 'repeat(3, 1fr)',
+                        gap: '24px',
+                        marginBottom: '32px'
                     }}>
+                        {/* Teachers Card */}
                         <div style={{
-                            background: '#1e293b',
-                            borderRadius: '16px',
-                            padding: '30px',
-                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                            border: '1px solid #334155'
+                            background: 'white',
+                            borderRadius: '20px',
+                            padding: '32px',
+                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
+                            borderTop: '4px solid #3b82f6'
                         }}>
-                            <div style={{ fontSize: '48px', marginBottom: '10px' }}>👨‍🏫</div>
-                            <div style={{ fontSize: '36px', fontWeight: 'bold', color: '#667eea', marginBottom: '5px' }}>
-                                {stats.teachers}
+                            <div>
+                                <div style={{ fontSize: '14px', color: '#6b7280', fontWeight: '500', marginBottom: '8px' }}>Total Teachers</div>
+                                <div style={{ fontSize: '42px', fontWeight: 'bold', color: '#3b82f6', marginBottom: '4px' }}>
+                                    {stats.teachers}
+                                </div>
                             </div>
-                            <div style={{ fontSize: '16px', color: '#94a3b8' }}>Total Teachers</div>
                             <button
                                 onClick={() => setCurrentView('teachers')}
                                 style={{
@@ -192,32 +182,37 @@ export default function AdminDashboard() {
                                     fontSize: '14px',
                                     fontWeight: '600',
                                     color: 'white',
-                                    background: '#667eea',
+                                    background: '#3b82f6',
                                     border: 'none',
-                                    borderRadius: '8px',
+                                    borderRadius: '12px',
                                     cursor: 'pointer',
                                     width: '100%',
                                     transition: 'background 0.2s'
                                 }}
-                                onMouseEnter={(e) => e.target.style.background = '#5a67d8'}
-                                onMouseLeave={(e) => e.target.style.background = '#667eea'}
+                                onMouseEnter={(e) => e.target.style.background = '#2563eb'}
+                                onMouseLeave={(e) => e.target.style.background = '#3b82f6'}
                             >
-                                Manage Teachers →
+                                Manage Teachers
                             </button>
                         </div>
 
+                        {/* Students Card */}
                         <div style={{
-                            background: '#1e293b',
-                            borderRadius: '16px',
-                            padding: '30px',
-                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                            border: '1px solid #334155'
+                            background: 'white',
+                            borderRadius: '20px',
+                            padding: '32px',
+                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
+                            borderTop: '4px solid #10b981'
                         }}>
-                            <div style={{ fontSize: '48px', marginBottom: '10px' }}>👨‍🎓</div>
-                            <div style={{ fontSize: '36px', fontWeight: 'bold', color: '#f687b3', marginBottom: '5px' }}>
-                                {stats.students}
+                            <div>
+                                <div style={{ fontSize: '14px', color: '#6b7280', fontWeight: '500', marginBottom: '8px' }}>Total Students</div>
+                                <div style={{ fontSize: '42px', fontWeight: 'bold', color: '#10b981', marginBottom: '4px' }}>
+                                    {stats.students}
+                                </div>
                             </div>
-                            <div style={{ fontSize: '16px', color: '#94a3b8' }}>Total Students</div>
                             <button
                                 onClick={() => setCurrentView('students')}
                                 style={{
@@ -226,32 +221,37 @@ export default function AdminDashboard() {
                                     fontSize: '14px',
                                     fontWeight: '600',
                                     color: 'white',
-                                    background: '#f687b3',
+                                    background: '#10b981',
                                     border: 'none',
-                                    borderRadius: '8px',
+                                    borderRadius: '12px',
                                     cursor: 'pointer',
                                     width: '100%',
                                     transition: 'background 0.2s'
                                 }}
-                                onMouseEnter={(e) => e.target.style.background = '#ed64a6'}
-                                onMouseLeave={(e) => e.target.style.background = '#f687b3'}
+                                onMouseEnter={(e) => e.target.style.background = '#059669'}
+                                onMouseLeave={(e) => e.target.style.background = '#10b981'}
                             >
-                                View Students →
+                                View Students
                             </button>
                         </div>
 
+                        {/* Parents Card */}
                         <div style={{
-                            background: '#1e293b',
-                            borderRadius: '16px',
-                            padding: '30px',
-                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                            border: '1px solid #334155'
+                            background: 'white',
+                            borderRadius: '20px',
+                            padding: '32px',
+                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
+                            borderTop: '4px solid #f59e0b'
                         }}>
-                            <div style={{ fontSize: '48px', marginBottom: '10px' }}>👨‍👩‍👧</div>
-                            <div style={{ fontSize: '36px', fontWeight: 'bold', color: '#4fd1c5', marginBottom: '5px' }}>
-                                {stats.parents}
+                            <div>
+                                <div style={{ fontSize: '14px', color: '#6b7280', fontWeight: '500', marginBottom: '8px' }}>Total Parents</div>
+                                <div style={{ fontSize: '42px', fontWeight: 'bold', color: '#f59e0b', marginBottom: '4px' }}>
+                                    {stats.parents}
+                                </div>
                             </div>
-                            <div style={{ fontSize: '16px', color: '#94a3b8' }}>Total Parents</div>
                             <button
                                 onClick={() => setCurrentView('parents')}
                                 style={{
@@ -260,41 +260,23 @@ export default function AdminDashboard() {
                                     fontSize: '14px',
                                     fontWeight: '600',
                                     color: 'white',
-                                    background: '#4fd1c5',
+                                    background: '#f59e0b',
                                     border: 'none',
-                                    borderRadius: '8px',
+                                    borderRadius: '12px',
                                     cursor: 'pointer',
                                     width: '100%',
                                     transition: 'background 0.2s'
                                 }}
-                                onMouseEnter={(e) => e.target.style.background = '#38b2ac'}
-                                onMouseLeave={(e) => e.target.style.background = '#4fd1c5'}
+                                onMouseEnter={(e) => e.target.style.background = '#ffbd4bff'}
+                                onMouseLeave={(e) => e.target.style.background = '#f59e0b'}
                             >
-                                Manage Parents →
+                                Manage Parents
                             </button>
                         </div>
                     </div>
 
-
                 </div>
             </div>
-        )
-    }
-
-    if (loading) {
-        return (
-            <div style={{
-                minHeight: '100vh',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: '#0f172a',
-                color: '#f1f5f9'
-            }}>
-                <div style={{ fontSize: '24px' }}>Loading...</div>
-            </div>
-        )
-    }
-
-    return renderContent()
+        </div>
+    )
 }

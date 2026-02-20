@@ -106,7 +106,7 @@ export default function ManageParents() {
             return
         }
 
-        if (!confirm(`⚠️ CRITICAL WARNING ⚠️\n\nYou are about to link ${request.parents?.full_name} to student ${request.student_name} (${request.student_roll_no}).\n\nPlease confirm that you have personally verified this relationship.\n\nAre you sure you want to proceed?`)) {
+        if (!confirm(`WARNING: You are about to link ${request.parents?.full_name} to student ${request.student_name} (${request.student_roll_no}).\n\nPlease confirm that you have personally verified this relationship.\n\nAre you sure you want to proceed?`)) {
             return
         }
 
@@ -194,13 +194,12 @@ export default function ManageParents() {
     if (loading) {
         return (
             <div style={{
-                minHeight: '100vh',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                padding: '60px'
             }}>
-                <div style={{ fontSize: '24px', color: 'white' }}>Loading...</div>
+                <div style={{ fontSize: '20px', color: '#6b7280' }}>Loading...</div>
             </div>
         )
     }
@@ -220,320 +219,291 @@ export default function ManageParents() {
     }
 
     return (
-        <div style={{
-            background: '#0f172a',
-            padding: '20px 0',
-            minHeight: '100vh',
-            color: '#f1f5f9'
-        }}>
-            <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-                <h1 style={{ fontSize: '42px', fontWeight: 'bold', color: '#f1f5f9', marginBottom: '40px' }}>
-                    👨‍👩‍👧 Manage Parent Requests
-                </h1>
+        <div>
+            <h2 style={{ fontSize: '24px', fontWeight: '700', color: '#111827', margin: '0 0 20px 0' }}>
+                Manage Parent Requests
+            </h2>
 
-                {/* Warning Banner */}
-                <div style={{
-                    background: 'rgba(239, 68, 68, 0.1)',
-                    border: '1px solid #ef4444',
-                    padding: '16px',
-                    borderRadius: '8px',
-                    marginBottom: '30px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '12px'
-                }}>
-                    <span style={{ fontSize: '24px' }}>⚠️</span>
-                    <div>
-                        <div style={{ fontWeight: 'bold', color: '#ef4444', fontSize: '16px' }}>CRITICAL: Verify Parent-Student Relationship</div>
-                        <div style={{ fontSize: '14px', color: '#fca5a5' }}>
-                            Only approve requests where you have verified that the parent and student are correctly matched.
-                            The system now automatically validates Roll Number and Grade, but you must ensure the identity is correct.
-                        </div>
+            {/* Warning Banner */}
+            <div style={{
+                background: '#fef2f2',
+                border: '1px solid #fecaca',
+                padding: '14px 16px',
+                borderRadius: '12px',
+                marginBottom: '24px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px'
+            }}>
+                <div>
+                    <div style={{ fontWeight: 'bold', color: '#ef4444', fontSize: '14px' }}>CRITICAL: Verify Parent-Student Relationship</div>
+                    <div style={{ fontSize: '13px', color: '#991b1b' }}>
+                        Only approve requests where you have verified that the parent and student are correctly matched.
+                        The system automatically validates Roll Number and Grade, but you must ensure the identity is correct.
                     </div>
                 </div>
+            </div>
 
-                {/* Stats Cards */}
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                    gap: '20px',
-                    marginBottom: '30px'
-                }}>
-                    <div style={{
-                        background: '#1e293b',
-                        borderRadius: '16px',
-                        padding: '20px',
-                        border: '1px solid #334155'
-                    }}>
-                        <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#667eea' }}>{stats.total}</div>
-                        <div style={{ fontSize: '14px', color: '#94a3b8' }}>Total Requests</div>
-                    </div>
-                    <div style={{
-                        background: '#1e293b',
-                        borderRadius: '16px',
-                        padding: '20px',
-                        border: '1px solid #334155'
-                    }}>
-                        <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#ff9800' }}>{stats.pending}</div>
-                        <div style={{ fontSize: '14px', color: '#94a3b8' }}>Pending</div>
-                    </div>
-                    <div style={{
-                        background: '#1e293b',
-                        borderRadius: '16px',
-                        padding: '20px',
-                        border: '1px solid #334155'
-                    }}>
-                        <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#4caf50' }}>{stats.approved}</div>
-                        <div style={{ fontSize: '14px', color: '#94a3b8' }}>Approved</div>
-                    </div>
-                    <div style={{
-                        background: '#1e293b',
-                        borderRadius: '16px',
-                        padding: '20px',
-                        border: '1px solid #334155'
-                    }}>
-                        <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#f44336' }}>{stats.rejected}</div>
-                        <div style={{ fontSize: '14px', color: '#94a3b8' }}>Rejected</div>
-                    </div>
+            {/* Stats Cards */}
+            <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(4, 1fr)',
+                gap: '16px',
+                marginBottom: '24px'
+            }}>
+                <div style={{ background: 'white', borderRadius: '16px', padding: '20px', boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)', borderTop: '4px solid #a855f7' }}>
+                    <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#a855f7' }}>{stats.total}</div>
+                    <div style={{ fontSize: '13px', color: '#6b7280' }}>Total Requests</div>
                 </div>
+                <div style={{ background: 'white', borderRadius: '16px', padding: '20px', boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)', borderTop: '4px solid #f59e0b' }}>
+                    <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#f59e0b' }}>{stats.pending}</div>
+                    <div style={{ fontSize: '13px', color: '#6b7280' }}>Pending</div>
+                </div>
+                <div style={{ background: 'white', borderRadius: '16px', padding: '20px', boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)', borderTop: '4px solid #10b981' }}>
+                    <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#10b981' }}>{stats.approved}</div>
+                    <div style={{ fontSize: '13px', color: '#6b7280' }}>Approved</div>
+                </div>
+                <div style={{ background: 'white', borderRadius: '16px', padding: '20px', boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)', borderTop: '4px solid #ef4444' }}>
+                    <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#ef4444' }}>{stats.rejected}</div>
+                    <div style={{ fontSize: '13px', color: '#6b7280' }}>Rejected</div>
+                </div>
+            </div>
 
-                {/* Student Search Tool */}
-                <div style={{
-                    background: '#1e293b',
-                    borderRadius: '16px',
-                    padding: '25px',
-                    marginBottom: '30px',
-                    border: '1px solid #334155'
-                }}>
-                    <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '15px', color: '#f1f5f9' }}>
-                        🔍 Search Student by Roll Number
-                    </h3>
-                    <div style={{ display: 'flex', gap: '10px', marginBottom: '15px' }}>
-                        <input
-                            type="text"
-                            value={searchRollNo}
-                            onChange={(e) => setSearchRollNo(e.target.value.toUpperCase())}
-                            placeholder="e.g., 2024-1-001"
-                            style={{
-                                flex: 1,
-                                padding: '12px',
-                                fontSize: '14px',
-                                background: '#0f172a',
-                                border: '1px solid #334155',
-                                borderRadius: '8px',
-                                outline: 'none',
-                                color: '#f1f5f9'
-                            }}
-                        />
-                        <button
-                            onClick={searchStudent}
-                            style={{
-                                padding: '12px 24px',
-                                fontSize: '14px',
-                                fontWeight: '600',
-                                color: 'white',
-                                background: '#667eea',
-                                border: 'none',
-                                borderRadius: '8px',
-                                cursor: 'pointer'
-                            }}
-                        >
-                            Search
-                        </button>
-                    </div>
-                    {searchResults && (
-                        <div style={{
-                            padding: '15px',
+            {/* Student Search Tool */}
+            <div style={{
+                background: 'white',
+                borderRadius: '16px',
+                padding: '20px',
+                marginBottom: '24px',
+                boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)'
+            }}>
+                <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '12px', color: '#111827', margin: '0 0 12px 0' }}>
+                    Search Student by Roll Number
+                </h3>
+                <div style={{ display: 'flex', gap: '10px', marginBottom: '12px' }}>
+                    <input
+                        type="text"
+                        value={searchRollNo}
+                        onChange={(e) => setSearchRollNo(e.target.value.toUpperCase())}
+                        placeholder="e.g., 2024-1-001"
+                        style={{
+                            flex: 1,
+                            padding: '10px 14px',
+                            fontSize: '14px',
+                            background: '#f9fafb',
+                            border: '1px solid #e5e7eb',
                             borderRadius: '8px',
-                            background: searchResults.found ? 'rgba(76, 175, 80, 0.1)' : 'rgba(239, 83, 80, 0.1)',
-                            border: `1px solid ${searchResults.found ? '#4caf50' : '#f44336'}`
-                        }}>
-                            {searchResults.found ? (
-                                <div>
-                                    <div style={{ fontWeight: 'bold', color: '#4caf50', marginBottom: '5px' }}>
-                                        ✓ Student Found
-                                    </div>
-                                    <div style={{ fontSize: '14px', color: '#f1f5f9' }}>
-                                        <strong>Name:</strong> {searchResults.student.full_name}<br />
-                                        <strong>Roll No:</strong> {searchResults.student.roll_no}<br />
-                                        <strong>Grade:</strong> {searchResults.student.grades?.display_name}
-                                    </div>
-                                </div>
-                            ) : (
-                                <div style={{ fontWeight: 'bold', color: '#ef5350' }}>
-                                    ✗ No student found with this roll number
-                                </div>
-                            )}
-                        </div>
-                    )}
+                            outline: 'none',
+                            color: '#111827'
+                        }}
+                    />
+                    <button
+                        onClick={searchStudent}
+                        style={{
+                            padding: '10px 20px',
+                            fontSize: '14px',
+                            fontWeight: '600',
+                            color: 'white',
+                            background: '#a855f7',
+                            border: 'none',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            transition: 'background 0.2s'
+                        }}
+                        onMouseEnter={(e) => e.target.style.background = '#9333ea'}
+                        onMouseLeave={(e) => e.target.style.background = '#a855f7'}
+                    >
+                        Search
+                    </button>
                 </div>
+                {searchResults && (
+                    <div style={{
+                        padding: '12px',
+                        borderRadius: '8px',
+                        background: searchResults.found ? '#ecfdf5' : '#fef2f2',
+                        border: `1px solid ${searchResults.found ? '#a7f3d0' : '#fecaca'}`
+                    }}>
+                        {searchResults.found ? (
+                            <div>
+                                <div style={{ fontWeight: 'bold', color: '#10b981', marginBottom: '4px', fontSize: '14px' }}>
+                                    Student Found
+                                </div>
+                                <div style={{ fontSize: '13px', color: '#111827' }}>
+                                    <strong>Name:</strong> {searchResults.student.full_name}<br />
+                                    <strong>Roll No:</strong> {searchResults.student.roll_no}<br />
+                                    <strong>Grade:</strong> {searchResults.student.grades?.display_name}
+                                </div>
+                            </div>
+                        ) : (
+                            <div style={{ fontWeight: 'bold', color: '#ef4444', fontSize: '14px' }}>
+                                No student found with this roll number
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>
 
-                {/* Filter Tabs */}
-                <div style={{
-                    display: 'flex',
-                    gap: '10px',
-                    marginBottom: '20px',
-                    flexWrap: 'wrap'
-                }}>
-                    {['all', 'pending', 'approved', 'rejected'].map(status => (
-                        <button
-                            key={status}
-                            onClick={() => setFilter(status)}
-                            style={{
-                                padding: '10px 20px',
-                                fontSize: '14px',
-                                fontWeight: '600',
-                                color: filter === status ? 'white' : '#94a3b8',
-                                background: filter === status ? '#667eea' : '#1e293b',
-                                border: filter === status ? 'none' : '1px solid #334155',
-                                borderRadius: '8px',
-                                cursor: 'pointer',
-                                textTransform: 'capitalize'
-                            }}
-                        >
-                            {status}
-                        </button>
-                    ))}
-                </div>
+            {/* Filter Tabs */}
+            <div style={{
+                display: 'flex',
+                gap: '8px',
+                marginBottom: '20px'
+            }}>
+                {['all', 'pending', 'approved', 'rejected'].map(status => (
+                    <button
+                        key={status}
+                        onClick={() => setFilter(status)}
+                        style={{
+                            padding: '8px 16px',
+                            fontSize: '13px',
+                            fontWeight: '600',
+                            color: filter === status ? 'white' : '#4b5563',
+                            background: filter === status ? '#111827' : 'white',
+                            border: filter === status ? 'none' : '1px solid #e5e7eb',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            textTransform: 'capitalize'
+                        }}
+                    >
+                        {status}
+                    </button>
+                ))}
+            </div>
 
-                {/* Parent Requests List */}
-                <div style={{
-                    background: '#1e293b',
-                    borderRadius: '16px',
-                    padding: '30px',
-                    border: '1px solid #334155'
-                }}>
-                    {filteredRequests.length === 0 ? (
-                        <div style={{
-                            textAlign: 'center',
-                            padding: '60px 20px',
-                            color: '#94a3b8'
-                        }}>
-                            <div style={{ fontSize: '64px', marginBottom: '20px' }}>📭</div>
-                            <p style={{ fontSize: '18px' }}>No {filter !== 'all' ? filter : ''} requests found</p>
-                        </div>
-                    ) : (
-                        <div style={{ display: 'grid', gap: '15px' }}>
-                            {filteredRequests.map((request) => {
-                                const validation = getValidationStatus(request)
+            {/* Parent Requests List */}
+            <div style={{
+                background: 'white',
+                borderRadius: '20px',
+                padding: '24px',
+                boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)'
+            }}>
+                {filteredRequests.length === 0 ? (
+                    <div style={{
+                        textAlign: 'center',
+                        padding: '48px 20px',
+                        color: '#6b7280'
+                    }}>
+                        <p style={{ fontSize: '16px' }}>No {filter !== 'all' ? filter : ''} requests found</p>
+                    </div>
+                ) : (
+                    <div style={{ display: 'grid', gap: '12px' }}>
+                        {filteredRequests.map((request) => {
+                            const validation = getValidationStatus(request)
 
-                                return (
-                                    <div
-                                        key={request.id}
-                                        style={{
-                                            padding: '20px',
-                                            background: '#0f172a',
-                                            borderRadius: '12px',
-                                            border: request.status === 'pending' ? '1px solid #ff9800' : '1px solid #334155'
-                                        }}
-                                    >
-                                        <div style={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'start',
-                                            marginBottom: '15px',
-                                            flexDirection: window.innerWidth < 640 ? 'column' : 'row',
-                                            gap: window.innerWidth < 640 ? '10px' : '0'
-                                        }}>
-                                            <div>
-                                                <div style={{ fontSize: '18px', fontWeight: '600', color: '#f1f5f9', marginBottom: '5px' }}>
-                                                    {request.parents?.email}
-                                                </div>
-                                                <div style={{ fontSize: '14px', color: '#94a3b8' }}>
-                                                    Parent Name: {request.parents?.full_name || 'N/A'}
-                                                </div>
+                            return (
+                                <div
+                                    key={request.id}
+                                    style={{
+                                        padding: '16px 20px',
+                                        background: '#f9fafb',
+                                        borderRadius: '12px',
+                                        border: request.status === 'pending' ? '1px solid #f59e0b' : '1px solid #e5e7eb'
+                                    }}
+                                >
+                                    <div style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'start',
+                                        marginBottom: '12px'
+                                    }}>
+                                        <div>
+                                            <div style={{ fontSize: '16px', fontWeight: '600', color: '#111827', marginBottom: '4px' }}>
+                                                {request.parents?.email}
                                             </div>
-                                            <div style={{ textAlign: 'right' }}>
-                                                <span style={{
-                                                    padding: '6px 12px',
-                                                    borderRadius: '6px',
-                                                    fontSize: '12px',
+                                            <div style={{ fontSize: '13px', color: '#6b7280' }}>
+                                                Parent Name: {request.parents?.full_name || 'N/A'}
+                                            </div>
+                                        </div>
+                                        <div style={{ textAlign: 'right' }}>
+                                            <span style={{
+                                                padding: '4px 10px',
+                                                borderRadius: '6px',
+                                                fontSize: '12px',
+                                                fontWeight: '600',
+                                                color: 'white',
+                                                background: request.status === 'pending' ? '#f59e0b' :
+                                                    request.status === 'approved' ? '#10b981' : '#ef4444',
+                                                display: 'inline-block',
+                                                marginBottom: '4px'
+                                            }}>
+                                                {request.status}
+                                            </span>
+                                            {validation && !validation.valid && (
+                                                <div style={{ color: '#ef4444', fontSize: '12px', fontWeight: 'bold' }}>
+                                                    {validation.message}
+                                                </div>
+                                            )}
+                                            {validation && validation.valid && (
+                                                <div style={{ color: '#10b981', fontSize: '12px', fontWeight: 'bold' }}>
+                                                    {validation.message}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div style={{
+                                        background: 'white',
+                                        padding: '12px',
+                                        borderRadius: '8px',
+                                        marginBottom: '12px',
+                                        border: '1px solid #e5e7eb'
+                                    }}>
+                                        <div style={{ fontSize: '13px', fontWeight: '600', color: '#111827', marginBottom: '8px' }}>
+                                            Student Details Provided:
+                                        </div>
+                                        <div style={{ fontSize: '13px', color: '#4b5563', lineHeight: '1.6' }}>
+                                            <strong>Student Name:</strong> {request.student_name}<br />
+                                            <strong>Roll Number:</strong> {request.student_roll_no}<br />
+                                            <strong>Grade:</strong> {request.grade_name}
+                                        </div>
+                                    </div>
+
+                                    <div style={{ fontSize: '12px', color: '#9ca3af', marginBottom: '12px' }}>
+                                        Requested: {new Date(request.created_at).toLocaleString()}
+                                    </div>
+
+                                    {request.status === 'pending' && (
+                                        <div style={{ display: 'flex', gap: '10px' }}>
+                                            <button
+                                                onClick={() => handleApprove(request)}
+                                                disabled={validation && !validation.valid}
+                                                style={{
+                                                    padding: '8px 16px',
+                                                    fontSize: '13px',
                                                     fontWeight: '600',
                                                     color: 'white',
-                                                    background: request.status === 'pending' ? '#ff9800' :
-                                                        request.status === 'approved' ? '#4caf50' : '#f44336',
-                                                    display: 'inline-block',
-                                                    marginBottom: '5px'
-                                                }}>
-                                                    {request.status}
-                                                </span>
-                                                {validation && !validation.valid && (
-                                                    <div style={{ color: '#ef5350', fontSize: '12px', fontWeight: 'bold' }}>
-                                                        ⚠ {validation.message}
-                                                    </div>
-                                                )}
-                                                {validation && validation.valid && (
-                                                    <div style={{ color: '#4caf50', fontSize: '12px', fontWeight: 'bold' }}>
-                                                        ✓ {validation.message}
-                                                    </div>
-                                                )}
-                                            </div>
+                                                    background: (validation && !validation.valid) ? '#9ca3af' : '#10b981',
+                                                    border: 'none',
+                                                    borderRadius: '8px',
+                                                    cursor: (validation && !validation.valid) ? 'not-allowed' : 'pointer',
+                                                    opacity: (validation && !validation.valid) ? 0.5 : 1
+                                                }}
+                                                title={(validation && !validation.valid) ? validation.message : 'Approve & Link'}
+                                            >
+                                                {(validation && !validation.valid) ? 'Cannot Approve' : 'Approve & Link'}
+                                            </button>
+                                            <button
+                                                onClick={() => handleReject(request.id, request.parent_id)}
+                                                style={{
+                                                    padding: '8px 16px',
+                                                    fontSize: '13px',
+                                                    fontWeight: '600',
+                                                    color: 'white',
+                                                    background: '#ef4444',
+                                                    border: 'none',
+                                                    borderRadius: '8px',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                Reject
+                                            </button>
                                         </div>
-
-                                        <div style={{
-                                            background: '#1e293b',
-                                            padding: '15px',
-                                            borderRadius: '8px',
-                                            marginBottom: '15px',
-                                            border: '1px solid #334155'
-                                        }}>
-                                            <div style={{ fontSize: '14px', fontWeight: '600', color: '#667eea', marginBottom: '10px' }}>
-                                                📚 Student Details Provided:
-                                            </div>
-                                            <div style={{ fontSize: '14px', color: '#cbd5e1', lineHeight: '1.6' }}>
-                                                <strong>Student Name:</strong> {request.student_name}<br />
-                                                <strong>Roll Number:</strong> {request.student_roll_no}<br />
-                                                <strong>Grade:</strong> {request.grade_name}
-                                            </div>
-                                        </div>
-
-                                        <div style={{ fontSize: '12px', color: '#64748b', marginBottom: '15px' }}>
-                                            Requested: {new Date(request.created_at).toLocaleString()}
-                                        </div>
-
-                                        {request.status === 'pending' && (
-                                            <div style={{ display: 'flex', gap: '10px' }}>
-                                                <button
-                                                    onClick={() => handleApprove(request)}
-                                                    disabled={validation && !validation.valid}
-                                                    style={{
-                                                        padding: '10px 20px',
-                                                        fontSize: '14px',
-                                                        fontWeight: '600',
-                                                        color: 'white',
-                                                        background: (validation && !validation.valid) ? '#94a3b8' : '#4caf50',
-                                                        border: 'none',
-                                                        borderRadius: '8px',
-                                                        cursor: (validation && !validation.valid) ? 'not-allowed' : 'pointer',
-                                                        opacity: (validation && !validation.valid) ? 0.5 : 1
-                                                    }}
-                                                    title={(validation && !validation.valid) ? validation.message : 'Approve & Link'}
-                                                >
-                                                    {(validation && !validation.valid) ? 'Cannot Approve' : '✓ Approve & Link'}
-                                                </button>
-                                                <button
-                                                    onClick={() => handleReject(request.id, request.parent_id)}
-                                                    style={{
-                                                        padding: '10px 20px',
-                                                        fontSize: '14px',
-                                                        fontWeight: '600',
-                                                        color: 'white',
-                                                        background: '#f44336',
-                                                        border: 'none',
-                                                        borderRadius: '8px',
-                                                        cursor: 'pointer'
-                                                    }}
-                                                >
-                                                    ✗ Reject
-                                                </button>
-                                            </div>
-                                        )}
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    )}
-                </div>
+                                    )}
+                                </div>
+                            )
+                        })}
+                    </div>
+                )}
             </div>
         </div>
     )

@@ -1,0 +1,285 @@
+.dashboard-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f3f4f6; /* Light gray background to match mockup edges */
+  font-family: "Inter", "Segoe UI", sans-serif;
+  color: #1f2937;
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Header */
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.greeting h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.greeting p {
+  color: #6b7280;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Top Navigation Pills */
+.top-nav {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.nav-pill {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4b5563;
+  cursor: pointer;
+  background-color: transparent;
+  transition: all 0.2s;
+}
+
+.nav-pill:hover {
+  background-color: #f3f4f6;
+}
+
+.nav-pill.active {
+  background-color: #f3f4f6;
+  color: #111827;
+  font-weight: 600;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #111827;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #1f2937;
+}
+
+/* Dashboard Layout Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: minmax(0, auto) minmax(0, 1fr);
+  gap: 20px;
+  height: calc(100vh - 120px); /* Leave space for padding and header */
+}
+
+/* Cards */
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.card-subtitle {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.dropdown-select {
+  padding: 6px 12px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+  font-size: 13px;
+  color: #4b5563;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Student Profile specific classes */
+.stat-large {
+  font-size: 36px;
+  font-weight: 700;
+  margin: 16px 0 8px;
+}
+
+.stat-metric {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-yellow {
+  background-color: #fef08a;
+  color: #854d0e;
+}
+
+.children-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  overflow-y: auto;
+  margin-right: -12px;
+  padding-right: 12px;
+}
+
+.child-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.child-row:last-child {
+  border-bottom: none;
+}
+
+.child-info-basic {
+  display: flex;
+  flex-direction: column;
+}
+
+.child-name {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.child-grade {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.child-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background: #f9fafb;
+}
+
+.btn-text {
+  background: transparent;
+  border: none;
+  color: #10b981;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 6px 12px;
+}
+
+.btn-text:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Dark Mode Overrides */
+.dark-mode {
+  background-color: #111827;
+  color: #f9fafb;
+}
+
+.dark-mode .card {
+  background: #1f2937;
+  color: #f9fafb;
+}
+
+.dark-mode .card-title,
+.dark-mode .greeting h1 {
+  color: #f9fafb;
+}
+
+.dark-mode .card-subtitle,
+.dark-mode .greeting p {
+  color: #9ca3af;
+}
+
+.dark-mode .stat-metric {
+  color: #9ca3af;
+}
+
+.dark-mode .child-row {
+  border-bottom: 1px solid #374151;
+}
+
+.dark-mode .dropdown-select {
+  background-color: #374151;
+  color: #f9fafb;
+  border-color: #4b5563;
+}
+
+.dark-mode .nav-pill {
+  color: #d1d5db;
+}
+
+.dark-mode .nav-pill:hover,
+.dark-mode .nav-pill.active {
+  background-color: #374151;
+  color: #f9fafb;
+}

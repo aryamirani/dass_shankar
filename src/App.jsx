@@ -87,31 +87,7 @@ export default function App() {
     if (role === 'admin') {
         return (
             <div>
-                <div style={{
-                    background: '#667eea',
-                    color: 'white',
-                    padding: '15px 20px',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
-                }}>
-                    <div><strong>Logged in as Admin</strong></div>
-                    <button
-                        onClick={signOut}
-                        style={{
-                            padding: '8px 16px',
-                            background: 'white',
-                            color: '#667eea',
-                            border: 'none',
-                            borderRadius: '8px',
-                            cursor: 'pointer',
-                            fontWeight: '600'
-                        }}
-                    >
-                        Logout
-                    </button>
-                </div>
-                <AdminDashboard />
+                <AdminDashboard signOut={signOut} />
             </div>
         )
     }
@@ -160,31 +136,7 @@ export default function App() {
     if (role === 'parent') {
         return (
             <div>
-                <div style={{
-                    background: '#f5576c',
-                    color: 'white',
-                    padding: '15px 20px',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
-                }}>
-                    <div><strong>Logged in as Parent</strong></div>
-                    <button
-                        onClick={signOut}
-                        style={{
-                            padding: '8px 16px',
-                            background: 'white',
-                            color: '#f5576c',
-                            border: 'none',
-                            borderRadius: '8px',
-                            cursor: 'pointer',
-                            fontWeight: '600'
-                        }}
-                    >
-                        Logout
-                    </button>
-                </div>
-                <ParentDashboard onSelectStudent={setSelectedStudent} />
+                <ParentDashboard onSelectStudent={setSelectedStudent} signOut={signOut} />
             </div>
         )
     }
