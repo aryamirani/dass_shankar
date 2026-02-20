@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
+import PasswordField from '../../components/PasswordField'
 
 export default function Login({ onNavigateToSignup, onBackToHome }) {
     const [email, setEmail] = useState('')
@@ -139,39 +140,13 @@ export default function Login({ onNavigateToSignup, onBackToHome }) {
                         />
                     </div>
 
-                    <div style={{ marginBottom: '32px' }}>
-                        <label style={{
-                            display: 'block',
-                            fontSize: '14px',
-                            fontWeight: '600',
-                            color: '#475569',
-                            marginBottom: '8px',
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.5px'
-                        }}>
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            placeholder="••••••••"
-                            className="input-field"
-                            style={{
-                                width: '100%',
-                                padding: '14px 16px',
-                                fontSize: '16px',
-                                background: '#f8fafc',
-                                border: '2px solid #e2e8f0',
-                                borderRadius: '12px',
-                                outline: 'none',
-                                color: '#1e293b',
-                                transition: 'all 0.2s',
-                                boxSizing: 'border-box'
-                            }}
-                        />
-                    </div>
+                    <PasswordField
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        label="Password"
+                        placeholder="••••••••"
+                    />
 
                     <button
                         type="submit"

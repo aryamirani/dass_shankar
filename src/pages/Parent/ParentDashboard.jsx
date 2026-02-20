@@ -41,6 +41,7 @@ export default function ParentDashboard({ onSelectStudent }) {
           students (
             id,
             full_name,
+            roll_no,
             grade_id,
             grades (display_name)
           )

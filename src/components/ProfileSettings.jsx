@@ -12,6 +12,7 @@ export default function ProfileSettings({ role }) {
         phone: '',
         email: ''
     })
+    const [students, setStudents] = useState([])
 
     useEffect(() => {
         if (user) {
@@ -51,6 +52,36 @@ export default function ProfileSettings({ role }) {
                 if (data) {
                     profileData.full_name = data.full_name
                     profileData.phone = data.phone || ''
+                }
+
+                // Fetch linked students
+                const { data: parentData } = await supabase
+                    .from('parents')
+                    .select('id')
+                    .eq('user_id', user.id)
+                    .single()
+
+                if (parentData) {
+                    const { data: studentData, error: studentError } = await supabase
+                        .from('parent_students')
+                        .select(`
+                            student_id,
+                            students (
+                                id,
+                                full_name,
+                                roll_no,
+                                date_of_birth,
+                                grades (display_name)
+                            )
+                        `)
+                        .eq('parent_id', parentData.id)
+
+                    if (!studentError && studentData) {
+                        setStudents(studentData.map(ps => ({
+                            ...ps.students,
+                            grade_name: ps.students.grades?.display_name || 'N/A'
+                        })) || [])
+                    }
                 }
             }
 
@@ -95,6 +126,21 @@ export default function ProfileSettings({ role }) {
                     })
                     .eq('user_id', user.id)
                 if (error) throw error
+            }
+
+            // Update students if parent
+            if (role === 'parent' && students.length > 0) {
+                for (const student of students) {
+                    const { error: studentError } = await supabase
+                        .from('students')
+                        .update({
+                            full_name: student.full_name,
+                            date_of_birth: student.date_of_birth,
+                            updated_at: new Date().toISOString()
+                        })
+                        .eq('id', student.id)
+                    if (studentError) throw studentError
+                }
             }
 
             setMessage({ type: 'success', text: 'Profile updated successfully' })
@@ -201,6 +247,113 @@ export default function ProfileSettings({ role }) {
                         }}
                     />
                 </div>
+
+
+                {role === 'parent' && students.length > 0 && (
+                    <div style={{ marginTop: '20px', borderTop: '1px solid #334155', paddingTop: '40px', marginBottom: '30px' }}>
+                        <h3 style={{ fontSize: '20px', fontWeight: 'bold', color: '#f1f5f9', marginBottom: '25px' }}>
+                            👶 Child Profiles
+                        </h3>
+                        {students.map((student, index) => (
+                            <div key={student.id} style={{
+                                background: '#0f172a',
+                                padding: '25px',
+                                borderRadius: '12px',
+                                marginBottom: '20px',
+                                border: '1px solid #334155'
+                            }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '15px' }}>
+                                    <div>
+                                        <label style={{ display: 'block', color: '#cbd5e1', fontSize: '13px', marginBottom: '8px', fontWeight: '600' }}>
+                                            Full Name
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={student.full_name}
+                                            onChange={(e) => {
+                                                const newStudents = [...students];
+                                                newStudents[index].full_name = e.target.value;
+                                                setStudents(newStudents);
+                                            }}
+                                            style={{
+                                                width: '100%',
+                                                padding: '10px',
+                                                background: '#0f172a',
+                                                border: '1px solid #334155',
+                                                borderRadius: '8px',
+                                                color: '#f1f5f9',
+                                                outline: 'none'
+                                            }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label style={{ display: 'block', color: '#94a3b8', fontSize: '13px', marginBottom: '8px' }}>
+                                            Roll Number
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={student.roll_no}
+                                            disabled
+                                            style={{
+                                                width: '100%',
+                                                padding: '10px',
+                                                background: '#1e293b',
+                                                border: '1px solid #334155',
+                                                borderRadius: '8px',
+                                                color: '#64748b',
+                                                cursor: 'not-allowed'
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                                    <div>
+                                        <label style={{ display: 'block', color: '#94a3b8', fontSize: '13px', marginBottom: '8px' }}>
+                                            Grade
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={student.grade_name}
+                                            disabled
+                                            style={{
+                                                width: '100%',
+                                                padding: '10px',
+                                                background: '#1e293b',
+                                                border: '1px solid #334155',
+                                                borderRadius: '8px',
+                                                color: '#64748b',
+                                                cursor: 'not-allowed'
+                                            }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label style={{ display: 'block', color: '#cbd5e1', fontSize: '13px', marginBottom: '8px', fontWeight: '600' }}>
+                                            Date of Birth
+                                        </label>
+                                        <input
+                                            type="date"
+                                            value={student.date_of_birth || ''}
+                                            onChange={(e) => {
+                                                const newStudents = [...students];
+                                                newStudents[index].date_of_birth = e.target.value;
+                                                setStudents(newStudents);
+                                            }}
+                                            style={{
+                                                width: '100%',
+                                                padding: '10px',
+                                                background: '#0f172a',
+                                                border: '1px solid #334155',
+                                                borderRadius: '8px',
+                                                color: '#f1f5f9',
+                                                outline: 'none'
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
 
                 <button
                     type="submit"
