@@ -104,31 +104,7 @@ export default function App() {
         // Approved teacher - show dashboard
         return (
             <div>
-                <div style={{
-                    background: '#667eea',
-                    color: 'white',
-                    padding: '15px 20px',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
-                }}>
-                    <div><strong>Logged in as Teacher</strong></div>
-                    <button
-                        onClick={signOut}
-                        style={{
-                            padding: '8px 16px',
-                            background: 'white',
-                            color: '#667eea',
-                            border: 'none',
-                            borderRadius: '8px',
-                            cursor: 'pointer',
-                            fontWeight: '600'
-                        }}
-                    >
-                        Logout
-                    </button>
-                </div>
-                <TeacherDashboard onSelectStudent={setSelectedStudent} />
+                <TeacherDashboard onSelectStudent={setSelectedStudent} signOut={signOut} />
             </div>
         )
     }

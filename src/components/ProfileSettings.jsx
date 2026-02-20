@@ -159,33 +159,48 @@ export default function ProfileSettings({ role }) {
     return (
         <div style={{
             background: '#ffffff',
-            padding: '40px',
-            borderRadius: '20px',
-            maxWidth: '600px',
+            padding: '48px',
+            borderRadius: '24px',
+            maxWidth: '640px',
             margin: '0 auto',
-            border: '1px solid #e5e7eb',
-            boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)'
+            border: '1px solid rgba(229, 231, 235, 0.5)',
+            boxShadow: '0 10px 15px -3px rgba(0,0,0,0.02), 0 4px 6px -2px rgba(0,0,0,0.01)'
         }}>
-            <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: '#1f2937', marginBottom: '30px' }}>
+            <h2 style={{ 
+                fontSize: '28px', 
+                fontWeight: '700', 
+                color: '#111827', 
+                marginBottom: '8px',
+                letterSpacing: '-0.025em'
+            }}>
                 Profile Settings
             </h2>
+            <p style={{ color: '#6b7280', fontSize: '15px', marginBottom: '32px' }}>
+                Update your personal information and contact details.
+            </p>
 
             {message && (
                 <div style={{
-                    padding: '12px',
-                    borderRadius: '8px',
-                    marginBottom: '20px',
-                    background: message.type === 'success' ? 'rgba(76, 175, 80, 0.1)' : 'rgba(239, 83, 80, 0.1)',
-                    border: `1px solid ${message.type === 'success' ? '#4caf50' : '#f44336'}`,
-                    color: message.type === 'success' ? '#4caf50' : '#ef5350'
+                    padding: '16px',
+                    borderRadius: '12px',
+                    marginBottom: '24px',
+                    background: message.type === 'success' ? '#f0fdf4' : '#fef2f2',
+                    border: `1px solid ${message.type === 'success' ? '#bbf7d0' : '#fecaca'}`,
+                    color: message.type === 'success' ? '#166534' : '#991b1b',
+                    fontWeight: '500',
+                    fontSize: '14px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
                 }}>
+                    <span style={{ fontSize: '18px' }}>{message.type === 'success' ? '✓' : '⚠'}</span>
                     {message.text}
                 </div>
             )}
 
             <form onSubmit={handleSubmit}>
-                <div style={{ marginBottom: '20px' }}>
-                    <label style={{ display: 'block', color: '#4b5563', marginBottom: '8px', fontWeight: '600' }}>
+                <div style={{ marginBottom: '24px' }}>
+                    <label style={{ display: 'block', color: '#374151', fontSize: '14px', marginBottom: '8px', fontWeight: '600' }}>
                         Email Address
                     </label>
                     <input
@@ -194,21 +209,24 @@ export default function ProfileSettings({ role }) {
                         disabled
                         style={{
                             width: '100%',
-                            padding: '12px',
-                            background: '#f3f4f6',
+                            padding: '14px 16px',
+                            background: '#f9fafb',
                             border: '1px solid #e5e7eb',
                             borderRadius: '12px',
-                            color: '#6b7280',
-                            cursor: 'not-allowed'
+                            color: '#9ca3af',
+                            cursor: 'not-allowed',
+                            fontSize: '15px',
+                            boxSizing: 'border-box'
                         }}
                     />
-                    <div style={{ fontSize: '12px', color: '#9ca3af', marginTop: '5px' }}>
+                    <div style={{ fontSize: '13px', color: '#9ca3af', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                         Email cannot be changed directly for security reasons.
                     </div>
                 </div>
 
-                <div style={{ marginBottom: '20px' }}>
-                    <label style={{ display: 'block', color: '#4b5563', marginBottom: '8px', fontWeight: '600' }}>
+                <div style={{ marginBottom: '24px' }}>
+                    <label style={{ display: 'block', color: '#374151', fontSize: '14px', marginBottom: '8px', fontWeight: '600' }}>
                         Full Name
                     </label>
                     <input
@@ -218,18 +236,30 @@ export default function ProfileSettings({ role }) {
                         required
                         style={{
                             width: '100%',
-                            padding: '12px',
+                            padding: '14px 16px',
                             background: '#ffffff',
-                            border: '1px solid #e5e7eb',
+                            border: '1px solid #d1d5db',
                             borderRadius: '12px',
-                            color: '#1f2937',
-                            outline: 'none'
+                            color: '#111827',
+                            outline: 'none',
+                            fontSize: '15px',
+                            boxSizing: 'border-box',
+                            transition: 'all 0.2s ease',
+                            boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+                        }}
+                        onFocus={(e) => {
+                            e.target.style.borderColor = '#10b981'
+                            e.target.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+                        }}
+                        onBlur={(e) => {
+                            e.target.style.borderColor = '#d1d5db'
+                            e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
                         }}
                     />
                 </div>
 
-                <div style={{ marginBottom: '30px' }}>
-                    <label style={{ display: 'block', color: '#4b5563', marginBottom: '8px', fontWeight: '600' }}>
+                <div style={{ marginBottom: '32px' }}>
+                    <label style={{ display: 'block', color: '#374151', fontSize: '14px', marginBottom: '8px', fontWeight: '600' }}>
                         Phone Number
                     </label>
                     <input
@@ -239,33 +269,45 @@ export default function ProfileSettings({ role }) {
                         placeholder="+1 234 567 8900"
                         style={{
                             width: '100%',
-                            padding: '12px',
+                            padding: '14px 16px',
                             background: '#ffffff',
-                            border: '1px solid #e5e7eb',
+                            border: '1px solid #d1d5db',
                             borderRadius: '12px',
-                            color: '#1f2937',
-                            outline: 'none'
+                            color: '#111827',
+                            outline: 'none',
+                            fontSize: '15px',
+                            boxSizing: 'border-box',
+                            transition: 'all 0.2s ease',
+                            boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+                        }}
+                        onFocus={(e) => {
+                            e.target.style.borderColor = '#10b981'
+                            e.target.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+                        }}
+                        onBlur={(e) => {
+                            e.target.style.borderColor = '#d1d5db'
+                            e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
                         }}
                     />
                 </div>
 
 
                 {role === 'parent' && students.length > 0 && (
-                    <div style={{ marginTop: '20px', borderTop: '1px solid #e5e7eb', paddingTop: '40px', marginBottom: '30px' }}>
-                        <h3 style={{ fontSize: '20px', fontWeight: 'bold', color: '#1f2937', marginBottom: '25px' }}>
+                    <div style={{ marginTop: '32px', borderTop: '1px solid #f3f4f6', paddingTop: '40px', marginBottom: '40px' }}>
+                        <h3 style={{ fontSize: '20px', fontWeight: '700', color: '#111827', marginBottom: '24px', letterSpacing: '-0.01em' }}>
                             Child Profiles
                         </h3>
                         {students.map((student, index) => (
                             <div key={student.id} style={{
                                 background: '#f9fafb',
-                                padding: '25px',
-                                borderRadius: '16px',
-                                marginBottom: '20px',
-                                border: '1px solid #e5e7eb'
+                                padding: '32px',
+                                borderRadius: '20px',
+                                marginBottom: '24px',
+                                border: '1px solid #f3f4f6',
                             }}>
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '15px' }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '24px', marginBottom: '24px' }}>
                                     <div>
-                                        <label style={{ display: 'block', color: '#4b5563', fontSize: '13px', marginBottom: '8px', fontWeight: '600' }}>
+                                        <label style={{ display: 'block', color: '#374151', fontSize: '14px', marginBottom: '8px', fontWeight: '600' }}>
                                             Full Name
                                         </label>
                                         <input
@@ -278,17 +320,29 @@ export default function ProfileSettings({ role }) {
                                             }}
                                             style={{
                                                 width: '100%',
-                                                padding: '10px',
+                                                padding: '12px 16px',
                                                 background: '#ffffff',
-                                                border: '1px solid #e5e7eb',
-                                                borderRadius: '12px',
-                                                color: '#1f2937',
-                                                outline: 'none'
+                                                border: '1px solid #d1d5db',
+                                                borderRadius: '10px',
+                                                color: '#111827',
+                                                outline: 'none',
+                                                fontSize: '14px',
+                                                boxSizing: 'border-box',
+                                                transition: 'all 0.2s ease',
+                                                boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+                                            }}
+                                            onFocus={(e) => {
+                                                e.target.style.borderColor = '#10b981'
+                                                e.target.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+                                            }}
+                                            onBlur={(e) => {
+                                                e.target.style.borderColor = '#d1d5db'
+                                                e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
                                             }}
                                         />
                                     </div>
                                     <div>
-                                        <label style={{ display: 'block', color: '#6b7280', fontSize: '13px', marginBottom: '8px' }}>
+                                        <label style={{ display: 'block', color: '#6b7280', fontSize: '14px', marginBottom: '8px', fontWeight: '500' }}>
                                             Roll Number
                                         </label>
                                         <input
@@ -297,19 +351,21 @@ export default function ProfileSettings({ role }) {
                                             disabled
                                             style={{
                                                 width: '100%',
-                                                padding: '10px',
+                                                padding: '12px 16px',
                                                 background: '#f3f4f6',
                                                 border: '1px solid #e5e7eb',
-                                                borderRadius: '12px',
+                                                borderRadius: '10px',
                                                 color: '#9ca3af',
-                                                cursor: 'not-allowed'
+                                                cursor: 'not-allowed',
+                                                fontSize: '14px',
+                                                boxSizing: 'border-box'
                                             }}
                                         />
                                     </div>
                                 </div>
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '24px' }}>
                                     <div>
-                                        <label style={{ display: 'block', color: '#6b7280', fontSize: '13px', marginBottom: '8px' }}>
+                                        <label style={{ display: 'block', color: '#6b7280', fontSize: '14px', marginBottom: '8px', fontWeight: '500' }}>
                                             Grade
                                         </label>
                                         <input
@@ -318,17 +374,19 @@ export default function ProfileSettings({ role }) {
                                             disabled
                                             style={{
                                                 width: '100%',
-                                                padding: '10px',
+                                                padding: '12px 16px',
                                                 background: '#f3f4f6',
                                                 border: '1px solid #e5e7eb',
-                                                borderRadius: '12px',
+                                                borderRadius: '10px',
                                                 color: '#9ca3af',
-                                                cursor: 'not-allowed'
+                                                cursor: 'not-allowed',
+                                                fontSize: '14px',
+                                                boxSizing: 'border-box'
                                             }}
                                         />
                                     </div>
                                     <div>
-                                        <label style={{ display: 'block', color: '#4b5563', fontSize: '13px', marginBottom: '8px', fontWeight: '600' }}>
+                                        <label style={{ display: 'block', color: '#374151', fontSize: '14px', marginBottom: '8px', fontWeight: '600' }}>
                                             Date of Birth
                                         </label>
                                         <input
@@ -341,12 +399,24 @@ export default function ProfileSettings({ role }) {
                                             }}
                                             style={{
                                                 width: '100%',
-                                                padding: '10px',
+                                                padding: '12px 16px',
                                                 background: '#ffffff',
-                                                border: '1px solid #e5e7eb',
-                                                borderRadius: '12px',
-                                                color: '#1f2937',
-                                                outline: 'none'
+                                                border: '1px solid #d1d5db',
+                                                borderRadius: '10px',
+                                                color: '#111827',
+                                                outline: 'none',
+                                                fontSize: '14px',
+                                                boxSizing: 'border-box',
+                                                transition: 'all 0.2s ease',
+                                                boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+                                            }}
+                                            onFocus={(e) => {
+                                                e.target.style.borderColor = '#10b981'
+                                                e.target.style.boxShadow = '0 0 0 3px rgba(16, 185, 129, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+                                            }}
+                                            onBlur={(e) => {
+                                                e.target.style.borderColor = '#d1d5db'
+                                                e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
                                             }}
                                         />
                                     </div>
@@ -361,18 +431,26 @@ export default function ProfileSettings({ role }) {
                     disabled={saving}
                     style={{
                         width: '100%',
-                        padding: '14px',
-                        background: saving ? '#d1d5db' : '#111827',
+                        padding: '16px',
+                        background: saving ? '#9ca3af' : '#111827',
                         color: 'white',
                         border: 'none',
                         borderRadius: '12px',
                         fontSize: '16px',
                         fontWeight: '600',
                         cursor: saving ? 'not-allowed' : 'pointer',
-                        transition: 'background 0.2s'
+                        transition: 'all 0.2s ease',
+                        boxShadow: saving ? 'none' : '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                        letterSpacing: '0.025em'
+                    }}
+                    onMouseEnter={(e) => {
+                        if (!saving) e.target.style.background = '#1f2937'
+                    }}
+                    onMouseLeave={(e) => {
+                        if (!saving) e.target.style.background = '#111827'
                     }}
                 >
-                    {saving ? 'Saving...' : 'Save Changes'}
+                    {saving ? 'Saving Changes...' : 'Save Profile Changes'}
                 </button>
             </form>
         </div>
