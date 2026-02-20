@@ -85,7 +85,7 @@ export default function Home({ onLogin, onSignup, onGuest }) {
                     flexWrap: 'wrap' 
                 }}>
                     <button onClick={onLogin} className="hero-btn btn-secondary">Login</button>
-                    <button onClick={onSignup} className="hero-btn btn-primary">Join Us</button>
+                    <button onClick={onSignup} className="hero-btn btn-primary">Sign Up</button>
                     <button onClick={onGuest} className="hero-btn btn-guest">Explore as Guest</button>
                 </div>
             </main>

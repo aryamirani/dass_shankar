@@ -59,9 +59,26 @@ export default function ComputerKeyboard({ onBack, onNextExercise }) {
             setActiveKey(k === 'backspace' ? 'backspace' : k)
             handleInput(e.key)
             setTimeout(() => setActiveKey(null), 150)
+
+            // Reliable CapsLock detection
+            if (e.getModifierState) {
+                setCapsLock(e.getModifierState('CapsLock'))
+            }
         }
+
+        function onKeyUp(e) {
+            if (e.getModifierState) {
+                setCapsLock(e.getModifierState('CapsLock'))
+            }
+        }
+
         window.addEventListener('keydown', onKey)
-        return () => window.removeEventListener('keydown', onKey)
+        window.addEventListener('keyup', onKeyUp)
+
+        return () => {
+            window.removeEventListener('keydown', onKey)
+            window.removeEventListener('keyup', onKeyUp)
+        }
     }, [handleInput])
 
     // Win Logic

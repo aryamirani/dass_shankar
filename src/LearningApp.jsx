@@ -493,7 +493,7 @@ export default function LearningApp({ studentProfile, onExit }) {
           <NavigationWrapper
             onBack={() => goToVocabularyThreeAM()}
           >
-            <VocabularyThreeAd onBack={() => goToVocabularyThreeAM()} onNextExercise={() => { handleComplete('vocabularyThreeAd'); goToEnglishReadWords() }} />
+            <VocabularyThreeAd onBack={() => goToVocabularyThreeAM()} onNextExercise={() => { handleComplete('vocabularyThreeAd'); goToMaths() }} />
           </NavigationWrapper>
         )}
         {view.name === 'maths' && <Maths onStart={goToMathsExerciseOne} onBack={goHome} />}
@@ -557,7 +557,7 @@ export default function LearningApp({ studentProfile, onExit }) {
           <NavigationWrapper
             onBack={() => setView({ name: 'mathsExerciseEight' })}
           >
-            <MathsExerciseNine onBack={() => setView({ name: 'mathsExerciseEight' })} onComplete={() => handleComplete('mathsExerciseNine')} onNextExercise={() => { handleComplete('mathsExerciseNine'); goToMaths() }} />
+            <MathsExerciseNine onBack={() => setView({ name: 'mathsExerciseEight' })} onComplete={() => handleComplete('mathsExerciseNine')} onNextExercise={() => { handleComplete('mathsExerciseNine'); goToComputerOverview() }} />
           </NavigationWrapper>
         )}
         {view.name === 'english' && <EnglishOverview onStart={goToEnglishWordGame} onBack={goHome} />}
@@ -594,7 +594,7 @@ export default function LearningApp({ studentProfile, onExit }) {
           <NavigationWrapper
             onBack={() => goToEnglishPhonics()}
           >
-            <EnglishFillBlanks onBack={() => goToEnglishPhonics()} onNextExercise={() => { handleComplete('englishFillBlanks'); goToEnglishOverview() }} />
+            <EnglishFillBlanks onBack={() => goToEnglishPhonics()} onNextExercise={() => { handleComplete('englishFillBlanks'); goToScienceOverview() }} />
           </NavigationWrapper>
         )}
         {view.name === 'science' && <ScienceOverview onStart={goToScienceHuman} onBack={goHome} />}
@@ -603,14 +603,14 @@ export default function LearningApp({ studentProfile, onExit }) {
           <NavigationWrapper
             onBack={goToScienceOverview}
           >
-            <ScienceHuman onBack={goToScienceOverview} onNextExercise={() => { handleComplete('scienceHuman'); goToScienceOverview() }} />
+            <ScienceHuman onBack={goToScienceOverview} onNextExercise={() => { handleComplete('scienceHuman'); goHome() }} />
           </NavigationWrapper>
         )}
 
         {view.name === 'computer' && <ComputerOverview onStart={goToComputerKeyboard} onBack={goHome} />}
         {view.name === 'computerKeyboard' && (
           <NavigationWrapper onBack={goToComputerOverview}>
-            <ComputerKeyboard onBack={goToComputerOverview} onNextExercise={() => { handleComplete('computerKeyboard'); goToComputerOverview() }} />
+            <ComputerKeyboard onBack={goToComputerOverview} onNextExercise={() => { handleComplete('computerKeyboard'); goToEVSOverview() }} />
           </NavigationWrapper>
         )}
 
@@ -637,7 +637,7 @@ export default function LearningApp({ studentProfile, onExit }) {
         )}
         {view.name === 'evsMap' && (
           <NavigationWrapper onBack={goToEVSBags}>
-            <EVSMap onBack={() => setView({ name: 'evs' })} onNextExercise={() => { handleComplete('evsMap'); goToEVSOverview() }} />
+            <EVSMap onBack={() => setView({ name: 'evs' })} onNextExercise={() => { handleComplete('evsMap'); goToArtsOverview() }} />
           </NavigationWrapper>
         )}
         {view.name === 'arts' && <ArtsOverview onBack={goHome} />}
