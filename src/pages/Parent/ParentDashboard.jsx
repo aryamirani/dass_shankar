@@ -229,13 +229,31 @@ export default function ParentDashboard({ onSelectStudent }) {
 
     if (currentView === 'profile') {
         return (
-            <div className={`dashboard-layout ${isDarkMode ? 'dark-mode' : ''}`}>
-                <main className="main-content" style={{ maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
+            <div style={{ minHeight: '100vh', background: '#f3f4f6', fontFamily: '"Inter", "Segoe UI", sans-serif' }}>
+                <main style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', padding: '40px 20px' }}>
                     <button
                         onClick={() => setCurrentView('dashboard')}
                         style={{
-                            marginBottom: '24px', background: '#111827', color: 'white',
-                            border: 'none', padding: '10px 16px', borderRadius: '8px', cursor: 'pointer'
+                            marginBottom: '24px', 
+                            background: '#111827', 
+                            color: '#ffffff',
+                            border: 'none', 
+                            padding: '10px 16px', 
+                            borderRadius: '8px', 
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            transition: 'all 0.2s',
+                            fontWeight: '500',
+                            fontSize: '14px',
+                            alignSelf: 'flex-start'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.target.style.background = '#1f2937'
+                        }}
+                        onMouseLeave={(e) => {
+                            e.target.style.background = '#111827'
                         }}
                     >
                         ← Back to Dashboard
@@ -300,8 +318,8 @@ export default function ParentDashboard({ onSelectStudent }) {
         </header>
 
         <main className="main-content">
-            <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
-                <div className="dashboard-grid" style={{ paddingTop: '24px' }}>
+            <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', height: '100%', padding: '24px 0', display: 'flex', alignItems: 'center' }}>
+                <div className="dashboard-grid">
                     {/* Top Left: Bar Chart */}
                     <div className="card">
                         <div className="card-header">

@@ -156,7 +156,7 @@ export default function ManageStudents() {
 
     if (selectedStudentForProgress) {
         return (
-            <div>
+            <div style={{ height: 'calc(100vh - 120px)', display: 'flex', flexDirection: 'column' }}>
                 <ChildProgressView
                     child={{
                         ...selectedStudentForProgress,

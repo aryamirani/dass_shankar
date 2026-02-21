@@ -146,8 +146,8 @@ export default function TeacherDashboard({ onSelectStudent, signOut }) {
 
     if (selectedStudentForProgress) {
         return (
-            <div style={{ minHeight: '100vh', background: '#f3f4f6', padding: '40px 20px', fontFamily: '"Inter", "Segoe UI", sans-serif' }}>
-                <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: '#f3f4f6', padding: '24px', boxSizing: 'border-box', fontFamily: '"Inter", "Segoe UI", sans-serif', overflow: 'hidden' }}>
+                <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%', height: '100%' }}>
                     <ChildProgressView
                         child={selectedStudentForProgress}
                         onBack={() => setSelectedStudentForProgress(null)}
@@ -166,8 +166,8 @@ export default function TeacherDashboard({ onSelectStudent, signOut }) {
                         style={{
                             marginBottom: '24px',
                             background: '#111827',
-                            border: 'none',
                             color: '#ffffff',
+                            border: 'none',
                             padding: '10px 16px',
                             borderRadius: '8px',
                             cursor: 'pointer',
@@ -241,7 +241,7 @@ export default function TeacherDashboard({ onSelectStudent, signOut }) {
                             transition: 'color 0.2s',
                             padding: 0
                         }}>
-                        My Profile
+                        Profile
                     </button>
                     <button
                         onClick={signOut}
@@ -274,24 +274,22 @@ export default function TeacherDashboard({ onSelectStudent, signOut }) {
                         <button
                             onClick={() => setShowAddStudent(true)}
                             style={{
-                                padding: '12px 24px',
+                                padding: '8px 16px',
                                 fontSize: '14px',
                                 fontWeight: '600',
-                                color: 'white',
-                                background: '#0084ffff',
-                                border: 'none',
-                                borderRadius: '8px',
+                                color: '#374151',
+                                background: 'white',
+                                border: '1px solid #e5e7eb',
+                                borderRadius: '20px',
                                 cursor: 'pointer',
                                 transition: 'all 0.2s',
-                                // boxShadow: '0 4px 14px 0 rgba(0, 195, 255, 1)'
+                                boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
                             }}
                             onMouseEnter={(e) => {
-                                e.target.style.background = '(135deg, #00b7ffff 0%, #00b7ffff 100%)'
-                                e.target.style.boxShadow = '0 6px 20px 0 rgba(0, 195, 255, 1)'
+                                e.target.style.background = '#f9fafb'
                             }}
                             onMouseLeave={(e) => {
-                                e.target.style.background = '(135deg, #00b7ffff 0%, #00b7ffff 100%)'
-                                e.target.style.boxShadow = '0 4px 14px 0 rgba(0, 195, 255, 1)'
+                                e.target.style.background = 'white'
                             }}
                         >
                             + Add Student
@@ -308,11 +306,10 @@ export default function TeacherDashboard({ onSelectStudent, signOut }) {
                 }}>
                     <div style={{
                         background: 'white',
-                        borderRadius: '16px',
+                        borderRadius: '20px',
                         padding: '24px',
-                        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
-                        border: '1px solid #e5e7eb',
-                        borderTop: '4px solid #10b981'
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                        border: 'none'
                     }}>
                         <div style={{ fontSize: '36px', fontWeight: 'bold', color: '#10b981', marginBottom: '8px' }}>
                             {students.length}
@@ -324,10 +321,10 @@ export default function TeacherDashboard({ onSelectStudent, signOut }) {
                 {/* Students List */}
                 <div style={{
                     background: 'white',
-                    borderRadius: '16px',
+                    borderRadius: '20px',
                     padding: '32px',
-                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
-                    border: '1px solid #e5e7eb'
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                    border: 'none'
                 }}>
                     <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '24px', color: '#111827' }}>
                         My Students
@@ -378,28 +375,28 @@ export default function TeacherDashboard({ onSelectStudent, signOut }) {
                                             {student.grades?.display_name || 'Unknown Grade'}
                                         </div>
                                     </div>
-                                    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: window.innerWidth < 640 ? 'center' : 'flex-end' }}>
+                                    <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', justifyContent: window.innerWidth < 640 ? 'center' : 'flex-end', alignItems: 'center' }}>
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 setSelectedStudentForProgress(student);
                                             }}
                                             style={{
-                                                padding: '8px 16px',
+                                                padding: '6px 16px',
                                                 fontSize: '13px',
                                                 fontWeight: '600',
-                                                color: '#e11d48',
-                                                background: '#ffe4e6',
-                                                border: 'none',
-                                                borderRadius: '8px',
+                                                color: '#374151',
+                                                background: 'white',
+                                                border: '1px solid #e5e7eb',
+                                                borderRadius: '20px',
                                                 cursor: 'pointer',
                                                 transition: 'all 0.2s'
                                             }}
                                             onMouseEnter={(e) => {
-                                                e.target.style.background = '#fecdd3'
+                                                e.target.style.background = '#f9fafb'
                                             }}
                                             onMouseLeave={(e) => {
-                                                e.target.style.background = '#ffe4e6'
+                                                e.target.style.background = 'white'
                                             }}
                                         >
                                             View Progress
@@ -410,20 +407,19 @@ export default function TeacherDashboard({ onSelectStudent, signOut }) {
                                                 onSelectStudent && onSelectStudent(student);
                                             }}
                                             style={{
-                                                padding: '8px 16px',
-                                                fontSize: '13px',
-                                                fontWeight: '600',
-                                                color: '#ffffff',
-                                                background: '#10b981',
+                                                background: 'transparent',
                                                 border: 'none',
-                                                borderRadius: '8px',
+                                                color: '#10b981',
+                                                fontWeight: '600',
+                                                fontSize: '13px',
                                                 cursor: 'pointer',
+                                                padding: '6px 12px',
                                                 transition: 'all 0.2s'
                                             }}
-                                            onMouseEnter={(e) => e.target.style.background = '#059669'}
-                                            onMouseLeave={(e) => e.target.style.background = '#10b981'}
+                                            onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                                            onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
                                         >
-                                            Explore Modules
+                                            Explore Modules →
                                         </button>
                                     </div>
                                 </div>

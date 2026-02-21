@@ -23,10 +23,11 @@ export default function App() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                background: '#f3f4f6',
+                color: '#6b7280'
             }}>
                 <div style={{ textAlign: 'center' }}>
-                    <div style={{ fontSize: '24px', color: 'white', marginBottom: '10px' }}>
+                    <div style={{ fontSize: '24px', marginBottom: '10px' }}>
                         {loading ? 'Loading...' : 'Fetching permissions...'}
                     </div>
                 </div>

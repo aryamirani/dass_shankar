@@ -49,25 +49,25 @@ export default function AdminDashboard({ signOut }) {
                 <span style={{ fontSize: '18px', fontWeight: 'bold' }}>Welcome, Admin</span>
                 <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
                     <button
-                        style={{ background: 'transparent', border: 'none', color: currentView === 'dashboard' ? '#fbbc04' : 'white', cursor: 'pointer', fontWeight: '500' }}
+                        style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', fontWeight: currentView === 'dashboard' ? 'bold' : '500' }}
                         onClick={() => setCurrentView('dashboard')}
                     >
                         Dashboard
                     </button>
                     <button
-                        style={{ background: 'transparent', border: 'none', color: currentView === 'teachers' ? '#fbbc04' : 'white', cursor: 'pointer', fontWeight: '500' }}
+                        style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', fontWeight: currentView === 'teachers' ? 'bold' : '500' }}
                         onClick={() => setCurrentView('teachers')}
                     >
                         Teachers
                     </button>
                     <button
-                        style={{ background: 'transparent', border: 'none', color: currentView === 'students' ? '#fbbc04' : 'white', cursor: 'pointer', fontWeight: '500' }}
+                        style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', fontWeight: currentView === 'students' ? 'bold' : '500' }}
                         onClick={() => setCurrentView('students')}
                     >
                         Students
                     </button>
                     <button
-                        style={{ background: 'transparent', border: 'none', color: currentView === 'parents' ? '#fbbc04' : 'white', cursor: 'pointer', fontWeight: '500' }}
+                        style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', fontWeight: currentView === 'parents' ? 'bold' : '500' }}
                         onClick={() => setCurrentView('parents')}
                     >
                         Parents
@@ -161,117 +161,117 @@ export default function AdminDashboard({ signOut }) {
                         <div style={{
                             background: 'white',
                             borderRadius: '20px',
-                            padding: '32px',
+                            padding: '24px',
                             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'space-between',
-                            borderTop: '4px solid #3b82f6'
+                            height: '100%'
                         }}>
                             <div>
-                                <div style={{ fontSize: '14px', color: '#6b7280', fontWeight: '500', marginBottom: '8px' }}>Total Teachers</div>
-                                <div style={{ fontSize: '42px', fontWeight: 'bold', color: '#3b82f6', marginBottom: '4px' }}>
+                                <div style={{ fontSize: '18px', fontWeight: '600', margin: '0' }}>Teachers</div>
+                                <div style={{ fontSize: '13px', color: '#6b7280', marginTop: '4px' }}>Manage platform teachers.</div>
+                                <div style={{ fontSize: '36px', fontWeight: '700', marginTop: '16px', marginBottom: '8px', color: '#1f2937' }}>
                                     {stats.teachers}
                                 </div>
                             </div>
-                            <button
-                                onClick={() => setCurrentView('teachers')}
-                                style={{
-                                    marginTop: '20px',
-                                    padding: '12px 24px',
-                                    fontSize: '14px',
-                                    fontWeight: '600',
-                                    color: 'white',
-                                    background: '#3b82f6',
-                                    border: 'none',
-                                    borderRadius: '12px',
-                                    cursor: 'pointer',
-                                    width: '100%',
-                                    transition: 'background 0.2s'
-                                }}
-                                onMouseEnter={(e) => e.target.style.background = '#2563eb'}
-                                onMouseLeave={(e) => e.target.style.background = '#3b82f6'}
-                            >
-                                Manage Teachers
-                            </button>
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
+                                <button
+                                    onClick={() => setCurrentView('teachers')}
+                                    style={{
+                                        background: 'transparent',
+                                        border: 'none',
+                                        color: '#10b981',
+                                        fontWeight: '600',
+                                        fontSize: '13px',
+                                        cursor: 'pointer',
+                                        padding: '6px 12px',
+                                        transition: 'all 0.2s'
+                                    }}
+                                    onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                                    onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+                                >
+                                    Manage Teachers →
+                                </button>
+                            </div>
                         </div>
 
                         {/* Students Card */}
                         <div style={{
                             background: 'white',
                             borderRadius: '20px',
-                            padding: '32px',
+                            padding: '24px',
                             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'space-between',
-                            borderTop: '4px solid #10b981'
+                            height: '100%'
                         }}>
                             <div>
-                                <div style={{ fontSize: '14px', color: '#6b7280', fontWeight: '500', marginBottom: '8px' }}>Total Students</div>
-                                <div style={{ fontSize: '42px', fontWeight: 'bold', color: '#10b981', marginBottom: '4px' }}>
+                                <div style={{ fontSize: '18px', fontWeight: '600', margin: '0' }}>Students</div>
+                                <div style={{ fontSize: '13px', color: '#6b7280', marginTop: '4px' }}>Manage platform students.</div>
+                                <div style={{ fontSize: '36px', fontWeight: '700', marginTop: '16px', marginBottom: '8px', color: '#1f2937' }}>
                                     {stats.students}
                                 </div>
                             </div>
-                            <button
-                                onClick={() => setCurrentView('students')}
-                                style={{
-                                    marginTop: '20px',
-                                    padding: '12px 24px',
-                                    fontSize: '14px',
-                                    fontWeight: '600',
-                                    color: 'white',
-                                    background: '#10b981',
-                                    border: 'none',
-                                    borderRadius: '12px',
-                                    cursor: 'pointer',
-                                    width: '100%',
-                                    transition: 'background 0.2s'
-                                }}
-                                onMouseEnter={(e) => e.target.style.background = '#059669'}
-                                onMouseLeave={(e) => e.target.style.background = '#10b981'}
-                            >
-                                View Students
-                            </button>
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
+                                <button
+                                    onClick={() => setCurrentView('students')}
+                                    style={{
+                                        background: 'transparent',
+                                        border: 'none',
+                                        color: '#10b981',
+                                        fontWeight: '600',
+                                        fontSize: '13px',
+                                        cursor: 'pointer',
+                                        padding: '6px 12px',
+                                        transition: 'all 0.2s'
+                                    }}
+                                    onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                                    onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+                                >
+                                    Manage Students →
+                                </button>
+                            </div>
                         </div>
 
                         {/* Parents Card */}
                         <div style={{
                             background: 'white',
                             borderRadius: '20px',
-                            padding: '32px',
+                            padding: '24px',
                             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'space-between',
-                            borderTop: '4px solid #f59e0b'
+                            height: '100%'
                         }}>
                             <div>
-                                <div style={{ fontSize: '14px', color: '#6b7280', fontWeight: '500', marginBottom: '8px' }}>Total Parents</div>
-                                <div style={{ fontSize: '42px', fontWeight: 'bold', color: '#f59e0b', marginBottom: '4px' }}>
+                                <div style={{ fontSize: '18px', fontWeight: '600', margin: '0' }}>Parents</div>
+                                <div style={{ fontSize: '13px', color: '#6b7280', marginTop: '4px' }}>Manage platform parents.</div>
+                                <div style={{ fontSize: '36px', fontWeight: '700', marginTop: '16px', marginBottom: '8px', color: '#1f2937' }}>
                                     {stats.parents}
                                 </div>
                             </div>
-                            <button
-                                onClick={() => setCurrentView('parents')}
-                                style={{
-                                    marginTop: '20px',
-                                    padding: '12px 24px',
-                                    fontSize: '14px',
-                                    fontWeight: '600',
-                                    color: 'white',
-                                    background: '#f59e0b',
-                                    border: 'none',
-                                    borderRadius: '12px',
-                                    cursor: 'pointer',
-                                    width: '100%',
-                                    transition: 'background 0.2s'
-                                }}
-                                onMouseEnter={(e) => e.target.style.background = '#ffbd4bff'}
-                                onMouseLeave={(e) => e.target.style.background = '#f59e0b'}
-                            >
-                                Manage Parents
-                            </button>
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
+                                <button
+                                    onClick={() => setCurrentView('parents')}
+                                    style={{
+                                        background: 'transparent',
+                                        border: 'none',
+                                        color: '#10b981',
+                                        fontWeight: '600',
+                                        fontSize: '13px',
+                                        cursor: 'pointer',
+                                        padding: '6px 12px',
+                                        transition: 'all 0.2s'
+                                    }}
+                                    onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                                    onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+                                >
+                                    Manage Parents →
+                                </button>
+                            </div>
                         </div>
                     </div>
 
