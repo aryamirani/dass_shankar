@@ -74,8 +74,8 @@ export default function VocabularyThree({ onBack, onNextExercise }) {
 
 
   // tab styles for header buttons
-  const tabFilled = { padding: '10px 16px', borderRadius: 20, background: '#1976d2', border: 'none', color: '#fff', fontWeight: 800, boxShadow: '0 8px 18px rgba(25,118,210,0.18)' }
-  const tabOutline = { padding: '10px 16px', borderRadius: 20, background: '#fff', border: '2px solid #1976d2', color: '#0d47a1', fontWeight: 700, boxShadow: '0 6px 14px rgba(25,118,210,0.08)' }
+  const tabFilled = { padding: 'clamp(10px, 2vw, 16px) clamp(16px, 3vw, 24px)', fontSize: 'clamp(14px, 2.5vw, 20px)', borderRadius: 20, background: '#1976d2', border: 'none', color: '#fff', fontWeight: 800, boxShadow: '0 8px 18px rgba(25,118,210,0.18)', cursor: 'pointer' }
+  const tabOutline = { padding: 'clamp(10px, 2vw, 16px) clamp(16px, 3vw, 24px)', fontSize: 'clamp(14px, 2.5vw, 20px)', borderRadius: 20, background: '#fff', border: '2px solid #1976d2', color: '#0d47a1', fontWeight: 700, boxShadow: '0 6px 14px rgba(25,118,210,0.08)', cursor: 'pointer' }
   const tabStyle = (i) => step === i ? tabFilled : tabOutline
 
   // drag handlers
@@ -147,28 +147,56 @@ export default function VocabularyThree({ onBack, onNextExercise }) {
   }
 
   return (
-    <div style={{ minHeight: '100vh', padding: 20, boxSizing: 'border-box', position: 'relative' }}>
+    <div style={{ height: '100vh', maxHeight: '100vh', overflow: 'hidden', padding: '10px 20px', boxSizing: 'border-box', position: 'relative', display: 'flex', flexDirection: 'column' }}>
       {showTutorial && step === 1 && <TutorialOverlay draggables={draggables} targets={targets} />}
 
-      <div style={{ maxWidth: 980, margin: '0 auto', background: 'rgba(255,255,255,0.0)', padding: 10 }}>
-        <h2 style={{ textAlign: 'center', fontSize: 'clamp(28px, 6vw, 42px)', fontWeight: 900, color: '#fff', textShadow: '0 2px 10px rgba(0,0,0,0.2)', marginBottom: 20 }}>Vocabulary</h2>
+      <div style={{ maxWidth: 1200, margin: '0 auto', background: 'rgba(255,255,255,0.0)', padding: 10, display: 'flex', flexDirection: 'column', flex: 1, width: '100%' }}>
+        <h2 style={{ textAlign: 'center', fontSize: 'clamp(28px, 6vh, 42px)', fontWeight: 900, color: '#111', textShadow: '0 2px 10px rgba(0,0,0,0.1)', marginBottom: 10 }}>Vocabulary</h2>
 
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginTop: 18, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
           <button className="action-btn" onClick={() => { setStep(0); reshuffleAll() }} style={tabStyle(0)}>Visual Reference</button>
           <button className="action-btn" onClick={() => { setStep(1); reshuffleAll() }} style={tabStyle(1)}>Interactive Matching</button>
           <button className="action-btn" onClick={() => { setStep(2); reshuffleAll(); setTypeIndex(0); setLetters(['', '', '']); if (inputRefs.current[0]) inputRefs.current[0].focus() }} style={tabStyle(2)}>Type the word</button>
         </div>
 
+        {/* Global Feedback Banner */}
+        <div style={{ minHeight: 60, display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
+          {message && (
+            <div style={{ padding: '8px 24px', fontSize: message.type === 'success' ? 'clamp(24px, 4vw, 32px)' : 'clamp(20px, 3.5vw, 24px)', fontWeight: 800, color: message.type === 'success' ? '#155724' : '#856404', background: message.type === 'success' ? 'rgba(212,237,218,0.98)' : 'rgba(255,243,205,0.95)', borderRadius: 14, boxShadow: '0 4px 12px rgba(0,0,0,0.1)', whiteSpace: 'nowrap', animation: 'popIn 0.2s ease-out' }}>
+              {message.text}
+            </div>
+          )}
+        </div>
+
         {step === 0 && (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 'clamp(10px, 4vw, 40px)', marginTop: 40 }}>
-            <div key={galleryOrder[viewIndex].id} onClick={() => speak(galleryOrder[viewIndex].id)} style={{ textAlign: 'center', width: '100%', maxWidth: 500, background: 'transparent', borderRadius: 20, padding: 'clamp(10px, 3vw, 30px)', cursor: 'pointer' }}>
-              <img src={galleryOrder[viewIndex].img} alt={galleryOrder[viewIndex].id} style={{ width: '100%', maxWidth: 440, height: 'auto', maxHeight: '40vh', objectFit: 'contain' }} />
-              <div style={{ height: 20 }} />
-              <div style={{ fontSize: 'clamp(32px, 8vw, 50px)', fontWeight: 800, color: '#111' }}>{galleryOrder[viewIndex].id}</div>
-              <div style={{ marginTop: 10, color: '#666', fontSize: 18 }}>Click to listen</div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1, minHeight: 0 }}>
+            <div key={galleryOrder[viewIndex].id} onClick={() => speak(galleryOrder[viewIndex].id)} style={{ textAlign: 'center', width: '100%', maxWidth: 600, background: 'transparent', borderRadius: 20, padding: 'clamp(5px, 2vh, 20px)', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+              <img src={galleryOrder[viewIndex].img} alt={galleryOrder[viewIndex].id} style={{ width: '100%', maxWidth: '35vh', height: 'auto', maxHeight: '35vh', objectFit: 'contain' }} />
+              <div style={{ fontSize: 'clamp(40px, 8vh, 80px)', fontWeight: 800, color: '#111', lineHeight: 1, margin: '15px 0' }}>{galleryOrder[viewIndex].id}</div>
+              
+              <button 
+                onClick={(e) => { e.stopPropagation(); speak(galleryOrder[viewIndex].id); }}
+                style={{ 
+                  marginTop: 10, 
+                  background: '#1976d2', 
+                  color: 'white', 
+                  fontSize: 'clamp(18px, 3vh, 26px)', 
+                  fontWeight: 800, 
+                  padding: '12px 32px', 
+                  borderRadius: 50, 
+                  border: 'none', 
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 12px rgba(25,118,210,0.3)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10
+                }}
+              >
+                <span style={{ fontSize: '1.2em' }}>🔊</span> Click to Listen
+              </button>
             </div>
 
-            <div style={{ display: 'flex', gap: 40, marginTop: 20 }}>
+            <div style={{ display: 'flex', gap: 40, marginTop: 'clamp(15px, 3vh, 30px)' }}>
               <button
                 className="action-btn"
                 onClick={() => setViewIndex(prev => Math.max(0, prev - 1))}
@@ -176,7 +204,7 @@ export default function VocabularyThree({ onBack, onNextExercise }) {
                 style={{
                   background: '#fff', color: viewIndex === 0 ? '#ccc' : '#1976d2',
                   cursor: viewIndex === 0 ? 'default' : 'pointer',
-                  border: 'none', fontSize: 'clamp(24px, 6vw, 40px)', fontWeight: 900, padding: '15px 30px',
+                  border: 'none', fontSize: 'clamp(24px, 6vw, 40px)', fontWeight: 900, padding: '10px 30px',
                   borderRadius: 50, boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
                 }}
               >
@@ -190,7 +218,7 @@ export default function VocabularyThree({ onBack, onNextExercise }) {
                 style={{
                   background: '#fff', color: viewIndex === galleryOrder.length - 1 ? '#ccc' : '#1976d2',
                   cursor: viewIndex === galleryOrder.length - 1 ? 'default' : 'pointer',
-                  border: 'none', fontSize: 'clamp(24px, 6vw, 40px)', fontWeight: 900, padding: '15px 30px',
+                  border: 'none', fontSize: 'clamp(24px, 6vw, 40px)', fontWeight: 900, padding: '10px 30px',
                   borderRadius: 50, boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
                 }}
               >
@@ -201,10 +229,8 @@ export default function VocabularyThree({ onBack, onNextExercise }) {
         )}
 
         {step === 1 && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginTop: 10, alignItems: 'center', minHeight: '60vh' }}>
-
-            {/* Target Grid - Top */}
-            <div style={{ flex: 1, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 220px))', gap: 10, width: '100%', overflowY: 'auto', padding: 4, alignContent: 'start', alignItems: 'start' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(10px, 2vh, 20px)', marginTop: 10, alignItems: 'center', flex: 1, minHeight: 0 }}>
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', gap: 'clamp(10px, 1.5vw, 20px)', width: '100%', padding: 10, alignContent: 'center', justifyContent: 'center', alignItems: 'center' }}>
               {targets.map(t => {
                 const isHover = hoveredTarget === t.id
                 return (
@@ -215,68 +241,85 @@ export default function VocabularyThree({ onBack, onNextExercise }) {
                     onDragEnter={(e) => onDragEnterTarget(e, t)}
                     onDragLeave={(e) => onDragLeaveTarget(e, t)}
                     style={{
-                      minHeight: 140,
-                      borderRadius: 14,
-                      background: 'rgba(255,255,255,0.2)',
+                      flex: '1 1 0',
+                      minWidth: 0,
+                      maxWidth: '220px',
+                      aspectRatio: '1',
+                      borderRadius: 16,
+                      background: 'rgba(255,255,255,0.9)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column',
-                      boxShadow: 'none',
-                      border: t.matched ? 'none' : (isHover ? '3px dashed #1976d2' : '2px dashed rgba(0,0,0,0.12)'),
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                      border: t.matched ? 'none' : (isHover ? '3px dashed #1976d2' : '3px dashed #ccc'),
                       transition: 'all 180ms ease',
                       padding: 10
                     }}>
-                    <img src={t.img} alt={t.id} style={{ width: '100%', maxWidth: 120, height: 'auto', maxHeight: 80, objectFit: 'contain', opacity: t.matched ? 0.6 : 1, filter: t.matched ? 'grayscale(0.1) brightness(0.98)' : 'none' }} />
-                    <div style={{ height: 4 }} />
-                    {t.matched ? <div style={{ color: '#2e7d32', fontWeight: 800, display: 'flex', alignItems: 'center', gap: 4 }}><span style={{ fontSize: 16 }}>✓</span></div> : null}
+                    <img src={t.img} alt={t.id} style={{ width: '100%', maxWidth: '80%', height: 'auto', maxHeight: '60%', objectFit: 'contain', opacity: t.matched ? 0.6 : 1, filter: t.matched ? 'grayscale(0.1) brightness(0.98)' : 'none' }} />
+                    <div style={{ height: 8 }} />
+                    {t.matched ? <div style={{ color: '#2e7d32', fontWeight: 800, display: 'flex', alignItems: 'center', gap: 4 }}><span style={{ fontSize: 'clamp(20px, 4vw, 28px)' }}>✓</span></div> : null}
                   </div>
                 )
               })}
             </div>
 
-            {/* Draggables - Bottom */}
-            <div style={{ width: '100%', display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center', padding: '10px 0', background: 'rgba(255,255,255,0.1)', borderRadius: 20 }}>
-              <div style={{ fontWeight: 800, width: '100%', textAlign: 'center', marginBottom: 4, color: '#000', fontSize: 14 }}>Drag words to images</div>
-              {draggables.map(d => (
-                <div
-                  key={d.id}
-                  id={`draggable-${d.id}`}
-                  draggable={!d.used}
-                  onDragStart={(e) => onDragStart(e, d)}
+            {targets.every(t => t.matched) ? (
+              <div style={{ width: '100%', display: 'flex', justifyContent: 'center', margin: '15px 0' }}>
+                <button
+                  onClick={() => { setStep(2); reshuffleAll(); setTypeIndex(0); setLetters(['', '', '']); if (inputRefs.current[0]) inputRefs.current[0].focus() }}
                   style={{
-                    padding: '8px 16px',
-                    background: 'white',
-                    borderRadius: 10,
-                    marginBottom: 4,
-                    boxShadow: d.used ? 'none' : '0 4px 8px rgba(0,0,0,0.1)',
-                    border: '1px solid #ddd',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    cursor: d.used ? 'default' : 'grab',
-                    opacity: d.used ? 0.5 : 1,
-                    position: 'relative'
+                    padding: '16px 32px', fontSize: 'clamp(20px, 4vw, 26px)', fontWeight: 'bold', color: 'white',
+                    background: 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)', border: 'none',
+                    borderRadius: '50px', cursor: 'pointer', boxShadow: '0 4px 15px rgba(76, 175, 80, 0.4)',
+                    animation: 'popIn 600ms cubic-bezier(.2,.9,.2,1) both'
                   }}
                 >
-                  <div style={{ fontSize: 'clamp(18px, 4vw, 24px)', fontWeight: 700 }}>{d.text}</div>
-                  {d.used && (
-                    <div style={{ position: 'absolute', right: -5, top: -5, color: '#fff', fontSize: 14, fontWeight: 900, background: '#4caf50', borderRadius: '50%', width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✓</div>
-                  )}
-                </div>
-              ))}
-            </div>
-
+                  Next: Type Exercise →
+                </button>
+              </div>
+            ) : (
+              <div style={{ width: '100%', display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center', padding: '10px 0', background: 'rgba(255,255,255,0.6)', borderRadius: 20, boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+                <div style={{ fontWeight: 800, width: '100%', textAlign: 'center', marginBottom: 4, color: '#444', fontSize: 'clamp(14px, 2.5vw, 18px)' }}>Drag words to images</div>
+                {draggables.map(d => (
+                  <div
+                    key={d.id}
+                    id={`draggable-${d.id}`}
+                    draggable={!d.used}
+                    onDragStart={(e) => onDragStart(e, d)}
+                    style={{
+                      padding: 'clamp(6px, 1.5vh, 12px) clamp(16px, 3vw, 24px)',
+                      background: 'white',
+                      borderRadius: 12,
+                      marginBottom: 4,
+                      boxShadow: d.used ? 'none' : '0 4px 8px rgba(0,0,0,0.1)',
+                      border: '2px solid #ddd',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: d.used ? 'default' : 'grab',
+                      opacity: d.used ? 0.5 : 1,
+                      position: 'relative'
+                    }}
+                  >
+                    <div style={{ fontSize: 'clamp(20px, 4vw, 32px)', fontWeight: 700 }}>{d.text}</div>
+                    {d.used && (
+                      <div style={{ position: 'absolute', right: -5, top: -5, color: '#fff', fontSize: 14, fontWeight: 900, background: '#4caf50', borderRadius: '50%', width: 22, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✓</div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
         {step === 2 && (
-          <div style={{ marginTop: 20, textAlign: 'center' }}>
+          <div style={{ marginTop: 'clamp(10px, 2vh, 40px)', textAlign: 'center', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
             {typeIndex >= typeOrder.length ? (
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
-                <div style={{ fontSize: 24, fontWeight: 800, color: '#2e7d32' }}>All done — great typing!</div>
+                <div style={{ fontSize: 'clamp(26px, 5vw, 36px)', fontWeight: 800, color: '#2e7d32' }}>All done — great typing!</div>
                 <button
                   onClick={onNextExercise}
                   style={{
                     padding: '16px 32px',
-                    fontSize: '20px',
+                    fontSize: 'clamp(20px, 4vw, 26px)',
                     fontWeight: 'bold',
                     color: 'white',
                     background: 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)',
@@ -294,23 +337,11 @@ export default function VocabularyThree({ onBack, onNextExercise }) {
                 </button>
               </div>
             ) : (
-              <div>
-                <img src={typeOrder[typeIndex].img} alt={typeOrder[typeIndex].id} style={{ width: '100%', maxWidth: 400, height: 'auto', maxHeight: 320, objectFit: 'contain' }} />
-                <form onSubmit={onSubmitType} style={{ marginTop: 12 }} onPaste={(e) => {
-                  e.preventDefault()
-                  const pasted = (e.clipboardData || window.clipboardData).getData('text').trim().slice(0, 3)
-                  if (!pasted) return
-                  const chars = pasted.split('')
-                  setLetters(prev => {
-                    const next = [...prev]
-                    for (let i = 0; i < 3; i++) next[i] = chars[i] || ''
-                    return next
-                  })
-                  const nextIndex = Math.min(2, pasted.length - 1)
-                  setTimeout(() => { if (inputRefs.current[nextIndex]) inputRefs.current[nextIndex].focus() }, 20)
-                }}>
-                  <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 10, minHeight: 70 }}>
-                    <div style={{ display: 'flex', gap: 12 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <img src={typeOrder[typeIndex].img} alt={typeOrder[typeIndex].id} style={{ width: '100%', maxWidth: '30vh', height: 'auto', maxHeight: '30vh', objectFit: 'contain' }} />
+                <form onSubmit={onSubmitType} style={{ marginTop: 'clamp(10px, 2vh, 20px)' }}>
+                  <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 90 }}>
+                    <div style={{ display: 'flex', gap: 'clamp(8px, 1.5vw, 16px)' }}>
                       {[0, 1, 2].map(i => (
                         <input
                           key={i}
@@ -359,45 +390,39 @@ export default function VocabularyThree({ onBack, onNextExercise }) {
                           }}
                           placeholder="_"
                           maxLength={1}
-                          style={{ width: 'clamp(40px, 10vw, 60px)', height: 'clamp(40px, 10vw, 60px)', fontSize: 28, textAlign: 'center', borderRadius: 8, border: '2px solid #ddd', boxShadow: '0 8px 18px rgba(0,0,0,0.06)' }}
+                          style={{ width: 'clamp(60px, 15vw, 100px)', height: 'clamp(60px, 15vw, 100px)', fontSize: 'clamp(32px, 8vw, 54px)', textAlign: 'center', borderRadius: 16, border: '3px solid #ddd', boxShadow: '0 8px 18px rgba(0,0,0,0.06)' }}
                         />
                       ))}
                     </div>
-                    {message && (
-                      <div style={{ position: 'absolute', top: 80, padding: '10px 18px', fontSize: 28, fontWeight: 800, color: message.type === 'success' ? '#155724' : '#856404', background: message.type === 'success' ? 'rgba(212,237,218,0.98)' : 'rgba(255,243,205,0.95)', borderRadius: 14, boxShadow: '0 8px 22px rgba(0,0,0,0.1)', whiteSpace: 'nowrap' }}>
-                        {message.text}
-                      </div>
-                    )}
                   </div>
                   <div style={{ height: 12 }}></div>
-                  <button className="action-btn" type="submit" style={{ padding: '8px 16px' }}>Check word</button>
+                  <button className="action-btn" type="submit" style={{ padding: '12px 24px', fontSize: 'clamp(18px, 3vw, 24px)', background: '#1976d2', color: 'white', borderRadius: 50, border: 'none', cursor: 'pointer' }}>Check word</button>
                 </form>
               </div>
             )}
           </div>
         )}
 
-        {message && step !== 2 && (
-          <div style={{ position: 'fixed', top: 40, left: '50%', transform: 'translateX(-50%)', padding: '12px 26px', fontSize: message.type === 'success' ? 36 : 28, fontWeight: 800, color: message.type === 'success' ? '#155724' : '#856404', background: message.type === 'success' ? 'rgba(212,237,218,0.98)' : 'rgba(255,243,205,0.95)', borderRadius: 14, boxShadow: '0 8px 22px rgba(0,0,0,0.1)', zIndex: 1000, whiteSpace: 'nowrap' }}>
-            {message.text}
-          </div>
-        )}
+
 
       </div>
 
+      <div style={{ height: '70px' }} /> {/* Spacer for footer */}
+
       {/* Word List Footer */}
       <div className="word-footer" style={{
-        position: 'fixed', bottom: 30, left: '50%', transform: 'translateX(-50%)',
+        position: 'fixed', bottom: 10, left: '50%', transform: 'translateX(-50%)',
         background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(8px)',
-        padding: '15px 40px', borderRadius: 50,
-        boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
-        border: '4px solid rgba(255,255,255,0.5)',
-        display: 'flex', gap: 30, alignItems: 'center', zIndex: 100
+        padding: '10px 30px', borderRadius: 50,
+        boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
+        border: '3px solid rgba(255,255,255,0.8)',
+        display: 'flex', gap: 20, alignItems: 'center', zIndex: 100,
+        width: 'max-content', maxWidth: '95vw', overflowX: 'auto'
       }}>
-        <span style={{ fontWeight: 800, color: '#1976d2', fontSize: 16, textTransform: 'uppercase', letterSpacing: 2 }}>Words:</span>
-        <div style={{ display: 'flex', gap: 20 }}>
+        <span style={{ fontWeight: 800, color: '#1976d2', fontSize: 'clamp(14px, 3vw, 16px)', textTransform: 'uppercase', letterSpacing: 2 }}>Words:</span>
+        <div style={{ display: 'flex', gap: 'clamp(10px, 2vw, 20px)' }}>
           {WORDS.map(w => (
-            <span key={w.id} style={{ fontSize: 34, fontWeight: 700, color: '#333' }}>{w.id}</span>
+            <span key={w.id} style={{ fontSize: 'clamp(20px, 4vw, 28px)', fontWeight: 700, color: '#333' }}>{w.id}</span>
           ))}
         </div>
       </div>
