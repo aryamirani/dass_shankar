@@ -10,7 +10,7 @@ const GENTLE = [
 ]
 
 export default function MathsExerciseNine({ onBack, onComplete, onNextExercise, mode = 'learn' }) {
-  const bagsToTakeOut = useMemo(() => Math.floor(Math.random() * 5), []) // 0-4
+  const bagsToTakeOut = useMemo(() => Math.floor(Math.random() * 1), []) // 0-4
 
   const [userAnswer, setUserAnswer] = useState('')
   const [checked, setChecked] = useState(false)
@@ -21,8 +21,8 @@ export default function MathsExerciseNine({ onBack, onComplete, onNextExercise, 
   const [message, setMessage] = useState(null)
   const successRef = useRef(null)
 
-  const correctAnswer = 4
-  const correctLeftAnswer = 4 - bagsToTakeOut
+  const correctAnswer = 2
+  const correctLeftAnswer = 2 - bagsToTakeOut
 
   useEffect(() => {
     if (message) {
